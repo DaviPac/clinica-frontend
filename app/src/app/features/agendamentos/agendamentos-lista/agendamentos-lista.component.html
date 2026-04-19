@@ -1,0 +1,195 @@
+<div class="p-6">
+
+  <!-- Cabeçalho -->
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <h1 class="text-lg font-medium text-gray-900">Agendamentos</h1>
+      <p class="text-sm text-gray-500 mt-0.5">Semana de {{ labelPeriodo() }}</p>
+    </div>
+    <button
+      (click)="modalCriacaoAberto.set(true)"
+      class="bg-teal-600 hover:bg-teal-700 text-white text-sm font-medium
+             rounded-lg px-4 py-2 transition-colors cursor-pointer">
+      + Novo agendamento
+    </button>
+  </div>
+
+  <!-- Navegação de período -->
+  <div class="flex items-center gap-2 mb-5">
+    <button
+      (click)="navegarSemana(-1)"
+      class="text-xs border border-gray-200 rounded-lg px-3 py-2
+             hover:bg-gray-50 text-gray-600 transition-colors cursor-pointer shrink-0">
+      ← Anterior
+    </button>
+
+    <div class="flex gap-2 flex-1">
+      <input
+        type="date"
+        [ngModel]="filtro().de"
+        (ngModelChange)="filtro.set({ de: $event, ate: filtro().ate }); onFiltroChange()"
+        class="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-xs
+               focus:outline-none focus:ring-2 focus:ring-teal-500"
+      />
+      <input
+        type="date"
+        [ngModel]="filtro().ate"
+        (ngModelChange)="filtro.set({ de: filtro().de, ate: $event }); onFiltroChange()"
+        class="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-xs
+               focus:outline-none focus:ring-2 focus:ring-teal-500"
+      />
+    </div>
+
+    <button
+      (click)="navegarSemana(1)"
+      class="text-xs border border-gray-200 rounded-lg px-3 py-2
+             hover:bg-gray-50 text-gray-600 transition-colors cursor-pointer shrink-0">
+      Próxima →
+    </button>
+  </div>
+
+  <!-- Erro -->
+  @if (erro()) {
+    <div class="bg-red-50 border border-red-200 rounded-lg px-4 py-3 mb-4">
+      <p class="text-sm text-red-700">{{ erro() }}</p>
+    </div>
+  }
+
+  <!-- Loading -->
+  @if (carregando()) {
+    <div class="flex justify-center py-12 text-sm text-gray-400">Carregando...</div>
+  }
+
+  <!-- Cards -->
+  @if (!carregando()) {
+    <div class="flex flex-col gap-3">
+      @for (ag of agendamentos(); track ag.id) {
+        <div class="border rounded-xl p-4 transition-colors {{ cardClass(ag.status) }}">
+
+          <!-- Linha superior: paciente + status -->
+          <div class="flex items-start justify-between gap-3 mb-3">
+            <div>
+              <p class="text-sm font-medium text-gray-900">
+                Paciente #{{ ag.paciente_id }}
+              </p>
+              <p class="text-xs text-gray-500 mt-0.5">
+                Serviço #{{ ag.servico_id }}
+                · {{ formatarDataCurta(ag.data_hora_inicio) }}
+                · {{ formatarHora(ag.data_hora_inicio) }}–{{ formatarHora(ag.data_hora_fim) }}
+              </p>
+            </div>
+            <app-status-badge [status]="ag.status" />
+          </div>
+
+          <!-- Linha inferior: valor + ações -->
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-mono text-gray-600">
+                {{ formatarValor(ag.valor_combinado) }}
+              </span>
+              <!-- Badge de pagamento -->
+              @if (ag.status === 'REALIZADO') {
+                <span
+                  class="text-xs font-medium px-1.5 py-0.5 rounded"
+                  [class]="ag.pago_pelo_paciente
+                    ? 'bg-teal-50 text-teal-800'
+                    : 'bg-gray-100 text-gray-500'">
+                  {{ ag.pago_pelo_paciente ? 'Pago' : 'Não pago' }}
+                </span>
+              }
+            </div>
+
+            <div class="flex items-center gap-1.5">
+              <!-- Botão de pagamento — só para REALIZADO -->
+              @if (ag.status === 'REALIZADO') {
+                <button
+                  (click)="togglePagamento(ag)"
+                  [disabled]="atualizandoPagamento() === ag.id"
+                  class="text-xs border border-gray-200 rounded-md px-2.5 py-1
+                         hover:bg-gray-50 text-gray-600 transition-colors
+                         cursor-pointer disabled:opacity-50">
+                  {{ atualizandoPagamento() === ag.id ? '...' : (ag.pago_pelo_paciente ? 'Desfazer pagamento' : 'Marcar pago') }}
+                </button>
+              }
+
+              <!-- Botão de status — só para não cancelados -->
+              @if (ag.status !== 'CANCELADO') {
+                <button
+                  (click)="abrirModalStatus(ag)"
+                  class="text-xs border border-gray-200 rounded-md px-2.5 py-1
+                         hover:bg-gray-50 text-gray-600 transition-colors cursor-pointer">
+                  Alterar status
+                </button>
+              }
+
+              <!-- Cancelar série — só para AGENDADO com recorrência -->
+              @if (ag.status === 'AGENDADO' && ag.recorrencia_group_id) {
+                <button
+                  (click)="confirmarCancelamentoSerie(ag)"
+                  class="text-xs border border-red-200 rounded-md px-2.5 py-1
+                         hover:bg-red-50 text-red-700 transition-colors cursor-pointer">
+                  Cancelar série
+                </button>
+              }
+            </div>
+          </div>
+        </div>
+      } @empty {
+        <div class="text-center py-12 text-sm text-gray-400">
+          Nenhum agendamento neste período.
+        </div>
+      }
+    </div>
+  }
+
+</div>
+
+<!-- Modal: criar agendamento -->
+@if (modalCriacaoAberto()) {
+  <app-agendamentos-modal
+    (fechar)="modalCriacaoAberto.set(false)"
+    (salvo)="modalCriacaoAberto.set(false); carregar()">
+  </app-agendamentos-modal>
+}
+
+<!-- Modal: alterar status -->
+@if (agendamentoParaStatus()) {
+  <app-agendamentos-status-modal
+    [agendamento]="agendamentoParaStatus()!"
+    (fechar)="agendamentoParaStatus.set(null)"
+    (atualizado)="onStatusAtualizado($event)">
+  </app-agendamentos-status-modal>
+}
+
+<!-- Modal: confirmar cancelamento de série -->
+@if (agendamentoParaCancelarSerie()) {
+  <div
+    class="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4"
+    (click)="agendamentoParaCancelarSerie.set(null)">
+    <div
+      class="bg-white rounded-xl border border-gray-200 p-6 w-full max-w-sm"
+      (click)="$event.stopPropagation()">
+      <h2 class="text-base font-medium text-gray-900 mb-2">Cancelar série</h2>
+      <p class="text-sm text-gray-500 mb-6">
+        Todas as sessões <strong class="text-gray-700">futuras com status Agendado</strong>
+        desta série serão canceladas. Sessões já realizadas não são afetadas.
+      </p>
+      <div class="flex gap-2.5">
+        <button
+          (click)="agendamentoParaCancelarSerie.set(null)"
+          class="flex-1 border border-gray-200 rounded-lg py-2.5 text-sm
+                 text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer">
+          Manter
+        </button>
+        <button
+          (click)="cancelarSerie()"
+          [disabled]="cancelandoSerie()"
+          class="flex-1 bg-red-600 hover:bg-red-700 disabled:opacity-50
+                 text-white text-sm font-medium rounded-lg py-2.5
+                 transition-colors cursor-pointer disabled:cursor-not-allowed">
+          {{ cancelandoSerie() ? 'Cancelando...' : 'Cancelar série' }}
+        </button>
+      </div>
+    </div>
+  </div>
+}

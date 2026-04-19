@@ -1,0 +1,178 @@
+<div
+  class="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4"
+  (click)="fechar.emit()">
+
+  <div
+    class="bg-white rounded-xl border border-gray-200 p-7 w-full max-w-md
+           max-h-[90vh] overflow-y-auto"
+    (click)="$event.stopPropagation()">
+
+    <!-- Cabeçalho -->
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-base font-medium text-gray-900">Novo agendamento</h2>
+      <button
+        (click)="fechar.emit()"
+        class="text-gray-400 hover:text-gray-600 text-xl leading-none
+               cursor-pointer bg-transparent border-none p-0">×</button>
+    </div>
+
+    <!-- Erro -->
+    @if (erro()) {
+      <div class="bg-red-50 border border-red-200 rounded-lg px-3 py-2.5 mb-4">
+        <p class="text-sm text-red-700">{{ erro() }}</p>
+      </div>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="flex flex-col gap-4">
+
+      <!-- Paciente -->
+      <div>
+        <label class="block text-xs text-gray-500 mb-1.5">
+          Paciente <span class="text-red-500">*</span>
+        </label>
+        <select
+          formControlName="paciente_id"
+          class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
+                 focus:outline-none focus:ring-2 focus:ring-teal-500">
+          <option [value]="0" disabled>Selecione um paciente</option>
+          @for (p of pacientes(); track p.id) {
+            <option [value]="p.id">{{ p.nome }}</option>
+          }
+        </select>
+      </div>
+
+      <!-- Serviço -->
+      <div>
+        <label class="block text-xs text-gray-500 mb-1.5">
+          Serviço <span class="text-red-500">*</span>
+        </label>
+        <select
+          formControlName="servico_id"
+          class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
+                 focus:outline-none focus:ring-2 focus:ring-teal-500">
+          <option [value]="0" disabled>Selecione um serviço</option>
+          @for (s of servicos(); track s.id) {
+            <option [value]="s.id">{{ s.nome }} — {{ s.valor_atual | currency:'BRL' }}</option>
+          }
+        </select>
+      </div>
+
+      <!-- Datas -->
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block text-xs text-gray-500 mb-1.5">
+            Início <span class="text-red-500">*</span>
+          </label>
+          <input
+            type="datetime-local"
+            formControlName="data_hora_inicio"
+            class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
+                   focus:outline-none focus:ring-2 focus:ring-teal-500"
+          />
+        </div>
+        <div>
+          <label class="block text-xs text-gray-500 mb-1.5">
+            Fim <span class="text-red-500">*</span>
+          </label>
+          <input
+            type="datetime-local"
+            formControlName="data_hora_fim"
+            class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
+                   focus:outline-none focus:ring-2 focus:ring-teal-500"
+          />
+        </div>
+      </div>
+
+      <!-- Valor -->
+      <div>
+        <label class="block text-xs text-gray-500 mb-1.5">
+          Valor combinado (R$) <span class="text-red-500">*</span>
+        </label>
+        <input
+          type="number"
+          formControlName="valor_combinado"
+          min="0.01"
+          step="0.01"
+          class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
+                 font-mono focus:outline-none focus:ring-2 focus:ring-teal-500"
+        />
+        <p class="text-xs text-gray-400 mt-1">
+          Pré-preenchido com o valor do serviço. Ajuste se necessário.
+        </p>
+      </div>
+
+      <!-- Recorrência -->
+      <div class="border border-gray-200 rounded-lg p-3">
+        <label class="flex items-center gap-3 cursor-pointer select-none">
+          <div
+            class="relative w-9 h-5 rounded-full transition-colors shrink-0"
+            [class]="recorrente ? 'bg-teal-600' : 'bg-gray-200'">
+            <div
+              class="absolute top-0.5 w-4 h-4 bg-white rounded-full shadow-sm
+                     transition-transform duration-200"
+              [class]="recorrente ? 'translate-x-4' : 'translate-x-0.5'">
+            </div>
+            <input type="checkbox" formControlName="recorrente" class="sr-only" />
+          </div>
+          <span class="text-sm font-medium text-gray-800">Sessão recorrente</span>
+        </label>
+
+        @if (recorrente) {
+          <div class="mt-3 grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs text-gray-500 mb-1.5">
+                Nº de sessões <span class="text-red-500">*</span>
+              </label>
+              <input
+                type="number"
+                formControlName="total_sessoes"
+                min="2"
+                class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
+                       focus:outline-none focus:ring-2 focus:ring-teal-500"
+              />
+            </div>
+            <div>
+              <label class="block text-xs text-gray-500 mb-1.5">
+                Intervalo (semanas)
+              </label>
+              <input
+                type="number"
+                formControlName="intervalo_semanas"
+                min="1"
+                class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
+                       focus:outline-none focus:ring-2 focus:ring-teal-500"
+              />
+            </div>
+          </div>
+
+          @if (previewUltimaSessao()) {
+            <p class="text-xs text-gray-500 mt-2">
+              {{ form.controls['total_sessoes'].value }} sessões ·
+              última em {{ previewUltimaSessao() }}
+            </p>
+          }
+        }
+      </div>
+
+      <!-- Ações -->
+      <div class="flex gap-2.5 mt-2">
+        <button
+          type="button"
+          (click)="fechar.emit()"
+          class="flex-1 border border-gray-200 rounded-lg py-2.5 text-sm
+                 text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer">
+          Cancelar
+        </button>
+        <button
+          type="submit"
+          [disabled]="form.invalid || loading()"
+          class="flex-1 bg-teal-600 hover:bg-teal-700 disabled:opacity-50
+                 text-white text-sm font-medium rounded-lg py-2.5
+                 transition-colors cursor-pointer disabled:cursor-not-allowed">
+          {{ loading() ? 'Agendando...' : 'Agendar' }}
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>

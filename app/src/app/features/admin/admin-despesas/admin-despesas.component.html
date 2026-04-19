@@ -1,0 +1,200 @@
+<div class="p-6">
+
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <h1 class="text-lg font-medium text-gray-900">Despesas</h1>
+      <p class="text-sm text-gray-500 mt-0.5">
+        {{ formatarValor(totalEmAberto()) }} em aberto
+      </p>
+    </div>
+    <button
+      (click)="modalAberto.set(true)"
+      class="bg-teal-600 hover:bg-teal-700 text-white text-sm font-medium
+             rounded-lg px-4 py-2 transition-colors cursor-pointer">
+      + Nova despesa
+    </button>
+  </div>
+
+  <label class="inline-flex items-center gap-2.5 mb-4 cursor-pointer select-none">
+    <div
+      class="relative w-9 h-5 rounded-full transition-colors"
+      [class]="apenasEmAberto() ? 'bg-teal-600' : 'bg-gray-300'"
+      (click)="apenasEmAberto.set(!apenasEmAberto())">
+      <div
+        class="absolute top-0.5 w-4 h-4 bg-white rounded-full shadow-sm transition-transform duration-200"
+        [class]="apenasEmAberto() ? 'translate-x-4' : 'translate-x-0.5'">
+      </div>
+    </div>
+    <span class="text-sm text-gray-600">Apenas em aberto</span>
+  </label>
+
+  @if (erro()) {
+    <div class="bg-red-50 border border-red-200 rounded-lg px-4 py-3 mb-4">
+      <p class="text-sm text-red-700">{{ erro() }}</p>
+    </div>
+  }
+
+  @if (carregando()) {
+    <p class="text-sm text-gray-400 text-center py-10">Carregando...</p>
+  }
+
+  @if (!carregando()) {
+    <div class="border border-gray-200 rounded-xl overflow-hidden">
+      <table class="w-full text-sm border-collapse">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="text-left px-4 py-2.5 font-medium text-gray-500 border-b border-gray-200">Descrição</th>
+            <th class="text-left px-4 py-2.5 font-medium text-gray-500 border-b border-gray-200">Valor</th>
+            <th class="text-left px-4 py-2.5 font-medium text-gray-500 border-b border-gray-200">Vencimento</th>
+            <th class="text-left px-4 py-2.5 font-medium text-gray-500 border-b border-gray-200">Categoria</th>
+            <th class="border-b border-gray-200"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (d of despesas(); track d.id) {
+            <tr
+              class="border-b border-gray-100 last:border-0 transition-colors hover:bg-gray-50"
+              [class.opacity-50]="d.status_pagamento">
+              <td class="px-4 py-3 font-medium text-gray-900">{{ d.descricao }}</td>
+              <td class="px-4 py-3 font-mono text-xs text-gray-900">{{ formatarValor(d.valor) }}</td>
+              <td class="px-4 py-3 text-xs {{ vencimentoClass(d.data_vencimento, d.status_pagamento) }}">
+                {{ formatarData(d.data_vencimento) }}
+              </td>
+              <td class="px-4 py-3">
+                @if (d.categoria === 'FIXA') {
+                  <span class="bg-blue-50 text-blue-800 text-xs font-medium px-2 py-0.5 rounded">Fixa</span>
+                } @else {
+                  <span class="bg-amber-50 text-amber-800 text-xs font-medium px-2 py-0.5 rounded">Variável</span>
+                }
+              </td>
+              <td class="px-4 py-3 text-right">
+                @if (!d.status_pagamento) {
+                  <button
+                    (click)="marcarPago(d)"
+                    [disabled]="pagando() === d.id"
+                    class="text-xs bg-teal-600 hover:bg-teal-700 disabled:opacity-50
+                           text-white rounded-md px-2.5 py-1 transition-colors
+                           cursor-pointer disabled:cursor-not-allowed">
+                    {{ pagando() === d.id ? '...' : 'Marcar pago' }}
+                  </button>
+                } @else {
+                  <span class="bg-teal-50 text-teal-800 text-xs font-medium px-2 py-0.5 rounded">
+                    Paga
+                  </span>
+                }
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="5" class="px-4 py-10 text-center text-sm text-gray-400">
+                Nenhuma despesa encontrada.
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+</div>
+
+<!-- Modal nova despesa -->
+@if (modalAberto()) {
+  <div
+    class="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4"
+    (click)="modalAberto.set(false)">
+    <div
+      class="bg-white rounded-xl border border-gray-200 p-7 w-full max-w-sm"
+      (click)="$event.stopPropagation()">
+
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-base font-medium text-gray-900">Nova despesa</h2>
+        <button
+          (click)="modalAberto.set(false)"
+          class="text-gray-400 hover:text-gray-600 text-xl leading-none
+                 cursor-pointer bg-transparent border-none p-0">×</button>
+      </div>
+
+      @if (erroModal()) {
+        <div class="bg-red-50 border border-red-200 rounded-lg px-3 py-2.5 mb-4">
+          <p class="text-sm text-red-700">{{ erroModal() }}</p>
+        </div>
+      }
+
+      <form [formGroup]="form" (ngSubmit)="submit()" class="flex flex-col gap-4">
+
+        <div>
+          <label class="block text-xs text-gray-500 mb-1.5">
+            Descrição <span class="text-red-500">*</span>
+          </label>
+          <input
+            type="text"
+            formControlName="descricao"
+            placeholder="Ex: Aluguel da sala"
+            class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
+                   focus:outline-none focus:ring-2 focus:ring-teal-500"
+          />
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs text-gray-500 mb-1.5">
+              Valor (R$) <span class="text-red-500">*</span>
+            </label>
+            <input
+              type="number"
+              formControlName="valor"
+              min="0.01"
+              step="0.01"
+              class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
+                     font-mono focus:outline-none focus:ring-2 focus:ring-teal-500"
+            />
+          </div>
+          <div>
+            <label class="block text-xs text-gray-500 mb-1.5">
+              Vencimento <span class="text-red-500">*</span>
+            </label>
+            <input
+              type="date"
+              formControlName="data_vencimento"
+              class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
+                     focus:outline-none focus:ring-2 focus:ring-teal-500"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs text-gray-500 mb-1.5">
+            Categoria <span class="text-red-500">*</span>
+          </label>
+          <select
+            formControlName="categoria"
+            class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
+                   focus:outline-none focus:ring-2 focus:ring-teal-500">
+            <option value="FIXA">Fixa</option>
+            <option value="VARIAVEL">Variável</option>
+          </select>
+        </div>
+
+        <div class="flex gap-2.5 mt-2">
+          <button
+            type="button"
+            (click)="modalAberto.set(false)"
+            class="flex-1 border border-gray-200 rounded-lg py-2.5 text-sm
+                   text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer">
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            [disabled]="form.invalid || salvando()"
+            class="flex-1 bg-teal-600 hover:bg-teal-700 disabled:opacity-50
+                   text-white text-sm font-medium rounded-lg py-2.5
+                   transition-colors cursor-pointer disabled:cursor-not-allowed">
+            {{ salvando() ? 'Salvando...' : 'Criar despesa' }}
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+}

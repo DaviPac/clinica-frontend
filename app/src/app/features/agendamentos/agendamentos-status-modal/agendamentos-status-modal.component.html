@@ -1,0 +1,48 @@
+<div
+  class="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4"
+  (click)="fechar.emit()">
+
+  <div
+    class="bg-white rounded-xl border border-gray-200 p-6 w-full max-w-sm"
+    (click)="$event.stopPropagation()">
+
+    <div class="flex items-center justify-between mb-1">
+      <h2 class="text-base font-medium text-gray-900">Alterar status</h2>
+      <button
+        (click)="fechar.emit()"
+        class="text-gray-400 hover:text-gray-600 text-xl leading-none
+               cursor-pointer bg-transparent border-none p-0">×</button>
+    </div>
+
+    <div class="flex items-center gap-2 mb-5">
+      <span class="text-xs text-gray-500">Status atual:</span>
+      <app-status-badge [status]="agendamento().status" />
+    </div>
+
+    @if (erro()) {
+      <div class="bg-red-50 border border-red-200 rounded-lg px-3 py-2 mb-4">
+        <p class="text-sm text-red-700">{{ erro() }}</p>
+      </div>
+    }
+
+    @if (opcoes.length === 0) {
+      <p class="text-sm text-gray-400 text-center py-4">
+        Não há transições disponíveis para este status.
+      </p>
+    }
+
+    <div class="flex flex-col gap-2">
+      @for (op of opcoes; track op) {
+        <button
+          (click)="selecionar(op)"
+          [disabled]="!!loading()"
+          class="w-full border rounded-lg py-2.5 text-sm font-medium
+                 transition-colors cursor-pointer disabled:opacity-50
+                 {{ btnClass[op] }}">
+          {{ loading() === op ? 'Salvando...' : labels[op] }}
+        </button>
+      }
+    </div>
+
+  </div>
+</div>

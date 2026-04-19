@@ -1,0 +1,165 @@
+<div class="p-6">
+
+  <!-- Cabeçalho -->
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <h1 class="text-lg font-medium text-gray-900">Serviços</h1>
+      <p class="text-sm text-gray-500 mt-0.5">
+        {{ totalAtivos() }} serviço{{ totalAtivos() !== 1 ? 's' : '' }} ativo{{ totalAtivos() !== 1 ? 's' : '' }}
+      </p>
+    </div>
+    <button
+      (click)="abrirCriacao()"
+      class="bg-teal-600 hover:bg-teal-700 text-white text-sm font-medium
+             rounded-lg px-4 py-2 transition-colors cursor-pointer">
+      + Novo serviço
+    </button>
+  </div>
+
+  <!-- Toggle inativos -->
+  <label class="inline-flex items-center gap-2.5 mb-4 cursor-pointer select-none">
+    <div
+      class="relative w-9 h-5 rounded-full transition-colors"
+      [class]="exibirInativos() ? 'bg-teal-600' : 'bg-gray-200'"
+      (click)="exibirInativos.set(!exibirInativos())">
+      <div
+        class="absolute top-0.5 w-4 h-4 bg-white rounded-full shadow-sm
+               transition-transform duration-200"
+        [class]="exibirInativos() ? 'translate-x-4' : 'translate-x-0.5'">
+      </div>
+    </div>
+    <span class="text-sm text-gray-600">Exibir serviços inativos</span>
+  </label>
+
+  <!-- Erro -->
+  @if (erro()) {
+    <div class="bg-red-50 border border-red-200 rounded-lg px-4 py-3 mb-4">
+      <p class="text-sm text-red-700">{{ erro() }}</p>
+    </div>
+  }
+
+  <!-- Loading -->
+  @if (carregando()) {
+    <div class="flex justify-center py-12 text-sm text-gray-400">
+      Carregando...
+    </div>
+  }
+
+  <!-- Tabela -->
+  @if (!carregando()) {
+    <div class="border border-gray-200 rounded-xl overflow-hidden">
+      <table class="w-full text-sm border-collapse">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="text-left px-4 py-2.5 font-medium text-gray-500 border-b border-gray-200">Serviço</th>
+            <th class="text-left px-4 py-2.5 font-medium text-gray-500 border-b border-gray-200">Valor</th>
+            <th class="text-left px-4 py-2.5 font-medium text-gray-500 border-b border-gray-200">Status</th>
+            <th class="border-b border-gray-200"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (s of servicos(); track s.id) {
+            <tr class="border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors"
+                [class.opacity-50]="!s.ativo">
+              <td class="px-4 py-3 font-medium"
+                  [class]="s.ativo ? 'text-gray-900' : 'text-gray-500'">
+                {{ s.nome }}
+              </td>
+              <td class="px-4 py-3 font-mono text-xs"
+                  [class]="s.ativo ? 'text-gray-900' : 'text-gray-500'">
+                {{ formatarValor(s.valor_atual) }}
+              </td>
+              <td class="px-4 py-3">
+                @if (s.ativo) {
+                  <span class="bg-teal-50 text-teal-800 text-xs font-medium px-2 py-0.5 rounded">
+                    Ativo
+                  </span>
+                } @else {
+                  <span class="bg-gray-100 text-gray-600 text-xs font-medium px-2 py-0.5 rounded">
+                    Inativo
+                  </span>
+                }
+              </td>
+              <td class="px-4 py-3">
+                <div class="flex items-center justify-end gap-2">
+                  <button
+                    (click)="abrirEdicao(s)"
+                    class="text-xs border border-gray-200 rounded-md px-2.5 py-1
+                           hover:bg-gray-50 text-gray-700 transition-colors cursor-pointer">
+                    Editar
+                  </button>
+                  @if (s.ativo) {
+                    <button
+                      (click)="confirmarDesativacao(s)"
+                      class="text-xs border border-red-200 rounded-md px-2.5 py-1
+                             hover:bg-red-50 text-red-700 transition-colors cursor-pointer">
+                      Desativar
+                    </button>
+                  }
+                </div>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="4" class="px-4 py-10 text-center text-sm text-gray-400">
+                Nenhum serviço encontrado.
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Aviso soft delete -->
+    <div class="mt-3 flex items-center gap-2 px-3 py-2.5 bg-gray-50
+                border border-gray-200 rounded-lg">
+      <span class="w-2 h-2 rounded-full bg-amber-500 shrink-0"></span>
+      <p class="text-xs text-gray-500">
+        Serviços inativos não são deletados — o histórico de agendamentos é preservado.
+      </p>
+    </div>
+  }
+
+</div>
+
+<!-- Modal criação/edição -->
+@if (modalAberto()) {
+  <app-servicos-modal
+    [servico]="servicoEmEdicao()"
+    (fechar)="fecharModal()"
+    (salvo)="onSalvo()">
+  </app-servicos-modal>
+}
+
+<!-- Modal confirmação de desativação -->
+@if (servicoParaDesativar()) {
+  <div
+    class="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4"
+    (click)="cancelarDesativacao()">
+    <div
+      class="bg-white rounded-xl border border-gray-200 p-6 w-full max-w-sm"
+      (click)="$event.stopPropagation()">
+      <h2 class="text-base font-medium text-gray-900 mb-2">Desativar serviço</h2>
+      <p class="text-sm text-gray-500 mb-6">
+        O serviço <strong class="text-gray-700">{{ servicoParaDesativar()!.nome }}</strong>
+        será desativado. Agendamentos existentes não serão afetados.
+      </p>
+      <div class="flex gap-2.5">
+        <button
+          (click)="cancelarDesativacao()"
+          class="flex-1 border border-gray-200 rounded-lg py-2.5 text-sm
+                 text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer">
+          Cancelar
+        </button>
+        <button
+          (click)="desativar()"
+          [disabled]="desativando()"
+          class="flex-1 bg-red-600 hover:bg-red-700 disabled:opacity-50
+                 text-white text-sm font-medium rounded-lg py-2.5
+                 transition-colors cursor-pointer disabled:cursor-not-allowed">
+          {{ desativando() ? 'Desativando...' : 'Desativar' }}
+        </button>
+      </div>
+    </div>
+  </div>
+}

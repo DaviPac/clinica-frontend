@@ -1,0 +1,110 @@
+<!-- Backdrop -->
+<div
+  class="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4"
+  (click)="fechar.emit()">
+
+  <!-- Card do modal — stopPropagation evita fechar ao clicar dentro -->
+  <div
+    class="bg-white rounded-xl border border-gray-200 p-7 w-full max-w-md"
+    (click)="$event.stopPropagation()">
+
+    <!-- Cabeçalho -->
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-base font-medium text-gray-900">Novo paciente</h2>
+      <button
+        (click)="fechar.emit()"
+        class="text-gray-400 hover:text-gray-600 text-xl leading-none cursor-pointer
+               bg-transparent border-none p-0">
+        ×
+      </button>
+    </div>
+
+    <!-- Aviso de vinculação -->
+    @if (avisoVinculacao()) {
+      <div class="bg-teal-50 border border-teal-200 rounded-lg px-3 py-2.5 mb-4">
+        <p class="text-sm text-teal-800">
+          Paciente já cadastrado no sistema — vinculado ao seu perfil.
+        </p>
+      </div>
+    }
+
+    <!-- Erro -->
+    @if (erro()) {
+      <div class="bg-red-50 border border-red-200 rounded-lg px-3 py-2.5 mb-4">
+        <p class="text-sm text-red-700">{{ erro() }}</p>
+      </div>
+    }
+
+    <!-- Formulário -->
+    <form [formGroup]="form" (ngSubmit)="submit()" class="flex flex-col gap-4">
+
+      <div>
+        <label class="block text-xs text-gray-500 mb-1.5">
+          Nome completo <span class="text-red-500">*</span>
+        </label>
+        <input
+          type="text"
+          formControlName="nome"
+          placeholder="Maria Oliveira"
+          class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
+                 focus:outline-none focus:ring-2 focus:ring-teal-500"
+        />
+      </div>
+
+      <div>
+        <label class="block text-xs text-gray-500 mb-1.5">
+          CPF <span class="text-red-500">*</span>
+        </label>
+        <input
+          type="text"
+          formControlName="cpf"
+          placeholder="123.456.789-00"
+          class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
+                 font-mono focus:outline-none focus:ring-2 focus:ring-teal-500"
+        />
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block text-xs text-gray-500 mb-1.5">Telefone</label>
+          <input
+            type="text"
+            formControlName="telefone"
+            placeholder="(81) 99999-0000"
+            class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
+                   focus:outline-none focus:ring-2 focus:ring-teal-500"
+          />
+        </div>
+        <div>
+          <label class="block text-xs text-gray-500 mb-1.5">Nascimento</label>
+          <input
+            type="date"
+            formControlName="data_nascimento"
+            class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
+                   focus:outline-none focus:ring-2 focus:ring-teal-500"
+          />
+        </div>
+      </div>
+
+      <!-- Ações -->
+      <div class="flex gap-2.5 mt-2">
+        <button
+          type="button"
+          (click)="fechar.emit()"
+          class="flex-1 border border-gray-200 rounded-lg py-2.5 text-sm
+                 text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer">
+          Cancelar
+        </button>
+        <button
+          type="submit"
+          [disabled]="form.invalid || loading()"
+          class="flex-1 bg-teal-600 hover:bg-teal-700 disabled:opacity-50
+                 text-white text-sm font-medium rounded-lg py-2.5
+                 transition-colors cursor-pointer disabled:cursor-not-allowed">
+          {{ loading() ? 'Salvando...' : 'Cadastrar' }}
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>

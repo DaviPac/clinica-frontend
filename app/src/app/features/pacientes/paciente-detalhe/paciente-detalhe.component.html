@@ -1,0 +1,69 @@
+<div class="p-6 max-w-2xl">
+
+  <!-- Voltar -->
+  <a
+    routerLink="/profissional/pacientes"
+    class="inline-flex items-center gap-1.5 text-sm text-gray-500
+           hover:text-gray-900 transition-colors mb-6">
+    ← Voltar para pacientes
+  </a>
+
+  @if (carregando()) {
+    <p class="text-sm text-gray-400">Carregando...</p>
+  }
+
+  @if (erro()) {
+    <div class="bg-red-50 border border-red-200 rounded-lg px-4 py-3">
+      <p class="text-sm text-red-700">{{ erro() }}</p>
+    </div>
+  }
+
+  @if (paciente(); as p) {
+    <!-- Card de dados -->
+    <div class="bg-white border border-gray-200 rounded-xl p-6">
+      <!-- Avatar + nome -->
+      <div class="flex items-center gap-4 mb-6 pb-6 border-b border-gray-100">
+        <div class="w-12 h-12 rounded-full bg-teal-100 flex items-center
+                    justify-center text-teal-800 font-medium text-sm shrink-0">
+          {{ p.nome.charAt(0).toUpperCase() }}
+        </div>
+        <div>
+          <h1 class="text-lg font-medium text-gray-900">{{ p.nome }}</h1>
+          <p class="text-sm text-gray-500">Paciente #{{ p.id }}</p>
+        </div>
+      </div>
+
+      <!-- Dados -->
+      <dl class="grid grid-cols-2 gap-x-8 gap-y-5 text-sm">
+        <div>
+          <dt class="text-xs text-gray-500 mb-1">CPF</dt>
+          <dd class="font-mono text-gray-900">{{ p.cpf }}</dd>
+        </div>
+        <div>
+          <dt class="text-xs text-gray-500 mb-1">Telefone</dt>
+          <dd class="text-gray-900">{{ p.telefone ?? '—' }}</dd>
+        </div>
+        <div>
+          <dt class="text-xs text-gray-500 mb-1">Data de nascimento</dt>
+          <dd class="text-gray-900">{{ formatarData(p.data_nascimento) }}</dd>
+        </div>
+        <div>
+          <dt class="text-xs text-gray-500 mb-1">Idade</dt>
+          <dd class="text-gray-900">{{ calcularIdade(p.data_nascimento) }}</dd>
+        </div>
+        <div>
+          <dt class="text-xs text-gray-500 mb-1">Cadastrado em</dt>
+          <dd class="text-gray-900">{{ formatarData(p.criado_em) }}</dd>
+        </div>
+      </dl>
+    </div>
+
+    <!-- Placeholder para agendamentos do paciente (Fase 2c) -->
+    <div class="mt-4 border border-dashed border-gray-200 rounded-xl px-6 py-8 text-center">
+      <p class="text-sm text-gray-400">
+        Agendamentos deste paciente aparecerão aqui.
+      </p>
+    </div>
+  }
+
+</div>

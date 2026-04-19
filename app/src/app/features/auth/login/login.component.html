@@ -1,0 +1,62 @@
+<div class="min-h-screen bg-gray-50 flex items-center justify-center p-6">
+  <div class="bg-white border border-gray-200 rounded-xl p-10 w-full max-w-sm">
+
+    <!-- Cabeçalho -->
+    <div class="mb-8">
+      <div class="flex items-center gap-2.5 mb-1.5">
+        <div class="w-8 h-8 bg-teal-600 rounded-lg flex items-center justify-center">
+          <!-- ícone simplificado -->
+          <span class="text-white text-xs font-bold">C</span>
+        </div>
+        <span class="font-medium text-gray-900">Clínica</span>
+      </div>
+      <p class="text-sm text-gray-500">Entre com suas credenciais para continuar.</p>
+    </div>
+
+    <!-- Formulário -->
+    <form [formGroup]="form" (ngSubmit)="submit()" class="flex flex-col gap-4">
+
+      <div>
+        <label class="block text-xs text-gray-500 mb-1.5">E-mail</label>
+        <input
+          type="email"
+          formControlName="email"
+          placeholder="voce@clinica.com"
+          class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
+                 focus:outline-none focus:ring-2 focus:ring-teal-500
+                 disabled:opacity-50"
+        />
+      </div>
+
+      <div>
+        <label class="block text-xs text-gray-500 mb-1.5">Senha</label>
+        <input
+          type="password"
+          formControlName="senha"
+          placeholder="••••••••"
+          class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
+                 focus:outline-none focus:ring-2 focus:ring-teal-500
+                 disabled:opacity-50"
+        />
+      </div>
+
+      <!-- Mensagem de erro -->
+      @if (erro()) {
+        <div class="bg-red-50 border border-red-200 rounded-lg px-3 py-2.5">
+          <p class="text-sm text-red-700">{{ erro() }}</p>
+        </div>
+      }
+
+      <button
+        type="submit"
+        [disabled]="form.invalid || loading()"
+        class="w-full bg-teal-600 hover:bg-teal-700 disabled:opacity-50
+               text-white font-medium text-sm rounded-lg py-2.5 mt-1
+               transition-colors cursor-pointer disabled:cursor-not-allowed"
+      >
+        {{ loading() ? 'Entrando...' : 'Entrar' }}
+      </button>
+
+    </form>
+  </div>
+</div>

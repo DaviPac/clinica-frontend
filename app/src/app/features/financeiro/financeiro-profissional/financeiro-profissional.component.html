@@ -1,0 +1,166 @@
+<div class="p-6 max-w-2xl">
+
+  <!-- Cabeçalho -->
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <h1 class="text-lg font-medium text-gray-900">Financeiro</h1>
+      <p class="text-sm text-gray-500 mt-0.5">Comissões e acertos com a clínica</p>
+    </div>
+    <input
+      type="month"
+      [value]="periodoSelecionado()"
+      (change)="onPeriodoChange($event)"
+      class="border border-gray-200 rounded-lg px-3 py-2 text-sm
+             focus:outline-none focus:ring-2 focus:ring-teal-500"
+    />
+  </div>
+
+  <!-- Erro geral -->
+  @if (erro()) {
+    <div class="bg-red-50 border border-red-200 rounded-lg px-4 py-3 mb-4">
+      <p class="text-sm text-red-700">{{ erro() }}</p>
+    </div>
+  }
+
+  <!-- Cards de resumo -->
+  <div class="grid grid-cols-3 gap-3 mb-6">
+    <div class="bg-gray-50 rounded-lg p-4">
+      <p class="text-xs text-gray-500 mb-1.5">Saldo devedor</p>
+      @if (carregandoSaldo()) {
+        <p class="text-xl font-medium text-gray-300">—</p>
+      } @else {
+        <p
+          class="text-xl font-medium font-mono"
+          [class]="(saldo()?.saldo_devido ?? 0) > 0 ? 'text-red-700' : 'text-teal-700'">
+          {{ formatarValor(saldo()?.saldo_devido ?? 0) }}
+        </p>
+      }
+    </div>
+
+    <div class="bg-gray-50 rounded-lg p-4">
+      <p class="text-xs text-gray-500 mb-1.5">Confirmado no mês</p>
+      <p class="text-xl font-medium font-mono text-teal-700">
+        {{ formatarValor(totalAcertadoPeriodo()) }}
+      </p>
+    </div>
+
+    <div class="bg-gray-50 rounded-lg p-4">
+      <p class="text-xs text-gray-500 mb-1.5">Período</p>
+      <p class="text-xl font-medium text-gray-900">
+        {{ formatarMes(periodoSelecionado()) }}
+      </p>
+    </div>
+  </div>
+
+  <!-- Formulário de acerto -->
+  <div class="border border-gray-200 rounded-xl p-5 mb-6 bg-white">
+    <div class="flex items-center justify-between mb-1">
+      <p class="text-sm font-medium text-gray-900">Registrar novo acerto</p>
+      @if (saldo()) {
+        <span class="text-xs text-gray-500">
+          Saldo: {{ formatarValor(saldo()!.saldo_devido) }}
+        </span>
+      }
+    </div>
+    <p class="text-xs text-gray-500 mb-4">
+      Informe o valor que você está repassando à clínica este mês.
+    </p>
+
+    <!-- Feedback de sucesso -->
+    @if (sucessoAcerto()) {
+      <div class="bg-teal-50 border border-teal-200 rounded-lg px-3 py-2.5 mb-4">
+        <p class="text-sm text-teal-800">
+          Acerto registrado. Aguarde a confirmação do administrador.
+        </p>
+      </div>
+    }
+
+    <!-- Erro do acerto -->
+    @if (erroAcerto()) {
+      <div class="bg-red-50 border border-red-200 rounded-lg px-3 py-2.5 mb-4">
+        <p class="text-sm text-red-700">{{ erroAcerto() }}</p>
+      </div>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="flex flex-col gap-3">
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block text-xs text-gray-500 mb-1.5">
+            Valor (R$) <span class="text-red-500">*</span>
+          </label>
+          <input
+            type="number"
+            formControlName="valor_pago_a_clinica"
+            min="0.01"
+            step="0.01"
+            class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
+                   font-mono focus:outline-none focus:ring-2 focus:ring-teal-500"
+          />
+        </div>
+        <div>
+          <label class="block text-xs text-gray-500 mb-1.5">Observação</label>
+          <input
+            type="text"
+            formControlName="observacao"
+            placeholder="Ex: Pix em 30/06"
+            class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
+                   focus:outline-none focus:ring-2 focus:ring-teal-500"
+          />
+        </div>
+      </div>
+
+      <button
+        type="submit"
+        [disabled]="form.invalid || salvandoAcerto()"
+        class="w-full bg-teal-600 hover:bg-teal-700 disabled:opacity-50
+               text-white text-sm font-medium rounded-lg py-2.5
+               transition-colors cursor-pointer disabled:cursor-not-allowed">
+        {{ salvandoAcerto() ? 'Registrando...' : 'Registrar acerto' }}
+      </button>
+    </form>
+  </div>
+
+  <!-- Histórico -->
+  <div>
+    <h2 class="text-sm font-medium text-gray-900 mb-3">Histórico de acertos</h2>
+
+    @if (carregandoAcertos()) {
+      <p class="text-sm text-gray-400 text-center py-6">Carregando...</p>
+    }
+
+    <div class="flex flex-col gap-2">
+      @for (a of acertos(); track a.id) {
+        <div class="border border-gray-200 rounded-xl px-4 py-3
+                    flex items-center justify-between hover:bg-gray-50 transition-colors">
+          <div>
+            <p class="text-sm font-medium text-gray-900">
+              {{ formatarValor(a.valor_pago_a_clinica) }}
+            </p>
+            <p class="text-xs text-gray-500 mt-0.5">
+              {{ formatarMes(a.periodo_referencia) }}
+              @if (a.observacao) { · {{ a.observacao }} }
+              · {{ formatarData(a.data_pagamento) }}
+            </p>
+          </div>
+
+          @if (a.confirmado_pelo_admin) {
+            <span class="bg-teal-50 text-teal-800 text-xs font-medium px-2 py-0.5 rounded shrink-0">
+              Confirmado
+            </span>
+          } @else {
+            <span class="bg-amber-50 text-amber-800 text-xs font-medium px-2 py-0.5 rounded shrink-0">
+              Aguardando
+            </span>
+          }
+        </div>
+      } @empty {
+        @if (!carregandoAcertos()) {
+          <div class="text-center py-8 text-sm text-gray-400">
+            Nenhum acerto registrado ainda.
+          </div>
+        }
+      }
+    </div>
+  </div>
+
+</div>
