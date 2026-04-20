@@ -1,14 +1,20 @@
-import { Component, OnInit, signal, computed } from '@angular/core';
+import { Component, OnInit, signal, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { forkJoin } from 'rxjs';
+
 import { AgendamentoService } from '../../../core/services/agendamento/agendamento.service';
 import { Agendamento, StatusAgendamento } from '../../../core/models/agendamento.model';
+import { AuthService } from '../../../core/services/auth/auth.service';
+// Assumindo os imports dos services adicionais baseados no seu relato
+import { PacienteService } from '../../../core/services/paciente/paciente.service';
+import { UsuarioService } from '../../../core/services/usuario/usuario.service';
+import { ServicoService } from '../../../core/services/servico/servico.service';
+
 import { StatusBadgeComponent } from '../../../shared/components/status-badge/status-badge.component';
 import { AgendamentosModalComponent } from '../agendamentos-modal/agendamentos-modal.component';
 import { AgendamentosStatusModalComponent } from '../agendamentos-status-modal/agendamentos-status-modal.component';
-import {
-  semanaAtual, formatarDataHora, formatarHora, formatarDataCurta
-} from '../../../core/utils/data.utils';
+import { formatarDataHora, formatarHora } from '../../../core/utils/data.utils';
 
 @Component({
   selector: 'app-agendamentos-lista',
@@ -18,48 +24,138 @@ import {
     AgendamentosModalComponent, AgendamentosStatusModalComponent,
   ],
   templateUrl: './agendamentos-lista.component.html',
+  styleUrl: './agendamentos-lista.component.css'
 })
 export class AgendamentosListaComponent implements OnInit {
+  private authService = inject(AuthService);
+  private pacienteService = inject(PacienteService);
+  private usuarioService = inject(UsuarioService);
+  private servicoService = inject(ServicoService);
+  private service = inject(AgendamentoService);
+
   agendamentos = signal<Agendamento[]>([]);
   carregando = signal(true);
   erro = signal<string | null>(null);
 
-  filtro = signal(semanaAtual());
+  isAdmin = this.authService.isAdmin;
+  mostrarTodos = signal(false);
 
-  // Modais
+  // Navegação do Calendário
+  mesAtual = signal<Date>(new Date());
+  
+  // Dicionários para armazenar os nomes
+  pacientesDict = signal<Record<number, string>>({});
+  usuariosDict = signal<Record<number, string>>({});
+  servicosDict = signal<Record<number, string>>({});
+
+  // Modais e Controles de Ação
   modalCriacaoAberto = signal(false);
   agendamentoParaStatus = signal<Agendamento | null>(null);
-
-  // Pagamento inline — id do agendamento sendo atualizado
   atualizandoPagamento = signal<number | null>(null);
-
-  // Cancelamento de recorrência
   agendamentoParaCancelarSerie = signal<Agendamento | null>(null);
   cancelandoSerie = signal(false);
 
-  labelPeriodo = computed(() => {
-    const { de, ate } = this.filtro();
-    const fmt = (s: string) => new Date(s + 'T12:00:00').toLocaleDateString('pt-BR', {
-      day: '2-digit', month: '2-digit',
-    });
-    return `${fmt(de)} a ${fmt(ate)}`;
+  // Computa o primeiro e último dia do mês para o serviço
+  filtro = computed(() => {
+    const data = this.mesAtual();
+    const ano = data.getFullYear();
+    const mes = data.getMonth();
+    const primeiroDia = new Date(ano, mes, 1);
+    const ultimoDia = new Date(ano, mes + 1, 0);
+    
+    // Converte para formato YYYY-MM-DD lidando com fuso horário local
+    const formatar = (d: Date) => {
+      const dd = String(d.getDate()).padStart(2, '0');
+      const mm = String(d.getMonth() + 1).padStart(2, '0');
+      return `${d.getFullYear()}-${mm}-${dd}`;
+    };
+
+    return { de: formatar(primeiroDia), ate: formatar(ultimoDia) };
   });
 
-  constructor(private service: AgendamentoService) {}
+  labelPeriodo = computed(() => {
+    const data = this.mesAtual();
+    const mes = data.toLocaleDateString('pt-BR', { month: 'long' });
+    const ano = data.getFullYear();
+    return `${mes.charAt(0).toUpperCase() + mes.slice(1)} de ${ano}`;
+  });
 
-  ngOnInit() { this.carregar(); }
+  // Constrói a estrutura do calendário em grade
+  diasCalendario = computed(() => {
+    const data = this.mesAtual();
+    const ano = data.getFullYear();
+    const mes = data.getMonth();
+    const primeiroDia = new Date(ano, mes, 1);
+    const ultimoDia = new Date(ano, mes + 1, 0);
+    const dias = [];
 
-  carregar() {
+    const hoje = new Date();
+
+    // Preenche espaços vazios antes do dia 1
+    for (let i = 0; i < primeiroDia.getDay(); i++) {
+      dias.push({
+        diaNumero: null as number | null,
+        agendamentos: [] as Agendamento[],
+        isToday: false
+      });
+    }
+
+    const listaAgendamentos = this.agendamentos();
+
+    // Preenche os dias reais do mês
+    for (let d = 1; d <= ultimoDia.getDate(); d++) {
+      const mesStr = String(mes + 1).padStart(2, '0');
+      const diaStr = String(d).padStart(2, '0');
+      const dataStr = `${ano}-${mesStr}-${diaStr}`; // Ex: 2023-10-05
+
+      const agsDoDia = listaAgendamentos.filter(a => a.data_hora_inicio.startsWith(dataStr));
+      const isToday = d === hoje.getDate() && 
+                      mes === hoje.getMonth() && 
+                      ano === hoje.getFullYear();
+      dias.push({ diaNumero: d, agendamentos: agsDoDia, isToday });
+    }
+
+    return dias;
+  });
+
+  ngOnInit() { 
+    this.carregarDadosBase(); 
+  }
+
+  // Carrega Pacientes, Profissionais e Serviços de uma só vez
+  carregarDadosBase() {
+    this.carregando.set(true);
+    forkJoin({
+      pacientes: this.pacienteService.listar(),
+      usuarios: this.usuarioService.listar(),
+      servicos: this.servicoService.listar(true, true)
+    }).subscribe({
+      next: (res) => {
+        // Transforma as arrays em dicionários para O(1) lookup
+        const conv = (arr: any[]) => arr.reduce((acc, curr) => ({ ...acc, [curr.id]: curr.nome }), {});
+        this.pacientesDict.set(conv(res.pacientes));
+        this.usuariosDict.set(conv(res.usuarios));
+        this.servicosDict.set(conv(res.servicos));
+        
+        // Após carregar os dados base, carrega os agendamentos do mês atual
+        this.carregarAgendamentos();
+      },
+      error: (err) => {
+        this.erro.set('Erro ao carregar dados auxiliares: ' + err.message);
+        this.carregando.set(false);
+      }
+    });
+  }
+
+  carregarAgendamentos() {
     this.carregando.set(true);
     this.erro.set(null);
     const { de, ate } = this.filtro();
-    this.service.listar(de, ate).subscribe({
+    
+    this.service.listar(de, ate, this.mostrarTodos()).subscribe({
       next: lista => {
-        // Ordena por data de início
         this.agendamentos.set(
-          lista.sort((a, b) =>
-            new Date(a.data_hora_inicio).getTime() - new Date(b.data_hora_inicio).getTime()
-          )
+          lista.sort((a, b) => new Date(a.data_hora_inicio).getTime() - new Date(b.data_hora_inicio).getTime())
         );
         this.carregando.set(false);
       },
@@ -70,27 +166,19 @@ export class AgendamentosListaComponent implements OnInit {
     });
   }
 
-  navegarSemana(direcao: 1 | -1) {
-    const { de, ate } = this.filtro();
-    const mover = (s: string, dias: number) => {
-      const d = new Date(s + 'T12:00:00');
-      d.setDate(d.getDate() + dias);
-      return d.toISOString().slice(0, 10);
-    };
-    this.filtro.set({ de: mover(de, direcao * 7), ate: mover(ate, direcao * 7) });
-    this.carregar();
+  navegarMes(direcao: 1 | -1) {
+    const atual = this.mesAtual();
+    // Muda o mês base
+    this.mesAtual.set(new Date(atual.getFullYear(), atual.getMonth() + direcao, 1));
+    this.carregarAgendamentos();
   }
 
-  onFiltroChange() { this.carregar(); }
-
-  // --- Pagamento ---
+  // --- Ações (mantidas do seu código original) ---
   togglePagamento(ag: Agendamento) {
     this.atualizandoPagamento.set(ag.id);
     this.service.atualizarPagamento(ag.id, !ag.pago_pelo_paciente).subscribe({
       next: ({ pago_pelo_paciente }) => {
-        this.agendamentos.update(lista =>
-          lista.map(a => a.id === ag.id ? { ...a, pago_pelo_paciente } : a)
-        );
+        this.agendamentos.update(lista => lista.map(a => a.id === ag.id ? { ...a, pago_pelo_paciente } : a));
         this.atualizandoPagamento.set(null);
       },
       error: (err: Error) => {
@@ -100,22 +188,14 @@ export class AgendamentosListaComponent implements OnInit {
     });
   }
 
-  // --- Status ---
-  abrirModalStatus(ag: Agendamento) {
-    this.agendamentoParaStatus.set(ag);
-  }
+  abrirModalStatus(ag: Agendamento) { this.agendamentoParaStatus.set(ag); }
 
   onStatusAtualizado(payload: { id: number; status: StatusAgendamento }) {
-    this.agendamentos.update(lista =>
-      lista.map(a => a.id === payload.id ? { ...a, status: payload.status } : a)
-    );
+    this.agendamentos.update(lista => lista.map(a => a.id === payload.id ? { ...a, status: payload.status } : a));
     this.agendamentoParaStatus.set(null);
   }
 
-  // --- Cancelar série ---
-  confirmarCancelamentoSerie(ag: Agendamento) {
-    this.agendamentoParaCancelarSerie.set(ag);
-  }
+  confirmarCancelamentoSerie(ag: Agendamento) { this.agendamentoParaCancelarSerie.set(ag); }
 
   cancelarSerie() {
     const ag = this.agendamentoParaCancelarSerie();
@@ -126,7 +206,7 @@ export class AgendamentosListaComponent implements OnInit {
       next: () => {
         this.agendamentoParaCancelarSerie.set(null);
         this.cancelandoSerie.set(false);
-        this.carregar();
+        this.carregarAgendamentos();
       },
       error: (err: Error) => {
         this.erro.set(err.message);
@@ -136,10 +216,9 @@ export class AgendamentosListaComponent implements OnInit {
     });
   }
 
-  // --- Helpers de template ---
+  // Helpers
   formatarDataHora = formatarDataHora;
   formatarHora = formatarHora;
-  formatarDataCurta = formatarDataCurta;
 
   formatarValor(v: number) {
     return v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
@@ -147,10 +226,10 @@ export class AgendamentosListaComponent implements OnInit {
 
   cardClass(status: StatusAgendamento): string {
     const map: Record<StatusAgendamento, string> = {
-      AGENDADO:  'border-gray-200 bg-white',
-      REALIZADO: 'border-teal-100 bg-white',
-      FALTA:     'border-red-100 bg-red-50',
-      CANCELADO: 'border-gray-100 bg-gray-50 opacity-60',
+      AGENDADO:  'border-blue-200 bg-blue-50',
+      REALIZADO: 'border-teal-200 bg-teal-50',
+      FALTA:     'border-red-200 bg-red-50',
+      CANCELADO: 'border-gray-200 bg-gray-100 opacity-60',
     };
     return map[status];
   }

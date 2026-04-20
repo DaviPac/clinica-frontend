@@ -1,4 +1,4 @@
-import { Component, OnInit, output, signal, computed } from '@angular/core';
+import { Component, OnInit, output, signal, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { AgendamentoService } from '../../../core/services/agendamento/agendamento.service';
@@ -7,6 +7,8 @@ import { ServicoService } from '../../../core/services/servico/servico.service';
 import { Paciente } from '../../../core/models/paciente.model';
 import { Servico } from '../../../core/models/servico.model';
 import { toRFC3339Brasilia, addSemanas } from '../../../core/utils/data.utils';
+import { AuthService } from '../../../core/services/auth/auth.service';
+import { UsuarioService } from '../../../core/services/usuario/usuario.service';
 
 @Component({
   selector: 'app-agendamentos-modal',
@@ -15,11 +17,17 @@ import { toRFC3339Brasilia, addSemanas } from '../../../core/utils/data.utils';
   templateUrl: './agendamentos-modal.component.html',
 })
 export class AgendamentosModalComponent implements OnInit {
+  private authService = inject(AuthService);
+  private usuarioService = inject(UsuarioService);
+  
+  isAdmin = this.authService.isAdmin();
   fechar = output<void>();
   salvo = output<void>();
 
   pacientes = signal<Paciente[]>([]);
   servicos = signal<Servico[]>([]);
+  usuarios = signal<any[]>([]); // Signal para armazenar a lista de usuários
+  
   loading = signal(false);
   erro = signal<string | null>(null);
 
@@ -45,9 +53,11 @@ export class AgendamentosModalComponent implements OnInit {
     private pacienteService: PacienteService,
     private servicoService: ServicoService,
   ) {
+    const usuarioAtualId = this.authService.usuario()?.id || 0;
     this.form = this.fb.nonNullable.group({
-      paciente_id: [0, [Validators.required, Validators.min(1)]],
-      servico_id:  [0, [Validators.required, Validators.min(1)]],
+      usuario_id:       [usuarioAtualId], // Inicializado com 0, validação adicionada dinamicamente se admin
+      paciente_id:      [0, [Validators.required, Validators.min(1)]],
+      servico_id:       [0, [Validators.required, Validators.min(1)]],
       data_hora_inicio: ['', Validators.required],
       data_hora_fim:    ['', Validators.required],
       valor_combinado:  [0, [Validators.required, Validators.min(0.01)]],
@@ -55,11 +65,21 @@ export class AgendamentosModalComponent implements OnInit {
       total_sessoes:    [10],
       intervalo_semanas:[1],
     });
+
+    // Se for admin, torna o usuario_id obrigatório
+    if (this.isAdmin) {
+      this.form.controls['usuario_id'].addValidators([Validators.required, Validators.min(1)]);
+    }
   }
 
   ngOnInit() {
     this.pacienteService.listar().subscribe(p => this.pacientes.set(p));
     this.servicoService.listar().subscribe(s => this.servicos.set(s));
+
+    // Busca usuários apenas se for admin
+    if (this.isAdmin) {
+      this.usuarioService.listar().subscribe(u => this.usuarios.set(u));
+    }
 
     // Ao selecionar um serviço, pré-preenche o valor combinado
     this.form.controls['servico_id'].valueChanges.subscribe(id => {
@@ -86,20 +106,26 @@ export class AgendamentosModalComponent implements OnInit {
       return;
     }
 
-    const dto = {
-      paciente_id: Number(raw.paciente_id),
-      servico_id:  Number(raw.servico_id),
+    const dto: any = {
+      paciente_id:      Number(raw.paciente_id),
+      servico_id:       Number(raw.servico_id),
       data_hora_inicio: toRFC3339Brasilia(inicio),
       data_hora_fim:    toRFC3339Brasilia(fim),
       valor_combinado:  raw.valor_combinado,
-      recorrente: raw.recorrente,
+      recorrente:       raw.recorrente,
       ...(raw.recorrente ? {
         total_sessoes:     raw.total_sessoes,
         intervalo_semanas: raw.intervalo_semanas,
       } : {}),
     };
 
-    this.agendamentoService.criar(dto).subscribe({
+    // Anexa o usuario_id no DTO apenas se for admin
+    let profissionalID: string | undefined = undefined
+    if (this.isAdmin && raw.usuario_id) {
+      profissionalID = raw.usuario_id;
+    }
+
+    this.agendamentoService.criar(dto, profissionalID).subscribe({
       next: () => this.salvo.emit(),
       error: (err: Error) => {
         // Trata 409 Conflict com mensagem amigável

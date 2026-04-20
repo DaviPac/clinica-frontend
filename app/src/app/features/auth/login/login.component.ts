@@ -35,10 +35,7 @@ export class LoginComponent {
 
     this.auth.login(this.form.getRawValue()).subscribe({
       next: ({ usuario }) => {
-        const destino = usuario.role === 'ADMIN'
-          ? '/admin/dashboard'
-          : '/profissional/dashboard';
-        this.router.navigate([destino]);
+        this.router.navigate(['/agendamentos']);
       },
       error: (err: Error) => {
         this.erro.set(err.message);

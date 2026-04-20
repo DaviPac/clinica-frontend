@@ -1,0 +1,194 @@
+/* ──────────────────────────────────────────────
+   Toggle switch
+   (peer-checked não move o thumb via Tailwind
+   quando o input é sr-only — feito em CSS puro)
+─────────────────────────────────────────────── */
+.agenda-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.agenda-toggle__track {
+  position: relative;
+  width: 36px;
+  height: 20px;
+  border-radius: 10px;
+  background: #d1d5db; /* gray-300 */
+  flex-shrink: 0;
+  transition: background 0.2s;
+}
+
+.agenda-toggle__thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,.15);
+  transition: transform 0.2s;
+}
+
+/* Quando o input (sr-only peer) está checked */
+.agenda-toggle input:checked ~ .agenda-toggle__track {
+  background: #BCA8A5; /* teal-600 */
+}
+.agenda-toggle input:checked ~ .agenda-toggle__track .agenda-toggle__thumb {
+  transform: translateX(16px);
+}
+
+/* ──────────────────────────────────────────────
+   Loading spinner
+   (animação keyframe não existe em Tailwind core)
+─────────────────────────────────────────────── */
+.agenda-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #e5e7eb;      /* gray-200 */
+  border-top-color: #0d9488;      /* teal-600 */
+  border-radius: 50%;
+  animation: agenda-spin 0.65s linear infinite;
+  flex-shrink: 0;
+}
+@keyframes agenda-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ──────────────────────────────────────────────
+   Event card — base + variantes de status
+   (borda lateral colorida + bg sutil por status;
+   dinâmico via [ngClass] no template)
+─────────────────────────────────────────────── */
+.agenda-card {
+  border-radius: 6px;
+  padding: 5px 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  border-left: 3px solid #d1d5db;
+  background: #f9fafb;
+  border-top: 1px solid #f3f4f6;
+  border-right: 1px solid #f3f4f6;
+  border-bottom: 1px solid #f3f4f6;
+  transition: box-shadow 0.15s;
+}
+.agenda-card:hover {
+  box-shadow: 0 1px 4px rgba(0,0,0,.08);
+}
+
+.agenda-card--agendado {
+  border-left-color: #3b82f6; /* blue-500  */
+  background: #eff6ff;         /* blue-50   */
+}
+.agenda-card--realizado {
+  border-left-color: #22c55e; /* green-500 */
+  background: #f0fdf4;         /* green-50  */
+}
+.agenda-card--cancelado {
+  border-left-color: #ef4444; /* red-500   */
+  background: #fef2f2;         /* red-50    */
+  opacity: 0.72;
+}
+.agenda-card--pendente,
+.agenda-card--aguardando {
+  border-left-color: #f59e0b; /* amber-500 */
+  background: #fffbeb;         /* amber-50  */
+}
+
+/* ──────────────────────────────────────────────
+   Botões de ação dentro do card
+─────────────────────────────────────────────── */
+.agenda-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid #d1d5db;  /* gray-300 */
+  background: #fff;
+  color: #374151;             /* gray-700 */
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s;
+  line-height: 1.4;
+}
+.agenda-action-btn:hover:not(:disabled) {
+  background: #f3f4f6;
+  border-color: #9ca3af;
+}
+.agenda-action-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.agenda-action-btn--paid {
+  background: #f0fdf4;
+  border-color: #86efac;
+  color: #15803d; /* green-700 */
+}
+.agenda-action-btn--unpaid {
+  background: #f9fafb;
+  color: #6b7280;
+}
+.agenda-action-btn--danger {
+  background: #fef2f2;
+  border-color: #fecaca;
+  color: #dc2626; /* red-600 */
+}
+.agenda-action-btn--danger:hover:not(:disabled) {
+  background: #fee2e2;
+  border-color: #ef4444;
+}
+
+/* ──────────────────────────────────────────────
+   Scroll de eventos dentro de cada célula
+   (scrollbar customizada — sem suporte Tailwind)
+─────────────────────────────────────────────── */
+.agenda-day-events {
+  overflow-y: auto;
+  max-height: 260px;
+}
+.agenda-day-events::-webkit-scrollbar        { width: 3px; }
+.agenda-day-events::-webkit-scrollbar-track  { background: transparent; }
+.agenda-day-events::-webkit-scrollbar-thumb  { background: #d1d5db; border-radius: 2px; }
+
+/* ──────────────────────────────────────────────
+   Status badge — escala sem quebrar o layout
+   (transform: scale() em child arbitrário;
+   Tailwind aplica só via group/peer, não direto)
+─────────────────────────────────────────────── */
+.agenda-badge-wrap {
+  transform: scale(0.72);
+  transform-origin: top right;
+  flex-shrink: 0;
+}
+
+/* ──────────────────────────────────────────────
+   Mobile — colapso dos detalhes do card
+   (media query com seletores compostos)
+─────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  /* Célula de dia menor */
+  .agenda-day-events {
+    max-height: 180px;
+  }
+
+  /* Esconde detalhes — apenas hora visível */
+  .agenda-card p,
+  .agenda-action-btn {
+    display: none;
+  }
+
+  /* Card ultra-compacto */
+  .agenda-card {
+    padding: 3px 5px;
+    gap: 1px;
+    border-left-width: 2px;
+  }
+}

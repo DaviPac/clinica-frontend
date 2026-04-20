@@ -6,34 +6,29 @@ export const routes: Routes = [
   {
     path: 'login',
     loadComponent: () =>
-      import('./features/auth/login/login.component').then(m => m.LoginComponent),
+      import('./features/auth/login/login.component')
+        .then(m => m.LoginComponent),
   },
   {
-    path: 'profissional',
+    // Shell principal — qualquer usuário autenticado
+    path: '',
     canActivate: [authGuard],
+    loadComponent: () =>
+      import('./shared/layout/shell/shell.component')
+        .then(m => m.ShellComponent),
     children: [
-      /*{
-        path: 'dashboard',
-        loadComponent: () =>
-          import('./features/dashboard/dashboard.component').then(m => m.DashboardComponent),
-      },
-      // Pacientes, Agendamentos, Serviços, Financeiro virão aqui*/
+      // ── Features compartilhadas (profissional + admin) ──
       {
         path: 'pacientes',
-        children: [
-          {
-            path: '',
-            loadComponent: () =>
-              import('./features/pacientes/pacientes-lista/pacientes-lista.component')
-                .then(m => m.PacientesListaComponent),
-          },
-          {
-            path: ':id',
-            loadComponent: () =>
-              import('./features/pacientes/paciente-detalhe/paciente-detalhe.component')
-                .then(m => m.PacienteDetalheComponent),
-          },
-        ],
+        loadComponent: () =>
+          import('./features/pacientes/pacientes-lista/pacientes-lista.component')
+            .then(m => m.PacientesListaComponent),
+      },
+      {
+        path: 'pacientes/:id',
+        loadComponent: () =>
+          import('./features/pacientes/paciente-detalhe/paciente-detalhe.component')
+            .then(m => m.PacienteDetalheComponent),
       },
       {
         path: 'servicos',
@@ -53,80 +48,45 @@ export const routes: Routes = [
           import('./features/financeiro/financeiro-profissional/financeiro-profissional.component')
             .then(m => m.FinanceiroProfissionalComponent),
       },
-    ],
-  },
-  {
-    path: 'admin',
-    canActivate: [authGuard, roleGuard],
-    data: { roles: ['ADMIN'] },
-    children: [
-      /*{
-        path: 'dashboard',
-        loadComponent: () =>
-          import('./features/dashboard/dashboard.component').then(m => m.DashboardComponent),
-      },
-      // Relatório, Despesas, Usuários virão aqui*/
+
+      // ── Features exclusivas de admin ──
       {
-        path: 'pacientes',
-        children: [
-          {
-            path: '',
-            loadComponent: () =>
-              import('./features/pacientes/pacientes-lista/pacientes-lista.component')
-                .then(m => m.PacientesListaComponent),
-          },
-          {
-            path: ':id',
-            loadComponent: () =>
-              import('./features/pacientes/paciente-detalhe/paciente-detalhe.component')
-                .then(m => m.PacienteDetalheComponent),
-          },
-        ],
-      },
-      {
-        path: 'servicos',
-        loadComponent: () =>
-          import('./features/servicos/servicos-lista/servicos-lista.component')
-            .then(m => m.ServicosListaComponent),
-      },
-      {
-        path: 'agendamentos',
-        loadComponent: () =>
-          import('./features/agendamentos/agendamentos-lista/agendamentos-lista.component')
-            .then(m => m.AgendamentosListaComponent),
-      },
-      {
-        path: 'financeiro',
-        loadComponent: () =>
-          import('./features/financeiro/financeiro-profissional/financeiro-profissional.component')
-            .then(m => m.FinanceiroProfissionalComponent),
-      },
-      {
-        path: 'acertos',
+        path: 'admin/acertos',
+        canActivate: [roleGuard],
+        data: { roles: ['ADMIN'] },
         loadComponent: () =>
           import('./features/admin/admin-acertos/admin-acertos.component')
             .then(m => m.AdminAcertosComponent),
       },
       {
-        path: 'despesas',
+        path: 'admin/despesas',
+        canActivate: [roleGuard],
+        data: { roles: ['ADMIN'] },
         loadComponent: () =>
           import('./features/admin/admin-despesas/admin-despesas.component')
             .then(m => m.AdminDespesasComponent),
       },
       {
-        path: 'relatorio',
+        path: 'admin/relatorio',
+        canActivate: [roleGuard],
+        data: { roles: ['ADMIN'] },
         loadComponent: () =>
           import('./features/admin/admin-relatorio/admin-relatorio.component')
             .then(m => m.AdminRelatorioComponent),
       },
       {
-        path: 'usuarios',
+        path: 'admin/usuarios',
+        canActivate: [roleGuard],
+        data: { roles: ['ADMIN'] },
         loadComponent: () =>
           import('./features/admin/admin-usuarios/admin-usuarios.component')
             .then(m => m.AdminUsuariosComponent),
       },
+
+      // Redirect padrão
+      { path: '', redirectTo: 'agendamentos', pathMatch: 'full' },
     ],
   },
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
+
   { path: '**', redirectTo: '/login' },
 ];

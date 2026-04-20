@@ -30,9 +30,12 @@ export class FinanceiroService {
   constructor(private http: HttpClient) {}
 
   // Profissional
-  getSaldo(periodo?: string) {
-    const qs = periodo ? `?periodo=${periodo}` : '';
-    return this.http.get<SaldoDevedor>(`/financeiro/saldo${qs}`);
+  getSaldo(periodo?: string, profissionalId?: string) {
+    const params = new URLSearchParams();
+    if (periodo) params.set('periodo', periodo)
+    if (profissionalId) params.set('profissional_id', profissionalId)
+    const qs = params.toString();
+    return this.http.get<SaldoDevedor>(`/financeiro/saldo${qs ? '?' + qs : ''}`);
   }
 
   getAcertos(profissionalId?: number) {
@@ -40,8 +43,9 @@ export class FinanceiroService {
     return this.http.get<AcertoComissao[]>(`/financeiro/acertos${qs}`);
   }
 
-  criarAcerto(dto: AcertoDto) {
-    return this.http.post<AcertoComissao>('/financeiro/acertos', dto);
+  criarAcerto(dto: AcertoDto, profissionalId?: number) {
+    const qs = profissionalId ? `?profissional_id=${profissionalId}` : '';
+    return this.http.post<AcertoComissao>(`/financeiro/acertos${qs}`, dto);
   }
 
   // Admin

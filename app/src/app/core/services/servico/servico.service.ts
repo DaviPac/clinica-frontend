@@ -12,9 +12,13 @@ export interface ServicoDto {
 export class ServicoService {
   constructor(private http: HttpClient) {}
 
-  listar(incluirInativos = false) {
-    const params = incluirInativos ? '?inativos=true' : '';
-    return this.http.get<Servico[]>(`/servicos${params}`);
+  listar(incluirInativos = false, mostrarTodos = true) {
+    const params = new URLSearchParams();
+    if (incluirInativos) params.set('inativos', 'true');
+    if (mostrarTodos) params.set('todos', 'true');
+    
+    const qs = params.toString();
+    return this.http.get<Servico[]>(`/servicos${qs ? '?' + qs : ''}`);
   }
 
   criar(dto: ServicoDto) {

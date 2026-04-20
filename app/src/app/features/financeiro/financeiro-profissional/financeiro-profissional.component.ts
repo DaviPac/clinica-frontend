@@ -1,8 +1,10 @@
-import { Component, OnInit, signal, computed } from '@angular/core';
+import { Component, OnInit, signal, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { FinanceiroService } from '../../../core/services/financeiro/financeiro.service';
 import { AcertoComissao, SaldoDevedor } from '../../../core/models/finenceiro.model';
+import { AuthService } from '../../../core/services/auth/auth.service';
+import { UsuarioService } from '../../../core/services/usuario/usuario.service';
 
 @Component({
   selector: 'app-financeiro-profissional',
@@ -11,11 +13,16 @@ import { AcertoComissao, SaldoDevedor } from '../../../core/models/finenceiro.mo
   templateUrl: './financeiro-profissional.component.html',
 })
 export class FinanceiroProfissionalComponent implements OnInit {
+  private authService = inject(AuthService);
+  private usuarioService = inject(UsuarioService);
+  isAdmin = this.authService.isAdmin();
+
   // Período selecionado no formato YYYY-MM
   periodoSelecionado = signal(this.mesAtual());
 
   saldo = signal<SaldoDevedor | null>(null);
   acertos = signal<AcertoComissao[]>([]);
+  profissionais = signal<{ id: number; nome: string }[]>([]);
 
   carregandoSaldo = signal(false);
   carregandoAcertos = signal(false);
@@ -37,14 +44,26 @@ export class FinanceiroProfissionalComponent implements OnInit {
     private fb: FormBuilder,
     private service: FinanceiroService
   ) {
-    this.form = fb.nonNullable.group({
+    this.form = fb.group({
+      profissionalId: [null as number | null, this.isAdmin ? [Validators.required] : []],
       valor_pago_a_clinica: [0, [Validators.required, Validators.min(0.01)]],
       observacao: [''],
     });
   }
 
   ngOnInit() {
-    this.carregarTudo();
+    if (this.isAdmin) {
+      this.carregarProfissionais();
+      
+      // Assina as mudanças do select para recarregar saldo e histórico 
+      // sempre que o admin trocar de profissional
+      this.form.get('profissionalId')?.valueChanges.subscribe(() => {
+        this.carregarTudo();
+      });
+    } else {
+      // Se não for admin, já carrega tudo logo de cara
+      this.carregarTudo();
+    }
   }
 
   carregarTudo() {
@@ -52,12 +71,30 @@ export class FinanceiroProfissionalComponent implements OnInit {
     this.carregarAcertos();
   }
 
+  carregarProfissionais() {
+    this.usuarioService.listar().subscribe({
+      next: (lista) => this.profissionais.set(lista.filter(u => u.role != 'ADMIN')),
+      error: (err: Error) => console.error('Erro ao carregar profissionais', err)
+    });
+  }
+
   carregarSaldo() {
+    const profId = this.form.get('profissionalId')?.value;
+
+    // Se for admin e não houver ninguém selecionado, limpa o saldo e interrompe
+    if (this.isAdmin && !profId) {
+      this.saldo.set(null);
+      this.form.controls['valor_pago_a_clinica'].setValue(0);
+      return;
+    }
+
     this.carregandoSaldo.set(true);
-    this.service.getSaldo(this.periodoSelecionado()).subscribe({
+    const profIdStr = profId ? String(profId) : undefined;
+
+    this.service.getSaldo(this.periodoSelecionado(), profIdStr).subscribe({
       next: s => {
         this.saldo.set(s);
-        // Pré-preenche o campo com o saldo devedor atual
+        // Preenche o campo com o saldo devedor do usuário consultado
         this.form.controls['valor_pago_a_clinica'].setValue(s.saldo_devido);
         this.carregandoSaldo.set(false);
       },
@@ -69,10 +106,18 @@ export class FinanceiroProfissionalComponent implements OnInit {
   }
 
   carregarAcertos() {
+    const profId = this.form.get('profissionalId')?.value;
+
+    // Se for admin e não houver ninguém selecionado, limpa o histórico
+    if (this.isAdmin && !profId) {
+      this.acertos.set([]);
+      return;
+    }
+
     this.carregandoAcertos.set(true);
-    this.service.getAcertos().subscribe({
+    
+    this.service.getAcertos(profId).subscribe({
       next: lista => {
-        // Mais recentes primeiro
         this.acertos.set(
           lista.sort((a, b) =>
             new Date(b.data_pagamento).getTime() - new Date(a.data_pagamento).getTime()
@@ -103,17 +148,18 @@ export class FinanceiroProfissionalComponent implements OnInit {
     const dto = {
       periodo_referencia: this.periodoSelecionado(),
       valor_pago_a_clinica: raw.valor_pago_a_clinica,
-      ...(raw.observacao.trim() ? { observacao: raw.observacao.trim() } : {}),
+      ...(raw.observacao?.trim() ? { observacao: raw.observacao.trim() } : {}),
     };
 
-    this.service.criarAcerto(dto).subscribe({
+    const profissionalId = this.isAdmin ? raw.profissionalId : undefined;
+
+    this.service.criarAcerto(dto, profissionalId).subscribe({
       next: novoAcerto => {
-        // Insere no topo da lista sem recarregar
         this.acertos.update(lista => [novoAcerto, ...lista]);
         this.sucessoAcerto.set(true);
-        this.form.reset({ valor_pago_a_clinica: 0, observacao: '' });
+        // Restaura os campos, mas preserva o profissional selecionado
+        this.form.patchValue({ valor_pago_a_clinica: 0, observacao: '' });
         this.salvandoAcerto.set(false);
-        // Recarrega saldo para refletir o novo estado
         this.carregarSaldo();
         setTimeout(() => this.sucessoAcerto.set(false), 3000);
       },
@@ -134,8 +180,7 @@ export class FinanceiroProfissionalComponent implements OnInit {
 
   formatarMes(yyyyMM: string): string {
     const [ano, mes] = yyyyMM.split('-');
-    const nomes = ['Jan','Fev','Mar','Abr','Mai','Jun',
-                   'Jul','Ago','Set','Out','Nov','Dez'];
+    const nomes = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
     return `${nomes[+mes - 1]} ${ano}`;
   }
 

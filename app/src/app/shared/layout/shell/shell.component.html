@@ -1,0 +1,151 @@
+<div class="flex h-screen bg-stone-100 overflow-hidden">
+
+  @if (sidebarAberta()) {
+    <div
+      class="fixed inset-0 bg-black/30 z-20 md:hidden"
+      (click)="sidebarAberta.set(false)">
+    </div>
+  }
+
+  <aside
+    class="fixed md:static inset-y-0 left-0 z-30 flex flex-col
+           bg-white border-r border-stone-200 transition-all duration-200 shrink-0"
+    [class]="sidebarAberta() ? 'w-56' : 'w-0 md:w-14 overflow-hidden'">
+
+    <div class="flex items-center gap-2.5 px-4 py-5 border-b border-stone-200 shrink-0">
+      <img class="w-7 h-7 rounded-lg shrink-0" src="logo.png" />
+      @if (sidebarAberta()) {
+        <span class="text-sm font-medium text-stone-900 whitespace-nowrap">Instituto CIN</span>
+      }
+    </div>
+
+    <nav class="flex-1 px-2 py-3 overflow-y-auto space-y-0.5">
+
+      @if (sidebarAberta()) {
+        <p class="text-[10px] font-medium text-stone-400 uppercase tracking-widest
+                  px-2 mb-1.5 mt-1">
+          Atendimento
+        </p>
+      }
+
+      @for (item of navPrincipal; track item.path) {
+        <a
+          [routerLink]="item.path"
+          routerLinkActive="bg-stone-100 text-[#7A6C6D]"
+          [routerLinkActiveOptions]="{ exact: false }"
+          (click)="onNavClick()"
+          class="flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-stone-600
+                 hover:bg-stone-50 hover:text-stone-900 transition-colors
+                 text-sm no-underline group">
+          <svg
+            class="w-4 h-4 shrink-0"
+            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path [attr.d]="item.icon" />
+          </svg>
+          @if (sidebarAberta()) {
+            <span class="whitespace-nowrap">{{ item.label }}</span>
+          }
+        </a>
+      }
+
+      @if (isAdmin) {
+        <div class="pt-3">
+          @if (sidebarAberta()) {
+            <p class="text-[10px] font-medium text-stone-400 uppercase tracking-widest
+                      px-2 mb-1.5">
+              Administração
+            </p>
+          } @else {
+            <div class="border-t border-stone-100 my-1"></div>
+          }
+
+          @for (item of navAdmin; track item.path) {
+            <a
+              [routerLink]="item.path"
+              routerLinkActive="bg-stone-100 text-[#7A6C6D]"
+              [routerLinkActiveOptions]="{ exact: false }"
+              (click)="onNavClick()"
+              class="flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-stone-600
+                     hover:bg-stone-50 hover:text-stone-900 transition-colors
+                     text-sm no-underline mt-0.5">
+              <svg
+                class="w-4 h-4 shrink-0"
+                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path [attr.d]="item.icon" />
+              </svg>
+              @if (sidebarAberta()) {
+                <span class="whitespace-nowrap">{{ item.label }}</span>
+              }
+            </a>
+          }
+        </div>
+      }
+
+    </nav>
+
+    <div class="border-t border-stone-200 p-3 shrink-0">
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-full bg-[#F0EDED] flex items-center justify-center
+                    text-[#5E5253] text-xs font-medium shrink-0">
+          {{ iniciais }}
+        </div>
+
+        @if (sidebarAberta()) {
+          <div class="flex-1 min-w-0">
+            <p class="text-xs font-medium text-stone-900 truncate">{{ usuario?.nome }}</p>
+            <p class="text-xs text-stone-500">
+              {{ isAdmin ? 'Admin' : 'Profissional' }}
+            </p>
+          </div>
+
+          <button
+            (click)="logout()"
+            title="Sair"
+            class="p-1.5 text-stone-400 hover:text-stone-700 hover:bg-stone-100
+                   rounded-md transition-colors cursor-pointer border-none bg-transparent shrink-0">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4
+                       M16 17l5-5-5-5
+                       M21 12H9"/>
+            </svg>
+          </button>
+        }
+      </div>
+
+      <button
+        (click)="sidebarAberta.set(!sidebarAberta())"
+        class="mt-2 w-full flex items-center justify-center p-1.5 text-stone-400
+               hover:text-stone-600 hover:bg-stone-50 rounded-md transition-colors
+               cursor-pointer border-none bg-transparent text-xs gap-1.5">
+        @if (sidebarAberta()) {
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round"><path d="M15 19l-7-7 7-7"/></svg>
+          <span>Recolher</span>
+        } @else {
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg>
+        }
+      </button>
+    </div>
+
+  </aside>
+
+  @if (!sidebarAberta()) {
+    <button
+      (click)="sidebarAberta.set(true)"
+      class="fixed top-4 left-4 z-40 md:hidden w-9 h-9 bg-white border border-stone-200
+             rounded-lg flex items-center justify-center shadow-sm
+             cursor-pointer text-stone-600 hover:text-stone-900">
+      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="2" stroke-linecap="round"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+    </button>
+  }
+
+  <main class="flex-1 overflow-y-auto bg-stone-50">
+    <router-outlet />
+  </main>
+
+</div>

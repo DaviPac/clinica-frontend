@@ -7,7 +7,6 @@
            max-h-[90vh] overflow-y-auto"
     (click)="$event.stopPropagation()">
 
-    <!-- Cabeçalho -->
     <div class="flex items-center justify-between mb-6">
       <h2 class="text-base font-medium text-gray-900">Novo agendamento</h2>
       <button
@@ -16,7 +15,6 @@
                cursor-pointer bg-transparent border-none p-0">×</button>
     </div>
 
-    <!-- Erro -->
     @if (erro()) {
       <div class="bg-red-50 border border-red-200 rounded-lg px-3 py-2.5 mb-4">
         <p class="text-sm text-red-700">{{ erro() }}</p>
@@ -25,7 +23,23 @@
 
     <form [formGroup]="form" (ngSubmit)="submit()" class="flex flex-col gap-4">
 
-      <!-- Paciente -->
+      @if (isAdmin) {
+        <div>
+          <label class="block text-xs text-gray-500 mb-1.5">
+            Profissional <span class="text-red-500">*</span>
+          </label>
+          <select
+            formControlName="usuario_id"
+            class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
+                   focus:outline-none focus:ring-2 focus:ring-teal-500">
+            <option [value]="0" disabled>Selecione um profissional</option>
+            @for (u of usuarios(); track u.id) {
+              <option [value]="u.id">{{ u.nome || u.email }}</option>
+            }
+          </select>
+        </div>
+      }
+
       <div>
         <label class="block text-xs text-gray-500 mb-1.5">
           Paciente <span class="text-red-500">*</span>
@@ -41,7 +55,6 @@
         </select>
       </div>
 
-      <!-- Serviço -->
       <div>
         <label class="block text-xs text-gray-500 mb-1.5">
           Serviço <span class="text-red-500">*</span>
@@ -57,7 +70,6 @@
         </select>
       </div>
 
-      <!-- Datas -->
       <div class="grid grid-cols-2 gap-3">
         <div>
           <label class="block text-xs text-gray-500 mb-1.5">
@@ -83,7 +95,6 @@
         </div>
       </div>
 
-      <!-- Valor -->
       <div>
         <label class="block text-xs text-gray-500 mb-1.5">
           Valor combinado (R$) <span class="text-red-500">*</span>
@@ -101,7 +112,6 @@
         </p>
       </div>
 
-      <!-- Recorrência -->
       <div class="border border-gray-200 rounded-lg p-3">
         <label class="flex items-center gap-3 cursor-pointer select-none">
           <div
@@ -154,7 +164,6 @@
         }
       </div>
 
-      <!-- Ações -->
       <div class="flex gap-2.5 mt-2">
         <button
           type="button"
