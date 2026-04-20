@@ -73,12 +73,33 @@ export class AgendamentosModalComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.pacienteService.listar().subscribe(p => this.pacientes.set(p));
     this.servicoService.listar().subscribe(s => this.servicos.set(s));
 
-    // Busca usuários apenas se for admin
     if (this.isAdmin) {
+      // 1. Busca usuários
       this.usuarioService.listar().subscribe(u => this.usuarios.set(u));
+
+      // 2. Escuta mudanças no select de profissional
+      this.form.controls['usuario_id'].valueChanges.subscribe(id => {
+        // Reseta o paciente ao trocar o profissional
+        this.form.controls['paciente_id'].setValue(0);
+        
+        if (id && id != 0) {
+          this.pacienteService.listar(false, id.toString()).subscribe(p => this.pacientes.set(p));
+        } else {
+          this.pacientes.set([]);
+        }
+      });
+
+      // 3. Carregamento inicial caso o form já inicie com um usuario_id válido
+      const initialId = this.form.controls['usuario_id'].value;
+      if (initialId && initialId != 0) {
+        this.pacienteService.listar(false, initialId.toString()).subscribe(p => this.pacientes.set(p));
+      }
+
+    } else {
+      // Se não for admin, carrega os pacientes associados ao profissional logado normalmente
+      this.pacienteService.listar().subscribe(p => this.pacientes.set(p));
     }
 
     // Ao selecionar um serviço, pré-preenche o valor combinado
@@ -120,9 +141,9 @@ export class AgendamentosModalComponent implements OnInit {
     };
 
     // Anexa o usuario_id no DTO apenas se for admin
-    let profissionalID: string | undefined = undefined
+    let profissionalID: string | undefined = undefined;
     if (this.isAdmin && raw.usuario_id) {
-      profissionalID = raw.usuario_id;
+      profissionalID = raw.usuario_id.toString();
     }
 
     this.agendamentoService.criar(dto, profissionalID).subscribe({

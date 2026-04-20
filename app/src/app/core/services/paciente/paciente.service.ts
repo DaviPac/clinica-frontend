@@ -13,9 +13,10 @@ export interface CriarPacienteDto {
 export class PacienteService {
   constructor(private http: HttpClient) {}
 
-  listar(mostrarTodos = false) {
+  listar(mostrarTodos = false, profissionalId?: string) {
     const params = new URLSearchParams();
     if (mostrarTodos) params.set('todos', 'true');
+    if (profissionalId) params.set('profissional_id', profissionalId)
 
     const qs = params.toString();
     return this.http.get<Paciente[]>(`/pacientes${qs ? '?' + qs : ''}`);
@@ -26,7 +27,10 @@ export class PacienteService {
   }
 
   // Retorna a resposta completa para distinguir 200 (vinculação) de 201 (novo)
-  criar(dto: CriarPacienteDto) {
-    return this.http.post<Paciente>('/pacientes', dto, { observe: 'response' });
+  criar(dto: CriarPacienteDto, profissionalId?: string) {
+    const params = new URLSearchParams();
+    if (profissionalId) params.set('profissional_id', profissionalId)
+    const qs = params.toString();
+    return this.http.post<Paciente>(`/pacientes${qs ? '?' + qs : ''}`, dto, { observe: 'response' });
   }
 }
