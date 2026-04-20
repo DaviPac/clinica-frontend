@@ -25,6 +25,22 @@
     />
   </div>
 
+  @if (isAdmin) {
+    <div class="mb-4 flex items-center gap-2">
+      <label class="text-xs text-stone-500 shrink-0">Profissional</label>
+      <select
+        [value]="filtroProfissionalId() ?? ''"
+        (change)="onFiltroChange($any($event.target).value)"
+        class="border border-stone-200 rounded-lg px-3 py-2 text-sm
+               focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]">
+        <option value="">Todos os profissionais</option>
+        @for (u of usuarios(); track u.id) {
+          <option [value]="u.id">{{ u.nome }}</option>
+        }
+      </select>
+    </div>
+  }
+
   @if (carregando()) {
     <div class="flex justify-center py-12 text-sm text-stone-400">
       Carregando...

@@ -1,10 +1,13 @@
-import { Component, OnInit, signal, computed } from '@angular/core';
+import { Component, OnInit, signal, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { PacienteService } from '../../../core/services/paciente/paciente.service';
 import { Paciente } from '../../../core/models/paciente.model';
 import { PacientesModalComponent } from '../pacientes-modal/pacientes-modal.component';
+import { UsuarioService } from '../../../core/services/usuario/usuario.service';
+import { AuthService } from '../../../core/services/auth/auth.service';
+import { Usuario } from '../../../core/models/usuario.model';
 
 @Component({
   selector: 'app-pacientes-lista',
@@ -13,6 +16,13 @@ import { PacientesModalComponent } from '../pacientes-modal/pacientes-modal.comp
   templateUrl: './pacientes-lista.component.html',
 })
 export class PacientesListaComponent implements OnInit {
+  private authService = inject(AuthService)
+  private usuarioService = inject(UsuarioService)
+
+  isAdmin = this.authService.isAdmin()
+  usuarios = signal<Usuario[]>([]);
+  filtroProfissionalId = signal<string | undefined>(undefined);
+
   private todos = signal<Paciente[]>([]);
 
   busca = '';
@@ -32,13 +42,17 @@ export class PacientesListaComponent implements OnInit {
   constructor(private service: PacienteService) {}
 
   ngOnInit() {
+    if (this.isAdmin) {
+      this.usuarioService.listar().subscribe(lista => this.usuarios.set(lista));
+    }
     this.carregar();
   }
 
   carregar() {
     this.carregando.set(true);
     this.erro.set(null);
-    this.service.listar().subscribe({
+    const mostrarTodos = this.isAdmin && !this.filtroProfissionalId();
+    this.service.listar(mostrarTodos, this.filtroProfissionalId()).subscribe({
       next: lista => {
         this.todos.set(lista);
         this.carregando.set(false);
@@ -48,6 +62,12 @@ export class PacientesListaComponent implements OnInit {
         this.carregando.set(false);
       },
     });
+  }
+
+  onFiltroChange(valor: string) {
+    // valor === '' -> todos; caso contrário -> id do profissional
+    this.filtroProfissionalId.set(valor === '' ? undefined : valor);
+    this.carregar();
   }
 
   abrirModal() { this.modalAberto.set(true); }
