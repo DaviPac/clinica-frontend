@@ -3,7 +3,7 @@ import { inject } from '@angular/core';
 import { catchError, throwError } from 'rxjs';
 import { AuthService } from '../../services/auth/auth.service';
 
-const BASE_URL = 'http://localhost:8080';
+const BASE_URL = 'https://clinica-backend-production-c069.up.railway.app';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const auth = inject(AuthService);
