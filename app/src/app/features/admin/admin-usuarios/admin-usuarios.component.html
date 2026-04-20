@@ -9,7 +9,7 @@
     </div>
     <button
       (click)="modalAberto.set(true)"
-      class="bg-teal-600 hover:bg-teal-700 text-white text-sm font-medium
+      class="bg-[#BCA8A5] hover:bg-[#9A8683] text-white text-sm font-medium
              rounded-lg px-4 py-2 transition-colors cursor-pointer">
       + Novo usuário
     </button>
@@ -112,7 +112,7 @@
               formControlName="nome"
               placeholder="Ana Costa"
               class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
-                     focus:outline-none focus:ring-2 focus:ring-teal-500"
+                     focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]"
             />
           </div>
           <div class="col-span-2">
@@ -124,7 +124,7 @@
               formControlName="email"
               placeholder="ana@clinica.com"
               class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
-                     focus:outline-none focus:ring-2 focus:ring-teal-500"
+                     focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]"
             />
           </div>
           <div class="col-span-2">
@@ -136,7 +136,7 @@
               formControlName="senha"
               placeholder="Mínimo 6 caracteres"
               class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
-                     focus:outline-none focus:ring-2 focus:ring-teal-500"
+                     focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]"
             />
           </div>
           <div>
@@ -146,7 +146,7 @@
             <select
               formControlName="role"
               class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
-                     focus:outline-none focus:ring-2 focus:ring-teal-500">
+                     focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]">
               <option value="PROFISSIONAL">Profissional</option>
               <option value="ADMIN">Admin</option>
             </select>
@@ -159,7 +159,7 @@
               min="0"
               max="100"
               class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
-                     font-mono focus:outline-none focus:ring-2 focus:ring-teal-500"
+                     font-mono focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]"
             />
           </div>
           <div class="col-span-2">
@@ -169,7 +169,7 @@
               formControlName="profissao"
               placeholder="Ex: Psicóloga"
               class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
-                     focus:outline-none focus:ring-2 focus:ring-teal-500"
+                     focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]"
             />
           </div>
         </div>
@@ -185,7 +185,7 @@
           <button
             type="submit"
             [disabled]="form.invalid || salvando()"
-            class="flex-1 bg-teal-600 hover:bg-teal-700 disabled:opacity-50
+            class="flex-1 bg-[#BCA8A5] hover:bg-[#9A8683] disabled:opacity-50
                    text-white text-sm font-medium rounded-lg py-2.5
                    transition-colors cursor-pointer disabled:cursor-not-allowed">
             {{ salvando() ? 'Cadastrando...' : 'Cadastrar' }}

@@ -10,7 +10,7 @@
     </div>
     <button
       (click)="abrirCriacao()"
-      class="bg-teal-600 hover:bg-teal-700 text-white text-sm font-medium
+      class="bg-[#BCA8A5] hover:bg-[#9A8683] text-white text-sm font-medium
              rounded-lg px-4 py-2 transition-colors cursor-pointer">
       + Novo serviço
     </button>
@@ -20,12 +20,12 @@
   <label class="inline-flex items-center gap-2.5 mb-4 cursor-pointer select-none">
     <div
       class="relative w-9 h-5 rounded-full transition-colors"
-      [class]="exibirInativos() ? 'bg-teal-600' : 'bg-gray-200'"
+      [class]="exibirInativos() ? 'bg-[#BCA8A5]' : 'bg-gray-200'"
       (click)="exibirInativos.set(!exibirInativos())">
       <div
         class="absolute top-0.5 w-4 h-4 bg-white rounded-full shadow-sm
                transition-transform duration-200"
-        [class]="exibirInativos() ? 'translate-x-4' : 'translate-x-0.5'">
+        [class]="exibirInativos() ? 'translate-x-[18px]' : 'translate-x-0.5'">
       </div>
     </div>
     <span class="text-sm text-gray-600">Exibir serviços inativos</span>

@@ -31,7 +31,7 @@
           <select
             formControlName="usuario_id"
             class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
-                   focus:outline-none focus:ring-2 focus:ring-teal-500">
+                   focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]">
             <option [value]="0" disabled>Selecione um profissional</option>
             @for (u of usuarios(); track u.id) {
               <option [value]="u.id">{{ u.nome || u.email }}</option>
@@ -47,7 +47,7 @@
         <select
           formControlName="paciente_id"
           class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
-                 focus:outline-none focus:ring-2 focus:ring-teal-500">
+                 focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]">
           <option [value]="0" disabled>Selecione um paciente</option>
           @for (p of pacientes(); track p.id) {
             <option [value]="p.id">{{ p.nome }}</option>
@@ -62,7 +62,7 @@
         <select
           formControlName="servico_id"
           class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
-                 focus:outline-none focus:ring-2 focus:ring-teal-500">
+                 focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]">
           <option [value]="0" disabled>Selecione um serviço</option>
           @for (s of servicos(); track s.id) {
             <option [value]="s.id">{{ s.nome }} — {{ s.valor_atual | currency:'BRL' }}</option>
@@ -79,7 +79,7 @@
             type="datetime-local"
             formControlName="data_hora_inicio"
             class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
-                   focus:outline-none focus:ring-2 focus:ring-teal-500"
+                   focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]"
           />
         </div>
         <div>
@@ -90,7 +90,7 @@
             type="datetime-local"
             formControlName="data_hora_fim"
             class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
-                   focus:outline-none focus:ring-2 focus:ring-teal-500"
+                   focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]"
           />
         </div>
       </div>
@@ -105,7 +105,7 @@
           min="0.01"
           step="0.01"
           class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
-                 font-mono focus:outline-none focus:ring-2 focus:ring-teal-500"
+                 font-mono focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]"
         />
         <p class="text-xs text-gray-400 mt-1">
           Pré-preenchido com o valor do serviço. Ajuste se necessário.
@@ -116,11 +116,11 @@
         <label class="flex items-center gap-3 cursor-pointer select-none">
           <div
             class="relative w-9 h-5 rounded-full transition-colors shrink-0"
-            [class]="recorrente ? 'bg-teal-600' : 'bg-gray-200'">
+            [class]="recorrente ? 'bg-[#BCA8A5]' : 'bg-gray-200'">
             <div
               class="absolute top-0.5 w-4 h-4 bg-white rounded-full shadow-sm
                      transition-transform duration-200"
-              [class]="recorrente ? 'translate-x-4' : 'translate-x-0.5'">
+              [class]="recorrente ? 'translate-x-[18px]' : 'translate-x-0.5'">
             </div>
             <input type="checkbox" formControlName="recorrente" class="sr-only" />
           </div>
@@ -138,7 +138,7 @@
                 formControlName="total_sessoes"
                 min="2"
                 class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
-                       focus:outline-none focus:ring-2 focus:ring-teal-500"
+                       focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]"
               />
             </div>
             <div>
@@ -150,7 +150,7 @@
                 formControlName="intervalo_semanas"
                 min="1"
                 class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
-                       focus:outline-none focus:ring-2 focus:ring-teal-500"
+                       focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]"
               />
             </div>
           </div>
@@ -175,7 +175,7 @@
         <button
           type="submit"
           [disabled]="form.invalid || loading()"
-          class="flex-1 bg-teal-600 hover:bg-teal-700 disabled:opacity-50
+          class="flex-1 bg-[#BCA8A5] hover:bg-[#9A8683] disabled:opacity-50
                  text-white text-sm font-medium rounded-lg py-2.5
                  transition-colors cursor-pointer disabled:cursor-not-allowed">
           {{ loading() ? 'Agendando...' : 'Agendar' }}
