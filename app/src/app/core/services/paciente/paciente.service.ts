@@ -13,8 +13,12 @@ export interface CriarPacienteDto {
 export class PacienteService {
   constructor(private http: HttpClient) {}
 
-  listar() {
-    return this.http.get<Paciente[]>('/pacientes');
+  listar(mostrarTodos = false) {
+    const params = new URLSearchParams();
+    if (mostrarTodos) params.set('todos', 'true');
+
+    const qs = params.toString();
+    return this.http.get<Paciente[]>(`/pacientes${qs ? '?' + qs : ''}`);
   }
 
   buscarPorId(id: number) {

@@ -126,7 +126,7 @@ export class AgendamentosListaComponent implements OnInit {
   carregarDadosBase() {
     this.carregando.set(true);
     forkJoin({
-      pacientes: this.pacienteService.listar(),
+      pacientes: this.pacienteService.listar(true),
       usuarios: this.usuarioService.listar(),
       servicos: this.servicoService.listar(true, true)
     }).subscribe({
