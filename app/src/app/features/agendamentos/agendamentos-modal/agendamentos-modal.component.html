@@ -79,18 +79,19 @@
             type="datetime-local"
             formControlName="data_hora_inicio"
             class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
-                   focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]"
+                  focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]"
           />
         </div>
         <div>
           <label class="block text-xs text-gray-500 mb-1.5">
-            Fim <span class="text-red-500">*</span>
+            Duração (min) <span class="text-red-500">*</span>
           </label>
           <input
-            type="datetime-local"
-            formControlName="data_hora_fim"
+            type="number"
+            formControlName="duracao_minutos"
+            min="1"
             class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
-                   focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]"
+                  focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]"
           />
         </div>
       </div>

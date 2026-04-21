@@ -6,7 +6,7 @@ export interface AgendamentoDto {
   paciente_id: number;
   servico_id: number;
   data_hora_inicio: string; // RFC3339
-  data_hora_fim: string;
+  duracao_minutos: number;
   valor_combinado: number;
   recorrente: boolean;
   total_sessoes?: number;

@@ -55,15 +55,15 @@ export class AgendamentosModalComponent implements OnInit {
   ) {
     const usuarioAtualId = this.authService.usuario()?.id || 0;
     this.form = this.fb.nonNullable.group({
-      usuario_id:       [usuarioAtualId], // Inicializado com 0, validação adicionada dinamicamente se admin
-      paciente_id:      [0, [Validators.required, Validators.min(1)]],
-      servico_id:       [0, [Validators.required, Validators.min(1)]],
-      data_hora_inicio: ['', Validators.required],
-      data_hora_fim:    ['', Validators.required],
-      valor_combinado:  [0, [Validators.required, Validators.min(0.01)]],
-      recorrente:       [false],
-      total_sessoes:    [10],
-      intervalo_semanas:[1],
+      usuario_id:        [usuarioAtualId],
+      paciente_id:       [0, [Validators.required, Validators.min(1)]],
+      servico_id:        [0, [Validators.required, Validators.min(1)]],
+      data_hora_inicio:  ['', Validators.required],
+      duracao_minutos:   [60, [Validators.required, Validators.min(1)]],  // ← novo
+      valor_combinado:   [0, [Validators.required, Validators.min(0.01)]],
+      recorrente:        [false],
+      total_sessoes:     [10],
+      intervalo_semanas: [1],
     });
 
     // Se for admin, torna o usuario_id obrigatório
@@ -117,21 +117,11 @@ export class AgendamentosModalComponent implements OnInit {
 
     const raw = this.form.getRawValue();
 
-    // Converte datetime-local (sem timezone) para RFC3339 com -03:00
-    const inicio = new Date(raw.data_hora_inicio);
-    const fim    = new Date(raw.data_hora_fim);
-
-    if (fim <= inicio) {
-      this.erro.set('O horário de fim deve ser após o início.');
-      this.loading.set(false);
-      return;
-    }
-
     const dto: any = {
       paciente_id:      Number(raw.paciente_id),
       servico_id:       Number(raw.servico_id),
-      data_hora_inicio: toRFC3339Brasilia(inicio),
-      data_hora_fim:    toRFC3339Brasilia(fim),
+      data_hora_inicio: toRFC3339Brasilia(new Date(raw.data_hora_inicio)),
+      data_hora_fim:    raw.duracao_minutos,
       valor_combinado:  raw.valor_combinado,
       recorrente:       raw.recorrente,
       ...(raw.recorrente ? {
