@@ -39,7 +39,7 @@ export class PacientesModalComponent implements OnInit {
     this.form = fb.nonNullable.group({
       usuario_id: [usuarioAtualId], // Inicializado com o ID logado ou 0
       nome: ['', Validators.required],
-      cpf: ['', Validators.required],
+      cpf: [''],
       telefone: [''],
       data_nascimento: [''],
     });
