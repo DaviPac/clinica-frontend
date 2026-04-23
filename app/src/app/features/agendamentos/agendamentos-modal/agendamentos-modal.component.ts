@@ -1,7 +1,7 @@
 import { Component, OnInit, output, signal, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { AgendamentoService } from '../../../core/services/agendamento/agendamento.service';
+import { AgendamentoDto, AgendamentoService } from '../../../core/services/agendamento/agendamento.service';
 import { PacienteService } from '../../../core/services/paciente/paciente.service';
 import { ServicoService } from '../../../core/services/servico/servico.service';
 import { Paciente } from '../../../core/models/paciente.model';
@@ -117,11 +117,11 @@ export class AgendamentosModalComponent implements OnInit {
 
     const raw = this.form.getRawValue();
 
-    const dto: any = {
+    const dto: AgendamentoDto = {
       paciente_id:      Number(raw.paciente_id),
       servico_id:       Number(raw.servico_id),
       data_hora_inicio: toRFC3339Brasilia(new Date(raw.data_hora_inicio)),
-      data_hora_fim:    raw.duracao_minutos,
+      duracao_minutos:    raw.duracao_minutos,
       valor_combinado:  raw.valor_combinado,
       recorrente:       raw.recorrente,
       ...(raw.recorrente ? {
