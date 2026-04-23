@@ -1,7 +1,7 @@
 import { Component, OnInit, signal, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { forkJoin } from 'rxjs';
+import { forkJoin, of } from 'rxjs';
 
 import { AgendamentoService } from '../../../core/services/agendamento/agendamento.service';
 import { Agendamento, StatusAgendamento } from '../../../core/models/agendamento.model';
@@ -127,7 +127,7 @@ export class AgendamentosListaComponent implements OnInit {
     this.carregando.set(true);
     forkJoin({
       pacientes: this.pacienteService.listar(true),
-      usuarios: this.usuarioService.listar(),
+      usuarios: this.isAdmin() ? this.usuarioService.listar() : of([]),
       servicos: this.servicoService.listar(true, true)
     }).subscribe({
       next: (res) => {
