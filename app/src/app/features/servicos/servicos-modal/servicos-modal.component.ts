@@ -1,8 +1,16 @@
+// servicos-modal.component.ts
 import { Component, input, output, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { ServicoService } from '../../../core/services/servico/servico.service';
+import { ReactiveFormsModule, FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
+import { CriarServicoDto, AtualizarServicoDto, ServicoService } from '../../../core/services/servico/servico.service';
 import { Servico } from '../../../core/models/servico.model';
+
+interface ServicoForm {
+  nome: FormControl<string>;
+  valor_atual: FormControl<number>;
+  pacote: FormControl<boolean>;
+  ativo: FormControl<boolean>;
+}
 
 @Component({
   selector: 'app-servicos-modal',
@@ -11,13 +19,13 @@ import { Servico } from '../../../core/models/servico.model';
   templateUrl: './servicos-modal.component.html',
 })
 export class ServicosModalComponent implements OnInit {
-  // null = modo criação | Servico = modo edição
   servico = input<Servico | null>(null);
 
   fechar = output<void>();
   salvo = output<void>();
 
-  form: FormGroup;
+  // Form totalmente tipado — sem any, sem cast
+  form: FormGroup<ServicoForm>;
 
   loading = signal(false);
   erro = signal<string | null>(null);
@@ -30,21 +38,22 @@ export class ServicosModalComponent implements OnInit {
     private fb: FormBuilder,
     private service: ServicoService
   ) {
-    this.form = fb.nonNullable.group({
-      nome: ['', Validators.required],
+    this.form = this.fb.nonNullable.group({
+      nome:        ['', Validators.required],
       valor_atual: [0, [Validators.required, Validators.min(0.01)]],
-      ativo: [true],
-    });
+      pacote:      [false],
+      ativo:       [true],
+    }) as FormGroup<ServicoForm>;
   }
 
   ngOnInit() {
-    // Pré-popula o form se vier um serviço para edição
     const s = this.servico();
     if (s) {
       this.form.patchValue({
-        nome: s.nome,
+        nome:        s.nome,
         valor_atual: s.valor_atual,
-        ativo: s.ativo,
+        pacote:      s.is_pacote,
+        ativo:       s.ativo,
       });
     }
   }
@@ -55,12 +64,14 @@ export class ServicosModalComponent implements OnInit {
     this.loading.set(true);
     this.erro.set(null);
 
-    const dto = this.form.getRawValue();
+    // getRawValue() agora retorna tipo inferido corretamente
+    const { nome, valor_atual, pacote, ativo } = this.form.getRawValue();
     const s = this.servico();
 
+    // Sem cast — cada branch monta o DTO correto
     const op$ = s
-      ? this.service.atualizar(s.id, dto)
-      : this.service.criar(dto);
+      ? this.service.atualizar(s.id, { nome, valor_atual, pacote, ativo } satisfies AtualizarServicoDto)
+      : this.service.criar({ nome, valor_atual, pacote } satisfies CriarServicoDto);
 
     op$.subscribe({
       next: () => this.salvo.emit(),

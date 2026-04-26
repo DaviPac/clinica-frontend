@@ -6,7 +6,6 @@ import { forkJoin, of } from 'rxjs';
 import { AgendamentoService } from '../../../core/services/agendamento/agendamento.service';
 import { Agendamento, StatusAgendamento } from '../../../core/models/agendamento.model';
 import { AuthService } from '../../../core/services/auth/auth.service';
-// Assumindo os imports dos services adicionais baseados no seu relato
 import { PacienteService } from '../../../core/services/paciente/paciente.service';
 import { UsuarioService } from '../../../core/services/usuario/usuario.service';
 import { ServicoService } from '../../../core/services/servico/servico.service';
@@ -40,22 +39,22 @@ export class AgendamentosListaComponent implements OnInit {
   isAdmin = this.authService.isAdmin;
   mostrarTodos = signal(false);
 
-  // Navegação do Calendário
   mesAtual = signal<Date>(new Date());
   
-  // Dicionários para armazenar os nomes
   pacientesDict = signal<Record<number, string>>({});
   usuariosDict = signal<Record<number, string>>({});
   servicosDict = signal<Record<number, string>>({});
 
-  // Modais e Controles de Ação
   modalCriacaoAberto = signal(false);
   agendamentoParaStatus = signal<Agendamento | null>(null);
   atualizandoPagamento = signal<number | null>(null);
   agendamentoParaCancelarSerie = signal<Agendamento | null>(null);
   cancelandoSerie = signal(false);
 
-  // Computa o primeiro e último dia do mês para o serviço
+  // NOVO: modal de confirmação de pagamento de pacote
+  agendamentoParaConfirmarPagamento = signal<Agendamento | null>(null);
+  agendamentoParaCancelarPagamento = signal<Agendamento | null>(null);
+
   filtro = computed(() => {
     const data = this.mesAtual();
     const ano = data.getFullYear();
@@ -63,7 +62,6 @@ export class AgendamentosListaComponent implements OnInit {
     const primeiroDia = new Date(ano, mes, 1);
     const ultimoDia = new Date(ano, mes + 1, 0);
     
-    // Converte para formato YYYY-MM-DD lidando com fuso horário local
     const formatar = (d: Date) => {
       const dd = String(d.getDate()).padStart(2, '0');
       const mm = String(d.getMonth() + 1).padStart(2, '0');
@@ -80,7 +78,6 @@ export class AgendamentosListaComponent implements OnInit {
     return `${mes.charAt(0).toUpperCase() + mes.slice(1)} de ${ano}`;
   });
 
-  // Constrói a estrutura do calendário em grade
   diasCalendario = computed(() => {
     const data = this.mesAtual();
     const ano = data.getFullYear();
@@ -88,30 +85,21 @@ export class AgendamentosListaComponent implements OnInit {
     const primeiroDia = new Date(ano, mes, 1);
     const ultimoDia = new Date(ano, mes + 1, 0);
     const dias = [];
-
     const hoje = new Date();
 
-    // Preenche espaços vazios antes do dia 1
     for (let i = 0; i < primeiroDia.getDay(); i++) {
-      dias.push({
-        diaNumero: null as number | null,
-        agendamentos: [] as Agendamento[],
-        isToday: false
-      });
+      dias.push({ diaNumero: null as number | null, agendamentos: [] as Agendamento[], isToday: false });
     }
 
     const listaAgendamentos = this.agendamentos();
 
-    // Preenche os dias reais do mês
     for (let d = 1; d <= ultimoDia.getDate(); d++) {
       const mesStr = String(mes + 1).padStart(2, '0');
       const diaStr = String(d).padStart(2, '0');
-      const dataStr = `${ano}-${mesStr}-${diaStr}`; // Ex: 2023-10-05
+      const dataStr = `${ano}-${mesStr}-${diaStr}`;
 
       const agsDoDia = listaAgendamentos.filter(a => a.data_hora_inicio.startsWith(dataStr));
-      const isToday = d === hoje.getDate() && 
-                      mes === hoje.getMonth() && 
-                      ano === hoje.getFullYear();
+      const isToday = d === hoje.getDate() && mes === hoje.getMonth() && ano === hoje.getFullYear();
       dias.push({ diaNumero: d, agendamentos: agsDoDia, isToday });
     }
 
@@ -122,7 +110,6 @@ export class AgendamentosListaComponent implements OnInit {
     this.carregarDadosBase(); 
   }
 
-  // Carrega Pacientes, Profissionais e Serviços de uma só vez
   carregarDadosBase() {
     this.carregando.set(true);
     forkJoin({
@@ -131,13 +118,10 @@ export class AgendamentosListaComponent implements OnInit {
       servicos: this.servicoService.listar(true, true)
     }).subscribe({
       next: (res) => {
-        // Transforma as arrays em dicionários para O(1) lookup
         const conv = (arr: any[]) => arr.reduce((acc, curr) => ({ ...acc, [curr.id]: curr.nome }), {});
         this.pacientesDict.set(conv(res.pacientes));
         this.usuariosDict.set(conv(res.usuarios));
         this.servicosDict.set(conv(res.servicos));
-        
-        // Após carregar os dados base, carrega os agendamentos do mês atual
         this.carregarAgendamentos();
       },
       error: (err) => {
@@ -168,19 +152,45 @@ export class AgendamentosListaComponent implements OnInit {
 
   navegarMes(direcao: 1 | -1) {
     const atual = this.mesAtual();
-    // Muda o mês base
     this.mesAtual.set(new Date(atual.getFullYear(), atual.getMonth() + direcao, 1));
     this.carregarAgendamentos();
   }
 
-  // --- Ações (mantidas do seu código original) ---
-  togglePagamento(ag: Agendamento) {
+  // ALTERADO: intercepta se for pacote e o pagamento for para "pago"
+  iniciarTogglePagamento(ag: Agendamento) {
+    const vaiBaixar = !ag.pago_pelo_paciente; // true = vai marcar como pago
+
+    if (ag.valor_pacote != null) {
+      // Exibe modal de confirmação antes de prosseguir
+      if (vaiBaixar) this.agendamentoParaConfirmarPagamento.set(ag);
+      else this.agendamentoParaCancelarPagamento.set(ag)
+    } else {
+      this.executarTogglePagamento(ag);
+    }
+  }
+
+  // NOVO: chamado ao confirmar no modal de pacote
+  confirmarPagamentoPacote() {
+    const ag = this.agendamentoParaConfirmarPagamento();
+    if (!ag) return;
+    this.agendamentoParaConfirmarPagamento.set(null);
+    this.executarTogglePagamento(ag);
+  }
+
+  cancelarPagamentoPacote() {
+    const ag = this.agendamentoParaCancelarPagamento();
+    if (!ag) return;
+    this.agendamentoParaCancelarPagamento.set(null);
+    this.executarTogglePagamento(ag);
+  }
+
+  // ALTERADO: recarrega a lista completa após atualizar (cobre pacotes com múltiplas sessões)
+  private executarTogglePagamento(ag: Agendamento) {
     this.atualizandoPagamento.set(ag.id);
-    const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
     this.service.atualizarPagamento(ag.id, !ag.pago_pelo_paciente).subscribe({
-      next: ({ pago_pelo_paciente }) => {
-        this.agendamentos.update(lista => lista.map(a => a.id === ag.id ? { ...a, pago_pelo_paciente } : a));
+      next: () => {
         this.atualizandoPagamento.set(null);
+        this.carregarAgendamentos(); // recarrega tudo para refletir mudanças em cascata
       },
       error: (err: Error) => {
         this.erro.set(err.message);
@@ -189,14 +199,25 @@ export class AgendamentosListaComponent implements OnInit {
     });
   }
 
-  abrirModalStatus(ag: Agendamento) { this.agendamentoParaStatus.set(ag); }
-
-  onStatusAtualizado(payload: { id: number; status: StatusAgendamento }) {
-    this.agendamentos.update(lista => lista.map(a => a.id === payload.id ? { ...a, status: payload.status } : a));
-    this.agendamentoParaStatus.set(null);
+  abrirModalStatus(ag: Agendamento) { 
+    this.agendamentoParaStatus.set(ag); 
   }
 
-  confirmarCancelamentoSerie(ag: Agendamento) { this.agendamentoParaCancelarSerie.set(ag); }
+  // ALTERADO: recarrega lista completa após mudança de status
+  onStatusAtualizado(payload: { id: number; status: StatusAgendamento }) {
+    this.agendamentoParaStatus.set(null);
+    this.carregarAgendamentos();
+  }
+
+  // ALTERADO: recarrega lista após criação de agendamento
+  onAgendamentoCriado() {
+    this.modalCriacaoAberto.set(false);
+    this.carregarAgendamentos();
+  }
+
+  confirmarCancelamentoSerie(ag: Agendamento) { 
+    this.agendamentoParaCancelarSerie.set(ag); 
+  }
 
   cancelarSerie() {
     const ag = this.agendamentoParaCancelarSerie();
@@ -217,7 +238,6 @@ export class AgendamentosListaComponent implements OnInit {
     });
   }
 
-  // Helpers
   formatarDataHora = formatarDataHora;
   formatarHora = formatarHora;
 

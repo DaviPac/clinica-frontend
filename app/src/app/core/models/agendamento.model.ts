@@ -8,6 +8,7 @@ export interface Agendamento {
   data_hora_inicio: string;
   data_hora_fim: string;
   valor_combinado: number;
+  valor_pacote: number | null;
   percentual_comissao_momento: number;
   status: StatusAgendamento;
   pago_pelo_paciente: boolean;

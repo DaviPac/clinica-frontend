@@ -54,6 +54,26 @@
                  font-mono focus:outline-none focus:ring-2 focus:ring-teal-500"
         />
       </div>
+      
+      <div>
+        <label class="flex items-center gap-3 p-3 bg-gray-50 border border-gray-200
+                      rounded-lg cursor-pointer select-none">
+          <div
+            class="relative w-9 h-5 rounded-full transition-colors shrink-0"
+            [class]="form.controls.pacote.value ? 'bg-teal-600' : 'bg-gray-300'">
+            <div
+              class="absolute top-0.5 w-4 h-4 bg-white rounded-full shadow-sm
+                    transition-transform duration-200"
+              [class]="form.controls.pacote.value ? 'translate-x-4' : 'translate-x-0.5'">
+            </div>
+            <input type="checkbox" formControlName="pacote" class="sr-only" />
+          </div>
+          <div>
+            <p class="text-sm font-medium text-gray-800">Pacote de sessões</p>
+            <p class="text-xs text-gray-500">Agrupa múltiplas sessões em um único serviço</p>
+          </div>
+        </label>
+      </div>
 
       <!-- Toggle ativo — só aparece no modo edição -->
       @if (modoEdicao) {

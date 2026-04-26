@@ -2,10 +2,16 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Servico } from '../../models/servico.model';
 
-export interface ServicoDto {
+export interface ServicoBaseDto {
   nome: string;
   valor_atual: number;
-  ativo?: boolean;
+  pacote: boolean;
+}
+
+export interface CriarServicoDto extends ServicoBaseDto {}
+
+export interface AtualizarServicoDto extends ServicoBaseDto {
+  ativo: boolean;    // só faz sentido na edição
 }
 
 @Injectable({ providedIn: 'root' })
@@ -21,11 +27,11 @@ export class ServicoService {
     return this.http.get<Servico[]>(`/servicos${qs ? '?' + qs : ''}`);
   }
 
-  criar(dto: ServicoDto) {
+  criar(dto: CriarServicoDto) {
     return this.http.post<Servico>('/servicos', dto);
   }
 
-  atualizar(id: number, dto: ServicoDto) {
+  atualizar(id: number, dto: AtualizarServicoDto) {
     return this.http.put<Servico>(`/servicos/${id}`, dto);
   }
 

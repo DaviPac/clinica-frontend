@@ -4,4 +4,5 @@ export interface Servico {
   nome: string;
   valor_atual: number;
   ativo: boolean;
+  is_pacote: boolean;
 }

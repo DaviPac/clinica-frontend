@@ -50,6 +50,8 @@ export class DashboardComponent implements OnInit {
   // Controle de pagamento inline
   atualizandoPagamento = signal<number | null>(null);
 
+  agendamentoParaConfirmarPagamento = signal<Agendamento | null>(null);
+
   // Métricas
   totalProximos = computed(() => this.proximosAgendamentos().length);
   totalPendentes = computed(() => this.agendamentosPendentes().length);
@@ -136,7 +138,22 @@ export class DashboardComponent implements OnInit {
 
   // ── Pagamento inline ──
 
-  togglePagamento(ag: Agendamento) {
+  iniciarTogglePagamento(ag: Agendamento) {
+    if (!ag.pago_pelo_paciente && ag.valor_pacote != null) {
+      this.agendamentoParaConfirmarPagamento.set(ag);
+    } else {
+      this.executarTogglePagamento(ag);
+    }
+  }
+
+  confirmarPagamentoPacote() {
+    const ag = this.agendamentoParaConfirmarPagamento();
+    if (!ag) return;
+    this.agendamentoParaConfirmarPagamento.set(null);
+    this.executarTogglePagamento(ag);
+  }
+
+  private executarTogglePagamento(ag: Agendamento) {
     this.atualizandoPagamento.set(ag.id);
     this.agendamentoService.atualizarPagamento(ag.id, !ag.pago_pelo_paciente).subscribe({
       next: () => {

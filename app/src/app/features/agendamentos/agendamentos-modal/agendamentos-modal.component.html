@@ -65,7 +65,11 @@
                  focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]">
           <option [value]="0" disabled>Selecione um serviço</option>
           @for (s of servicos(); track s.id) {
-            <option [value]="s.id">{{ s.nome }} — {{ s.valor_atual | currency:'BRL' }}</option>
+            <option [value]="s.id">
+              {{ s.nome }}
+              @if (s.is_pacote) { · pacote }
+              — {{ s.valor_atual | currency:'BRL' }}
+            </option>
           }
         </select>
       </div>
@@ -96,9 +100,14 @@
         </div>
       </div>
 
+      <!-- Valor: comportamento difere se for pacote -->
       <div>
         <label class="block text-xs text-gray-500 mb-1.5">
-          Valor combinado por sessão (R$) <span class="text-red-500">*</span>
+          @if (isPacote) {
+            Valor total do pacote (R$) <span class="text-red-500">*</span>
+          } @else {
+            Valor combinado por sessão (R$) <span class="text-red-500">*</span>
+          }
         </label>
         <input
           type="number"
@@ -108,13 +117,26 @@
           class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
                  font-mono focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]"
         />
-        <p class="text-xs text-gray-400 mt-1">
-          Pré-preenchido com o valor do serviço. Ajuste se necessário.
-        </p>
+
+        @if (isPacote && valorPorSessaoDisplay() !== null) {
+          <!-- Derivado: mostra valor por sessão calculado -->
+          <p class="text-xs text-[#BCA8A5] mt-1 font-medium">
+            {{ valorPorSessaoDisplay() | currency:'BRL' }} por sessão
+            ({{ ctrl['total_sessoes'].value }} sessões)
+          </p>
+        } @else {
+          <p class="text-xs text-gray-400 mt-1">
+            Pré-preenchido com o valor do serviço. Ajuste se necessário.
+          </p>
+        }
       </div>
 
-      <div class="border border-gray-200 rounded-lg p-3">
-        <label class="flex items-center gap-3 cursor-pointer select-none">
+      <!-- Toggle recorrente: desabilitado e fixo quando for pacote -->
+      <div class="border border-gray-200 rounded-lg p-3"
+           [class.opacity-60]="isPacote">
+        <label class="flex items-center gap-3 select-none"
+               [class.cursor-pointer]="!isPacote"
+               [class.cursor-not-allowed]="isPacote">
           <div
             class="relative w-9 h-5 rounded-full transition-colors shrink-0"
             [class]="recorrente ? 'bg-[#BCA8A5]' : 'bg-gray-200'">
@@ -125,7 +147,12 @@
             </div>
             <input type="checkbox" formControlName="recorrente" class="sr-only" />
           </div>
-          <span class="text-sm font-medium text-gray-800">Sessão recorrente</span>
+          <div>
+            <span class="text-sm font-medium text-gray-800">Sessão recorrente</span>
+            @if (isPacote) {
+              <span class="ml-1.5 text-xs text-[#BCA8A5] font-medium">· obrigatório para pacotes</span>
+            }
+          </div>
         </label>
 
         @if (recorrente) {
@@ -158,7 +185,7 @@
 
           @if (previewUltimaSessao()) {
             <p class="text-xs text-gray-500 mt-2">
-              {{ form.controls['total_sessoes'].value }} sessões ·
+              {{ ctrl['total_sessoes'].value }} sessões ·
               última em {{ previewUltimaSessao() }}
             </p>
           }

@@ -11,6 +11,7 @@ export interface AgendamentoDto {
   recorrente: boolean;
   total_sessoes?: number;
   intervalo_semanas?: number;
+  pacote: boolean;
 }
 
 export interface AgendamentoRecorrenteResponse {

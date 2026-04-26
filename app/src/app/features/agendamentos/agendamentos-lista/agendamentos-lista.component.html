@@ -161,7 +161,7 @@
                       }
 
                       <button
-                        (click)="togglePagamento(ag)"
+                        (click)="iniciarTogglePagamento(ag)"
                         [disabled]="atualizandoPagamento() === ag.id"
                         class="agenda-action-btn"
                         [class.agenda-action-btn--paid]="ag.pago_pelo_paciente"
@@ -199,6 +199,67 @@
 
 </div>
 
+@if (agendamentoParaConfirmarPagamento()) {
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+    <div class="bg-white rounded-2xl shadow-xl p-6 w-full max-w-sm mx-4">
+      <h2 class="text-lg font-semibold text-gray-800 mb-2">Confirmar Pagamento do Pacote</h2>
+      <p class="text-sm text-gray-600 mb-1">
+        Ao confirmar, o pagamento será registrado para
+        <strong>todas as sessões deste pacote</strong>.
+      </p>
+      <p class="text-sm text-gray-700 mt-3 mb-5">
+        Valor total do pacote:
+        <span class="font-bold text-teal-700">
+          {{ formatarValor(agendamentoParaConfirmarPagamento()!.valor_pacote!) }}
+        </span>
+      </p>
+      <div class="flex gap-3 justify-end">
+        <button
+          (click)="agendamentoParaConfirmarPagamento.set(null)"
+          class="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 text-sm hover:bg-gray-50 transition">
+          Cancelar
+        </button>
+        <button
+          (click)="confirmarPagamentoPacote()"
+          [disabled]="atualizandoPagamento() !== null"
+          class="px-4 py-2 rounded-lg bg-teal-600 text-white text-sm font-medium hover:bg-teal-700 transition disabled:opacity-60">
+          Confirmar Pagamento
+        </button>
+      </div>
+    </div>
+  </div>
+}
+
+@if (agendamentoParaCancelarPagamento()) {
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+    <div class="bg-white rounded-2xl shadow-xl p-6 w-full max-w-sm mx-4">
+      <h2 class="text-lg font-semibold text-gray-800 mb-2">Cancelar Pagamento do Pacote</h2>
+      <p class="text-sm text-gray-600 mb-1">
+        Ao confirmar, o pagamento será cancelado para
+        <strong>todas as sessões deste pacote</strong>.
+      </p>
+      <p class="text-sm text-gray-700 mt-3 mb-5">
+        Valor total do pacote:
+        <span class="font-bold text-teal-700">
+          {{ formatarValor(agendamentoParaCancelarPagamento()!.valor_pacote!) }}
+        </span>
+      </p>
+      <div class="flex gap-3 justify-end">
+        <button
+          (click)="agendamentoParaCancelarPagamento.set(null)"
+          class="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 text-sm hover:bg-gray-50 transition">
+          Cancelar
+        </button>
+        <button
+          (click)="cancelarPagamentoPacote()"
+          [disabled]="atualizandoPagamento() !== null"
+          class="px-4 py-2 rounded-lg bg-red-600 text-white text-sm font-medium hover:bg-red-700 transition disabled:opacity-60">
+          Cancelar Pagamento
+        </button>
+      </div>
+    </div>
+  </div>
+}
 
 @if (modalCriacaoAberto()) {
   <app-agendamentos-modal
