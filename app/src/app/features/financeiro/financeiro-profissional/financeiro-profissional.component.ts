@@ -91,7 +91,7 @@ export class FinanceiroProfissionalComponent implements OnInit {
     this.carregandoSaldo.set(true);
     const profIdStr = profId ? String(profId) : undefined;
 
-    this.service.getSaldo(this.periodoSelecionado(), profIdStr).subscribe({
+    this.service.getSaldoDevido(this.periodoSelecionado(), profIdStr).subscribe({
       next: s => {
         this.saldo.set(s);
         // Preenche o campo com o saldo devedor do usuário consultado

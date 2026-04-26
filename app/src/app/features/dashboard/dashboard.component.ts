@@ -83,14 +83,18 @@ export class DashboardComponent implements OnInit {
     const mes = String(hoje.getMonth() + 1).padStart(2, '0');
     const dia = String(hoje.getDate()).padStart(2, '0');
     const dataHoje = `${ano}-${mes}-${dia}`;
-    const ultimoDia = new Date(ano, hoje.getMonth() + 1, 0).getDate();
-    const dataFimMes = `${ano}-${mes}-${String(ultimoDia).padStart(2, '0')}`;
+    const dataDaquiA8 = new Date(hoje);
+    dataDaquiA8.setDate(hoje.getDate() + 7);
+    const anoFim = dataDaquiA8.getFullYear();
+    const mesFim = String(dataDaquiA8.getMonth() + 1).padStart(2, '0');
+    const diaFim = String(dataDaquiA8.getDate()).padStart(2, '0');
+    const dataFimBusca = `${anoFim}-${mesFim}-${diaFim}`;
 
     forkJoin({
-      proximos: this.agendamentoService.listar(dataHoje, dataFimMes),
+      proximos: this.agendamentoService.listar(dataHoje, dataFimBusca),
       pendentes: this.agendamentoService.listarPendentes(),
       pagamentos: this.agendamentoService.listarPagamentoPendente(),
-      saldo: this.financeiroService.getSaldo(this.mesAtual()),
+      saldo: this.financeiroService.getSaldoDevido(this.mesAtual()),
       pacientes: this.pacienteService.listar(true),
       servicos: this.servicoService.listar(true, true),
     }).subscribe({

@@ -30,12 +30,12 @@ export class FinanceiroService {
   constructor(private http: HttpClient) {}
 
   // Profissional
-  getSaldo(periodo?: string, profissionalId?: string) {
+  getSaldoDevido(periodo?: string, profissionalId?: string) {
     const params = new URLSearchParams();
     if (periodo) params.set('periodo', periodo)
     if (profissionalId) params.set('profissional_id', profissionalId)
     const qs = params.toString();
-    return this.http.get<SaldoDevedor>(`/financeiro/saldo${qs ? '?' + qs : ''}`);
+    return this.http.get<SaldoDevedor>(`/financeiro/saldo-devido${qs ? '?' + qs : ''}`);
   }
 
   getAcertos(profissionalId?: number) {
