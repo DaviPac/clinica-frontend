@@ -2,8 +2,9 @@ import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { catchError, throwError } from 'rxjs';
 import { AuthService } from '../../services/auth/auth.service';
+import { environment } from '../../../../environments/environment';
 
-const BASE_URL = 'https://clinica-backend-production-c069.up.railway.app';
+const BASE_URL = environment.apiUrl;
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const auth = inject(AuthService);

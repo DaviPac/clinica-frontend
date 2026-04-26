@@ -43,6 +43,12 @@ export const routes: Routes = [
             .then(m => m.AgendamentosListaComponent),
       },
       {
+        path: 'dashboard',
+        loadComponent: () =>
+          import('./features/dashboard/dashboard.component')
+            .then(m => m.DashboardComponent),
+      },
+      {
         path: 'financeiro',
         loadComponent: () =>
           import('./features/financeiro/financeiro-profissional/financeiro-profissional.component')

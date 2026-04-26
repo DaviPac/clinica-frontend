@@ -1,0 +1,328 @@
+<div class="dashboard min-h-screen bg-[#F7F4F3] p-4 lg:p-6 font-sans">
+
+  <!-- Header -->
+  <div class="mb-7">
+    <p class="text-xs text-[#BCA8A5] font-semibold uppercase tracking-widest mb-0.5">{{ saudacao() }}</p>
+    <h1 class="text-2xl font-bold text-gray-900 tracking-tight">Dashboard</h1>
+    <p class="text-xs text-gray-400 mt-0.5">{{ periodoAtual() }} · Visão geral da clínica</p>
+  </div>
+
+  <!-- Erro -->
+  @if (erro()) {
+    <div class="flex items-center gap-2 px-4 py-3 bg-red-50 border border-red-100 text-red-600 text-xs rounded-xl mb-5">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="shrink-0">
+        <circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.4"/>
+        <path d="M7 4v3M7 9.5h.01" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+      {{ erro() }}
+    </div>
+  }
+
+  <!-- Loading -->
+  @if (carregando()) {
+    <div class="flex items-center justify-center gap-2.5 py-24 text-xs text-gray-400">
+      <span class="dashboard-spinner"></span>
+      Carregando dashboard...
+    </div>
+  }
+
+  @if (!carregando()) {
+
+    <!-- ── KPI Cards ── -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
+
+      <div class="dashboard-kpi-card">
+        <div class="dashboard-kpi-icon bg-[#EEE9E8]">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <rect x="1" y="2.5" width="14" height="12" rx="2" stroke="#BCA8A5" stroke-width="1.4"/>
+            <path d="M5 1v3M11 1v3M1 6.5h14" stroke="#BCA8A5" stroke-width="1.4" stroke-linecap="round"/>
+            <circle cx="5.5" cy="10" r="1" fill="#BCA8A5"/>
+            <circle cx="8" cy="10" r="1" fill="#BCA8A5"/>
+            <circle cx="10.5" cy="10" r="1" fill="#BCA8A5"/>
+          </svg>
+        </div>
+        <div>
+          <p class="text-[10px] text-gray-400 font-medium uppercase tracking-wider leading-none mb-1">Próximos</p>
+          <p class="text-2xl font-bold text-gray-900 leading-none tabular-nums">{{ totalProximos() }}</p>
+          <p class="text-[10px] text-gray-400 mt-0.5">agendamentos no mês</p>
+        </div>
+      </div>
+
+      <div class="dashboard-kpi-card" [class.dashboard-kpi-card--alert]="totalPendentes() > 0">
+        <div class="dashboard-kpi-icon" [class]="totalPendentes() > 0 ? 'bg-amber-50' : 'bg-[#EEE9E8]'">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M8 1.5l6.5 11.5H1.5L8 1.5z" [attr.stroke]="totalPendentes() > 0 ? '#D97706' : '#BCA8A5'" stroke-width="1.4" stroke-linejoin="round"/>
+            <path d="M8 6v3.5M8 11.5h.01" [attr.stroke]="totalPendentes() > 0 ? '#D97706' : '#BCA8A5'" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div>
+          <p class="text-[10px] font-medium uppercase tracking-wider leading-none mb-1"
+             [class]="totalPendentes() > 0 ? 'text-amber-600' : 'text-gray-400'">Pendentes</p>
+          <p class="text-2xl font-bold leading-none tabular-nums"
+             [class]="totalPendentes() > 0 ? 'text-amber-700' : 'text-gray-900'">{{ totalPendentes() }}</p>
+          <p class="text-[10px] mt-0.5" [class]="totalPendentes() > 0 ? 'text-amber-500' : 'text-gray-400'">sem confirmar status</p>
+        </div>
+      </div>
+
+      <div class="dashboard-kpi-card" [class.dashboard-kpi-card--alert]="totalPagamentos() > 0">
+        <div class="dashboard-kpi-icon" [class]="totalPagamentos() > 0 ? 'bg-red-50' : 'bg-[#EEE9E8]'">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <rect x="1" y="4" width="14" height="9" rx="1.5" [attr.stroke]="totalPagamentos() > 0 ? '#DC2626' : '#BCA8A5'" stroke-width="1.4"/>
+            <path d="M1 7h14" [attr.stroke]="totalPagamentos() > 0 ? '#DC2626' : '#BCA8A5'" stroke-width="1.4"/>
+            <circle cx="4.5" cy="10" r="1" [attr.fill]="totalPagamentos() > 0 ? '#DC2626' : '#BCA8A5'"/>
+          </svg>
+        </div>
+        <div>
+          <p class="text-[10px] font-medium uppercase tracking-wider leading-none mb-1"
+             [class]="totalPagamentos() > 0 ? 'text-red-500' : 'text-gray-400'">A receber</p>
+          <p class="text-2xl font-bold leading-none tabular-nums"
+             [class]="totalPagamentos() > 0 ? 'text-red-600' : 'text-gray-900'">{{ totalPagamentos() }}</p>
+          <p class="text-[10px] mt-0.5" [class]="totalPagamentos() > 0 ? 'text-red-400' : 'text-gray-400'">pagamentos em aberto</p>
+        </div>
+      </div>
+
+      @if (!isAdmin()) {
+        <div class="dashboard-kpi-card" [class.dashboard-kpi-card--alert]="totalSaldo() > 0">
+          <div class="dashboard-kpi-icon" [class]="totalSaldo() > 0 ? 'bg-violet-50' : 'bg-[#EEE9E8]'">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <circle cx="8" cy="8" r="6.5" [attr.stroke]="totalSaldo() > 0 ? '#7C3AED' : '#BCA8A5'" stroke-width="1.4"/>
+              <path d="M8 4.5v1.25M8 10.25V11.5M6 6.75a2 2 0 1 1 4 0c0 1-1 1.5-2 2.25" [attr.stroke]="totalSaldo() > 0 ? '#7C3AED' : '#BCA8A5'" stroke-width="1.3" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div>
+            <p class="text-[10px] font-medium uppercase tracking-wider leading-none mb-1"
+               [class]="totalSaldo() > 0 ? 'text-violet-500' : 'text-gray-400'">Saldo devido</p>
+            <p class="text-lg font-bold leading-none tabular-nums"
+               [class]="totalSaldo() > 0 ? 'text-violet-700' : 'text-gray-900'">{{ formatarValor(totalSaldo()) }}</p>
+            <p class="text-[10px] mt-0.5" [class]="totalSaldo() > 0 ? 'text-violet-400' : 'text-gray-400'">à clínica · {{ periodoAtual() }}</p>
+          </div>
+        </div>
+      }
+
+      @if (isAdmin()) {
+        <div class="dashboard-kpi-card">
+          <div class="dashboard-kpi-icon bg-emerald-50">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M2 11L6 7l3 3 5-6" stroke="#059669" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div>
+            <p class="text-[10px] text-emerald-600 font-medium uppercase tracking-wider leading-none mb-1">Admin</p>
+            <p class="text-lg font-bold text-emerald-700 leading-none">Visão geral</p>
+            <p class="text-[10px] text-emerald-500 mt-0.5">todos os profissionais</p>
+          </div>
+        </div>
+      }
+
+    </div>
+
+    <!-- ── Main Grid ── -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+
+      <!-- ── Próximos Agendamentos (2/3) ── -->
+      <div class="lg:col-span-2 dashboard-section">
+        <div class="dashboard-section-header">
+          <div class="flex items-center gap-2">
+            <div class="w-1.5 h-4 rounded-full bg-[#BCA8A5]"></div>
+            <h2 class="text-sm font-semibold text-gray-800">Próximos agendamentos</h2>
+          </div>
+          <a
+            routerLink="/agendamentos"
+            class="text-[10px] font-semibold text-[#BCA8A5] hover:text-[#9E8785] transition-colors uppercase tracking-wider"
+          >Ver agenda →</a>
+        </div>
+
+        @if (proximosAgendamentos().length === 0) {
+          <div class="dashboard-empty">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" class="text-gray-200">
+              <rect x="3" y="5" width="26" height="22" rx="3" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M10 3v4M22 3v4M3 12h26" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            <p class="text-xs text-gray-400 mt-2">Nenhum agendamento futuro este mês</p>
+          </div>
+        }
+
+        <div class="flex flex-col divide-y divide-gray-50">
+          @for (ag of proximosAgendamentos(); track ag.id) {
+            <div
+              class="dashboard-agendamento-row"
+              [class.dashboard-agendamento-row--today]="isHoje(ag.data_hora_inicio)"
+            >
+              <!-- Data/Hora -->
+              <div class="flex flex-col items-center justify-center min-w-[48px] text-center shrink-0">
+                @if (isHoje(ag.data_hora_inicio)) {
+                  <span class="text-[9px] font-bold text-[#BCA8A5] uppercase tracking-widest">Hoje</span>
+                } @else {
+                  <span class="text-[9px] text-gray-400 capitalize">{{ formatarDataCurta(ag.data_hora_inicio).split(',')[0] }}</span>
+                  <span class="text-[10px] font-bold text-gray-700 tabular-nums leading-tight">
+                    {{ formatarDataCurta(ag.data_hora_inicio).split(',')[1]?.trim() }}
+                  </span>
+                }
+                <span class="text-[11px] font-black text-gray-900 tabular-nums mt-0.5">{{ formatarHora(ag.data_hora_inicio) }}</span>
+              </div>
+
+              <div class="w-px h-8 bg-gray-100 mx-1 shrink-0"></div>
+
+              <!-- Info -->
+              <div class="flex-1 min-w-0">
+                <p class="text-xs font-semibold text-gray-900 truncate">{{ nomePaciente(ag.paciente_id) }}</p>
+                <p class="text-[10px] text-gray-400 truncate mt-0.5">{{ nomeServico(ag.servico_id) }}</p>
+              </div>
+
+              <!-- Badge + ação status -->
+              <div class="flex items-center gap-1.5 shrink-0">
+                <app-status-badge [status]="ag.status" />
+                <button
+                  (click)="abrirModalStatus(ag)"
+                  title="Alterar status"
+                  class="w-6 h-6 flex items-center justify-center rounded-md text-gray-300 hover:text-[#BCA8A5] hover:bg-[#F2EEED] transition-colors cursor-pointer"
+                >
+                  <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+                    <path d="M9 1.5l2.5 2.5L4 11.5H1.5V9L9 1.5z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- ── Coluna Direita ── -->
+      <div class="flex flex-col gap-5">
+
+        <!-- Pendentes de status -->
+        @if (agendamentosPendentes().length > 0) {
+          <div class="dashboard-section dashboard-section--amber">
+            <div class="dashboard-section-header">
+              <div class="flex items-center gap-2">
+                <div class="w-1.5 h-4 rounded-full bg-amber-400"></div>
+                <h2 class="text-sm font-semibold text-amber-800">Confirmar status</h2>
+              </div>
+              <span class="text-[10px] font-bold text-amber-600 bg-amber-100 rounded-full px-2 py-0.5">
+                {{ agendamentosPendentes().length }}
+              </span>
+            </div>
+            <p class="text-[10px] text-amber-600 mb-3 -mt-1">Sessões que já passaram sem status definido</p>
+
+            <div class="flex flex-col gap-1.5">
+              @for (ag of agendamentosPendentes(); track ag.id) {
+                <div class="flex items-center gap-2 px-3 py-2 bg-amber-50 border border-amber-100 rounded-lg">
+                  <div class="flex-1 min-w-0">
+                    <p class="text-[11px] font-semibold text-amber-900 truncate">{{ nomePaciente(ag.paciente_id) }}</p>
+                    <p class="text-[10px] text-amber-600 tabular-nums">
+                      {{ formatarDataCurta(ag.data_hora_inicio) }} · {{ formatarHora(ag.data_hora_inicio) }}
+                    </p>
+                  </div>
+                  <!-- Botão alterar status -->
+                  <button
+                    (click)="abrirModalStatus(ag)"
+                    title="Alterar status"
+                    class="shrink-0 flex items-center gap-1 px-2.5 py-1 bg-amber-100 hover:bg-amber-200 text-amber-800 text-[10px] font-semibold rounded-md transition-colors cursor-pointer whitespace-nowrap"
+                  >
+                    <svg width="9" height="9" viewBox="0 0 13 13" fill="none">
+                      <path d="M9 1.5l2.5 2.5L4 11.5H1.5V9L9 1.5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                    </svg>
+                    Status
+                  </button>
+                </div>
+              }
+            </div>
+          </div>
+        }
+
+        <!-- Pagamentos em aberto -->
+        @if (pagamentosPendentes().length > 0) {
+          <div class="dashboard-section dashboard-section--red">
+            <div class="dashboard-section-header">
+              <div class="flex items-center gap-2">
+                <div class="w-1.5 h-4 rounded-full bg-red-400"></div>
+                <h2 class="text-sm font-semibold text-red-800">Pagamentos em aberto</h2>
+              </div>
+              <span class="text-[10px] font-bold text-red-600 bg-red-100 rounded-full px-2 py-0.5">
+                {{ pagamentosPendentes().length }}
+              </span>
+            </div>
+            <p class="text-[10px] text-red-500 mb-3 -mt-1">Sessões realizadas aguardando pagamento</p>
+
+            <div class="flex flex-col gap-1.5">
+              @for (ag of pagamentosPendentes(); track ag.id) {
+                <div class="flex items-center gap-2 px-3 py-2 bg-red-50 border border-red-100 rounded-lg">
+                  <div class="flex-1 min-w-0">
+                    <p class="text-[11px] font-semibold text-red-900 truncate">{{ nomePaciente(ag.paciente_id) }}</p>
+                    <p class="text-[10px] text-red-400 tabular-nums">
+                      {{ formatarDataCurta(ag.data_hora_inicio) }} · {{ formatarHora(ag.data_hora_inicio) }}
+                    </p>
+                    <p class="text-[10px] font-bold text-red-600 tabular-nums mt-0.5">{{ formatarValor(ag.valor_combinado) }}</p>
+                  </div>
+                  <!-- Botão marcar como pago -->
+                  <button
+                    (click)="togglePagamento(ag)"
+                    [disabled]="atualizandoPagamento() === ag.id"
+                    title="Marcar como pago"
+                    class="shrink-0 flex items-center gap-1 px-2.5 py-1 bg-red-100 hover:bg-emerald-100 text-red-700 hover:text-emerald-700 text-[10px] font-semibold rounded-md transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+                  >
+                    @if (atualizandoPagamento() === ag.id) {
+                      <span class="dashboard-spinner-xs"></span>
+                    } @else {
+                      <svg width="9" height="9" viewBox="0 0 10 10" fill="none">
+                        <path d="M1.5 5l2.5 2.5 4.5-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    }
+                    Pago
+                  </button>
+                </div>
+              }
+            </div>
+          </div>
+        }
+
+        <!-- Saldo devedor -->
+        @if (!isAdmin() && totalSaldo() > 0) {
+          <div class="dashboard-section dashboard-section--violet">
+            <div class="dashboard-section-header">
+              <div class="flex items-center gap-2">
+                <div class="w-1.5 h-4 rounded-full bg-violet-400"></div>
+                <h2 class="text-sm font-semibold text-violet-800">Seu saldo devido</h2>
+              </div>
+            </div>
+            <p class="text-[10px] text-violet-500 mb-3 -mt-1">Comissão devida à clínica em {{ periodoAtual() }}</p>
+            <div class="flex items-end justify-between px-4 py-3 bg-violet-50 border border-violet-100 rounded-xl">
+              <div>
+                <p class="text-[10px] text-violet-500 font-medium">Total a pagar</p>
+                <p class="text-xl font-black text-violet-800 tabular-nums">{{ formatarValor(totalSaldo()) }}</p>
+              </div>
+              <a
+                routerLink="/financeiro"
+                class="text-[10px] font-semibold text-violet-600 hover:text-violet-800 transition-colors"
+              >Ver detalhes →</a>
+            </div>
+          </div>
+        }
+
+        <!-- Tudo em dia -->
+        @if (agendamentosPendentes().length === 0 && pagamentosPendentes().length === 0 && (isAdmin() || totalSaldo() === 0)) {
+          <div class="dashboard-section flex flex-col items-center justify-center py-8 text-center">
+            <div class="w-12 h-12 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center mb-3">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M4 10l4.5 4.5L16 6" stroke="#059669" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <p class="text-xs font-semibold text-emerald-700">Tudo em dia!</p>
+            <p class="text-[10px] text-gray-400 mt-1">Sem alertas ou pendências no momento</p>
+          </div>
+        }
+
+      </div>
+    </div>
+
+  }
+</div>
+
+<!-- Modal de alteração de status (reutiliza o componente existente) -->
+@if (agendamentoParaStatus()) {
+  <app-agendamentos-status-modal
+    [agendamento]="agendamentoParaStatus()!"
+    (fechar)="agendamentoParaStatus.set(null)"
+    (atualizado)="onStatusAtualizado($event)"
+  />
+}

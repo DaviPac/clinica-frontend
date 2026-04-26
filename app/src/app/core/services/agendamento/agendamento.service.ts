@@ -27,11 +27,26 @@ export class AgendamentoService {
     const params = new URLSearchParams();
     if (de) params.set('de', de);
     if (ate) params.set('ate', ate);
-    
     if (todos) params.set('todos', 'true'); 
 
     const qs = params.toString();
     return this.http.get<Agendamento[]>(`/agendamentos${qs ? '?' + qs : ''}`);
+  }
+
+  listarPendentes() {
+    const params = new URLSearchParams();
+    params.set('filtro', 'pendente');
+    
+    const qs = params.toString();
+    return this.http.get<Agendamento[]>(`/agendamentos?${qs}`);
+  }
+
+  listarPagamentoPendente() {
+    const params = new URLSearchParams();
+    params.set('filtro', 'pagamento_pendente');
+    
+    const qs = params.toString();
+    return this.http.get<Agendamento[]>(`/agendamentos?${qs}`);
   }
 
   criar(dto: AgendamentoDto, profissionalID?: string) {

@@ -160,23 +160,21 @@
                         >Status</button>
                       }
 
-                      @if (ag.status === 'REALIZADO') {
-                        <button
-                          (click)="togglePagamento(ag)"
-                          [disabled]="atualizandoPagamento() === ag.id"
-                          class="agenda-action-btn"
-                          [class.agenda-action-btn--paid]="ag.pago_pelo_paciente"
-                          [class.agenda-action-btn--unpaid]="!ag.pago_pelo_paciente"
-                        >
-                          @if (atualizandoPagamento() === ag.id) { ... }
-                          @else if (ag.pago_pelo_paciente) {
-                            <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
-                              <path d="M1 4l2 2 4-3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            Pago
-                          } @else { A pagar }
-                        </button>
-                      }
+                      <button
+                        (click)="togglePagamento(ag)"
+                        [disabled]="atualizandoPagamento() === ag.id"
+                        class="agenda-action-btn"
+                        [class.agenda-action-btn--paid]="ag.pago_pelo_paciente"
+                        [class.agenda-action-btn--unpaid]="!ag.pago_pelo_paciente"
+                      >
+                        @if (atualizandoPagamento() === ag.id) { ... }
+                        @else if (ag.pago_pelo_paciente) {
+                          <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
+                            <path d="M1 4l2 2 4-3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+                          Pago
+                        } @else { A pagar }
+                      </button>
 
                       @if (ag.status === 'AGENDADO' && ag.recorrencia_group_id) {
                         <button

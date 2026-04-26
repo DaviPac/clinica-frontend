@@ -35,7 +35,7 @@ export class LoginComponent {
 
     this.auth.login(this.form.getRawValue()).subscribe({
       next: ({ usuario }) => {
-        this.router.navigate(['/agendamentos']);
+        this.router.navigate(['/dashboard']);
       },
       error: (err: Error) => {
         this.erro.set(err.message);

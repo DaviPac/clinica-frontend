@@ -31,6 +31,11 @@ export class ShellComponent {
   // Itens disponíveis para qualquer usuário autenticado
   readonly navPrincipal: NavItem[] = [
     {
+      label: 'Dashboard',
+      path: '/dashboard',
+      icon: 'M3 3h7v7H3V3zm0 11h7v7H3v-7zm11-11h7v7h-7V3zm0 11h7v7h-7v-7z',
+    },
+    {
       label: 'Agendamentos',
       path: '/agendamentos',
       icon: 'M3 5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5zm4 4h6M7 12h4',

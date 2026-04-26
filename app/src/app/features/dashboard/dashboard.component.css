@@ -1,0 +1,120 @@
+/* ── Spinners ── */
+.dashboard-spinner-xs {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border: 1.5px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  opacity: 0.6;
+  animation: dashboard-spin 0.7s linear infinite;
+}
+
+.dashboard-spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid #E5D9D8;
+  border-top-color: #BCA8A5;
+  border-radius: 50%;
+  animation: dashboard-spin 0.7s linear infinite;
+}
+
+@keyframes dashboard-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── KPI Card ── */
+.dashboard-kpi-card {
+  background: #fff;
+  border-radius: 1rem;
+  border: 1px solid #f3f4f6;
+  padding: 1rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.dashboard-kpi-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+  transform: translateY(-1px);
+}
+
+.dashboard-kpi-card--alert {
+  border-color: #fde68a;
+}
+
+.dashboard-kpi-icon {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ── Section ── */
+.dashboard-section {
+  background: #fff;
+  border-radius: 1rem;
+  border: 1px solid #f3f4f6;
+  padding: 1rem;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+
+.dashboard-section--amber {
+  border-color: #fde68a;
+}
+
+.dashboard-section--red {
+  border-color: #fecaca;
+}
+
+.dashboard-section--violet {
+  border-color: #ddd6fe;
+}
+
+.dashboard-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+/* ── Agendamento Row ── */
+.dashboard-agendamento-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.625rem 0.25rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.15s ease;
+}
+
+.dashboard-agendamento-row:hover {
+  background-color: #f9fafb;
+}
+
+.dashboard-agendamento-row--today {
+  background-color: #FAF7F6;
+  border: 1px solid #EDE5E4;
+  border-radius: 0.75rem;
+  padding: 0.625rem 0.75rem;
+}
+
+.dashboard-agendamento-row--today:hover {
+  background-color: #F5EFEE;
+}
+
+/* ── Empty state ── */
+.dashboard-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 0;
+  text-align: center;
+}

@@ -176,6 +176,7 @@ export class AgendamentosListaComponent implements OnInit {
   // --- Ações (mantidas do seu código original) ---
   togglePagamento(ag: Agendamento) {
     this.atualizandoPagamento.set(ag.id);
+    const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
     this.service.atualizarPagamento(ag.id, !ag.pago_pelo_paciente).subscribe({
       next: ({ pago_pelo_paciente }) => {
         this.agendamentos.update(lista => lista.map(a => a.id === ag.id ? { ...a, pago_pelo_paciente } : a));
