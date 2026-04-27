@@ -1,6 +1,7 @@
 import { Component, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FinanceiroService } from '../../../core/services/financeiro/financeiro.service';
+import { forkJoin } from 'rxjs';
+import { FinanceiroService, AcertoDto, RelatorioFinanceiro } from '../../../core/services/financeiro/financeiro.service';
 import { UsuarioService } from '../../../core/services/usuario/usuario.service';
 import { AcertoComissao } from '../../../core/models/finenceiro.model';
 import { Usuario } from '../../../core/models/usuario.model';
@@ -16,25 +17,22 @@ interface AcertoEnriquecido extends AcertoComissao {
   templateUrl: './admin-acertos.component.html',
 })
 export class AdminAcertosComponent implements OnInit {
-  private todosAcertos = signal<AcertoEnriquecido[]>([]);
   private usuarios = signal<Usuario[]>([]);
+  
+  // Sinais de estado
+  profissionaisPendentes = signal<RelatorioFinanceiro['profissionais']>([]);
+  historicoAcertos = signal<AcertoEnriquecido[]>([]);
 
-  mostrarConfirmados = signal(false);
-  confirmando = signal<number | null>(null);
+  mostrarHistorico = signal(false);
+  processando = signal<number | null>(null);
   carregando = signal(true);
   erro = signal<string | null>(null);
 
-  acertos = computed(() => {
-    const lista = this.todosAcertos();
-    return this.mostrarConfirmados()
-      ? lista
-      : lista.filter(a => !a.confirmado_pelo_admin);
-  });
+  // Define o período atual (ex: "2026-04")
+  periodoAtual = this.obterPeriodoAtual();
 
   totalPendente = computed(() =>
-    this.todosAcertos()
-      .filter(a => !a.confirmado_pelo_admin)
-      .reduce((s, a) => s + a.valor_pago_a_clinica, 0)
+    this.profissionaisPendentes().reduce((s, p) => s + p.pendente, 0)
   );
 
   constructor(
@@ -43,51 +41,77 @@ export class AdminAcertosComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Carrega usuários e acertos em paralelo
-    this.usuarioService.listar().subscribe(u => this.usuarios.set(u));
+    this.carregarDados();
+  }
 
-    this.financeiroService.getAcertos().subscribe({
-      next: lista => {
-        const enriquecidos = lista
+  carregarDados() {
+    this.carregando.set(true);
+    this.erro.set(null);
+
+    // Carrega usuários, saldos pendentes do mês atual e o histórico de acertos em paralelo
+    forkJoin({
+      usuarios: this.usuarioService.listar(),
+      relatorio: this.financeiroService.getRelatorio(this.periodoAtual),
+      acertos: this.financeiroService.getAcertos()
+    }).subscribe({
+      next: ({ usuarios, relatorio, acertos }) => {
+        this.usuarios.set(usuarios);
+
+        // Filtra apenas profissionais que têm saldo a receber da clínica
+        const pendentes = relatorio.profissionais.filter(p => p.pendente > 0);
+        this.profissionaisPendentes.set(pendentes);
+
+        // Prepara o histórico de repasses já feitos
+        const enriquecidos = acertos
           .map(a => ({
             ...a,
             nome_profissional: this.nomeDoUsuario(a.profissional_id),
           }))
-          .sort((a, b) =>
-            // Pendentes primeiro, depois por data decrescente
-            Number(a.confirmado_pelo_admin) - Number(b.confirmado_pelo_admin) ||
-            new Date(b.data_pagamento).getTime() - new Date(a.data_pagamento).getTime()
-          );
-        this.todosAcertos.set(enriquecidos);
+          .sort((a, b) => new Date(b.data_pagamento).getTime() - new Date(a.data_pagamento).getTime());
+        
+        this.historicoAcertos.set(enriquecidos);
         this.carregando.set(false);
       },
       error: (err: Error) => {
-        this.erro.set(err.message);
+        this.erro.set(err.message || 'Erro ao carregar dados financeiros.');
         this.carregando.set(false);
       },
     });
   }
 
-  confirmar(acerto: AcertoEnriquecido) {
-    this.confirmando.set(acerto.id);
-    this.financeiroService.confirmarAcerto(acerto.id).subscribe({
+  registrarRepasse(profissionalId: number, valorPendente: number) {
+    this.processando.set(profissionalId);
+    this.erro.set(null);
+
+    const dto: AcertoDto = {
+      profissional_id: profissionalId,
+      periodo_referencia: this.periodoAtual,
+      valor_pago: valorPendente,
+      observacao: 'Repasse processado pela clínica',
+    };
+
+    this.financeiroService.criarAcerto(dto).subscribe({
       next: () => {
-        this.todosAcertos.update(lista =>
-          lista.map(a =>
-            a.id === acerto.id ? { ...a, confirmado_pelo_admin: true } : a
-          )
-        );
-        this.confirmando.set(null);
+        this.processando.set(null);
+        // Recarrega os dados para zerar o saldo na tela e colocar o acerto no histórico
+        this.carregarDados(); 
       },
       error: (err: Error) => {
-        this.erro.set(err.message);
-        this.confirmando.set(null);
+        this.erro.set(err.message || 'Erro ao registrar o repasse.');
+        this.processando.set(null);
       },
     });
   }
 
   private nomeDoUsuario(id: number): string {
     return this.usuarios().find(u => u.id === id)?.nome ?? `Profissional #${id}`;
+  }
+
+  private obterPeriodoAtual(): string {
+    const hoje = new Date();
+    const ano = hoje.getFullYear();
+    const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+    return `${ano}-${mes}`;
   }
 
   formatarValor(v: number) {

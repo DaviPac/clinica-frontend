@@ -2,7 +2,7 @@ import { Component, OnInit, signal, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { FinanceiroService } from '../../../core/services/financeiro/financeiro.service';
-import { AcertoComissao, SaldoDevedor } from '../../../core/models/finenceiro.model';
+import { AcertoComissao, SaldoAReceber } from '../../../core/models/finenceiro.model';
 import { AuthService } from '../../../core/services/auth/auth.service';
 import { UsuarioService } from '../../../core/services/usuario/usuario.service';
 
@@ -17,10 +17,9 @@ export class FinanceiroProfissionalComponent implements OnInit {
   private usuarioService = inject(UsuarioService);
   isAdmin = this.authService.isAdmin();
 
-  // Período selecionado no formato YYYY-MM
   periodoSelecionado = signal(this.mesAtual());
 
-  saldo = signal<SaldoDevedor | null>(null);
+  saldo = signal<SaldoAReceber | null>(null);
   acertos = signal<AcertoComissao[]>([]);
   profissionais = signal<{ id: number; nome: string }[]>([]);
 
@@ -32,10 +31,10 @@ export class FinanceiroProfissionalComponent implements OnInit {
   erroAcerto = signal<string | null>(null);
   sucessoAcerto = signal(false);
 
-  totalAcertadoPeriodo = computed(() =>
+  totalRepassadoPeriodo = computed(() =>
     this.acertos()
-      .filter(a => a.periodo_referencia === this.periodoSelecionado() && a.confirmado_pelo_admin)
-      .reduce((sum, a) => sum + a.valor_pago_a_clinica, 0)
+      .filter(a => a.periodo_referencia === this.periodoSelecionado())
+      .reduce((sum, a) => sum + a.valor_pago, 0)
   );
 
   form: FormGroup;
@@ -45,8 +44,8 @@ export class FinanceiroProfissionalComponent implements OnInit {
     private service: FinanceiroService
   ) {
     this.form = fb.group({
-      profissionalId: [null as number | null, this.isAdmin ? [Validators.required] : []],
-      valor_pago_a_clinica: [0, [Validators.required, Validators.min(0.01)]],
+      profissionalId: [null as number | null, [Validators.required]],
+      valor_pago: [0, [Validators.required, Validators.min(0.01)]],
       observacao: [''],
     });
   }
@@ -54,14 +53,11 @@ export class FinanceiroProfissionalComponent implements OnInit {
   ngOnInit() {
     if (this.isAdmin) {
       this.carregarProfissionais();
-      
-      // Assina as mudanças do select para recarregar saldo e histórico 
-      // sempre que o admin trocar de profissional
       this.form.get('profissionalId')?.valueChanges.subscribe(() => {
         this.carregarTudo();
       });
     } else {
-      // Se não for admin, já carrega tudo logo de cara
+      // Profissional só visualiza — sem formulário de criação
       this.carregarTudo();
     }
   }
@@ -73,29 +69,29 @@ export class FinanceiroProfissionalComponent implements OnInit {
 
   carregarProfissionais() {
     this.usuarioService.listar().subscribe({
-      next: (lista) => this.profissionais.set(lista.filter(u => u.role != 'ADMIN')),
-      error: (err: Error) => console.error('Erro ao carregar profissionais', err)
+      next: (lista) => this.profissionais.set(lista.filter(u => u.role !== 'ADMIN')),
+      error: (err: Error) => console.error('Erro ao carregar profissionais', err),
     });
   }
 
   carregarSaldo() {
-    const profId = this.form.get('profissionalId')?.value;
+    const profId = this.isAdmin ? this.form.get('profissionalId')?.value : undefined;
 
-    // Se for admin e não houver ninguém selecionado, limpa o saldo e interrompe
     if (this.isAdmin && !profId) {
       this.saldo.set(null);
-      this.form.controls['valor_pago_a_clinica'].setValue(0);
+      this.form.controls['valor_pago'].setValue(0);
       return;
     }
 
     this.carregandoSaldo.set(true);
-    const profIdStr = profId ? String(profId) : undefined;
 
-    this.service.getSaldoDevido(this.periodoSelecionado(), profIdStr).subscribe({
+    this.service.getSaldoAReceber(this.periodoSelecionado(), profId).subscribe({
       next: s => {
         this.saldo.set(s);
-        // Preenche o campo com o saldo devedor do usuário consultado
-        this.form.controls['valor_pago_a_clinica'].setValue(s.saldo_devido);
+        // Preenche o campo com o saldo pendente de repasse
+        if (this.isAdmin) {
+          this.form.controls['valor_pago'].setValue(s.saldo_a_receber);
+        }
         this.carregandoSaldo.set(false);
       },
       error: (err: Error) => {
@@ -106,16 +102,15 @@ export class FinanceiroProfissionalComponent implements OnInit {
   }
 
   carregarAcertos() {
-    const profId = this.form.get('profissionalId')?.value;
+    const profId = this.isAdmin ? this.form.get('profissionalId')?.value : undefined;
 
-    // Se for admin e não houver ninguém selecionado, limpa o histórico
     if (this.isAdmin && !profId) {
       this.acertos.set([]);
       return;
     }
 
     this.carregandoAcertos.set(true);
-    
+
     this.service.getAcertos(profId).subscribe({
       next: lista => {
         this.acertos.set(
@@ -146,19 +141,17 @@ export class FinanceiroProfissionalComponent implements OnInit {
 
     const raw = this.form.getRawValue();
     const dto = {
+      profissional_id: raw.profissionalId,
       periodo_referencia: this.periodoSelecionado(),
-      valor_pago_a_clinica: raw.valor_pago_a_clinica,
+      valor_pago: raw.valor_pago,
       ...(raw.observacao?.trim() ? { observacao: raw.observacao.trim() } : {}),
     };
 
-    const profissionalId = this.isAdmin ? raw.profissionalId : undefined;
-
-    this.service.criarAcerto(dto, profissionalId).subscribe({
+    this.service.criarAcerto(dto).subscribe({
       next: novoAcerto => {
         this.acertos.update(lista => [novoAcerto, ...lista]);
         this.sucessoAcerto.set(true);
-        // Restaura os campos, mas preserva o profissional selecionado
-        this.form.patchValue({ valor_pago_a_clinica: 0, observacao: '' });
+        this.form.patchValue({ valor_pago: 0, observacao: '' });
         this.salvandoAcerto.set(false);
         this.carregarSaldo();
         setTimeout(() => this.sucessoAcerto.set(false), 3000);

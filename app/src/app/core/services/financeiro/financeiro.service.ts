@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {
-  AcertoComissao, DespesaClinica, SaldoDevedor
+  AcertoComissao, DespesaClinica, SaldoAReceber
 } from '../../models/finenceiro.model';
 
 export interface AcertoDto {
+  profissional_id: number;
   periodo_referencia: string;
-  valor_pago_a_clinica: number;
+  valor_pago: number;
   observacao?: string;
 }
 
@@ -17,7 +18,8 @@ export interface RelatorioFinanceiro {
     nome_profissional: string;
     total_recebido: number;
     comissao_clinica: number;
-    total_acertado: number;
+    a_receber: number;
+    total_repassado: number;
     pendente: number;
   }[];
   total_comissoes: number;
@@ -30,12 +32,12 @@ export class FinanceiroService {
   constructor(private http: HttpClient) {}
 
   // Profissional
-  getSaldoDevido(periodo?: string, profissionalId?: string) {
+  getSaldoAReceber(periodo?: string, profissionalId?: number) {
     const params = new URLSearchParams();
-    if (periodo) params.set('periodo', periodo)
-    if (profissionalId) params.set('profissional_id', profissionalId)
+    if (periodo) params.set('periodo', periodo);
+    if (profissionalId) params.set('profissional_id', String(profissionalId));
     const qs = params.toString();
-    return this.http.get<SaldoDevedor>(`/financeiro/saldo-devido${qs ? '?' + qs : ''}`);
+    return this.http.get<SaldoAReceber>(`/financeiro/saldo-a-receber${qs ? '?' + qs : ''}`);
   }
 
   getAcertos(profissionalId?: number) {
@@ -43,16 +45,9 @@ export class FinanceiroService {
     return this.http.get<AcertoComissao[]>(`/financeiro/acertos${qs}`);
   }
 
-  criarAcerto(dto: AcertoDto, profissionalId?: number) {
-    const qs = profissionalId ? `?profissional_id=${profissionalId}` : '';
-    return this.http.post<AcertoComissao>(`/financeiro/acertos${qs}`, dto);
-  }
-
   // Admin
-  confirmarAcerto(id: number) {
-    return this.http.patch<{ confirmado: boolean }>(
-      `/financeiro/acertos/${id}/confirmar`, {}
-    );
+  criarAcerto(dto: AcertoDto) {
+    return this.http.post<AcertoComissao>('/financeiro/acertos', dto);
   }
 
   getRelatorio(periodo?: string) {

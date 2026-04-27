@@ -2,24 +2,27 @@
 
   <div class="flex items-center justify-between mb-6">
     <div>
-      <h1 class="text-lg font-medium text-gray-900">Acertos pendentes</h1>
+      <h1 class="text-lg font-medium text-gray-900">Repasses a Profissionais</h1>
       <p class="text-sm text-gray-500 mt-0.5">
-        {{ acertos().length }} acerto{{ acertos().length !== 1 ? 's' : '' }}
-        · total pendente: {{ formatarValor(totalPendente()) }}
+        @if (!mostrarHistorico()) {
+          {{ profissionaisPendentes().length }} pendente(s) · total a repassar: {{ formatarValor(totalPendente()) }}
+        } @else {
+          Histórico de repasses concluídos
+        }
       </p>
     </div>
 
     <label class="flex items-center gap-2.5 cursor-pointer select-none">
       <div
         class="relative w-9 h-5 rounded-full transition-colors"
-        [class]="mostrarConfirmados() ? 'bg-[#BCA8A5]' : 'bg-gray-300'"
-        (click)="mostrarConfirmados.set(!mostrarConfirmados())">
+        [class]="mostrarHistorico() ? 'bg-teal-600' : 'bg-gray-300'"
+        (click)="mostrarHistorico.set(!mostrarHistorico())">
         <div
           class="absolute top-0.5 w-4 h-4 bg-white rounded-full shadow-sm transition-transform duration-200"
-          [class]="mostrarConfirmados() ? 'translate-x-[18px]' : 'translate-x-0.5'">
+          [class]="mostrarHistorico() ? 'translate-x-[18px]' : 'translate-x-0.5'">
         </div>
       </div>
-      <span class="text-sm text-gray-600">Mostrar confirmados</span>
+      <span class="text-sm text-gray-600">Mostrar histórico</span>
     </label>
   </div>
 
@@ -35,53 +38,79 @@
 
   @if (!carregando()) {
     <div class="flex flex-col gap-3">
-      @for (a of acertos(); track a.id) {
-        <div
-          class="border rounded-xl p-4 transition-colors"
-          [class]="a.confirmado_pelo_admin
-            ? 'border-gray-200 bg-white opacity-60'
-            : 'border-amber-200 bg-amber-50'">
 
-          <div class="flex items-start justify-between mb-3">
-            <div>
-              <p class="text-sm font-medium text-gray-900">{{ a.nome_profissional }}</p>
-              <p class="text-xs text-gray-500 mt-0.5">
-                {{ formatarMes(a.periodo_referencia) }}
-                · Registrado em {{ formatarData(a.data_pagamento) }}
-              </p>
-              @if (a.observacao) {
-                <p class="text-xs text-gray-500 mt-0.5">{{ a.observacao }}</p>
-              }
+      @if (!mostrarHistorico()) {
+        @for (p of profissionaisPendentes(); track p.profissional_id) {
+          <div class="border border-amber-200 bg-amber-50 rounded-xl p-4 transition-colors">
+            
+            <div class="flex items-start justify-between mb-4">
+              <div>
+                <p class="text-sm font-medium text-gray-900">{{ p.nome_profissional }}</p>
+                <p class="text-xs text-gray-500 mt-0.5">
+                  Referência: {{ formatarMes(periodoAtual) }}
+                </p>
+                <div class="mt-2 text-xs text-gray-600 flex gap-4">
+                  <span>Recebido: {{ formatarValor(p.total_recebido) }}</span>
+                  <span>Retido pela Clínica: {{ formatarValor(p.comissao_clinica) }}</span>
+                </div>
+              </div>
+              
+              <div class="text-right shrink-0">
+                <p class="text-xs text-gray-500 mb-0.5">Valor do Repasse</p>
+                <p class="text-lg font-medium font-mono text-amber-700">
+                  {{ formatarValor(p.pendente) }}
+                </p>
+              </div>
             </div>
-            <div class="text-right shrink-0">
-              <p class="text-lg font-medium font-mono text-gray-900">
-                {{ formatarValor(a.valor_pago_a_clinica) }}
-              </p>
-              @if (a.confirmado_pelo_admin) {
-                <span class="bg-teal-50 text-teal-800 text-xs font-medium px-2 py-0.5 rounded">
-                  Confirmado
-                </span>
-              }
-            </div>
-          </div>
 
-          @if (!a.confirmado_pelo_admin) {
             <button
-              (click)="confirmar(a)"
-              [disabled]="confirmando() === a.id"
+              (click)="registrarRepasse(p.profissional_id, p.pendente)"
+              [disabled]="processando() === p.profissional_id"
               class="w-full bg-teal-600 hover:bg-teal-700 disabled:opacity-50
                      text-white text-sm font-medium rounded-lg py-2
                      transition-colors cursor-pointer disabled:cursor-not-allowed">
-              {{ confirmando() === a.id ? 'Confirmando...' : 'Confirmar recebimento' }}
+              {{ processando() === p.profissional_id ? 'Registrando pagamento...' : 'Registrar Repasse' }}
             </button>
-          }
 
-        </div>
-      } @empty {
-        <div class="text-center py-10 text-sm text-gray-400">
-          Nenhum acerto pendente.
-        </div>
+          </div>
+        } @empty {
+          <div class="text-center py-10 text-sm text-gray-400">
+            Nenhum repasse pendente para {{ formatarMes(periodoAtual) }}.
+          </div>
+        }
       }
+
+      @if (mostrarHistorico()) {
+        @for (a of historicoAcertos(); track a.id) {
+          <div class="border border-gray-200 bg-white rounded-xl p-4 transition-colors">
+            <div class="flex items-start justify-between">
+              <div>
+                <p class="text-sm font-medium text-gray-900">{{ a.nome_profissional }}</p>
+                <p class="text-xs text-gray-500 mt-0.5">
+                  Referência: {{ formatarMes(a.periodo_referencia) }}
+                  · Pago em {{ formatarData(a.data_pagamento) }}
+                </p>
+                @if (a.observacao) {
+                  <p class="text-xs text-gray-500 mt-0.5">{{ a.observacao }}</p>
+                }
+              </div>
+              <div class="text-right shrink-0">
+                <p class="text-lg font-medium font-mono text-gray-900">
+                  {{ formatarValor(a.valor_pago) }}
+                </p>
+                <span class="bg-teal-50 text-teal-800 text-xs font-medium px-2 py-0.5 rounded inline-block mt-1">
+                  Repassado
+                </span>
+              </div>
+            </div>
+          </div>
+        } @empty {
+          <div class="text-center py-10 text-sm text-gray-400">
+            Nenhum histórico de repasse encontrado.
+          </div>
+        }
+      }
+
     </div>
   }
 

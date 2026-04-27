@@ -10,7 +10,7 @@ import { ServicoService } from '../../core/services/servico/servico.service';
 import { AuthService } from '../../core/services/auth/auth.service';
 
 import { Agendamento, StatusAgendamento } from '../../core/models/agendamento.model';
-import { SaldoDevedor } from '../../core/models/finenceiro.model';
+import { SaldoAReceber } from '../../core/models/finenceiro.model'; // Mantido o caminho original
 
 import { StatusBadgeComponent } from '../../shared/components/status-badge/status-badge.component';
 import { AgendamentosStatusModalComponent } from '../agendamentos/agendamentos-status-modal/agendamentos-status-modal.component';
@@ -39,7 +39,7 @@ export class DashboardComponent implements OnInit {
   proximosAgendamentos = signal<Agendamento[]>([]);
   agendamentosPendentes = signal<Agendamento[]>([]);
   pagamentosPendentes = signal<Agendamento[]>([]);
-  saldoDevedor = signal<SaldoDevedor | null>(null);
+  saldoAReceber = signal<SaldoAReceber | null>(null); // Atualizado para a nova interface
 
   pacientesDict = signal<Record<number, string>>({});
   servicosDict = signal<Record<number, string>>({});
@@ -49,14 +49,13 @@ export class DashboardComponent implements OnInit {
 
   // Controle de pagamento inline
   atualizandoPagamento = signal<number | null>(null);
-
   agendamentoParaConfirmarPagamento = signal<Agendamento | null>(null);
 
   // Métricas
   totalProximos = computed(() => this.proximosAgendamentos().length);
   totalPendentes = computed(() => this.agendamentosPendentes().length);
   totalPagamentos = computed(() => this.pagamentosPendentes().length);
-  totalSaldo = computed(() => this.saldoDevedor()?.saldo_devido ?? 0);
+  totalSaldo = computed(() => this.saldoAReceber()?.saldo_a_receber ?? 0); // Atualizado
 
   periodoAtual = computed(() => {
     const now = new Date();
@@ -96,7 +95,7 @@ export class DashboardComponent implements OnInit {
       proximos: this.agendamentoService.listar(dataHoje, dataFimBusca),
       pendentes: this.agendamentoService.listarPendentes(),
       pagamentos: this.agendamentoService.listarPagamentoPendente(),
-      saldo: this.financeiroService.getSaldoDevido(this.mesAtual()),
+      saldo: this.financeiroService.getSaldoAReceber(this.mesAtual()), // Atualizado o método
       pacientes: this.pacienteService.listar(true),
       servicos: this.servicoService.listar(true, true),
     }).subscribe({
@@ -114,8 +113,8 @@ export class DashboardComponent implements OnInit {
         this.proximosAgendamentos.set(proximos);
         this.agendamentosPendentes.set(res.pendentes);
         this.pagamentosPendentes.set(res.pagamentos);
-        this.saldoDevedor.set(res.saldo);
-        console.log(res.saldo)
+        this.saldoAReceber.set(res.saldo);
+        
         this.carregando.set(false);
       },
       error: (err: Error) => {
@@ -139,6 +138,9 @@ export class DashboardComponent implements OnInit {
   // ── Pagamento inline ──
 
   iniciarTogglePagamento(ag: Agendamento) {
+    // Proteção extra caso o HTML seja burlado
+    if (!this.isAdmin()) return; 
+
     if (!ag.pago_pelo_paciente && ag.valor_pacote != null) {
       this.agendamentoParaConfirmarPagamento.set(ag);
     } else {
@@ -147,6 +149,8 @@ export class DashboardComponent implements OnInit {
   }
 
   confirmarPagamentoPacote() {
+    if (!this.isAdmin()) return;
+
     const ag = this.agendamentoParaConfirmarPagamento();
     if (!ag) return;
     this.agendamentoParaConfirmarPagamento.set(null);

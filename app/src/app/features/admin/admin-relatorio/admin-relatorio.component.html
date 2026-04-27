@@ -1,5 +1,4 @@
 <div class="p-6">
-
   <div class="flex items-center justify-between mb-6">
     <div>
       <h1 class="text-lg font-medium text-gray-900">Relatório financeiro</h1>
@@ -9,8 +8,7 @@
       type="month"
       [value]="periodoSelecionado()"
       (change)="onPeriodoChange($event)"
-      class="border border-gray-200 rounded-lg px-3 py-2 text-sm
-             focus:outline-none focus:ring-2 focus:ring-teal-500"
+      class="border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
     />
   </div>
 
@@ -25,11 +23,9 @@
   }
 
   @if (!carregando() && relatorio(); as r) {
-
-    <!-- Cards de resumo -->
     <div class="grid grid-cols-3 gap-3 mb-6">
       <div class="bg-gray-50 rounded-lg p-4">
-        <p class="text-xs text-gray-500 mb-1.5">Total comissões</p>
+        <p class="text-xs text-gray-500 mb-1.5">Total retido (Comissões Clínica)</p>
         <p class="text-xl font-medium font-mono text-gray-900">
           {{ formatarValor(r.total_comissoes) }}
         </p>
@@ -42,54 +38,58 @@
       </div>
       <div
         class="rounded-lg p-4"
-        [class]="r.lucro_liquido >= 0
-          ? 'bg-teal-50 border border-teal-100'
-          : 'bg-red-50 border border-red-100'">
-        <p class="text-xs mb-1.5"
-           [class]="r.lucro_liquido >= 0 ? 'text-teal-800' : 'text-red-800'">
+        [class]="r.lucro_liquido >= 0 ? 'bg-teal-50 border border-teal-100' : 'bg-red-50 border border-red-100'">
+        <p class="text-xs mb-1.5" [class]="r.lucro_liquido >= 0 ? 'text-teal-800' : 'text-red-800'">
           Lucro líquido
         </p>
-        <p class="text-xl font-medium font-mono"
-           [class]="r.lucro_liquido >= 0 ? 'text-teal-700' : 'text-red-700'">
+        <p class="text-xl font-medium font-mono" [class]="r.lucro_liquido >= 0 ? 'text-teal-700' : 'text-red-700'">
           {{ formatarValor(r.lucro_liquido) }}
         </p>
       </div>
     </div>
 
-    <!-- Tabela por profissional -->
-    <h2 class="text-sm font-medium text-gray-900 mb-3">Por profissional</h2>
+    <h2 class="text-sm font-medium text-gray-900 mb-3">Repasses por profissional</h2>
     <div class="border border-gray-200 rounded-xl overflow-hidden">
       <table class="w-full text-sm border-collapse">
         <thead class="bg-gray-50">
           <tr>
             <th class="text-left px-4 py-2.5 font-medium text-gray-500 border-b border-gray-200">Profissional</th>
-            <th class="text-right px-4 py-2.5 font-medium text-gray-500 border-b border-gray-200">Recebido</th>
-            <th class="text-right px-4 py-2.5 font-medium text-gray-500 border-b border-gray-200">Comissão</th>
-            <th class="text-right px-4 py-2.5 font-medium text-gray-500 border-b border-gray-200">Acertado</th>
-            <th class="text-right px-4 py-2.5 font-medium text-gray-500 border-b border-gray-200">Pendente</th>
+            <th class="text-right px-4 py-2.5 font-medium text-gray-500 border-b border-gray-200" title="Total que entrou no caixa da clínica">Recebido (Caixa)</th>
+            <th class="text-right px-4 py-2.5 font-medium text-gray-500 border-b border-gray-200" title="Parte que fica para a clínica">Retido (Clínica)</th>
+            <th class="text-right px-4 py-2.5 font-medium text-gray-500 border-b border-gray-200" title="Valor bruto devido ao profissional">A Repassar</th>
+            <th class="text-right px-4 py-2.5 font-medium text-gray-500 border-b border-gray-200" title="Valor já pago/adiantado">Já Repassado</th>
+            <th class="text-right px-4 py-2.5 font-medium text-gray-500 border-b border-gray-200" title="Saldo a pagar">Pendente</th>
           </tr>
         </thead>
         <tbody>
           @for (p of r.profissionais; track p.profissional_id) {
             <tr class="border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors">
               <td class="px-4 py-3 font-medium text-gray-900">{{ p.nome_profissional }}</td>
+              
               <td class="px-4 py-3 text-right font-mono text-xs text-gray-600">
                 {{ formatarValor(p.total_recebido) }}
               </td>
-              <td class="px-4 py-3 text-right font-mono text-xs text-gray-600">
+              
+              <td class="px-4 py-3 text-right font-mono text-xs text-teal-700 font-medium">
                 {{ formatarValor(p.comissao_clinica) }}
               </td>
-              <td class="px-4 py-3 text-right font-mono text-xs text-teal-700">
-                {{ formatarValor(p.total_acertado) }}
+              
+              <td class="px-4 py-3 text-right font-mono text-xs text-gray-700">
+                {{ formatarValor(p.a_receber) }}
               </td>
+              
+              <td class="px-4 py-3 text-right font-mono text-xs text-blue-600">
+                {{ formatarValor(p.total_repassado) }}
+              </td>
+              
               <td class="px-4 py-3 text-right font-mono text-xs"
-                  [class]="p.pendente > 0 ? 'text-red-700 font-medium' : 'text-gray-400'">
+                  [class]="p.pendente > 0 ? 'text-red-600 font-bold' : 'text-gray-400'">
                 {{ formatarValor(p.pendente) }}
               </td>
             </tr>
           } @empty {
             <tr>
-              <td colspan="5" class="px-4 py-10 text-center text-sm text-gray-400">
+              <td colspan="6" class="px-4 py-10 text-center text-sm text-gray-400">
                 Nenhum dado para este período.
               </td>
             </tr>
@@ -97,6 +97,5 @@
         </tbody>
       </table>
     </div>
-
   }
 </div>

@@ -2,9 +2,8 @@ export interface AcertoComissao {
   id: number;
   profissional_id: number;
   periodo_referencia: string;
-  valor_pago_a_clinica: number;
+  valor_pago: number;
   data_pagamento: string;
-  confirmado_pelo_admin: boolean;
   observacao: string | null;
 }
 
@@ -18,8 +17,8 @@ export interface DespesaClinica {
   criado_em: string;
 }
 
-export interface SaldoDevedor {
+export interface SaldoAReceber {
   profissional_id: number;
   periodo: string;
-  saldo_devido: number;
+  saldo_a_receber: number;
 }
