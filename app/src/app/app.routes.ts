@@ -43,6 +43,12 @@ export const routes: Routes = [
             .then(m => m.AgendamentosListaComponent),
       },
       {
+        path: 'agendamentos/:id',
+        loadComponent: () =>
+          import('./features/agendamentos/agendamento-detalhes/agendamento-detalhes.component')
+            .then(m => m.AgendamentoDetalhesComponent),
+      },
+      {
         path: 'dashboard',
         loadComponent: () =>
           import('./features/dashboard/dashboard.component')

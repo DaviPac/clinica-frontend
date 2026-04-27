@@ -14,6 +14,7 @@ import { StatusBadgeComponent } from '../../../shared/components/status-badge/st
 import { AgendamentosModalComponent } from '../agendamentos-modal/agendamentos-modal.component';
 import { AgendamentosStatusModalComponent } from '../agendamentos-status-modal/agendamentos-status-modal.component';
 import { formatarDataHora, formatarHora } from '../../../core/utils/data.utils';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-agendamentos-lista',
@@ -21,6 +22,7 @@ import { formatarDataHora, formatarHora } from '../../../core/utils/data.utils';
   imports: [
     CommonModule, FormsModule, StatusBadgeComponent,
     AgendamentosModalComponent, AgendamentosStatusModalComponent,
+    RouterLink,
   ],
   templateUrl: './agendamentos-lista.component.html',
   styleUrl: './agendamentos-lista.component.css'
@@ -31,13 +33,15 @@ export class AgendamentosListaComponent implements OnInit {
   private usuarioService = inject(UsuarioService);
   private servicoService = inject(ServicoService);
   private service = inject(AgendamentoService);
+  
+  router = inject(Router)
 
   agendamentos = signal<Agendamento[]>([]);
   carregando = signal(true);
   erro = signal<string | null>(null);
 
   isAdmin = this.authService.isAdmin;
-  mostrarTodos = signal(false);
+  mostrarTodos = signal(this.isAdmin());
 
   mesAtual = signal<Date>(new Date());
   
@@ -114,7 +118,7 @@ export class AgendamentosListaComponent implements OnInit {
     this.carregando.set(true);
     forkJoin({
       pacientes: this.pacienteService.listar(true),
-      usuarios: this.isAdmin() ? this.usuarioService.listar() : of([]),
+      usuarios: this.isAdmin() ? this.usuarioService.listar() : of([this.authService.usuario()]),
       servicos: this.servicoService.listar(true, true)
     }).subscribe({
       next: (res) => {

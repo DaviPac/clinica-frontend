@@ -1,13 +1,14 @@
 import { Component, OnInit, signal, inject, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { forkJoin } from 'rxjs';
+import { forkJoin, of } from 'rxjs';
 
 import { AgendamentoService } from '../../core/services/agendamento/agendamento.service';
 import { FinanceiroService } from '../../core/services/financeiro/financeiro.service';
 import { PacienteService } from '../../core/services/paciente/paciente.service';
 import { ServicoService } from '../../core/services/servico/servico.service';
 import { AuthService } from '../../core/services/auth/auth.service';
+import { UsuarioService } from '../../core/services/usuario/usuario.service';
 
 import { Agendamento, StatusAgendamento } from '../../core/models/agendamento.model';
 import { SaldoAReceber } from '../../core/models/finenceiro.model'; // Mantido o caminho original
@@ -29,8 +30,11 @@ export class DashboardComponent implements OnInit {
   private pacienteService = inject(PacienteService);
   private servicoService = inject(ServicoService);
   private authService = inject(AuthService);
+  private usuarioService = inject(UsuarioService)
 
   isAdmin = this.authService.isAdmin;
+
+  mostrarTodos = signal(true)
 
   carregando = signal(true);
   erro = signal<string | null>(null);
@@ -43,6 +47,7 @@ export class DashboardComponent implements OnInit {
 
   pacientesDict = signal<Record<number, string>>({});
   servicosDict = signal<Record<number, string>>({});
+  usuariosDict = signal<Record<number, string>>({});
 
   // Modal de status
   agendamentoParaStatus = signal<Agendamento | null>(null);
@@ -92,12 +97,13 @@ export class DashboardComponent implements OnInit {
     const dataFimBusca = `${anoFim}-${mesFim}-${diaFim}`;
 
     forkJoin({
-      proximos: this.agendamentoService.listar(dataHoje, dataFimBusca),
-      pendentes: this.agendamentoService.listarPendentes(),
-      pagamentos: this.agendamentoService.listarPagamentoPendente(),
+      proximos: this.agendamentoService.listar(dataHoje, dataFimBusca, this.mostrarTodos()),
+      pendentes: this.agendamentoService.listarPendentes(this.mostrarTodos()),
+      pagamentos: this.agendamentoService.listarPagamentoPendente(this.mostrarTodos()),
       saldo: this.financeiroService.getSaldoAReceber(this.mesAtual()), // Atualizado o método
       pacientes: this.pacienteService.listar(true),
       servicos: this.servicoService.listar(true, true),
+      usuarios: this.isAdmin() ? this.usuarioService.listar() : of([this.authService.usuario()!])
     }).subscribe({
       next: (res) => {
         const conv = (arr: any[]) =>
@@ -105,6 +111,7 @@ export class DashboardComponent implements OnInit {
 
         this.pacientesDict.set(conv(res.pacientes));
         this.servicosDict.set(conv(res.servicos));
+        this.usuariosDict.set(conv(res.usuarios));
 
         const agora = new Date();
         const proximos = res.proximos
@@ -179,6 +186,10 @@ export class DashboardComponent implements OnInit {
 
   nomeServico(id: number): string {
     return this.servicosDict()[id] ?? `Serviço ${id}`;
+  }
+
+  nomeProfissional(id: number): string {
+    return this.usuariosDict()[id] ?? `Profissional ${id}`
   }
 
   formatarDataCurta(iso: string): string {

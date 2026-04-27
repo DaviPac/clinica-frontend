@@ -74,10 +74,17 @@
   border-top: 1px solid #f3f4f6;
   border-right: 1px solid #f3f4f6;
   border-bottom: 1px solid #f3f4f6;
-  transition: box-shadow 0.15s;
+  /* ATUALIZADO: Adicionada transição para transform e filter */
+  transition: box-shadow 0.2s ease, transform 0.2s ease, filter 0.2s ease;
 }
+
 .agenda-card:hover {
-  box-shadow: 0 1px 4px rgba(0,0,0,.08);
+  /* Sombra um pouco mais espalhada para dar profundidade */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+  /* Efeito de levantar o card 1 pixel para cima */
+  transform: translateY(-1px);
+  /* Escurece o fundo em 3%, adaptando-se automaticamente a qualquer cor de status */
+  filter: brightness(0.97); 
 }
 
 .agenda-card--agendado {

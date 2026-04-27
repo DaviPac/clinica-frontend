@@ -112,8 +112,12 @@
 
               <div class="flex flex-col gap-1 flex-1 agenda-day-events">
                 @for (ag of dia.agendamentos; track ag.id) {
-
-                  <div class="agenda-card" [ngClass]="'agenda-card--' + (ag.status | lowercase)">
+                  <div 
+                    class="agenda-card cursor-pointer relative focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" 
+                    [ngClass]="'agenda-card--' + (ag.status | lowercase)"
+                    [routerLink]="['/agendamentos', ag.id]"
+                    tabindex="0"
+                  >
 
                     <div class="flex items-start justify-between gap-1 mb-0.5">
                       <span class="text-[10px] font-bold tabular-nums text-gray-800 leading-none pt-px">
@@ -124,15 +128,13 @@
                       </div>
                     </div>
 
-                    <p
-                      class="text-[11px] font-bold text-gray-900 truncate leading-tight"
-                      title="Paciente: {{ pacientesDict()[ag.paciente_id] || ag.paciente_id }}"
-                    >{{ pacientesDict()[ag.paciente_id] || 'Paciente ' + ag.paciente_id }}</p>
+                    <p class="text-[11px] font-bold text-gray-900 truncate leading-tight"
+                      [title]="'Paciente: ' + (pacientesDict()[ag.paciente_id] || ag.paciente_id)">
+                      {{ pacientesDict()[ag.paciente_id] || 'Paciente ' + ag.paciente_id }}
+                    </p>
 
-                    <p
-                      class="flex items-center gap-1 text-[10px] text-gray-500 truncate mt-0.5"
-                      title="{{ usuariosDict()[ag.profissional_id!] || ag.profissional_id }}"
-                    >
+                    <p class="flex items-center gap-1 text-[10px] text-gray-500 truncate mt-0.5"
+                      [title]="usuariosDict()[ag.profissional_id!] || ag.profissional_id">
                       <svg width="9" height="9" viewBox="0 0 9 9" fill="none" class="shrink-0 opacity-50">
                         <circle cx="4.5" cy="3" r="1.8" stroke="currentColor" stroke-width="1.1"/>
                         <path d="M1 8.5c0-1.933 1.567-3.5 3.5-3.5s3.5 1.567 3.5 3.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
@@ -140,10 +142,8 @@
                       {{ usuariosDict()[ag.profissional_id!] || ag.profissional_id }}
                     </p>
 
-                    <p
-                      class="flex items-center gap-1 text-[10px] text-gray-400 truncate"
-                      title="{{ servicosDict()[ag.servico_id] || ag.servico_id }}"
-                    >
+                    <p class="flex items-center gap-1 text-[10px] text-gray-400 truncate"
+                      [title]="servicosDict()[ag.servico_id] || ag.servico_id">
                       <svg width="9" height="9" viewBox="0 0 9 9" fill="none" class="shrink-0 opacity-50">
                         <rect x="0.8" y="1.5" width="7.4" height="6" rx="1" stroke="currentColor" stroke-width="1.1"/>
                         <path d="M3 1.5V1M6 1.5V1M0.8 4h7.4" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
@@ -155,20 +155,22 @@
 
                       @if (ag.status !== 'CANCELADO') {
                         <button
-                          (click)="abrirModalStatus(ag)"
-                          class="agenda-action-btn"
+                          type="button"
+                          (click)="$event.stopPropagation(); abrirModalStatus(ag)"
+                          class="agenda-action-btn relative z-10"
                         >Status</button>
                       }
 
                       <button
-                        (click)="iniciarTogglePagamento(ag)"
+                        type="button"
+                        (click)="$event.stopPropagation(); iniciarTogglePagamento(ag)"
                         [disabled]="!isAdmin() || atualizandoPagamento() === ag.id"
-                        class="agenda-action-btn"
+                        class="agenda-action-btn relative z-10"
                         [class.agenda-action-btn--paid]="ag.pago_pelo_paciente"
                         [class.agenda-action-btn--unpaid]="!ag.pago_pelo_paciente"
                       >
-                        @if (atualizandoPagamento() === ag.id) { ... }
-                        @else if (ag.pago_pelo_paciente) {
+                        @if (atualizandoPagamento() === ag.id) { 
+                          } @else if (ag.pago_pelo_paciente) {
                           <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
                             <path d="M1 4l2 2 4-3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
                           </svg>
@@ -178,13 +180,13 @@
 
                       @if (ag.status === 'AGENDADO' && ag.recorrencia_group_id) {
                         <button
-                          (click)="confirmarCancelamentoSerie(ag)"
-                          class="agenda-action-btn agenda-action-btn--danger"
+                          type="button"
+                          (click)="$event.stopPropagation(); confirmarCancelamentoSerie(ag)"
+                          class="agenda-action-btn agenda-action-btn--danger relative z-10"
                         >Cancelar série</button>
                       }
 
                     </div>
-
                   </div>
                 }
               </div>

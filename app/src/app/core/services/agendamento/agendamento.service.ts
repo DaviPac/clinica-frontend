@@ -34,17 +34,23 @@ export class AgendamentoService {
     return this.http.get<Agendamento[]>(`/agendamentos${qs ? '?' + qs : ''}`);
   }
 
-  listarPendentes() {
+  obterPorId(id: string | number) {
+    return this.http.get<Agendamento | null>(`/agendamentos/${id}`)
+  }
+
+  listarPendentes(todos: boolean = false) {
     const params = new URLSearchParams();
     params.set('filtro', 'pendente');
+    if (todos) params.set('todos', 'true'); 
     
     const qs = params.toString();
     return this.http.get<Agendamento[]>(`/agendamentos?${qs}`);
   }
 
-  listarPagamentoPendente() {
+  listarPagamentoPendente(todos: boolean = false) {
     const params = new URLSearchParams();
     params.set('filtro', 'pagamento_pendente');
+    if (todos) params.set('todos', 'true'); 
     
     const qs = params.toString();
     return this.http.get<Agendamento[]>(`/agendamentos?${qs}`);
@@ -63,6 +69,13 @@ export class AgendamentoService {
   atualizarStatus(id: number, status: StatusAgendamento) {
     return this.http.patch<{ status: StatusAgendamento }>(
       `/agendamentos/${id}/status`, { status }
+    );
+  }
+
+  atualizarValor(id: number, valor: number, recorrente: boolean = false) {
+    const params = recorrente ? '?recorrente=true' : '';
+    return this.http.patch<{ valor_combinado: number }>(
+      `/agendamentos/${id}/valor-combinado${params}`, { valor_combinado: valor }
     );
   }
 
