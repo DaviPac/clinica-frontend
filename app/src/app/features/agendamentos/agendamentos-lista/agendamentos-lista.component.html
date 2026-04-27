@@ -162,7 +162,7 @@
 
                       <button
                         (click)="iniciarTogglePagamento(ag)"
-                        [disabled]="atualizandoPagamento() === ag.id"
+                        [disabled]="!isAdmin() || atualizandoPagamento() === ag.id"
                         class="agenda-action-btn"
                         [class.agenda-action-btn--paid]="ag.pago_pelo_paciente"
                         [class.agenda-action-btn--unpaid]="!ag.pago_pelo_paciente"
