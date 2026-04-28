@@ -1,4 +1,4 @@
-<div class="p-6">
+<div class="p-6 relative">
 
   <div class="flex items-center justify-between mb-6">
     <div>
@@ -64,7 +64,7 @@
             </div>
 
             <button
-              (click)="registrarRepasse(p.profissional_id, p.pendente)"
+              (click)="iniciarRepasse(p.profissional_id, p.pendente, p.nome_profissional)"
               [disabled]="processando() === p.profissional_id"
               class="w-full bg-teal-600 hover:bg-teal-700 disabled:opacity-50
                      text-white text-sm font-medium rounded-lg py-2
@@ -111,6 +111,52 @@
         }
       }
 
+    </div>
+  }
+
+  @if (repasseSelecionado()) {
+    <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4">
+      <div class="bg-white rounded-xl shadow-xl w-full max-w-md overflow-hidden">
+        
+        <div class="p-6">
+          <h2 class="text-lg font-semibold text-gray-900 mb-2">Confirmar Repasse</h2>
+          <p class="text-sm text-gray-600 mb-4">
+            Deseja confirmar o repasse pendente para <span class="font-medium text-gray-900">{{ repasseSelecionado()?.nome }}</span>?
+          </p>
+          
+          <div class="flex flex-col items-center justify-center bg-gray-50 rounded-lg p-4 mb-4 border border-gray-100">
+            <span class="text-xs text-gray-500 uppercase tracking-wide font-medium mb-1">Valor a repassar</span>
+            <span class="text-2xl font-mono font-medium text-amber-700">
+              {{ formatarValor(repasseSelecionado()!.valor) }}
+            </span>
+          </div>
+
+          <div class="bg-red-50 border-l-4 border-red-500 p-3 rounded-r-md">
+            <div class="flex items-start">
+              <svg class="w-5 h-5 text-red-600 mt-0.5 mr-2 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+              </svg>
+              <p class="text-sm text-red-800 font-medium">
+                Atenção: Esta ação não pode ser desfeita. O sistema registrará este valor como pago definitivamente.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-gray-50 px-6 py-4 flex justify-end gap-3 border-t border-gray-200">
+          <button
+            (click)="cancelarRepasse()"
+            class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+            Cancelar
+          </button>
+          <button
+            (click)="confirmarRepasse()"
+            class="px-4 py-2 text-sm font-medium text-white bg-teal-600 rounded-lg hover:bg-teal-700 transition-colors shadow-sm">
+            Confirmar Repasse
+          </button>
+        </div>
+
+      </div>
     </div>
   }
 

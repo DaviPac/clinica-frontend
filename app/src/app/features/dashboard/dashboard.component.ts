@@ -11,7 +11,7 @@ import { AuthService } from '../../core/services/auth/auth.service';
 import { UsuarioService } from '../../core/services/usuario/usuario.service';
 
 import { Agendamento, StatusAgendamento } from '../../core/models/agendamento.model';
-import { SaldoAReceber } from '../../core/models/finenceiro.model'; // Mantido o caminho original
+import { SaldoAReceber } from '../../core/models/financeiro.model'; // Mantido o caminho original
 
 import { StatusBadgeComponent } from '../../shared/components/status-badge/status-badge.component';
 import { AgendamentosStatusModalComponent } from '../agendamentos/agendamentos-status-modal/agendamentos-status-modal.component';

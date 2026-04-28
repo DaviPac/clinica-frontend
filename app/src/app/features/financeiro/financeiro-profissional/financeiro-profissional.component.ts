@@ -2,7 +2,7 @@ import { Component, OnInit, signal, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { FinanceiroService } from '../../../core/services/financeiro/financeiro.service';
-import { AcertoComissao, SaldoAReceber } from '../../../core/models/finenceiro.model';
+import { AcertoComissao, SaldoAReceber } from '../../../core/models/financeiro.model';
 import { AuthService } from '../../../core/services/auth/auth.service';
 import { UsuarioService } from '../../../core/services/usuario/usuario.service';
 
@@ -30,6 +30,7 @@ export class FinanceiroProfissionalComponent implements OnInit {
   erro = signal<string | null>(null);
   erroAcerto = signal<string | null>(null);
   sucessoAcerto = signal(false);
+  mostrarModal = signal(false);
 
   totalRepassadoPeriodo = computed(() =>
     this.acertos()
@@ -134,7 +135,16 @@ export class FinanceiroProfissionalComponent implements OnInit {
 
   submit() {
     if (this.form.invalid) return;
+    this.mostrarModal.set(true);
+  }
 
+  fecharModal() {
+    if (!this.salvandoAcerto()) {
+      this.mostrarModal.set(false);
+    }
+  }
+
+  confirmarRepasse() {
     this.salvandoAcerto.set(true);
     this.erroAcerto.set(null);
     this.sucessoAcerto.set(false);
@@ -154,11 +164,13 @@ export class FinanceiroProfissionalComponent implements OnInit {
         this.form.patchValue({ valor_pago: 0, observacao: '' });
         this.salvandoAcerto.set(false);
         this.carregarSaldo();
+        this.fecharModal(); // Fecha o modal após sucesso
         setTimeout(() => this.sucessoAcerto.set(false), 3000);
       },
       error: (err: Error) => {
         this.erroAcerto.set(err.message);
         this.salvandoAcerto.set(false);
+        this.fecharModal(); // Fecha o modal para mostrar o erro na tela principal
       },
     });
   }

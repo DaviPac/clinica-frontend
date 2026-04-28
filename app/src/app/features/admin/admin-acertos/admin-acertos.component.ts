@@ -3,11 +3,18 @@ import { CommonModule } from '@angular/common';
 import { forkJoin } from 'rxjs';
 import { FinanceiroService, AcertoDto, RelatorioFinanceiro } from '../../../core/services/financeiro/financeiro.service';
 import { UsuarioService } from '../../../core/services/usuario/usuario.service';
-import { AcertoComissao } from '../../../core/models/finenceiro.model';
+import { AcertoComissao } from '../../../core/models/financeiro.model';
 import { Usuario } from '../../../core/models/usuario.model';
 
 interface AcertoEnriquecido extends AcertoComissao {
   nome_profissional: string;
+}
+
+// Interface para controlar o estado do modal
+interface RepasseSelecionado {
+  profissionalId: number;
+  valor: number;
+  nome: string;
 }
 
 @Component({
@@ -27,6 +34,9 @@ export class AdminAcertosComponent implements OnInit {
   processando = signal<number | null>(null);
   carregando = signal(true);
   erro = signal<string | null>(null);
+
+  // Estado do modal de confirmação
+  repasseSelecionado = signal<RepasseSelecionado | null>(null);
 
   // Define o período atual (ex: "2026-04")
   periodoAtual = this.obterPeriodoAtual();
@@ -48,7 +58,6 @@ export class AdminAcertosComponent implements OnInit {
     this.carregando.set(true);
     this.erro.set(null);
 
-    // Carrega usuários, saldos pendentes do mês atual e o histórico de acertos em paralelo
     forkJoin({
       usuarios: this.usuarioService.listar(),
       relatorio: this.financeiroService.getRelatorio(this.periodoAtual),
@@ -57,11 +66,18 @@ export class AdminAcertosComponent implements OnInit {
       next: ({ usuarios, relatorio, acertos }) => {
         this.usuarios.set(usuarios);
 
-        // Filtra apenas profissionais que têm saldo a receber da clínica
-        const pendentes = relatorio.profissionais.filter(p => p.pendente > 0);
+        const isAdmin = (p: {
+            profissional_id: number;
+            nome_profissional: string;
+            total_recebido: number;
+            comissao_clinica: number;
+            a_receber: number;
+            total_repassado: number;
+            pendente: number;
+        }) => usuarios.find(u => u.id == p.profissional_id && u.role == 'ADMIN')
+        const pendentes = relatorio.profissionais.filter(p => p.pendente > 0 && !isAdmin(p));
         this.profissionaisPendentes.set(pendentes);
 
-        // Prepara o histórico de repasses já feitos
         const enriquecidos = acertos
           .map(a => ({
             ...a,
@@ -79,21 +95,39 @@ export class AdminAcertosComponent implements OnInit {
     });
   }
 
-  registrarRepasse(profissionalId: number, valorPendente: number) {
-    this.processando.set(profissionalId);
+  // Prepara os dados e abre o modal
+  iniciarRepasse(profissionalId: number, valorPendente: number, nome: string) {
+    this.repasseSelecionado.set({
+      profissionalId,
+      valor: valorPendente,
+      nome
+    });
+  }
+
+  // Fecha o modal
+  cancelarRepasse() {
+    this.repasseSelecionado.set(null);
+  }
+
+  // Executa o repasse após confirmação
+  confirmarRepasse() {
+    const selecionado = this.repasseSelecionado();
+    if (!selecionado) return;
+
+    this.processando.set(selecionado.profissionalId);
     this.erro.set(null);
+    this.repasseSelecionado.set(null); // Fecha o modal imediatamente
 
     const dto: AcertoDto = {
-      profissional_id: profissionalId,
+      profissional_id: selecionado.profissionalId,
       periodo_referencia: this.periodoAtual,
-      valor_pago: valorPendente,
+      valor_pago: selecionado.valor,
       observacao: 'Repasse processado pela clínica',
     };
 
     this.financeiroService.criarAcerto(dto).subscribe({
       next: () => {
         this.processando.set(null);
-        // Recarrega os dados para zerar o saldo na tela e colocar o acerto no histórico
         this.carregarDados(); 
       },
       error: (err: Error) => {

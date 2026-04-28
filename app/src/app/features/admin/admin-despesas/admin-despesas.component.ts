@@ -2,7 +2,7 @@ import { Component, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { FinanceiroService } from '../../../core/services/financeiro/financeiro.service';
-import { DespesaClinica } from '../../../core/models/finenceiro.model';
+import { DespesaClinica } from '../../../core/models/financeiro.model';
 
 @Component({
   selector: 'app-admin-despesas',

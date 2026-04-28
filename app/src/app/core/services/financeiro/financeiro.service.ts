@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {
   AcertoComissao, DespesaClinica, SaldoAReceber
-} from '../../models/finenceiro.model';
+} from '../../models/financeiro.model';
 
 export interface AcertoDto {
   profissional_id: number;
