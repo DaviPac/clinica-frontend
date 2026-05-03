@@ -16,7 +16,7 @@ export class UsuarioService {
   constructor(private http: HttpClient) {}
 
   listar() {
-    return this.http.get<Usuario[]>('/usuarios');
+    return this.http.get<Usuario[]>('/auth/usuarios');
   }
 
   registrar(dto: RegistrarUsuarioDto) {
