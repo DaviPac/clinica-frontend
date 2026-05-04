@@ -1,7 +1,7 @@
 <div class="p-6 relative">
 
-  <div class="flex items-center justify-between mb-6">
-    <div>
+  <div class="flex items-center justify-between mb-6 gap-4">
+    <div class="flex-1 min-w-0">
       <h1 class="text-lg font-medium text-gray-900">Repasses a Profissionais</h1>
       <p class="text-sm text-gray-500 mt-0.5">
         @if (!mostrarHistorico()) {
@@ -10,7 +10,17 @@
           Histórico de repasses concluídos
         }
       </p>
-    </div>
+  </div>
+
+  <div class="flex items-center gap-3 shrink-0">
+    @if (!mostrarHistorico()) {
+      <input
+        type="month"
+        [value]="periodoSelecionado()"
+        (change)="onPeriodoChange($event)"
+        class="border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
+      />
+    }
 
     <label class="flex items-center gap-2.5 cursor-pointer select-none">
       <app-toggle
@@ -20,6 +30,7 @@
         (changed)="mostrarHistorico.set($event)" />
     </label>
   </div>
+</div>
 
   @if (erro()) {
     <div class="bg-red-50 border border-red-200 rounded-lg px-4 py-3 mb-4">
@@ -42,7 +53,7 @@
               <div>
                 <p class="text-sm font-medium text-gray-900">{{ p.nome_profissional }}</p>
                 <p class="text-xs text-gray-500 mt-0.5">
-                  Referência: {{ formatarMes(periodoAtual) }}
+                  Referência: {{ formatarMes(periodoSelecionado()) }}
                 </p>
                 <div class="mt-2 text-xs text-gray-600 flex gap-4">
                   <span>Recebido: {{ formatarValor(p.total_recebido) }}</span>
@@ -70,7 +81,7 @@
           </div>
         } @empty {
           <div class="text-center py-10 text-sm text-gray-400">
-            Nenhum repasse pendente para {{ formatarMes(periodoAtual) }}.
+            Nenhum repasse pendente para {{ formatarMes(periodoSelecionado()) }}.
           </div>
         }
       }

@@ -40,7 +40,7 @@ export class AdminAcertosComponent implements OnInit {
   repasseSelecionado = signal<RepasseSelecionado | null>(null);
 
   // Define o período atual (ex: "2026-04")
-  periodoAtual = this.obterPeriodoAtual();
+  periodoSelecionado = signal(this.obterPeriodoAtual());
 
   totalPendente = computed(() =>
     this.profissionaisPendentes().reduce((s, p) => s + p.pendente, 0)
@@ -61,7 +61,7 @@ export class AdminAcertosComponent implements OnInit {
 
     forkJoin({
       usuarios: this.usuarioService.listar(),
-      relatorio: this.financeiroService.getRelatorio(this.periodoAtual),
+      relatorio: this.financeiroService.getRelatorio(this.periodoSelecionado()),
       acertos: this.financeiroService.getAcertos()
     }).subscribe({
       next: ({ usuarios, relatorio, acertos }) => {
@@ -121,7 +121,7 @@ export class AdminAcertosComponent implements OnInit {
 
     const dto: AcertoDto = {
       profissional_id: selecionado.profissionalId,
-      periodo_referencia: this.periodoAtual,
+      periodo_referencia: this.periodoSelecionado(),
       valor_pago: selecionado.valor,
       observacao: 'Repasse processado pela clínica',
     };
@@ -162,5 +162,13 @@ export class AdminAcertosComponent implements OnInit {
     const nomes = ['Jan','Fev','Mar','Abr','Mai','Jun',
                    'Jul','Ago','Set','Out','Nov','Dez'];
     return `${nomes[+mes - 1]} ${ano}`;
+  }
+
+  onPeriodoChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.value) {
+      this.periodoSelecionado.set(input.value);
+      this.carregarDados();
+    }
   }
 }
