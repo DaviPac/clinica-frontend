@@ -18,6 +18,7 @@ import { Usuario } from '../../../core/models/usuario.model';
 export class PacientesListaComponent implements OnInit {
   private authService = inject(AuthService)
   private usuarioService = inject(UsuarioService)
+  mostrarInativos = signal(false);
 
   isAdmin = this.authService.isAdmin()
   usuarios = signal<Usuario[]>([]);
@@ -52,7 +53,7 @@ export class PacientesListaComponent implements OnInit {
     this.carregando.set(true);
     this.erro.set(null);
     const mostrarTodos = this.isAdmin && !this.filtroProfissionalId();
-    this.service.listar(mostrarTodos, this.filtroProfissionalId()).subscribe({
+    this.service.listar(mostrarTodos, this.mostrarInativos(), this.filtroProfissionalId()).subscribe({
       next: lista => {
         this.todos.set(lista);
         this.carregando.set(false);
@@ -62,6 +63,11 @@ export class PacientesListaComponent implements OnInit {
         this.carregando.set(false);
       },
     });
+  }
+
+  onToggleInativos() {
+    this.mostrarInativos.update(v => !v);
+    this.carregar();
   }
 
   onFiltroChange(valor: string) {

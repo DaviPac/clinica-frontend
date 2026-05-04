@@ -117,7 +117,7 @@ export class AgendamentosModalComponent implements OnInit {
       this.ctrl['usuario_id'].valueChanges.subscribe((id: number) => {
         this.ctrl['paciente_id'].setValue(0);
         if (id) {
-          this.pacienteService.listar(false, id.toString()).subscribe(p => this.pacientes.set(p));
+          this.pacienteService.listar(false, false, id.toString()).subscribe(p => this.pacientes.set(p));
         } else {
           this.pacientes.set([]);
         }
@@ -125,7 +125,7 @@ export class AgendamentosModalComponent implements OnInit {
 
       const initialId = this.ctrl['usuario_id'].value as number;
       if (initialId) {
-        this.pacienteService.listar(false, initialId.toString()).subscribe(p => this.pacientes.set(p));
+        this.pacienteService.listar(false, false, initialId.toString()).subscribe(p => this.pacientes.set(p));
       }
     } else {
       this.pacienteService.listar().subscribe(p => this.pacientes.set(p));
