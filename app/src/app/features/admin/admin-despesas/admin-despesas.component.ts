@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { FinanceiroService } from '../../../core/services/financeiro/financeiro.service';
 import { DespesaClinica } from '../../../core/models/financeiro.model';
+import { ToggleComponent } from '../../../shared/components/toggle/toggle.component';
 
 @Component({
   selector: 'app-admin-despesas',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, ToggleComponent],
   templateUrl: './admin-despesas.component.html',
 })
 export class AdminDespesasComponent implements OnInit {

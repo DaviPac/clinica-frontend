@@ -1,5 +1,6 @@
 import { Component, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ToggleComponent } from '../../../shared/components/toggle/toggle.component';
 import { ServicoService } from '../../../core/services/servico/servico.service';
 import { Servico } from '../../../core/models/servico.model';
 import { ServicosModalComponent } from '../servicos-modal/servicos-modal.component';
@@ -7,7 +8,7 @@ import { ServicosModalComponent } from '../servicos-modal/servicos-modal.compone
 @Component({
   selector: 'app-servicos-lista',
   standalone: true,
-  imports: [CommonModule, ServicosModalComponent],
+  imports: [CommonModule, ServicosModalComponent, ToggleComponent],
   templateUrl: './servicos-lista.component.html',
 })
 export class ServicosListaComponent implements OnInit {

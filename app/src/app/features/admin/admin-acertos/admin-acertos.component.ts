@@ -5,6 +5,7 @@ import { FinanceiroService, AcertoDto, RelatorioFinanceiro } from '../../../core
 import { UsuarioService } from '../../../core/services/usuario/usuario.service';
 import { AcertoComissao } from '../../../core/models/financeiro.model';
 import { Usuario } from '../../../core/models/usuario.model';
+import { ToggleComponent } from '../../../shared/components/toggle/toggle.component';
 
 interface AcertoEnriquecido extends AcertoComissao {
   nome_profissional: string;
@@ -20,7 +21,7 @@ interface RepasseSelecionado {
 @Component({
   selector: 'app-admin-acertos',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ToggleComponent],
   templateUrl: './admin-acertos.component.html',
 })
 export class AdminAcertosComponent implements OnInit {

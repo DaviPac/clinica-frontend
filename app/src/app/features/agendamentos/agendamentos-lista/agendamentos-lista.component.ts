@@ -15,6 +15,7 @@ import { AgendamentosModalComponent } from '../agendamentos-modal/agendamentos-m
 import { AgendamentosStatusModalComponent } from '../agendamentos-status-modal/agendamentos-status-modal.component';
 import { formatarDataHora, formatarHora } from '../../../core/utils/data.utils';
 import { Router, RouterLink } from '@angular/router';
+import { ToggleComponent } from '../../../shared/components/toggle/toggle.component';
 
 @Component({
   selector: 'app-agendamentos-lista',
@@ -22,7 +23,7 @@ import { Router, RouterLink } from '@angular/router';
   imports: [
     CommonModule, FormsModule, StatusBadgeComponent,
     AgendamentosModalComponent, AgendamentosStatusModalComponent,
-    RouterLink,
+    RouterLink, ToggleComponent
   ],
   templateUrl: './agendamentos-lista.component.html',
   styleUrl: './agendamentos-lista.component.css'

@@ -10,18 +10,10 @@
     <div class="flex flex-wrap items-center gap-3">
 
       @if (isAdmin()) {
-        <label class="agenda-toggle">
-          <input
-            type="checkbox"
-            class="sr-only peer"
-            [ngModel]="mostrarTodos()"
-            (ngModelChange)="mostrarTodos.set($event); carregarAgendamentos()"
-          />
-          <span class="agenda-toggle__track peer-checked:bg-[#BCA8A5]">
-            <span class="agenda-toggle__thumb peer-checked:translate-x-4"></span>
-          </span>
-          <span class="text-xs font-medium text-gray-600 whitespace-nowrap">Mostrar todos</span>
-        </label>
+        <app-toggle
+          [checked]="mostrarTodos()"
+          label="Mostrar todos"
+          (changed)="mostrarTodos.set($event); carregarAgendamentos()" />
       }
 
       <div class="flex rounded-lg border border-gray-200 bg-white overflow-hidden">

@@ -2,6 +2,7 @@ import { Component, OnInit, signal, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { ToggleComponent } from '../../../shared/components/toggle/toggle.component';
 import { PacienteService } from '../../../core/services/paciente/paciente.service';
 import { Paciente } from '../../../core/models/paciente.model';
 import { PacientesModalComponent } from '../pacientes-modal/pacientes-modal.component';
@@ -12,7 +13,7 @@ import { Usuario } from '../../../core/models/usuario.model';
 @Component({
   selector: 'app-pacientes-lista',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, PacientesModalComponent],
+  imports: [CommonModule, RouterModule, FormsModule, PacientesModalComponent, ToggleComponent],
   templateUrl: './pacientes-lista.component.html',
 })
 export class PacientesListaComponent implements OnInit {
@@ -65,8 +66,8 @@ export class PacientesListaComponent implements OnInit {
     });
   }
 
-  onToggleInativos() {
-    this.mostrarInativos.update(v => !v);
+  onToggleInativos(inativo: boolean) {
+    this.mostrarInativos.set(inativo);
     this.carregar();
   }
 

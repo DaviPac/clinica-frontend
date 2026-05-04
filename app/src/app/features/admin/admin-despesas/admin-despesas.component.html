@@ -16,16 +16,11 @@
   </div>
 
   <label class="inline-flex items-center gap-2.5 mb-4 cursor-pointer select-none">
-    <div
-      class="relative w-9 h-5 rounded-full transition-colors"
-      [class]="apenasEmAberto() ? 'bg-[#BCA8A5]' : 'bg-gray-300'"
-      (click)="apenasEmAberto.set(!apenasEmAberto())">
-      <div
-        class="absolute top-0.5 w-4 h-4 bg-white rounded-full shadow-sm transition-transform duration-200"
-        [class]="apenasEmAberto() ? 'translate-x-[18px]' : 'translate-x-0.5'">
-      </div>
-    </div>
-    <span class="text-sm text-gray-600">Apenas em aberto</span>
+    <app-toggle
+      class="flex justify-end"
+      [checked]="apenasEmAberto()"
+      label="Apenas em aberto"
+      (changed)="apenasEmAberto.set($event)" />
   </label>
 
   @if (erro()) {
