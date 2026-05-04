@@ -13,10 +13,11 @@ export interface CriarPacienteDto {
 export class PacienteService {
   constructor(private http: HttpClient) {}
 
-  listar(mostrarTodos = false, profissionalId?: string) {
+  listar(mostrarTodos = false, mostrarInativos = false, profissionalId?: string) {
     const params = new URLSearchParams();
     if (mostrarTodos) params.set('todos', 'true');
     if (profissionalId) params.set('profissional_id', profissionalId)
+    if (mostrarInativos) params.set("inativos", 'true')
 
     const qs = params.toString();
     return this.http.get<Paciente[]>(`/pacientes${qs ? '?' + qs : ''}`);
@@ -32,5 +33,13 @@ export class PacienteService {
     if (profissionalId) params.set('profissional_id', profissionalId)
     const qs = params.toString();
     return this.http.post<Paciente>(`/pacientes${qs ? '?' + qs : ''}`, dto, { observe: 'response' });
+  }
+
+  inativar(pacienteId: string) {
+    return this.http.delete<undefined>(`/pacientes/${pacienteId}`);
+  }
+
+  ativar(pacienteId: string) {
+    return this.http.patch<undefined>(`/pacientes/${pacienteId}/ativar`, {});
   }
 }

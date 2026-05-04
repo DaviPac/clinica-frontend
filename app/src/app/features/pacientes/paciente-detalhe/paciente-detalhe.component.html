@@ -21,16 +21,46 @@
   @if (paciente(); as p) {
     <!-- Card de dados -->
     <div class="bg-white border border-gray-200 rounded-xl p-6">
-      <!-- Avatar + nome -->
+      <!-- Avatar + nome + ação -->
       <div class="flex items-center gap-4 mb-6 pb-6 border-b border-gray-100">
         <div class="w-12 h-12 rounded-full bg-[#BCA8A5] flex items-center
-                    justify-center text-[#675350] font-medium text-sm shrink-0">
+                    justify-center text-[#675350] font-medium text-sm shrink-0"
+            [class.opacity-50]="!p.ativo">
           {{ p.nome.charAt(0).toUpperCase() }}
         </div>
-        <div>
-          <h1 class="text-lg font-medium text-gray-900">{{ p.nome }}</h1>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-2 flex-wrap">
+            <h1 class="text-lg font-medium text-gray-900">{{ p.nome }}</h1>
+            @if (!p.ativo) {
+              <span class="inline-flex items-center gap-1 text-xs font-medium
+                          text-stone-600 bg-stone-100 border border-stone-200
+                          px-2 py-0.5 rounded-full">
+                <span class="w-1.5 h-1.5 rounded-full bg-stone-400"></span>
+                Inativo
+              </span>
+            }
+          </div>
           <p class="text-sm text-gray-500">Paciente #{{ p.id }}</p>
         </div>
+
+        @if (p.ativo) {
+          <button
+            type="button"
+            (click)="abrirModal('inativar')"
+            class="text-sm text-red-600 hover:text-red-700 hover:bg-red-50
+                  px-3 py-1.5 rounded-lg transition-colors shrink-0">
+            {{ auth.isAdmin() ? 'Inativar paciente' : 'Remover vínculo' }}
+          </button>
+        } @else if (auth.isAdmin()) {
+          <button
+            type="button"
+            (click)="abrirModal('ativar')"
+            class="text-sm text-emerald-700 hover:text-emerald-800 hover:bg-emerald-50
+                  border border-emerald-200 px-3 py-1.5 rounded-lg
+                  transition-colors shrink-0">
+            Reativar
+          </button>
+        }
       </div>
 
       <!-- Dados -->
@@ -64,6 +94,77 @@
         Agendamentos deste paciente aparecerão aqui.
       </p>
     </div>
+
+    <!-- Modal de confirmação -->
+    @if (modalAberto()) {
+      <div
+        class="fixed inset-0 z-50 flex items-center justify-center p-4
+              bg-black/40 backdrop-blur-sm"
+        (click)="fecharModal()">
+        <div
+          class="bg-white rounded-xl shadow-xl max-w-md w-full p-6"
+          (click)="$event.stopPropagation()">
+
+          <h2 class="text-base font-medium text-gray-900 mb-2">
+            @if (acao() === 'ativar') {
+              Reativar paciente?
+            } @else {
+              {{ auth.isAdmin() ? 'Inativar paciente?' : 'Remover vínculo com paciente?' }}
+            }
+          </h2>
+
+          <p class="text-sm text-gray-600 mb-5">
+            @if (acao() === 'ativar') {
+              O paciente <span class="font-medium text-gray-900">{{ p.nome }}</span>
+              voltará a aparecer nas listagens e poderá receber novos agendamentos.
+            } @else if (auth.isAdmin()) {
+              O paciente <span class="font-medium text-gray-900">{{ p.nome }}</span>
+              será inativado e deixará de aparecer nas listagens. Esta ação pode ser revertida posteriormente.
+            } @else {
+              Você perderá o acesso ao paciente
+              <span class="font-medium text-gray-900">{{ p.nome }}</span>.
+              O paciente continuará ativo no sistema, mas precisará ser vinculado novamente para você acessá-lo.
+            }
+          </p>
+
+          @if (erroInativar()) {
+            <div class="bg-red-50 border border-red-200 rounded-lg px-3 py-2 mb-4">
+              <p class="text-sm text-red-700">{{ erroInativar() }}</p>
+            </div>
+          }
+
+          <div class="flex justify-end gap-2">
+            <button
+              type="button"
+              (click)="fecharModal()"
+              [disabled]="inativando()"
+              class="text-sm px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-100
+                    transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+              Cancelar
+            </button>
+            <button
+              type="button"
+              (click)="confirmarAcao()"
+              [disabled]="inativando()"
+              [class.bg-emerald-600]="acao() === 'ativar'"
+              [class.hover:bg-emerald-700]="acao() === 'ativar'"
+              [class.bg-red-600]="acao() !== 'ativar'"
+              [class.hover:bg-red-700]="acao() !== 'ativar'"
+              class="text-sm px-4 py-2 rounded-lg text-white
+                    transition-colors
+                    disabled:opacity-50 disabled:cursor-not-allowed">
+              @if (inativando()) {
+                Processando...
+              } @else if (acao() === 'ativar') {
+                Reativar
+              } @else {
+                {{ auth.isAdmin() ? 'Inativar' : 'Remover vínculo' }}
+              }
+            </button>
+          </div>
+        </div>
+      </div>
+    }
   }
 
 </div>
