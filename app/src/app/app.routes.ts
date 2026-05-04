@@ -19,6 +19,11 @@ export const routes: Routes = [
     children: [
       // ── Features compartilhadas (profissional + admin) ──
       {
+        path: 'perfil',
+        loadComponent: () =>
+          import('./features/perfil/perfil.component').then(m => m.PerfilComponent)
+      },
+      {
         path: 'pacientes',
         loadComponent: () =>
           import('./features/pacientes/pacientes-lista/pacientes-lista.component')

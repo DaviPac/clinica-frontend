@@ -87,32 +87,24 @@
 
     <div class="border-t border-stone-200 p-3 shrink-0">
       <div class="flex items-center gap-2.5">
-        <div class="w-8 h-8 rounded-full bg-[#F0EDED] flex items-center justify-center
-                    text-[#5E5253] text-xs font-medium shrink-0">
-          {{ iniciais }}
-        </div>
-
-        @if (sidebarAberta()) {
-          <div class="flex-1 min-w-0">
-            <p class="text-xs font-medium text-stone-900 truncate">{{ usuario?.nome }}</p>
-            <p class="text-xs text-stone-500">
-              {{ isAdmin ? 'Admin' : 'Profissional' }}
-            </p>
+        <a routerLink="/perfil"
+          (click)="onNavClick()"
+          class="flex items-center gap-2.5 flex-1 min-w-0 no-underline
+                hover:bg-stone-50 rounded-md p-1 -m-1 transition-colors">
+          <div class="w-8 h-8 rounded-full bg-[#F0EDED] flex items-center justify-center
+                      text-[#5E5253] text-xs font-medium shrink-0">
+            {{ iniciais }}
           </div>
 
-          <button
-            (click)="logout()"
-            title="Sair"
-            class="p-1.5 text-stone-400 hover:text-stone-700 hover:bg-stone-100
-                   rounded-md transition-colors cursor-pointer border-none bg-transparent shrink-0">
-            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                 stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4
-                       M16 17l5-5-5-5
-                       M21 12H9"/>
-            </svg>
-          </button>
-        }
+          @if (sidebarAberta()) {
+            <div class="flex-1 min-w-0">
+              <p class="text-xs font-medium text-stone-900 truncate">{{ usuario?.nome }}</p>
+              <p class="text-xs text-stone-500">
+                {{ isAdmin ? 'Admin' : 'Profissional' }}
+              </p>
+            </div>
+          }
+        </a>
       </div>
 
       <button

@@ -19,3 +19,8 @@ export interface LoginResponse {
   token: string;
   usuario: Usuario;
 }
+
+export interface MudarSenhaRequest {
+  senhaAntiga: string;
+  novaSenha: string;
+}
