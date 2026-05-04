@@ -18,17 +18,22 @@ export interface AtualizarServicoDto extends ServicoBaseDto {
 export class ServicoService {
   constructor(private http: HttpClient) {}
 
-  listar(incluirInativos = false, mostrarTodos = true) {
-    const params = new URLSearchParams();
-    if (incluirInativos) params.set('inativos', 'true');
-    if (mostrarTodos) params.set('todos', 'true');
-    
-    const qs = params.toString();
-    return this.http.get<Servico[]>(`/servicos${qs ? '?' + qs : ''}`);
+  listar(opts: {
+    profissionalId?: number | string;
+    incluirInativos?: boolean;
+  } = {}) {
+    const params: Record<string, string> = {};
+    if (opts.profissionalId) params['profissional_id'] = String(opts.profissionalId);
+    else params['todos'] = 'true';
+    if (opts.incluirInativos) params['inativos'] = 'true';
+
+    return this.http.get<Servico[]>('/servicos', { params });
   }
 
-  criar(dto: CriarServicoDto) {
-    return this.http.post<Servico>('/servicos', dto);
+  criar(dto: CriarServicoDto, opts: { profissionalId?: number | string } = {}) {
+    const params: Record<string, string> = {};
+    if (opts.profissionalId) params['profissional_id'] = String(opts.profissionalId);
+    return this.http.post<Servico>('/servicos', dto, { params });
   }
 
   atualizar(id: number, dto: AtualizarServicoDto) {

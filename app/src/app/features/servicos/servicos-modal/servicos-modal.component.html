@@ -27,6 +27,13 @@
 
     <form [formGroup]="form" (ngSubmit)="submit()" class="flex flex-col gap-4">
 
+      @if (isAdmin() && !modoEdicao) {
+        <app-filtro-profissional
+          [profissionalId]="filtroProfissionalId()" 
+          (changed)="onFiltroChange($event)"
+          [defaultText]="'--'"/>
+      }
+
       <div>
         <label class="block text-xs text-gray-500 mb-1.5">
           Nome do serviço <span class="text-red-500">*</span>

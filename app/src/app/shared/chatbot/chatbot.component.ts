@@ -283,7 +283,9 @@ export class ChatbotComponent implements OnInit, AfterViewChecked {
     return new Promise((resolve, reject) => {
       switch (tool) {
         case 'listar_agendamentos':
-          this.agendamentoSvc.listar(args['de'] as string, args['ate'] as string, this.isAdmin())
+          this.agendamentoSvc.listar({
+            periodo: { de: args['de'], ate: args['ate'] },
+          })
             .subscribe({ next: resolve, error: reject });
           break;
         case 'listar_pendentes':
@@ -370,7 +372,7 @@ export class ChatbotComponent implements OnInit, AfterViewChecked {
       const de = new Date(hoje.getFullYear(), hoje.getMonth(), 1).toISOString().split('T')[0];
       const ate = new Date(hoje.getFullYear(), hoje.getMonth() + 1, 0).toISOString().split('T')[0];
       
-      const a = await firstValueFrom(this.agendamentoSvc.listar(de, ate));
+      const a = await firstValueFrom(this.agendamentoSvc.listar({ periodo: { de, ate } }));
       this.agendamentos.set(a);
     } catch (error) {
       console.error('Erro ao recarregar o contexto da clínica:', error);

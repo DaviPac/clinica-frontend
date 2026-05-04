@@ -15,7 +15,7 @@ import { AgendamentosModalComponent } from '../agendamentos-modal/agendamentos-m
 import { AgendamentosStatusModalComponent } from '../agendamentos-status-modal/agendamentos-status-modal.component';
 import { formatarDataHora, formatarHora } from '../../../core/utils/data.utils';
 import { Router, RouterLink } from '@angular/router';
-import { ToggleComponent } from '../../../shared/components/toggle/toggle.component';
+import { FiltroProfissionalComponent } from '../../../shared/components/filtro-profissional/filtro-profissional.component';
 
 @Component({
   selector: 'app-agendamentos-lista',
@@ -23,7 +23,7 @@ import { ToggleComponent } from '../../../shared/components/toggle/toggle.compon
   imports: [
     CommonModule, FormsModule, StatusBadgeComponent,
     AgendamentosModalComponent, AgendamentosStatusModalComponent,
-    RouterLink, ToggleComponent
+    RouterLink, FiltroProfissionalComponent,
   ],
   templateUrl: './agendamentos-lista.component.html',
   styleUrl: './agendamentos-lista.component.css'
@@ -43,6 +43,7 @@ export class AgendamentosListaComponent implements OnInit {
 
   isAdmin = this.authService.isAdmin;
   mostrarTodos = signal(this.isAdmin());
+  filtroProfissionalId = signal<string | undefined>(undefined);
 
   mesAtual = signal<Date>(new Date());
   
@@ -120,7 +121,7 @@ export class AgendamentosListaComponent implements OnInit {
     forkJoin({
       pacientes: this.pacienteService.listar(true),
       usuarios: this.isAdmin() ? this.usuarioService.listar() : of([this.authService.usuario()]),
-      servicos: this.servicoService.listar(true, true)
+      servicos: this.servicoService.listar({ incluirInativos: true })
     }).subscribe({
       next: (res) => {
         const conv = (arr: any[]) => arr.reduce((acc, curr) => ({ ...acc, [curr.id]: curr.nome }), {});
@@ -141,7 +142,7 @@ export class AgendamentosListaComponent implements OnInit {
     this.erro.set(null);
     const { de, ate } = this.filtro();
     
-    this.service.listar(de, ate, this.mostrarTodos()).subscribe({
+    this.service.listar({ periodo: { de, ate }, profissionalId: this.filtroProfissionalId() }).subscribe({
       next: lista => {
         this.agendamentos.set(
           lista.sort((a, b) => new Date(a.data_hora_inicio).getTime() - new Date(b.data_hora_inicio).getTime())
@@ -258,5 +259,10 @@ export class AgendamentosListaComponent implements OnInit {
       CANCELADO: 'border-gray-200 bg-gray-100 opacity-60',
     };
     return map[status];
+  }
+
+  onFiltroChange(profissionalId?: string) {
+    this.filtroProfissionalId.set(profissionalId);
+    this.carregarAgendamentos()
   }
 }

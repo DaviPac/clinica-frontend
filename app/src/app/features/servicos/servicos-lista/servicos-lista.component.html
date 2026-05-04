@@ -16,6 +16,12 @@
     </button>
   </div>
 
+  @if (isAdmin()) {
+    <app-filtro-profissional
+      [profissionalId]="filtroProfissionalId()" 
+      (changed)="onFiltroChange($event)"/>
+  }
+
   <!-- Toggle inativos -->
   <app-toggle
     class="mb-4 block"

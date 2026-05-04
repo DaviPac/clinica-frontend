@@ -6,7 +6,6 @@ import { PacienteService } from '../../../core/services/paciente/paciente.servic
 import { ServicoService } from '../../../core/services/servico/servico.service';
 import { Paciente } from '../../../core/models/paciente.model';
 import { Servico } from '../../../core/models/servico.model';
-import { Agendamento } from '../../../core/models/agendamento.model';
 import { toRFC3339Brasilia, addSemanas } from '../../../core/utils/data.utils';
 import { AuthService } from '../../../core/services/auth/auth.service';
 import { UsuarioService } from '../../../core/services/usuario/usuario.service';
@@ -109,8 +108,6 @@ export class AgendamentosModalComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.servicoService.listar().subscribe(s => this.servicos.set(s));
-
     if (this.isAdmin) {
       this.usuarioService.listar().subscribe((u: Usuario[]) => this.usuarios.set(u));
 
@@ -118,17 +115,21 @@ export class AgendamentosModalComponent implements OnInit {
         this.ctrl['paciente_id'].setValue(0);
         if (id) {
           this.pacienteService.listar(false, false, id.toString()).subscribe(p => this.pacientes.set(p));
+          this.servicoService.listar({ profissionalId: id, incluirInativos: true }).subscribe(s => this.servicos.set(s))
         } else {
           this.pacientes.set([]);
+          this.servicos.set([]);
         }
       });
 
       const initialId = this.ctrl['usuario_id'].value as number;
       if (initialId) {
         this.pacienteService.listar(false, false, initialId.toString()).subscribe(p => this.pacientes.set(p));
+        this.servicoService.listar({ profissionalId: initialId, incluirInativos: true }).subscribe(s => this.servicos.set(s))
       }
     } else {
       this.pacienteService.listar().subscribe(p => this.pacientes.set(p));
+      this.servicoService.listar().subscribe(s => this.servicos.set(s))
     }
 
     this.ctrl['total_sessoes'].valueChanges.subscribe((v: number) => {

@@ -34,8 +34,6 @@ export class DashboardComponent implements OnInit {
 
   isAdmin = this.authService.isAdmin;
 
-  mostrarTodos = signal(true)
-
   carregando = signal(true);
   erro = signal<string | null>(null);
 
@@ -97,12 +95,12 @@ export class DashboardComponent implements OnInit {
     const dataFimBusca = `${anoFim}-${mesFim}-${diaFim}`;
 
     forkJoin({
-      proximos: this.agendamentoService.listar(dataHoje, dataFimBusca, this.mostrarTodos()),
-      pendentes: this.agendamentoService.listarPendentes(this.mostrarTodos()),
-      pagamentos: this.agendamentoService.listarPagamentoPendente(this.mostrarTodos()),
+      proximos: this.agendamentoService.listar({ periodo: { de: dataHoje, ate: dataFimBusca }}),
+      pendentes: this.agendamentoService.listarPendentes(true),
+      pagamentos: this.agendamentoService.listarPagamentoPendente(true),
       saldo: this.financeiroService.getSaldoAReceber(this.mesAtual()), // Atualizado o método
       pacientes: this.pacienteService.listar(true),
-      servicos: this.servicoService.listar(true, true),
+      servicos: this.servicoService.listar({ incluirInativos: true }),
       usuarios: this.isAdmin() ? this.usuarioService.listar() : of([this.authService.usuario()!])
     }).subscribe({
       next: (res) => {

@@ -1,9 +1,11 @@
 // servicos-modal.component.ts
-import { Component, input, output, OnInit, signal } from '@angular/core';
+import { Component, input, output, OnInit, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
 import { CriarServicoDto, AtualizarServicoDto, ServicoService } from '../../../core/services/servico/servico.service';
 import { Servico } from '../../../core/models/servico.model';
+import { FiltroProfissionalComponent } from '../../../shared/components/filtro-profissional/filtro-profissional.component';
+import { AuthService } from '../../../core/services/auth/auth.service';
 
 interface ServicoForm {
   nome: FormControl<string>;
@@ -15,10 +17,17 @@ interface ServicoForm {
 @Component({
   selector: 'app-servicos-modal',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    FiltroProfissionalComponent,
+  ],
   templateUrl: './servicos-modal.component.html',
 })
 export class ServicosModalComponent implements OnInit {
+  private authService = inject(AuthService);
+  isAdmin = this.authService.isAdmin;
+
   servico = input<Servico | null>(null);
 
   fechar = output<void>();
@@ -29,6 +38,8 @@ export class ServicosModalComponent implements OnInit {
 
   loading = signal(false);
   erro = signal<string | null>(null);
+
+  filtroProfissionalId = signal<string | undefined>(undefined);
 
   get modoEdicao() { return !!this.servico(); }
   get titulo() { return this.modoEdicao ? 'Editar serviço' : 'Novo serviço'; }
@@ -71,7 +82,7 @@ export class ServicosModalComponent implements OnInit {
     // Sem cast — cada branch monta o DTO correto
     const op$ = s
       ? this.service.atualizar(s.id, { nome, valor_atual, pacote, ativo } satisfies AtualizarServicoDto)
-      : this.service.criar({ nome, valor_atual, pacote } satisfies CriarServicoDto);
+      : this.service.criar({ nome, valor_atual, pacote } satisfies CriarServicoDto, { profissionalId: this.filtroProfissionalId() });
 
     op$.subscribe({
       next: () => this.salvo.emit(),
@@ -80,5 +91,9 @@ export class ServicosModalComponent implements OnInit {
         this.loading.set(false);
       },
     });
+  }
+
+  onFiltroChange(valor: string | undefined) {
+    this.filtroProfissionalId.set(valor === '' ? undefined : valor);
   }
 }

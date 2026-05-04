@@ -1,18 +1,30 @@
-import { Component, OnInit, signal, computed } from '@angular/core';
+import { Component, OnInit, signal, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ToggleComponent } from '../../../shared/components/toggle/toggle.component';
 import { ServicoService } from '../../../core/services/servico/servico.service';
 import { Servico } from '../../../core/models/servico.model';
 import { ServicosModalComponent } from '../servicos-modal/servicos-modal.component';
+import { FiltroProfissionalComponent } from '../../../shared/components/filtro-profissional/filtro-profissional.component';
+import { AuthService } from '../../../core/services/auth/auth.service';
 
 @Component({
   selector: 'app-servicos-lista',
   standalone: true,
-  imports: [CommonModule, ServicosModalComponent, ToggleComponent],
+  imports: [
+    CommonModule,
+    ServicosModalComponent,
+    ToggleComponent,
+    FiltroProfissionalComponent,
+  ],
   templateUrl: './servicos-lista.component.html',
 })
 export class ServicosListaComponent implements OnInit {
+  private authService = inject(AuthService);
+  isAdmin = this.authService.isAdmin;
+
   private todos = signal<Servico[]>([]);
+
+  filtroProfissionalId = signal<string | undefined>(undefined);
 
   exibirInativos = signal(false);
   carregando = signal(true);
@@ -44,7 +56,10 @@ export class ServicosListaComponent implements OnInit {
     this.erro.set(null);
 
     // Sempre busca todos (ativos + inativos) — o filtro é local via computed()
-    this.service.listar(true).subscribe({
+    this.service.listar({
+      profissionalId: this.filtroProfissionalId(),
+      incluirInativos: true
+    }).subscribe({
       next: lista => {
         this.todos.set(lista);
         this.carregando.set(false);
@@ -105,5 +120,10 @@ export class ServicosListaComponent implements OnInit {
 
   formatarValor(valor: number): string {
     return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  }
+
+  onFiltroChange(valor: string | undefined) {
+    this.filtroProfissionalId.set(valor === '' ? undefined : valor);
+    this.carregar();
   }
 }

@@ -24,11 +24,17 @@ export interface AgendamentoRecorrenteResponse {
 export class AgendamentoService {
   constructor(private http: HttpClient) {}
 
-  listar(de?: string, ate?: string, todos: boolean = false) {
+  listar(opts: {
+    periodo?: { de: string, ate: string };
+    profissionalId?: number | string;
+  }) {
     const params = new URLSearchParams();
-    if (de) params.set('de', de);
-    if (ate) params.set('ate', ate);
-    if (todos) params.set('todos', 'true'); 
+    if (opts?.periodo) {
+      params.set('de', opts.periodo.de);
+      params.set('ate', opts.periodo.ate);
+    }
+    if (opts?.profissionalId) params.set("profissional_id", String(opts.profissionalId));
+    else if (opts) params.set('todos', 'true');
 
     const qs = params.toString();
     return this.http.get<Agendamento[]>(`/agendamentos${qs ? '?' + qs : ''}`);

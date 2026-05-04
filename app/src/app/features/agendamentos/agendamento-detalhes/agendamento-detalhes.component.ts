@@ -83,7 +83,7 @@ export class AgendamentoDetalhesComponent implements OnInit {
     forkJoin({
       pacientes: this.pacienteService.listar(true),
       usuarios: this.isAdmin() ? this.usuarioService.listar() : of([this.authService.usuario()]),
-      servicos: this.servicoService.listar(true, true)
+      servicos: this.servicoService.listar({ incluirInativos: true })
     }).subscribe({
       next: (res) => {
         const conv = (arr: any[]) => arr.reduce((acc, curr) => ({ ...acc, [curr.id]: curr.nome }), {});

@@ -9,11 +9,19 @@ import { PacientesModalComponent } from '../pacientes-modal/pacientes-modal.comp
 import { UsuarioService } from '../../../core/services/usuario/usuario.service';
 import { AuthService } from '../../../core/services/auth/auth.service';
 import { Usuario } from '../../../core/models/usuario.model';
+import { FiltroProfissionalComponent } from '../../../shared/components/filtro-profissional/filtro-profissional.component';
 
 @Component({
   selector: 'app-pacientes-lista',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, PacientesModalComponent, ToggleComponent],
+  imports: [
+    CommonModule,
+    RouterModule,
+    FormsModule,
+    PacientesModalComponent,
+    ToggleComponent,
+    FiltroProfissionalComponent
+  ],
   templateUrl: './pacientes-lista.component.html',
 })
 export class PacientesListaComponent implements OnInit {
@@ -71,7 +79,7 @@ export class PacientesListaComponent implements OnInit {
     this.carregar();
   }
 
-  onFiltroChange(valor: string) {
+  onFiltroChange(valor: string | undefined) {
     // valor === '' -> todos; caso contrário -> id do profissional
     this.filtroProfissionalId.set(valor === '' ? undefined : valor);
     this.carregar();

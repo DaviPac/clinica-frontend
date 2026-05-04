@@ -10,10 +10,9 @@
     <div class="flex flex-wrap items-center gap-3">
 
       @if (isAdmin()) {
-        <app-toggle
-          [checked]="mostrarTodos()"
-          label="Mostrar todos"
-          (changed)="mostrarTodos.set($event); carregarAgendamentos()" />
+        <app-filtro-profissional
+          [profissionalId]="filtroProfissionalId()" 
+          (changed)="onFiltroChange($event)"/>
       }
 
       <div class="flex rounded-lg border border-gray-200 bg-white overflow-hidden">
