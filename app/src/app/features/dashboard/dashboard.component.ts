@@ -98,7 +98,7 @@ export class DashboardComponent implements OnInit {
       proximos: this.agendamentoService.listar({ periodo: { de: dataHoje, ate: dataFimBusca }}),
       pendentes: this.agendamentoService.listarPendentes(true),
       pagamentos: this.agendamentoService.listarPagamentoPendente(true),
-      saldo: this.financeiroService.getSaldoAReceber(this.mesAtual()), // Atualizado o método
+      saldo: this.financeiroService.getSaldoAReceber(this.mesAtual()),
       pacientes: this.pacienteService.listar(true),
       servicos: this.servicoService.listar({ incluirInativos: true }),
       usuarios: this.isAdmin() ? this.usuarioService.listar() : of([this.authService.usuario()!])

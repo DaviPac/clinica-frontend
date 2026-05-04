@@ -16,6 +16,7 @@ import { AgendamentosStatusModalComponent } from '../agendamentos-status-modal/a
 import { formatarDataHora, formatarHora } from '../../../core/utils/data.utils';
 import { Router, RouterLink } from '@angular/router';
 import { FiltroProfissionalComponent } from '../../../shared/components/filtro-profissional/filtro-profissional.component';
+import { ToggleComponent } from '../../../shared/components/toggle/toggle.component';
 
 @Component({
   selector: 'app-agendamentos-lista',
@@ -23,7 +24,7 @@ import { FiltroProfissionalComponent } from '../../../shared/components/filtro-p
   imports: [
     CommonModule, FormsModule, StatusBadgeComponent,
     AgendamentosModalComponent, AgendamentosStatusModalComponent,
-    RouterLink, FiltroProfissionalComponent,
+    RouterLink, FiltroProfissionalComponent, ToggleComponent
   ],
   templateUrl: './agendamentos-lista.component.html',
   styleUrl: './agendamentos-lista.component.css'
@@ -42,7 +43,7 @@ export class AgendamentosListaComponent implements OnInit {
   erro = signal<string | null>(null);
 
   isAdmin = this.authService.isAdmin;
-  mostrarTodos = signal(this.isAdmin());
+  mostrarInativos = signal(false);
   filtroProfissionalId = signal<string | undefined>(undefined);
 
   mesAtual = signal<Date>(new Date());
@@ -104,7 +105,10 @@ export class AgendamentosListaComponent implements OnInit {
       const diaStr = String(d).padStart(2, '0');
       const dataStr = `${ano}-${mesStr}-${diaStr}`;
 
-      const agsDoDia = listaAgendamentos.filter(a => a.data_hora_inicio.startsWith(dataStr));
+      let agsDoDia = listaAgendamentos.filter(a => a.data_hora_inicio.startsWith(dataStr))
+      if (!this.mostrarInativos()) {
+        agsDoDia = agsDoDia.filter(a => a.status != 'CANCELADO');
+      }
       const isToday = d === hoje.getDate() && mes === hoje.getMonth() && ano === hoje.getFullYear();
       dias.push({ diaNumero: d, agendamentos: agsDoDia, isToday });
     }
@@ -264,5 +268,9 @@ export class AgendamentosListaComponent implements OnInit {
   onFiltroChange(profissionalId?: string) {
     this.filtroProfissionalId.set(profissionalId);
     this.carregarAgendamentos()
+  }
+
+  onToggleInativos(inativo: boolean) {
+    this.mostrarInativos.set(inativo);
   }
 }
