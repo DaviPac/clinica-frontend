@@ -64,7 +64,7 @@ export class AgendamentoService {
 
   criar(dto: AgendamentoDto, profissionalID?: string) {
     const params = new URLSearchParams();
-    if (profissionalID) params.set('userID', profissionalID)
+    if (profissionalID) params.set('profissional_id', profissionalID)
     const qs = params.toString();
     // Resposta pode ser Agendamento (único) ou AgendamentoRecorrenteResponse
     return this.http.post<Agendamento | AgendamentoRecorrenteResponse>(
