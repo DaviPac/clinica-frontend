@@ -21,7 +21,7 @@
   @if (paciente(); as p) {
     <!-- Card de dados -->
     <div class="bg-white border border-gray-200 rounded-xl p-6">
-      <!-- Avatar + nome + ação -->
+      <!-- Avatar + nome + acoes -->
       <div class="flex items-center gap-4 mb-6 pb-6 border-b border-gray-100">
         <div class="w-12 h-12 rounded-full bg-[#BCA8A5] flex items-center
                     justify-center text-[#675350] font-medium text-sm shrink-0"
@@ -43,24 +43,34 @@
           <p class="text-sm text-gray-500">Paciente #{{ p.id }}</p>
         </div>
 
-        @if (p.ativo) {
-          <button
-            type="button"
-            (click)="abrirModal('inativar')"
-            class="text-sm text-red-600 hover:text-red-700 hover:bg-red-50
-                  px-3 py-1.5 rounded-lg transition-colors shrink-0">
-            {{ auth.isAdmin() ? 'Inativar paciente' : 'Remover vínculo' }}
-          </button>
-        } @else if (auth.isAdmin()) {
-          <button
-            type="button"
-            (click)="abrirModal('ativar')"
-            class="text-sm text-emerald-700 hover:text-emerald-800 hover:bg-emerald-50
-                  border border-emerald-200 px-3 py-1.5 rounded-lg
-                  transition-colors shrink-0">
-            Reativar
-          </button>
-        }
+        <!-- Acoes -->
+        <div class="flex items-center gap-2 shrink-0">
+          @if (p.ativo) {
+            <button
+              type="button"
+              (click)="irParaEdicao()"
+              class="text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-100
+                    px-3 py-1.5 rounded-lg transition-colors">
+              Editar
+            </button>
+            <button
+              type="button"
+              (click)="abrirModal('inativar')"
+              class="text-sm text-red-600 hover:text-red-700 hover:bg-red-50
+                    px-3 py-1.5 rounded-lg transition-colors">
+              {{ auth.isAdmin() ? 'Inativar paciente' : 'Remover vínculo' }}
+            </button>
+          } @else if (auth.isAdmin()) {
+            <button
+              type="button"
+              (click)="abrirModal('ativar')"
+              class="text-sm text-emerald-700 hover:text-emerald-800 hover:bg-emerald-50
+                    border border-emerald-200 px-3 py-1.5 rounded-lg
+                    transition-colors">
+              Reativar
+            </button>
+          }
+        </div>
       </div>
 
       <!-- Dados -->
@@ -75,15 +85,27 @@
         </div>
         <div>
           <dt class="text-xs text-gray-500 mb-1">Data de nascimento</dt>
-          <dd class="text-gray-900">{{ formatarData(p.data_nascimento) }}</dd>
+          <dd class="text-gray-900">{{ formatarData(p.dataNascimento) }}</dd>
         </div>
         <div>
           <dt class="text-xs text-gray-500 mb-1">Idade</dt>
-          <dd class="text-gray-900">{{ calcularIdade(p.data_nascimento) }}</dd>
+          <dd class="text-gray-900">{{ calcularIdade(p.dataNascimento) }}</dd>
         </div>
+        @if (p.rg) {
+          <div>
+            <dt class="text-xs text-gray-500 mb-1">RG</dt>
+            <dd class="text-gray-900">{{ p.rg }}</dd>
+          </div>
+        }
+        @if (p.enderecoCompleto) {
+          <div class="col-span-2">
+            <dt class="text-xs text-gray-500 mb-1">Endereço</dt>
+            <dd class="text-gray-900">{{ p.enderecoCompleto }}</dd>
+          </div>
+        }
         <div>
           <dt class="text-xs text-gray-500 mb-1">Cadastrado em</dt>
-          <dd class="text-gray-900">{{ formatarData(p.criado_em) }}</dd>
+          <dd class="text-gray-900">{{ formatarData(p.criadoEm) }}</dd>
         </div>
       </dl>
     </div>
@@ -95,7 +117,7 @@
       </p>
     </div>
 
-    <!-- Modal de confirmação -->
+    <!-- Modal de confirmacao -->
     @if (modalAberto()) {
       <div
         class="fixed inset-0 z-50 flex items-center justify-center p-4

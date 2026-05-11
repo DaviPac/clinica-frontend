@@ -10,10 +10,11 @@
     <div class="flex items-center justify-between mb-6">
       <h2 class="text-base font-medium text-gray-900">Novo paciente</h2>
       <button
+        type="button"
         (click)="fechar.emit()"
         class="text-gray-400 hover:text-gray-600 text-xl leading-none cursor-pointer
                bg-transparent border-none p-0">
-        ×
+        &times;
       </button>
     </div>
 
@@ -40,6 +41,7 @@
           </label>
           <select
             formControlName="usuario_id"
+            [class.border-red-300]="campoInvalido('usuario_id')"
             class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
                    focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]">
             <option [value]="0" disabled>Selecione um profissional</option>
@@ -47,6 +49,9 @@
               <option [value]="u.id">{{ u.nome || u.email }}</option>
             }
           </select>
+          @if (campoInvalido('usuario_id')) {
+            <p class="text-xs text-red-600 mt-1">Selecione um profissional.</p>
+          }
         </div>
       }
 
@@ -58,9 +63,13 @@
           type="text"
           formControlName="nome"
           placeholder="Maria Oliveira"
+          [class.border-red-300]="campoInvalido('nome')"
           class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
                  focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]"
         />
+        @if (campoInvalido('nome')) {
+          <p class="text-xs text-red-600 mt-1">Informe o nome completo (mínimo 3 caracteres).</p>
+        }
       </div>
 
       <div>
@@ -71,9 +80,13 @@
           type="text"
           formControlName="cpf"
           placeholder="123.456.789-00"
+          [class.border-red-300]="campoInvalido('cpf')"
           class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
                  font-mono focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]"
         />
+        @if (campoInvalido('cpf')) {
+          <p class="text-xs text-red-600 mt-1">Informe um CPF válido.</p>
+        }
       </div>
 
       <div class="grid grid-cols-2 gap-3">
@@ -91,11 +104,33 @@
           <label class="block text-xs text-gray-500 mb-1.5">Nascimento</label>
           <input
             type="date"
-            formControlName="data_nascimento"
+            formControlName="dataNascimento"
             class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
                    focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]"
           />
         </div>
+      </div>
+
+      <div>
+        <label class="block text-xs text-gray-500 mb-1.5">RG</label>
+        <input
+          type="text"
+          formControlName="rg"
+          placeholder="00.000.000-0"
+          class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
+                 font-mono focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]"
+        />
+      </div>
+
+      <div>
+        <label class="block text-xs text-gray-500 mb-1.5">Endereço completo</label>
+        <textarea
+          formControlName="enderecoCompleto"
+          rows="2"
+          placeholder="Rua, número, bairro, cidade"
+          class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
+                 focus:outline-none focus:ring-2 focus:ring-[#BCA8A5] resize-none">
+        </textarea>
       </div>
 
       <div class="flex gap-2.5 mt-2">
@@ -108,7 +143,7 @@
         </button>
         <button
           type="submit"
-          [disabled]="form.invalid || loading()"
+          [disabled]="loading() || avisoVinculacao()"
           class="flex-1 bg-[#BCA8A5] hover:bg-[#9A8683] disabled:opacity-50
                  text-white text-sm font-medium rounded-lg py-2.5
                  transition-colors cursor-pointer disabled:cursor-not-allowed">

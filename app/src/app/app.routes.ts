@@ -36,6 +36,12 @@ export const routes: Routes = [
             .then(m => m.PacienteDetalheComponent),
       },
       {
+        path: 'pacientes/:id/editar',
+        loadComponent: () =>
+          import('./features/pacientes/paciente-editar/paciente-editar.component')
+            .then(m => m.PacienteEditarComponent),
+      },
+      {
         path: 'servicos',
         loadComponent: () =>
           import('./features/servicos/servicos-lista/servicos-lista.component')

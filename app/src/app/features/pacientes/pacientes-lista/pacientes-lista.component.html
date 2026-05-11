@@ -69,7 +69,7 @@
               <td class="px-4 py-3 font-medium text-stone-900">{{ p.nome }}</td>
               <td class="px-4 py-3 text-stone-500 font-mono text-xs">{{ p.cpf }}</td>
               <td class="px-4 py-3 text-stone-500">{{ p.telefone ?? '—' }}</td>
-              <td class="px-4 py-3 text-stone-500">{{ formatarData(p.data_nascimento) }}</td>
+              <td class="px-4 py-3 text-stone-500">{{ formatarData(p.dataNascimento) }}</td>
               <td class="px-4 py-3 text-right">
                 <a
                   [routerLink]="['/pacientes', p.id]"

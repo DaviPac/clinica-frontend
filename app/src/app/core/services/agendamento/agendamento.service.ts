@@ -24,9 +24,10 @@ export interface AgendamentoRecorrenteResponse {
 export class AgendamentoService {
   constructor(private http: HttpClient) {}
 
-  listar(opts: {
+  listar(opts?: {
     periodo?: { de: string, ate: string };
     profissionalId?: number | string;
+    pacienteId?: number | string;
   }) {
     const params = new URLSearchParams();
     if (opts?.periodo) {
@@ -35,6 +36,7 @@ export class AgendamentoService {
     }
     if (opts?.profissionalId) params.set("profissional_id", String(opts.profissionalId));
     else if (opts) params.set('todos', 'true');
+    if (opts?.pacienteId) params.set('paciente_id', String(opts.pacienteId));
 
     const qs = params.toString();
     return this.http.get<Agendamento[]>(`/agendamentos${qs ? '?' + qs : ''}`);

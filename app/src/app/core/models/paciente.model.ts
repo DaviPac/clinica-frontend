@@ -3,7 +3,9 @@ export interface Paciente {
   nome: string;
   cpf: string;
   telefone: string | null;
-  data_nascimento: string | null;
+  dataNascimento: string | null;
+  enderecoCompleto: string | null;
+  rg: string | null;
   ativo: boolean;
-  criado_em: string;
+  criadoEm: string;
 }

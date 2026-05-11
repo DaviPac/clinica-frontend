@@ -6,7 +6,18 @@ export interface CriarPacienteDto {
   nome: string;
   cpf: string;
   telefone?: string;
-  data_nascimento?: string;
+  dataNascimento?: string;
+  enderecoCompleto?: string;
+  rg?: string;
+}
+
+export interface AtualizarPacienteDto {
+  nome?: string;
+  cpf?: string;
+  telefone?: string;
+  dataNascimento?: string;
+  enderecoCompleto?: string;
+  rg?: string;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -33,6 +44,10 @@ export class PacienteService {
     if (profissionalId) params.set('profissional_id', profissionalId)
     const qs = params.toString();
     return this.http.post<Paciente>(`/pacientes${qs ? '?' + qs : ''}`, dto, { observe: 'response' });
+  }
+
+  atualizar(dto: AtualizarPacienteDto, pacienteId: string | number) {
+    return this.http.patch<Paciente>(`/pacientes/${pacienteId}`, dto);
   }
 
   inativar(pacienteId: string) {

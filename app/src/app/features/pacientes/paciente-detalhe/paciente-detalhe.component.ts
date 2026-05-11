@@ -55,6 +55,12 @@ export class PacienteDetalheComponent implements OnInit {
     return `${anos - ajuste} anos`;
   }
 
+  irParaEdicao() {
+    const p = this.paciente();
+    if (!p) return;
+    this.router.navigate(['/pacientes', p.id, 'editar']);
+  }
+
   abrirModal(acao: 'inativar' | 'ativar') {
     this.acao.set(acao);
     this.erroInativar.set(null);
@@ -85,7 +91,7 @@ export class PacienteDetalheComponent implements OnInit {
           this.modalAberto.set(false);
           this.inativando.set(false);
         } else {
-          // Inativação: volta para a lista (comportamento anterior)
+          // Inativacao: volta para a lista
           this.router.navigate(['/pacientes']);
         }
       },
