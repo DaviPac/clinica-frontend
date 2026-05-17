@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, computed } from '@angular/core';
+import { Component, OnInit, signal, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { forkJoin } from 'rxjs';
 import { FinanceiroService, AcertoDto, RelatorioFinanceiro } from '../../../core/services/financeiro/financeiro.service';
@@ -67,16 +67,7 @@ export class AdminAcertosComponent implements OnInit {
       next: ({ usuarios, relatorio, acertos }) => {
         this.usuarios.set(usuarios);
 
-        const isAdmin = (p: {
-            profissional_id: number;
-            nome_profissional: string;
-            total_recebido: number;
-            comissao_clinica: number;
-            a_receber: number;
-            total_repassado: number;
-            pendente: number;
-        }) => usuarios.find(u => u.id == p.profissional_id && u.role == 'ADMIN')
-        const pendentes = relatorio.profissionais.filter(p => p.pendente > 0 && !isAdmin(p));
+        const pendentes = relatorio.profissionais.filter(p => p.pendente > 0);
         this.profissionaisPendentes.set(pendentes);
 
         const enriquecidos = acertos
