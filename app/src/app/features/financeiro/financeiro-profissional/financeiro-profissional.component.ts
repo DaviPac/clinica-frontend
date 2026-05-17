@@ -70,7 +70,7 @@ export class FinanceiroProfissionalComponent implements OnInit {
 
   carregarProfissionais() {
     this.usuarioService.listar().subscribe({
-      next: (lista) => this.profissionais.set(lista.filter(u => u.role !== 'ADMIN')),
+      next: (lista) => this.profissionais.set(lista),
       error: (err: Error) => console.error('Erro ao carregar profissionais', err),
     });
   }
