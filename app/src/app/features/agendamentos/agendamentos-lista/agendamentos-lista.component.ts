@@ -18,6 +18,22 @@ import { Router, RouterLink } from '@angular/router';
 import { FiltroProfissionalComponent } from '../../../shared/components/filtro-profissional/filtro-profissional.component';
 import { ToggleComponent } from '../../../shared/components/toggle/toggle.component';
 
+type ModoVisualizacao = 'mensal' | 'semanal';
+
+interface DiaCalendario {
+  diaNumero: number | null;
+  agendamentos: Agendamento[];
+  isToday: boolean;
+}
+
+interface DiaSemana {
+  data: Date;
+  diaNumero: number;
+  nomeDia: string;
+  agendamentos: Agendamento[];
+  isToday: boolean;
+}
+
 @Component({
   selector: 'app-agendamentos-lista',
   standalone: true,
@@ -35,7 +51,7 @@ export class AgendamentosListaComponent implements OnInit {
   private usuarioService = inject(UsuarioService);
   private servicoService = inject(ServicoService);
   private service = inject(AgendamentoService);
-  
+
   router = inject(Router)
 
   agendamentos = signal<Agendamento[]>([]);
@@ -46,8 +62,10 @@ export class AgendamentosListaComponent implements OnInit {
   mostrarInativos = signal(false);
   filtroProfissionalId = signal<string | undefined>(undefined);
 
-  mesAtual = signal<Date>(new Date());
-  
+  // NOVO: modo de visualização (mês x semana) e data de referência única
+  modoView = signal<ModoVisualizacao>('mensal');
+  dataReferencia = signal<Date>(new Date());
+
   pacientesDict = signal<Record<number, string>>({});
   usuariosDict = signal<Record<number, string>>({});
   servicosDict = signal<Record<number, string>>({});
@@ -58,66 +76,116 @@ export class AgendamentosListaComponent implements OnInit {
   agendamentoParaCancelarSerie = signal<Agendamento | null>(null);
   cancelandoSerie = signal(false);
 
-  // NOVO: modal de confirmação de pagamento de pacote
+  // modal de confirmação de pagamento de pacote
   agendamentoParaConfirmarPagamento = signal<Agendamento | null>(null);
   agendamentoParaCancelarPagamento = signal<Agendamento | null>(null);
 
-  filtro = computed(() => {
-    const data = this.mesAtual();
-    const ano = data.getFullYear();
-    const mes = data.getMonth();
-    const primeiroDia = new Date(ano, mes, 1);
-    const ultimoDia = new Date(ano, mes + 1, 0);
-    
-    const formatar = (d: Date) => {
-      const dd = String(d.getDate()).padStart(2, '0');
-      const mm = String(d.getMonth() + 1).padStart(2, '0');
-      return `${d.getFullYear()}-${mm}-${dd}`;
-    };
+  // Retorna o domingo (00:00) da semana que contém a data informada
+  private inicioSemana(d: Date): Date {
+    const r = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    r.setDate(r.getDate() - r.getDay()); // getDay(): 0 = domingo
+    return r;
+  }
 
-    return { de: formatar(primeiroDia), ate: formatar(ultimoDia) };
+  private formatarISO(d: Date): string {
+    const dd = String(d.getDate()).padStart(2, '0');
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    return `${d.getFullYear()}-${mm}-${dd}`;
+  }
+
+  // ALTERADO: intervalo depende do modo (mês inteiro ou semana)
+  filtro = computed(() => {
+    const ref = this.dataReferencia();
+    let inicio: Date;
+    let fim: Date;
+
+    if (this.modoView() === 'semanal') {
+      inicio = this.inicioSemana(ref);
+      fim = new Date(inicio);
+      fim.setDate(inicio.getDate() + 6);
+    } else {
+      inicio = new Date(ref.getFullYear(), ref.getMonth(), 1);
+      fim = new Date(ref.getFullYear(), ref.getMonth() + 1, 0);
+    }
+
+    return { de: this.formatarISO(inicio), ate: this.formatarISO(fim) };
   });
 
   labelPeriodo = computed(() => {
-    const data = this.mesAtual();
-    const mes = data.toLocaleDateString('pt-BR', { month: 'long' });
-    const ano = data.getFullYear();
-    return `${mes.charAt(0).toUpperCase() + mes.slice(1)} de ${ano}`;
+    const ref = this.dataReferencia();
+
+    if (this.modoView() === 'semanal') {
+      const inicio = this.inicioSemana(ref);
+      const fim = new Date(inicio);
+      fim.setDate(inicio.getDate() + 6);
+      const fmt = (d: Date) => d.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' });
+      return `${fmt(inicio)} – ${fmt(fim)} de ${fim.getFullYear()}`;
+    }
+
+    const mes = ref.toLocaleDateString('pt-BR', { month: 'long' });
+    return `${mes.charAt(0).toUpperCase() + mes.slice(1)} de ${ref.getFullYear()}`;
   });
 
-  diasCalendario = computed(() => {
-    const data = this.mesAtual();
+  subtituloPeriodo = computed(() =>
+    this.modoView() === 'semanal' ? 'Visão Semanal da Agenda' : 'Visão Mensal da Agenda'
+  );
+
+  private filtrarPorData(dataStr: string): Agendamento[] {
+    let ags = this.agendamentos().filter(a => a.data_hora_inicio.startsWith(dataStr));
+    if (!this.mostrarInativos()) {
+      ags = ags.filter(a => a.status !== 'CANCELADO');
+    }
+    return ags;
+  }
+
+  // Grade mensal (com células vazias para alinhar o 1º dia)
+  diasCalendario = computed<DiaCalendario[]>(() => {
+    const data = this.dataReferencia();
     const ano = data.getFullYear();
     const mes = data.getMonth();
     const primeiroDia = new Date(ano, mes, 1);
     const ultimoDia = new Date(ano, mes + 1, 0);
-    const dias = [];
+    const dias: DiaCalendario[] = [];
     const hoje = new Date();
 
     for (let i = 0; i < primeiroDia.getDay(); i++) {
-      dias.push({ diaNumero: null as number | null, agendamentos: [] as Agendamento[], isToday: false });
+      dias.push({ diaNumero: null, agendamentos: [], isToday: false });
     }
 
-    const listaAgendamentos = this.agendamentos();
-
     for (let d = 1; d <= ultimoDia.getDate(); d++) {
-      const mesStr = String(mes + 1).padStart(2, '0');
-      const diaStr = String(d).padStart(2, '0');
-      const dataStr = `${ano}-${mesStr}-${diaStr}`;
-
-      let agsDoDia = listaAgendamentos.filter(a => a.data_hora_inicio.startsWith(dataStr))
-      if (!this.mostrarInativos()) {
-        agsDoDia = agsDoDia.filter(a => a.status != 'CANCELADO');
-      }
+      const dataStr = `${ano}-${String(mes + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
       const isToday = d === hoje.getDate() && mes === hoje.getMonth() && ano === hoje.getFullYear();
-      dias.push({ diaNumero: d, agendamentos: agsDoDia, isToday });
+      dias.push({ diaNumero: d, agendamentos: this.filtrarPorData(dataStr), isToday });
     }
 
     return dias;
   });
 
-  ngOnInit() { 
-    this.carregarDadosBase(); 
+  // NOVO: grade semanal (7 dias, domingo -> sábado)
+  diasSemana = computed<DiaSemana[]>(() => {
+    const inicio = this.inicioSemana(this.dataReferencia());
+    const hoje = new Date();
+    const nomes = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+    const dias: DiaSemana[] = [];
+
+    for (let i = 0; i < 7; i++) {
+      const dia = new Date(inicio);
+      dia.setDate(inicio.getDate() + i);
+      const dataStr = this.formatarISO(dia);
+      dias.push({
+        data: dia,
+        diaNumero: dia.getDate(),
+        nomeDia: nomes[dia.getDay()],
+        agendamentos: this.filtrarPorData(dataStr),
+        isToday: dia.toDateString() === hoje.toDateString(),
+      });
+    }
+
+    return dias;
+  });
+
+  ngOnInit() {
+    this.carregarDadosBase();
   }
 
   carregarDadosBase() {
@@ -145,7 +213,7 @@ export class AgendamentosListaComponent implements OnInit {
     this.carregando.set(true);
     this.erro.set(null);
     const { de, ate } = this.filtro();
-    
+
     this.service.listar({ periodo: { de, ate }, profissionalId: this.filtroProfissionalId() }).subscribe({
       next: lista => {
         this.agendamentos.set(
@@ -160,18 +228,37 @@ export class AgendamentosListaComponent implements OnInit {
     });
   }
 
-  navegarMes(direcao: 1 | -1) {
-    const atual = this.mesAtual();
-    this.mesAtual.set(new Date(atual.getFullYear(), atual.getMonth() + direcao, 1));
+  // NOVO: alterna entre mês e semana (recarrega pois o intervalo muda)
+  setModoView(modo: ModoVisualizacao) {
+    if (this.modoView() === modo) return;
+    this.modoView.set(modo);
     this.carregarAgendamentos();
   }
 
-  // ALTERADO: intercepta se for pacote e o pagamento for para "pago"
+  // ALTERADO: navega por mês ou por semana conforme o modo atual
+  navegar(direcao: 1 | -1) {
+    const ref = this.dataReferencia();
+    if (this.modoView() === 'semanal') {
+      const nova = new Date(ref);
+      nova.setDate(ref.getDate() + direcao * 7);
+      this.dataReferencia.set(nova);
+    } else {
+      this.dataReferencia.set(new Date(ref.getFullYear(), ref.getMonth() + direcao, 1));
+    }
+    this.carregarAgendamentos();
+  }
+
+  // NOVO: volta para o período atual (mês/semana de hoje)
+  irParaHoje() {
+    this.dataReferencia.set(new Date());
+    this.carregarAgendamentos();
+  }
+
+  // intercepta se for pacote e o pagamento for para "pago"
   iniciarTogglePagamento(ag: Agendamento) {
     const vaiBaixar = !ag.pago_pelo_paciente; // true = vai marcar como pago
 
     if (ag.valor_pacote != null) {
-      // Exibe modal de confirmação antes de prosseguir
       if (vaiBaixar) this.agendamentoParaConfirmarPagamento.set(ag);
       else this.agendamentoParaCancelarPagamento.set(ag)
     } else {
@@ -179,7 +266,6 @@ export class AgendamentosListaComponent implements OnInit {
     }
   }
 
-  // NOVO: chamado ao confirmar no modal de pacote
   confirmarPagamentoPacote() {
     const ag = this.agendamentoParaConfirmarPagamento();
     if (!ag) return;
@@ -194,13 +280,12 @@ export class AgendamentosListaComponent implements OnInit {
     this.executarTogglePagamento(ag);
   }
 
-  // ALTERADO: recarrega a lista completa após atualizar (cobre pacotes com múltiplas sessões)
   private executarTogglePagamento(ag: Agendamento) {
     this.atualizandoPagamento.set(ag.id);
     this.service.atualizarPagamento(ag.id, !ag.pago_pelo_paciente).subscribe({
       next: () => {
         this.atualizandoPagamento.set(null);
-        this.carregarAgendamentos(); // recarrega tudo para refletir mudanças em cascata
+        this.carregarAgendamentos();
       },
       error: (err: Error) => {
         this.erro.set(err.message);
@@ -209,24 +294,22 @@ export class AgendamentosListaComponent implements OnInit {
     });
   }
 
-  abrirModalStatus(ag: Agendamento) { 
-    this.agendamentoParaStatus.set(ag); 
+  abrirModalStatus(ag: Agendamento) {
+    this.agendamentoParaStatus.set(ag);
   }
 
-  // ALTERADO: recarrega lista completa após mudança de status
   onStatusAtualizado(payload: { id: number; status: StatusAgendamento }) {
     this.agendamentoParaStatus.set(null);
     this.carregarAgendamentos();
   }
 
-  // ALTERADO: recarrega lista após criação de agendamento
   onAgendamentoCriado() {
     this.modalCriacaoAberto.set(false);
     this.carregarAgendamentos();
   }
 
-  confirmarCancelamentoSerie(ag: Agendamento) { 
-    this.agendamentoParaCancelarSerie.set(ag); 
+  confirmarCancelamentoSerie(ag: Agendamento) {
+    this.agendamentoParaCancelarSerie.set(ag);
   }
 
   cancelarSerie() {
