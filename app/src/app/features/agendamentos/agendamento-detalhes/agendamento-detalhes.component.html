@@ -47,17 +47,17 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-6">
               <div>
                 <p class="text-xs text-gray-500 mb-1">Paciente</p>
-                <p class="text-sm font-medium text-gray-900">{{ pacientesDict()[ag.paciente_id] || 'N/A' }}</p>
+                <p class="text-sm font-medium text-gray-900">{{ pacientesDict()[ag.pacienteId] || 'N/A' }}</p>
               </div>
               
               <div>
                 <p class="text-xs text-gray-500 mb-1">Profissional</p>
-                <p class="text-sm font-medium text-gray-900">{{ usuariosDict()[ag.profissional_id!] || 'N/A' }}</p>
+                <p class="text-sm font-medium text-gray-900">{{ usuariosDict()[ag.profissionalId!] || 'N/A' }}</p>
               </div>
               
               <div class="sm:col-span-2">
                 <p class="text-xs text-gray-500 mb-1">Serviço</p>
-                <p class="text-sm font-medium text-gray-900">{{ servicosDict()[ag.servico_id] || 'N/A' }}</p>
+                <p class="text-sm font-medium text-gray-900">{{ servicosDict()[ag.servicoId] || 'N/A' }}</p>
               </div>
             </div>
           </div>
@@ -68,12 +68,12 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-6">
               <div>
                 <p class="text-xs text-gray-500 mb-1">Data/Hora Início</p>
-                <p class="text-sm font-medium text-gray-900">{{ formatarDataHora(ag.data_hora_inicio) }}</p>
+                <p class="text-sm font-medium text-gray-900">{{ formatarDataHora(ag.dataHoraInicio) }}</p>
               </div>
               
               <div>
                 <p class="text-xs text-gray-500 mb-1">Data/Hora Fim</p>
-                <p class="text-sm font-medium text-gray-900">{{ formatarDataHora(ag.data_hora_fim) }}</p>
+                <p class="text-sm font-medium text-gray-900">{{ formatarDataHora(ag.dataHoraFim) }}</p>
               </div>
               
               <div class="pt-2 border-t border-gray-100">
@@ -88,13 +88,13 @@
                     </button>
                   }
                 </div>
-                <p class="text-sm font-bold text-gray-900">{{ formatarValor(ag.valor_combinado) }}</p>
+                <p class="text-sm font-bold text-gray-900">{{ formatarValor(ag.valorCombinado) }}</p>
                 </div>
 
-              @if (ag.valor_pacote) {
+              @if (ag.valorPacote) {
                 <div class="pt-2 border-t border-gray-100">
                   <p class="text-xs text-gray-500 mb-1">Valor do Pacote</p>
-                  <p class="text-sm font-bold text-teal-700">{{ formatarValor(ag.valor_pacote) }}</p>
+                  <p class="text-sm font-bold text-teal-700">{{ formatarValor(ag.valorPacote) }}</p>
                 </div>
               }
             </div>
@@ -113,7 +113,7 @@
 
               <div>
                 <p class="text-xs text-gray-500 mb-2">Pagamento</p>
-                @if (ag.pago_pelo_paciente) {
+                @if (ag.pagoPeloPaciente) {
                   <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-green-50 text-green-700 text-xs font-semibold border border-green-200">
                     <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                     Pago
@@ -146,15 +146,15 @@
                   (click)="iniciarTogglePagamento()"
                   [disabled]="atualizandoPagamento()"
                   class="w-full px-4 py-2 text-sm font-medium rounded-lg transition-colors border"
-                  [ngClass]="ag.pago_pelo_paciente 
+                  [ngClass]="ag.pagoPeloPaciente 
                     ? 'bg-red-50 text-red-600 border-red-200 hover:bg-red-100' 
                     : 'bg-[#BCA8A5] text-white border-[#BCA8A5] hover:bg-[#A99390]'"
                 >
-                  {{ atualizandoPagamento() ? 'Atualizando...' : (ag.pago_pelo_paciente ? 'Desmarcar Pagamento' : 'Marcar como Pago') }}
+                  {{ atualizandoPagamento() ? 'Atualizando...' : (ag.pagoPeloPaciente ? 'Desmarcar Pagamento' : 'Marcar como Pago') }}
                 </button>
               }
 
-              @if (ag.status === 'AGENDADO' && ag.recorrencia_group_id) {
+              @if (ag.status === 'AGENDADO' && ag.recorrenciaGroupId) {
                 <button 
                   (click)="confirmarCancelamentoSerie()"
                   class="w-full px-4 py-2 mt-2 bg-red-50 border border-red-200 text-red-600 text-sm font-medium rounded-lg hover:bg-red-100 transition-colors"
@@ -181,7 +181,7 @@
       </p>
       <p class="text-sm text-gray-700 mt-3 mb-5">
         Valor total do pacote:
-        <span class="font-bold text-teal-700">{{ formatarValor(agendamentoParaConfirmarPagamento()!.valor_pacote) }}</span>
+        <span class="font-bold text-teal-700">{{ formatarValor(agendamentoParaConfirmarPagamento()!.valorPacote) }}</span>
       </p>
       <div class="flex gap-3 justify-end">
         <button (click)="agendamentoParaConfirmarPagamento.set(null)" class="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 text-sm hover:bg-gray-50 transition">Cancelar</button>
@@ -200,7 +200,7 @@
       </p>
       <p class="text-sm text-gray-700 mt-3 mb-5">
         Valor total do pacote:
-        <span class="font-bold text-teal-700">{{ formatarValor(agendamentoParaCancelarPagamento()!.valor_pacote) }}</span>
+        <span class="font-bold text-teal-700">{{ formatarValor(agendamentoParaCancelarPagamento()!.valorPacote) }}</span>
       </p>
       <div class="flex gap-3 justify-end">
         <button (click)="agendamentoParaCancelarPagamento.set(null)" class="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 text-sm hover:bg-gray-50 transition">Cancelar</button>
@@ -247,7 +247,7 @@
       
       <div>
         <h2 class="text-sm font-semibold text-gray-900 mb-1">Atualizar Valor Combinado</h2>
-        <p class="text-xs text-gray-500">Valor atual: {{ formatarValor(agendamento()!.valor_combinado) }}</p>
+        <p class="text-xs text-gray-500">Valor atual: {{ formatarValor(agendamento()!.valorCombinado) }}</p>
       </div>
 
       <div>
@@ -263,7 +263,7 @@
         />
       </div>
 
-      @if (agendamento()!.recorrencia_group_id && agendamento()!.status === 'AGENDADO') {
+      @if (agendamento()!.recorrenciaGroupId && agendamento()!.status === 'AGENDADO') {
         <label class="flex items-center gap-2.5 cursor-pointer select-none">
           <input
             type="checkbox"

@@ -113,7 +113,7 @@ export class DashboardComponent implements OnInit {
 
         const agora = new Date();
         const proximos = res.proximos
-          .filter(a => a.status === 'AGENDADO' && new Date(a.data_hora_inicio) >= agora)
+          .filter(a => a.status === 'AGENDADO' && new Date(a.dataHoraInicio) >= agora)
           .slice(0, 8);
         this.proximosAgendamentos.set(proximos);
         this.agendamentosPendentes.set(res.pendentes);
@@ -146,7 +146,7 @@ export class DashboardComponent implements OnInit {
     // Proteção extra caso o HTML seja burlado
     if (!this.isAdmin()) return; 
 
-    if (!ag.pago_pelo_paciente && ag.valor_pacote != null) {
+    if (!ag.pagoPeloPaciente && ag.valorPacote != null) {
       this.agendamentoParaConfirmarPagamento.set(ag);
     } else {
       this.executarTogglePagamento(ag);
@@ -164,7 +164,7 @@ export class DashboardComponent implements OnInit {
 
   private executarTogglePagamento(ag: Agendamento) {
     this.atualizandoPagamento.set(ag.id);
-    this.agendamentoService.atualizarPagamento(ag.id, !ag.pago_pelo_paciente).subscribe({
+    this.agendamentoService.atualizarPagamento(ag.id, !ag.pagoPeloPaciente).subscribe({
       next: () => {
         this.atualizandoPagamento.set(null);
         this.carregar();

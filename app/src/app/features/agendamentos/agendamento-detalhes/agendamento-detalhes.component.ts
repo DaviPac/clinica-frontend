@@ -120,9 +120,9 @@ export class AgendamentoDetalhesComponent implements OnInit {
     const ag = this.agendamento();
     if (!ag) return;
 
-    const vaiBaixar = !ag.pago_pelo_paciente;
+    const vaiBaixar = !ag.pagoPeloPaciente;
 
-    if (ag.valor_pacote != null) {
+    if (ag.valorPacote != null) {
       if (vaiBaixar) this.agendamentoParaConfirmarPagamento.set(ag);
       else this.agendamentoParaCancelarPagamento.set(ag);
     } else {
@@ -146,7 +146,7 @@ export class AgendamentoDetalhesComponent implements OnInit {
 
   private executarTogglePagamento(ag: Agendamento) {
     this.atualizandoPagamento.set(true);
-    this.service.atualizarPagamento(ag.id, !ag.pago_pelo_paciente).subscribe({
+    this.service.atualizarPagamento(ag.id, !ag.pagoPeloPaciente).subscribe({
       next: () => {
         this.atualizandoPagamento.set(false);
         this.carregarAgendamento(ag.id); // Recarrega os dados locais
@@ -181,10 +181,10 @@ export class AgendamentoDetalhesComponent implements OnInit {
 
   cancelarSerie() {
     const ag = this.agendamentoParaCancelarSerie();
-    if (!ag?.recorrencia_group_id) return;
+    if (!ag?.recorrenciaGroupId) return;
 
     this.cancelandoSerie.set(true);
-    this.service.cancelarRecorrencia(ag.recorrencia_group_id).subscribe({
+    this.service.cancelarRecorrencia(ag.recorrenciaGroupId).subscribe({
       next: () => {
         this.agendamentoParaCancelarSerie.set(null);
         this.cancelandoSerie.set(false);
@@ -208,7 +208,7 @@ export class AgendamentoDetalhesComponent implements OnInit {
   iniciarEdicaoValor() {
     const ag = this.agendamento();
     if (!ag) return;
-    this.novoValor.set(ag.valor_combinado);
+    this.novoValor.set(ag.valorCombinado);
     this.atualizarValorRecorrente.set(false);
     this.editandoValor.set(true);
   }

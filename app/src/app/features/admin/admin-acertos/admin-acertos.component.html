@@ -5,7 +5,7 @@
       <h1 class="text-lg font-medium text-gray-900">Repasses a Profissionais</h1>
       <p class="text-sm text-gray-500 mt-0.5">
         @if (!mostrarHistorico()) {
-          {{ profissionaisPendentes().length }} pendente(s) · total a repassar: {{ formatarValor(totalPendente()) }}
+          {{ profissionaisPendentes().length }} pendente(s) · total a repassar aos profissionais: {{ formatarValor(totalPendenteAoProfissional()) }} · total a ser passado para a clínica: {{ formatarValor(totalPendenteAClinica()) }}
         } @else {
           Histórico de repasses concluídos
         }
@@ -46,37 +46,49 @@
     <div class="flex flex-col gap-3">
 
       @if (!mostrarHistorico()) {
-        @for (p of profissionaisPendentes(); track p.profissional_id) {
+        @for (p of profissionaisPendentes(); track p.profissionalId) {
           <div class="border border-amber-200 bg-amber-50 rounded-xl p-4 transition-colors">
             
             <div class="flex items-start justify-between mb-4">
               <div>
-                <p class="text-sm font-medium text-gray-900">{{ p.nome_profissional }}</p>
+                <p class="text-sm font-medium text-gray-900">{{ p.nomeProfissional }}</p>
                 <p class="text-xs text-gray-500 mt-0.5">
                   Referência: {{ formatarMes(periodoSelecionado()) }}
                 </p>
                 <div class="mt-2 text-xs text-gray-600 flex gap-4">
-                  <span>Recebido: {{ formatarValor(p.total_recebido) }}</span>
-                  <span>Retido pela Clínica: {{ formatarValor(p.comissao_clinica) }}</span>
+                  <span>Recebido: {{ formatarValor(p.totalFaturado) }}</span>
+                  <span>Retido pela Clínica: {{ formatarValor(p.comissaoClinica) }}</span>
                 </div>
               </div>
               
               <div class="text-right shrink-0">
                 <p class="text-xs text-gray-500 mb-0.5">Valor do Repasse</p>
                 <p class="text-lg font-medium font-mono text-amber-700">
-                  {{ formatarValor(p.pendente) }}
+                  {{ formatarValor(p.pendenteAoProfissional > 0 && p.pendenteAClinica > 0 ? 0 : p.pendenteAoProfissional || p.pendenteAClinica) }}
                 </p>
               </div>
             </div>
 
-            <button
-              (click)="iniciarRepasse(p.profissional_id, p.pendente, p.nome_profissional)"
-              [disabled]="processando() === p.profissional_id"
-              class="w-full bg-teal-600 hover:bg-teal-700 disabled:opacity-50
-                     text-white text-sm font-medium rounded-lg py-2
-                     transition-colors cursor-pointer disabled:cursor-not-allowed">
-              {{ processando() === p.profissional_id ? 'Registrando pagamento...' : 'Registrar Repasse' }}
-            </button>
+            @if (p.pendenteAoProfissional > 0) {
+              <button
+                (click)="iniciarRepasse(p.profissionalId, p.pendenteAoProfissional, p.nomeProfissional, 'paraProfissional')"
+                [disabled]="processando() === p.profissionalId"
+                class="w-full bg-teal-600 hover:bg-teal-700 disabled:opacity-50
+                      text-white text-sm font-medium rounded-lg py-2
+                      transition-colors cursor-pointer disabled:cursor-not-allowed">
+                {{ processando() === p.profissionalId ? 'Registrando pagamento...' : 'Registrar Repasse ao profissional' }}
+              </button>
+            }
+            @if (p.pendenteAClinica > 0) {
+              <button
+                (click)="iniciarRepasse(p.profissionalId, p.pendenteAClinica, p.nomeProfissional, 'paraClinica')"
+                [disabled]="processando() === p.profissionalId"
+                class="w-full bg-teal-600 hover:bg-teal-700 disabled:opacity-50
+                      text-white text-sm font-medium rounded-lg py-2
+                      transition-colors cursor-pointer disabled:cursor-not-allowed">
+                {{ processando() === p.profissionalId ? 'Registrando pagamento...' : 'Registrar Repasse do profissional à clínica' }}
+              </button>
+            }
 
           </div>
         } @empty {
@@ -93,8 +105,8 @@
               <div>
                 <p class="text-sm font-medium text-gray-900">{{ a.nome_profissional }}</p>
                 <p class="text-xs text-gray-500 mt-0.5">
-                  Referência: {{ formatarMes(a.periodo_referencia) }}
-                  · Pago em {{ formatarData(a.data_pagamento) }}
+                  Referência: {{ formatarMes(a.periodoReferencia) }}
+                  · Pago em {{ formatarData(a.dataPagamento) }}
                 </p>
                 @if (a.observacao) {
                   <p class="text-xs text-gray-500 mt-0.5">{{ a.observacao }}</p>
@@ -102,10 +114,10 @@
               </div>
               <div class="text-right shrink-0">
                 <p class="text-lg font-medium font-mono text-gray-900">
-                  {{ formatarValor(a.valor_pago) }}
+                  {{ formatarValor(a.valorPago) }}
                 </p>
                 <span class="bg-teal-50 text-teal-800 text-xs font-medium px-2 py-0.5 rounded inline-block mt-1">
-                  Repassado
+                  {{ a.profissionalRecebe ? 'Repassado ao profissional': 'Repassado à clínica' }}
                 </span>
               </div>
             </div>
@@ -127,11 +139,11 @@
         <div class="p-6">
           <h2 class="text-lg font-semibold text-gray-900 mb-2">Confirmar Repasse</h2>
           <p class="text-sm text-gray-600 mb-4">
-            Deseja confirmar o repasse pendente para <span class="font-medium text-gray-900">{{ repasseSelecionado()?.nome }}</span>?
+            Deseja confirmar o repasse pendente {{ repasseSelecionado()?.fluxo === 'paraProfissional' ? 'ao profissional' : 'à clínica de' }} <span class="font-medium text-gray-900">{{ repasseSelecionado()?.nome }}</span>?
           </p>
           
           <div class="flex flex-col items-center justify-center bg-gray-50 rounded-lg p-4 mb-4 border border-gray-100">
-            <span class="text-xs text-gray-500 uppercase tracking-wide font-medium mb-1">Valor a repassar</span>
+            <span class="text-xs text-gray-500 uppercase tracking-wide font-medium mb-1">Valor a ser repassado</span>
             <span class="text-2xl font-mono font-medium text-amber-700">
               {{ formatarValor(repasseSelecionado()!.valor) }}
             </span>

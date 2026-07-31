@@ -408,7 +408,7 @@ export class ChatbotComponent implements OnInit, AfterViewChecked {
     
     // Incluir agendamentos ativos pode ajudar a IA a referenciar os IDs corretos
     const listaAgendamentos = this.agendamentos()
-      .map(a => `- Agendamento ID: ${a.id} | Paciente ID: ${a.paciente_id} | Data: ${a.data_hora_inicio} | Status: ${a.status}`)
+      .map(a => `- Agendamento ID: ${a.id} | Paciente ID: ${a.pacienteId} | Data: ${a.dataHoraInicio} | Status: ${a.status}`)
       .join('\n');
     ctx += `Agendamentos recentes neste mês:\n${listaAgendamentos}\n\n`;
     

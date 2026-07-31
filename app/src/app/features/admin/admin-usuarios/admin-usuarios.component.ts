@@ -3,11 +3,16 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { UsuarioService } from '../../../core/services/usuario/usuario.service';
 import { Usuario } from '../../../core/models/usuario.model';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-admin-usuarios',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterLink
+  ],
   templateUrl: './admin-usuarios.component.html',
 })
 export class AdminUsuariosComponent implements OnInit {
@@ -30,7 +35,7 @@ export class AdminUsuariosComponent implements OnInit {
       senha:                ['', [Validators.required, Validators.minLength(6)]],
       role:                 ['PROFISSIONAL' as 'ADMIN' | 'PROFISSIONAL', Validators.required],
       profissao:            [''],
-      taxa_comissao_padrao: [40],
+      taxaComissaoPadrao: [40],
     });
   }
 
@@ -62,7 +67,7 @@ export class AdminUsuariosComponent implements OnInit {
       senha: raw.senha,
       role: raw.role,
       ...(raw.profissao.trim() ? { profissao: raw.profissao.trim() } : {}),
-      taxa_comissao_padrao: raw.taxa_comissao_padrao,
+      taxaComissaoPadrao: raw.taxaComissaoPadrao,
     };
 
     this.service.registrar(dto).subscribe({
@@ -71,7 +76,7 @@ export class AdminUsuariosComponent implements OnInit {
         this.form.reset({
           nome: '', email: '', senha: '',
           role: 'PROFISSIONAL', profissao: '',
-          taxa_comissao_padrao: 40,
+          taxaComissaoPadrao: 40,
         });
         this.modalAberto.set(false);
         this.salvando.set(false);

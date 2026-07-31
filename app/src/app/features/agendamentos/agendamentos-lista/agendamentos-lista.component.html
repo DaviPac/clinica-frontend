@@ -188,7 +188,7 @@
 
     <div class="flex items-start justify-between gap-1 mb-0.5">
       <span class="text-[10px] font-bold tabular-nums text-gray-800 leading-none pt-px">
-        {{ formatarHora(ag.data_hora_inicio) }}
+        {{ formatarHora(ag.dataHoraInicio) }}
       </span>
       <div class="agenda-badge-wrap shrink-0">
         <app-status-badge [status]="ag.status" />
@@ -196,26 +196,26 @@
     </div>
 
     <p class="text-[11px] font-bold text-gray-900 truncate leading-tight"
-      [title]="'Paciente: ' + (pacientesDict()[ag.paciente_id] || ag.paciente_id)">
-      {{ pacientesDict()[ag.paciente_id] || 'Paciente ' + ag.paciente_id }}
+      [title]="'Paciente: ' + (pacientesDict()[ag.pacienteId] || ag.pacienteId)">
+      {{ pacientesDict()[ag.pacienteId] || 'Paciente ' + ag.pacienteId }}
     </p>
 
     <p class="flex items-center gap-1 text-[10px] text-gray-500 truncate mt-0.5"
-      [title]="usuariosDict()[ag.profissional_id!] || ag.profissional_id">
+      [title]="usuariosDict()[ag.profissionalId!] || ag.profissionalId">
       <svg width="9" height="9" viewBox="0 0 9 9" fill="none" class="shrink-0 opacity-50">
         <circle cx="4.5" cy="3" r="1.8" stroke="currentColor" stroke-width="1.1"/>
         <path d="M1 8.5c0-1.933 1.567-3.5 3.5-3.5s3.5 1.567 3.5 3.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
       </svg>
-      {{ usuariosDict()[ag.profissional_id!] || ag.profissional_id }}
+      {{ usuariosDict()[ag.profissionalId!] || ag.profissionalId }}
     </p>
 
     <p class="flex items-center gap-1 text-[10px] text-gray-400 truncate"
-      [title]="servicosDict()[ag.servico_id] || ag.servico_id">
+      [title]="servicosDict()[ag.servicoId] || ag.servicoId">
       <svg width="9" height="9" viewBox="0 0 9 9" fill="none" class="shrink-0 opacity-50">
         <rect x="0.8" y="1.5" width="7.4" height="6" rx="1" stroke="currentColor" stroke-width="1.1"/>
         <path d="M3 1.5V1M6 1.5V1M0.8 4h7.4" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
       </svg>
-      {{ servicosDict()[ag.servico_id] || 'Serviço ' + ag.servico_id }}
+      {{ servicosDict()[ag.servicoId] || 'Serviço ' + ag.servicoId }}
     </p>
 
     <div class="flex flex-wrap gap-1 mt-1.5 pt-1.5 border-t border-black/[.06]">
@@ -233,11 +233,11 @@
         (click)="$event.stopPropagation(); iniciarTogglePagamento(ag)"
         [disabled]="!isAdmin() || atualizandoPagamento() === ag.id"
         class="agenda-action-btn relative z-10"
-        [class.agenda-action-btn--paid]="ag.pago_pelo_paciente"
-        [class.agenda-action-btn--unpaid]="!ag.pago_pelo_paciente"
+        [class.agenda-action-btn--paid]="ag.pagoPeloPaciente"
+        [class.agenda-action-btn--unpaid]="!ag.pagoPeloPaciente"
       >
         @if (atualizandoPagamento() === ag.id) {
-          } @else if (ag.pago_pelo_paciente) {
+          } @else if (ag.pagoPeloPaciente) {
           <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
             <path d="M1 4l2 2 4-3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
@@ -245,7 +245,7 @@
         } @else { A pagar }
       </button>
 
-      @if (ag.status === 'AGENDADO' && ag.recorrencia_group_id) {
+      @if (ag.status === 'AGENDADO' && ag.recorrenciaGroupId) {
         <button
           type="button"
           (click)="$event.stopPropagation(); confirmarCancelamentoSerie(ag)"
@@ -268,7 +268,7 @@
       <p class="text-sm text-gray-700 mt-3 mb-5">
         Valor total do pacote:
         <span class="font-bold text-teal-700">
-          {{ formatarValor(agendamentoParaConfirmarPagamento()!.valor_pacote!) }}
+          {{ formatarValor(agendamentoParaConfirmarPagamento()!.valorPacote!) }}
         </span>
       </p>
       <div class="flex gap-3 justify-end">
@@ -299,7 +299,7 @@
       <p class="text-sm text-gray-700 mt-3 mb-5">
         Valor total do pacote:
         <span class="font-bold text-teal-700">
-          {{ formatarValor(agendamentoParaCancelarPagamento()!.valor_pacote!) }}
+          {{ formatarValor(agendamentoParaCancelarPagamento()!.valorPacote!) }}
         </span>
       </p>
       <div class="flex gap-3 justify-end">

@@ -5,11 +5,12 @@ import { FinanceiroService } from '../../../core/services/financeiro/financeiro.
 import { AcertoComissao, SaldoAReceber } from '../../../core/models/financeiro.model';
 import { AuthService } from '../../../core/services/auth/auth.service';
 import { UsuarioService } from '../../../core/services/usuario/usuario.service';
+import { ToggleComponent } from '../../../shared/components/toggle/toggle.component';
 
 @Component({
   selector: 'app-financeiro-profissional',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, ToggleComponent],
   templateUrl: './financeiro-profissional.component.html',
 })
 export class FinanceiroProfissionalComponent implements OnInit {
@@ -34,8 +35,8 @@ export class FinanceiroProfissionalComponent implements OnInit {
 
   totalRepassadoPeriodo = computed(() =>
     this.acertos()
-      .filter(a => a.periodo_referencia === this.periodoSelecionado())
-      .reduce((sum, a) => sum + a.valor_pago, 0)
+      .filter(a => a.periodoReferencia === this.periodoSelecionado())
+      .reduce((sum, a) => sum + a.valorPago, 0)
   );
 
   form: FormGroup;
@@ -48,6 +49,7 @@ export class FinanceiroProfissionalComponent implements OnInit {
       profissionalId: [null as number | null, [Validators.required]],
       valor_pago: [0, [Validators.required, Validators.min(0.01)]],
       observacao: [''],
+      profissionalRecebe: [true],
     });
   }
 
@@ -91,7 +93,8 @@ export class FinanceiroProfissionalComponent implements OnInit {
         this.saldo.set(s);
         // Preenche o campo com o saldo pendente de repasse
         if (this.isAdmin) {
-          this.form.controls['valor_pago'].setValue(s.saldo_a_receber);
+          this.form.controls['valor_pago'].setValue(Math.abs(s.saldo_a_receber));
+          this.form.controls['profissionalRecebe'].setValue(s.saldo_a_receber >= 0);
         }
         this.carregandoSaldo.set(false);
       },
@@ -116,7 +119,7 @@ export class FinanceiroProfissionalComponent implements OnInit {
       next: lista => {
         this.acertos.set(
           lista.sort((a, b) =>
-            new Date(b.data_pagamento).getTime() - new Date(a.data_pagamento).getTime()
+            new Date(b.dataPagamento).getTime() - new Date(a.dataPagamento).getTime()
           )
         );
         this.carregandoAcertos.set(false);
@@ -151,9 +154,10 @@ export class FinanceiroProfissionalComponent implements OnInit {
 
     const raw = this.form.getRawValue();
     const dto = {
-      profissional_id: raw.profissionalId,
-      periodo_referencia: this.periodoSelecionado(),
-      valor_pago: raw.valor_pago,
+      profissionalId: raw.profissionalId,
+      periodoReferencia: this.periodoSelecionado(),
+      valorPago: raw.valor_pago,
+      profissionalRecebe: raw.profissionalRecebe,
       ...(raw.observacao?.trim() ? { observacao: raw.observacao.trim() } : {}),
     };
 
@@ -161,7 +165,7 @@ export class FinanceiroProfissionalComponent implements OnInit {
       next: novoAcerto => {
         this.acertos.update(lista => [novoAcerto, ...lista]);
         this.sucessoAcerto.set(true);
-        this.form.patchValue({ valor_pago: 0, observacao: '' });
+        this.form.patchValue({ valor_pago: 0, observacao: '', profissionalRecebe: true });
         this.salvandoAcerto.set(false);
         this.carregarSaldo();
         this.fecharModal(); // Fecha o modal após sucesso
@@ -176,7 +180,7 @@ export class FinanceiroProfissionalComponent implements OnInit {
   }
 
   formatarValor(v: number): string {
-    return v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    return Math.abs(v).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   }
 
   formatarData(iso: string): string {

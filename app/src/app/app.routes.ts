@@ -105,6 +105,14 @@ export const routes: Routes = [
           import('./features/admin/admin-usuarios/admin-usuarios.component')
             .then(m => m.AdminUsuariosComponent),
       },
+      {
+        path: 'admin/usuarios/:id',
+        canActivate: [roleGuard],
+        data: { roles: ['ADMIN'] },
+        loadComponent: () =>
+          import('./features/admin/admin-usuarios/admin-usuario-detalhe/admin-usuario-detalhe.component')
+            .then(m => m.AdminUsuarioDetalheComponent),
+      },
 
       // Redirect padrão
       { path: '', redirectTo: 'agendamentos', pathMatch: 'full' },

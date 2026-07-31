@@ -5,26 +5,30 @@ import {
 } from '../../models/financeiro.model';
 
 export interface AcertoDto {
-  profissional_id: number;
-  periodo_referencia: string;
-  valor_pago: number;
+  profissionalId: number;
+  periodoReferencia: string;
+  valorPago: number;
   observacao?: string;
+  profissionalRecebe?: boolean;
 }
 
 export interface RelatorioFinanceiro {
   periodo: string;
   profissionais: {
-    profissional_id: number;
-    nome_profissional: string;
-    total_recebido: number;
-    comissao_clinica: number;
-    a_receber: number;
-    total_repassado: number;
-    pendente: number;
+    profissionalId: number;
+    nomeProfissional: string;
+    totalFaturado: number;
+    comissaoClinica: number;
+    devidoAoProfissional: number;
+    devidoAClinica: number;
+    repassadoAoProfissional: number;
+    repassadoAClinica: number;
+    pendenteAoProfissional: number;
+    pendenteAClinica: number;
   }[];
-  total_comissoes: number;
-  total_despesas: number;
-  lucro_liquido: number;
+  totalComissoes: number;
+  totalDespesas: number;
+  lucroLiquido: number;
 }
 
 @Injectable({ providedIn: 'root' })

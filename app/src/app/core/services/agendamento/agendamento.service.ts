@@ -12,6 +12,7 @@ export interface AgendamentoDto {
   total_sessoes?: number;
   intervalo_semanas?: number;
   pacote: boolean;
+  profissionalRecebe?: boolean;
 }
 
 export interface AgendamentoRecorrenteResponse {

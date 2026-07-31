@@ -8,7 +8,16 @@ export interface RegistrarUsuarioDto {
   senha: string;
   role: 'ADMIN' | 'PROFISSIONAL';
   profissao?: string;
-  taxa_comissao_padrao?: number;
+  taxaComissaoPadrao?: number;
+}
+
+export interface AtualizarUsuarioDto {
+  nome?: string;
+  email?: string;
+  role?: 'ADMIN' | 'PROFISSIONAL';
+  profissao?: string;
+  taxaComissaoPadrao?: number;
+  profissionalRecebe?: boolean;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -16,10 +25,18 @@ export class UsuarioService {
   constructor(private http: HttpClient) {}
 
   listar() {
-    return this.http.get<Usuario[]>('/auth/usuarios');
+    return this.http.get<Usuario[]>('/usuarios');
   }
 
   registrar(dto: RegistrarUsuarioDto) {
     return this.http.post<Usuario>('/auth/registrar', dto);
+  }
+
+  buscarPorId(id: number) {
+    return this.http.get<Usuario>(`/usuarios/${id}`);
+  }
+
+  atualizar(id: number, dto: AtualizarUsuarioDto) {
+    return this.http.put<Usuario>(`/usuarios/${id}`, dto);
   }
 }

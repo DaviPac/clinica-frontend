@@ -6,8 +6,9 @@ export interface Usuario {
   email: string;
   role: Role;
   profissao: string | null;
-  taxa_comissao_padrao: number;
-  criado_em: string;
+  taxaComissaoPadrao: number;
+  criadoEm: string;
+  profissionalRecebe: boolean;
 }
 
 export interface LoginRequest {

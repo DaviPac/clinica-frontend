@@ -131,7 +131,7 @@ export class AgendamentosListaComponent implements OnInit {
   );
 
   private filtrarPorData(dataStr: string): Agendamento[] {
-    let ags = this.agendamentos().filter(a => a.data_hora_inicio.startsWith(dataStr));
+    let ags = this.agendamentos().filter(a => a.dataHoraInicio.startsWith(dataStr));
     if (!this.mostrarInativos()) {
       ags = ags.filter(a => a.status !== 'CANCELADO');
     }
@@ -217,7 +217,7 @@ export class AgendamentosListaComponent implements OnInit {
     this.service.listar({ periodo: { de, ate }, profissionalId: this.filtroProfissionalId() }).subscribe({
       next: lista => {
         this.agendamentos.set(
-          lista.sort((a, b) => new Date(a.data_hora_inicio).getTime() - new Date(b.data_hora_inicio).getTime())
+          lista.sort((a, b) => new Date(a.dataHoraInicio).getTime() - new Date(b.dataHoraInicio).getTime())
         );
         this.carregando.set(false);
       },
@@ -256,9 +256,9 @@ export class AgendamentosListaComponent implements OnInit {
 
   // intercepta se for pacote e o pagamento for para "pago"
   iniciarTogglePagamento(ag: Agendamento) {
-    const vaiBaixar = !ag.pago_pelo_paciente; // true = vai marcar como pago
+    const vaiBaixar = !ag.pagoPeloPaciente; // true = vai marcar como pago
 
-    if (ag.valor_pacote != null) {
+    if (ag.valorPacote != null) {
       if (vaiBaixar) this.agendamentoParaConfirmarPagamento.set(ag);
       else this.agendamentoParaCancelarPagamento.set(ag)
     } else {
@@ -282,7 +282,7 @@ export class AgendamentosListaComponent implements OnInit {
 
   private executarTogglePagamento(ag: Agendamento) {
     this.atualizandoPagamento.set(ag.id);
-    this.service.atualizarPagamento(ag.id, !ag.pago_pelo_paciente).subscribe({
+    this.service.atualizarPagamento(ag.id, !ag.pagoPeloPaciente).subscribe({
       next: () => {
         this.atualizandoPagamento.set(null);
         this.carregarAgendamentos();
@@ -314,10 +314,10 @@ export class AgendamentosListaComponent implements OnInit {
 
   cancelarSerie() {
     const ag = this.agendamentoParaCancelarSerie();
-    if (!ag?.recorrencia_group_id) return;
+    if (!ag?.recorrenciaGroupId) return;
 
     this.cancelandoSerie.set(true);
-    this.service.cancelarRecorrencia(ag.recorrencia_group_id).subscribe({
+    this.service.cancelarRecorrencia(ag.recorrenciaGroupId).subscribe({
       next: () => {
         this.agendamentoParaCancelarSerie.set(null);
         this.cancelandoSerie.set(false);

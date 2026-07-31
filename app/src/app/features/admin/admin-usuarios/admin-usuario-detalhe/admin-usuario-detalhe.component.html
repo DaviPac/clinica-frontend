@@ -1,0 +1,283 @@
+<div class="p-6 max-w-2xl">
+
+  <!-- Voltar -->
+  <a
+    routerLink="/admin/usuarios"
+    class="inline-flex items-center gap-1.5 text-sm text-gray-500
+           hover:text-gray-900 transition-colors mb-6">
+    ← Voltar para usuários
+  </a>
+
+  @if (carregando()) {
+    <p class="text-sm text-gray-400">Carregando...</p>
+  }
+
+  @if (erro()) {
+    <div class="bg-red-50 border border-red-200 rounded-lg px-4 py-3">
+      <p class="text-sm text-red-700">{{ erro() }}</p>
+    </div>
+  }
+
+  @if (usuario(); as u) {
+    <!-- Card de dados -->
+    <div class="bg-white border border-gray-200 rounded-xl p-6">
+      <!-- Avatar + nome + acao -->
+      <div class="flex items-center gap-4 mb-6 pb-6 border-b border-gray-100">
+        <div class="w-12 h-12 rounded-full bg-[#BCA8A5] flex items-center
+                    justify-center text-[#675350] font-medium text-sm shrink-0">
+          {{ u.nome.charAt(0).toUpperCase() }}
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-2 flex-wrap">
+            <h1 class="text-lg font-medium text-gray-900">{{ u.nome }}</h1>
+
+            @if (u.role === 'ADMIN') {
+              <span class="inline-flex items-center text-xs font-medium
+                          text-[#675350] bg-[#F5EFEE] border border-[#E4D6D4]
+                          px-2 py-0.5 rounded-full">
+                Administrador
+              </span>
+            } @else {
+              <span class="inline-flex items-center text-xs font-medium
+                          text-gray-600 bg-gray-100 border border-gray-200
+                          px-2 py-0.5 rounded-full">
+                Profissional
+              </span>
+            }
+          </div>
+          <p class="text-sm text-gray-500">Usuário #{{ u.id }}</p>
+        </div>
+
+        <!-- Acao -->
+        <div class="shrink-0">
+          <button
+            type="button"
+            (click)="abrirModal()"
+            class="text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-100
+                  px-3 py-1.5 rounded-lg transition-colors">
+            Editar
+          </button>
+        </div>
+      </div>
+
+      <!-- Acesso -->
+      <dl class="grid grid-cols-2 gap-x-8 gap-y-5 text-sm">
+        <div class="col-span-2">
+          <dt class="text-xs text-gray-500 mb-1">E-mail</dt>
+          <dd class="text-gray-900 break-all">{{ u.email }}</dd>
+        </div>
+        <div>
+          <dt class="text-xs text-gray-500 mb-1">Perfil de acesso</dt>
+          <dd class="text-gray-900">{{ rotuloRole(u.role) }}</dd>
+        </div>
+        <div>
+          <dt class="text-xs text-gray-500 mb-1">Cadastrado em</dt>
+          <dd class="text-gray-900">{{ formatarData(u.criadoEm) }}</dd>
+        </div>
+      </dl>
+
+      <!-- Atendimento -->
+      <div class="mt-6 pt-6 border-t border-gray-100">
+        <h2 class="text-sm font-medium text-gray-900 mb-4">Atendimento</h2>
+
+        <dl class="grid grid-cols-2 gap-x-8 gap-y-5 text-sm">
+          <div>
+            <dt class="text-xs text-gray-500 mb-1">Profissão</dt>
+            <dd class="text-gray-900">{{ u.profissao ?? '—' }}</dd>
+          </div>
+          <div>
+            <dt class="text-xs text-gray-500 mb-1">Comissão padrão da clínica</dt>
+            <dd class="font-mono text-gray-900">{{ formatarComissao(u.taxaComissaoPadrao) }}</dd>
+          </div>
+          <div class="col-span-2">
+            <dt class="text-xs text-gray-500 mb-1">Fluxo de pagamento</dt>
+            <dd class="text-gray-900">
+              @if (u.profissionalRecebe) {
+                O paciente paga direto ao profissional, que repassa a comissão à clínica.
+              } @else {
+                A clínica recebe o pagamento e repassa ao profissional, descontando a comissão.
+              }
+            </dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+
+    <!-- Modal de edicao -->
+    @if (modalAberto()) {
+      <div
+        class="fixed inset-0 z-50 flex items-center justify-center p-4
+              bg-black/40 backdrop-blur-sm"
+        (click)="fecharModal()">
+        <form
+          [formGroup]="form"
+          (ngSubmit)="salvar()"
+          class="bg-white rounded-xl shadow-xl max-w-md w-full p-6
+                max-h-[90vh] overflow-y-auto"
+          (click)="$event.stopPropagation()">
+
+          <h2 class="text-base font-medium text-gray-900 mb-1">Editar usuário</h2>
+          <p class="text-sm text-gray-500 mb-5">
+            Alterações passam a valer para novos agendamentos.
+          </p>
+
+          <div class="space-y-4">
+            <!-- Nome -->
+            <div>
+              <label for="nome" class="block text-xs text-gray-500 mb-1">Nome</label>
+              <input
+                id="nome"
+                type="text"
+                formControlName="nome"
+                class="w-full text-sm text-gray-900 border border-gray-200 rounded-lg
+                      px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]/40
+                      focus:border-[#BCA8A5] transition-colors">
+              @if (form.controls.nome.touched && form.controls.nome.invalid) {
+                <p class="text-xs text-red-600 mt-1">Informe o nome do usuário.</p>
+              }
+            </div>
+
+            <!-- Email -->
+            <div>
+              <label for="email" class="block text-xs text-gray-500 mb-1">E-mail</label>
+              <input
+                id="email"
+                type="email"
+                formControlName="email"
+                class="w-full text-sm text-gray-900 border border-gray-200 rounded-lg
+                      px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]/40
+                      focus:border-[#BCA8A5] transition-colors">
+              @if (form.controls.email.touched && form.controls.email.invalid) {
+                <p class="text-xs text-red-600 mt-1">Informe um e-mail válido.</p>
+              }
+            </div>
+
+            <!-- Perfil -->
+            <div>
+              <label for="role" class="block text-xs text-gray-500 mb-1">Perfil de acesso</label>
+              <select
+                id="role"
+                formControlName="role"
+                class="w-full text-sm text-gray-900 border border-gray-200 rounded-lg
+                      px-3 py-2 bg-white focus:outline-none focus:ring-2
+                      focus:ring-[#BCA8A5]/40 focus:border-[#BCA8A5] transition-colors">
+                <option value="PROFISSIONAL">Profissional</option>
+                <option value="ADMIN">Administrador</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Atendimento -->
+          <div class="mt-5 pt-5 border-t border-gray-100">
+            <h3 class="text-sm font-medium text-gray-900 mb-4">Atendimento</h3>
+
+            <div class="space-y-4">
+              <!-- Profissao -->
+              <div>
+                <label for="profissao" class="block text-xs text-gray-500 mb-1">Profissão</label>
+                <input
+                  id="profissao"
+                  type="text"
+                  formControlName="profissao"
+                  placeholder="Fisioterapeuta, psicólogo..."
+                  class="w-full text-sm text-gray-900 border border-gray-200 rounded-lg
+                        px-3 py-2 placeholder:text-gray-400 focus:outline-none
+                        focus:ring-2 focus:ring-[#BCA8A5]/40 focus:border-[#BCA8A5]
+                        transition-colors">
+              </div>
+
+              <!-- Comissao -->
+              <div>
+                <label for="taxa" class="block text-xs text-gray-500 mb-1">
+                  Comissão padrão da clínica (%)
+                </label>
+                <input
+                  id="taxa"
+                  type="number"
+                  min="0"
+                  max="100"
+                  step="0.5"
+                  formControlName="taxaComissaoPadrao"
+                  class="w-full text-sm text-gray-900 font-mono border border-gray-200
+                        rounded-lg px-3 py-2 focus:outline-none focus:ring-2
+                        focus:ring-[#BCA8A5]/40 focus:border-[#BCA8A5] transition-colors">
+                @if (form.controls.taxaComissaoPadrao.touched
+                      && form.controls.taxaComissaoPadrao.invalid) {
+                  <p class="text-xs text-red-600 mt-1">Use um valor entre 0 e 100.</p>
+                }
+              </div>
+
+              <!-- Fluxo de pagamento -->
+              <div>
+                <span class="block text-xs text-gray-500 mb-2">Fluxo de pagamento</span>
+                <div class="space-y-2">
+                  <label
+                    class="flex gap-3 border border-gray-200 rounded-lg px-3 py-2.5
+                          cursor-pointer hover:bg-gray-50 transition-colors">
+                    <input
+                      type="radio"
+                      [value]="true"
+                      formControlName="profissionalRecebe"
+                      class="mt-0.5 accent-[#675350]">
+                    <span class="text-sm">
+                      <span class="block text-gray-900">Profissional recebe</span>
+                      <span class="block text-xs text-gray-500">
+                        O paciente paga direto ao profissional, que repassa a comissão à clínica.
+                      </span>
+                    </span>
+                  </label>
+
+                  <label
+                    class="flex gap-3 border border-gray-200 rounded-lg px-3 py-2.5
+                          cursor-pointer hover:bg-gray-50 transition-colors">
+                    <input
+                      type="radio"
+                      [value]="false"
+                      formControlName="profissionalRecebe"
+                      class="mt-0.5 accent-[#675350]">
+                    <span class="text-sm">
+                      <span class="block text-gray-900">Clínica recebe</span>
+                      <span class="block text-xs text-gray-500">
+                        A clínica recebe o pagamento e repassa ao profissional, descontando a comissão.
+                      </span>
+                    </span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          @if (erroSalvar()) {
+            <div class="bg-red-50 border border-red-200 rounded-lg px-3 py-2 mt-4">
+              <p class="text-sm text-red-700">{{ erroSalvar() }}</p>
+            </div>
+          }
+
+          <div class="flex justify-end gap-2 mt-6">
+            <button
+              type="button"
+              (click)="fecharModal()"
+              [disabled]="salvando()"
+              class="text-sm px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-100
+                    transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              [disabled]="salvando()"
+              class="text-sm px-4 py-2 rounded-lg text-white bg-[#675350]
+                    hover:bg-[#544240] transition-colors
+                    disabled:opacity-50 disabled:cursor-not-allowed">
+              @if (salvando()) {
+                Salvando...
+              } @else {
+                Salvar alterações
+              }
+            </button>
+          </div>
+        </form>
+      </div>
+    }
+  }
+
+</div>

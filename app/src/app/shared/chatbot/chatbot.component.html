@@ -107,7 +107,7 @@
                               <label class="text-xs text-gray-600 font-medium">Agendamento</label>
                               <select [(ngModel)]="msg.pendingAction.args['agendamento_id']" class="text-sm p-1.5 border border-gray-300 rounded focus:ring-1 focus:ring-[#BCA8A5] outline-none">
                                 @for (a of agendamentos(); track a.id) {
-                                  <option [ngValue]="a.id">ID: {{a.id}} - {{a.data_hora_inicio | slice:0:16}}</option>
+                                  <option [ngValue]="a.id">ID: {{a.id}} - {{a.dataHoraInicio | slice:0:16}}</option>
                                 }
                               </select>
                             </div>
@@ -122,7 +122,7 @@
                               <label class="text-xs text-gray-600 font-medium">Agendamento</label>
                               <select [(ngModel)]="msg.pendingAction.args['agendamento_id']" class="text-sm p-1.5 border border-gray-300 rounded focus:ring-1 focus:ring-[#BCA8A5] outline-none">
                                 @for (a of agendamentos(); track a.id) {
-                                  <option [ngValue]="a.id">ID: {{a.id}} - {{a.data_hora_inicio | slice:0:16}}</option>
+                                  <option [ngValue]="a.id">ID: {{a.id}} - {{a.dataHoraInicio | slice:0:16}}</option>
                                 }
                               </select>
                             </div>

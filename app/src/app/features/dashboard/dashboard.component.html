@@ -140,26 +140,26 @@
           @for (ag of proximosAgendamentos(); track ag.id) {
             <div
               class="dashboard-agendamento-row"
-              [class.dashboard-agendamento-row--today]="isHoje(ag.data_hora_inicio)"
+              [class.dashboard-agendamento-row--today]="isHoje(ag.dataHoraInicio)"
             >
               <div class="flex flex-col items-center justify-center min-w-[48px] text-center shrink-0">
-                @if (isHoje(ag.data_hora_inicio)) {
+                @if (isHoje(ag.dataHoraInicio)) {
                   <span class="text-[9px] font-bold text-[#BCA8A5] uppercase tracking-widest">Hoje</span>
                 } @else {
-                  <span class="text-[9px] text-gray-400 capitalize">{{ formatarDataCurta(ag.data_hora_inicio).split(',')[0] }}</span>
+                  <span class="text-[9px] text-gray-400 capitalize">{{ formatarDataCurta(ag.dataHoraInicio).split(',')[0] }}</span>
                   <span class="text-[10px] font-bold text-gray-700 tabular-nums leading-tight">
-                    {{ formatarDataCurta(ag.data_hora_inicio).split(',')[1]?.trim() }}
+                    {{ formatarDataCurta(ag.dataHoraInicio).split(',')[1]?.trim() }}
                   </span>
                 }
-                <span class="text-[11px] font-black text-gray-900 tabular-nums mt-0.5">{{ formatarHora(ag.data_hora_inicio) }}</span>
+                <span class="text-[11px] font-black text-gray-900 tabular-nums mt-0.5">{{ formatarHora(ag.dataHoraInicio) }}</span>
               </div>
 
               <div class="w-px h-8 bg-gray-100 mx-1 shrink-0"></div>
 
               <div class="flex-1 min-w-0">
-                <p class="text-xs font-semibold text-gray-900 truncate">{{ nomePaciente(ag.paciente_id) }}</p>
-                <p class="text-[10px] text-gray-400 truncate mt-0.5">{{ nomeProfissional(ag.profissional_id) }}</p>
-                <p class="text-[10px] text-gray-400 truncate mt-0.5">{{ nomeServico(ag.servico_id) }}</p>
+                <p class="text-xs font-semibold text-gray-900 truncate">{{ nomePaciente(ag.pacienteId) }}</p>
+                <p class="text-[10px] text-gray-400 truncate mt-0.5">{{ nomeProfissional(ag.profissionalId) }}</p>
+                <p class="text-[10px] text-gray-400 truncate mt-0.5">{{ nomeServico(ag.servicoId) }}</p>
               </div>
 
               <div class="flex items-center gap-1.5 shrink-0">
@@ -198,9 +198,9 @@
               @for (ag of agendamentosPendentes(); track ag.id) {
                 <div class="flex items-center gap-2 px-3 py-2 bg-amber-50 border border-amber-100 rounded-lg">
                   <div class="flex-1 min-w-0">
-                    <p class="text-[11px] font-semibold text-amber-900 truncate">{{ nomePaciente(ag.paciente_id) }}</p>
+                    <p class="text-[11px] font-semibold text-amber-900 truncate">{{ nomePaciente(ag.pacienteId) }}</p>
                     <p class="text-[10px] text-amber-600 tabular-nums">
-                      {{ formatarDataCurta(ag.data_hora_inicio) }} · {{ formatarHora(ag.data_hora_inicio) }}
+                      {{ formatarDataCurta(ag.dataHoraInicio) }} · {{ formatarHora(ag.dataHoraInicio) }}
                     </p>
                   </div>
                   <button
@@ -237,8 +237,8 @@
                 <div class="flex items-center gap-2 px-3 py-2 bg-red-50 border border-red-100 rounded-lg">
                   <div class="flex-1 min-w-0">
                     <div class="flex items-center gap-1.5 flex-wrap">
-                      <p class="text-[11px] font-semibold text-red-900 truncate">{{ nomePaciente(ag.paciente_id) }}</p>
-                      @if (ag.valor_pacote != null) {
+                      <p class="text-[11px] font-semibold text-red-900 truncate">{{ nomePaciente(ag.pacienteId) }}</p>
+                      @if (ag.valorPacote != null) {
                         <span class="inline-flex items-center gap-0.5 px-1.5 py-0.5 bg-violet-100 text-violet-700 text-[9px] font-bold rounded-full shrink-0">
                           <svg width="8" height="8" viewBox="0 0 10 10" fill="none">
                             <rect x="1" y="3" width="8" height="6" rx="1" stroke="currentColor" stroke-width="1.2"/>
@@ -249,15 +249,15 @@
                       }
                     </div>
                     <p class="text-[10px] text-red-400 tabular-nums">
-                      {{ formatarDataCurta(ag.data_hora_inicio) }} · {{ formatarHora(ag.data_hora_inicio) }}
+                      {{ formatarDataCurta(ag.dataHoraInicio) }} · {{ formatarHora(ag.dataHoraInicio) }}
                     </p>
-                    @if (ag.valor_pacote != null) {
+                    @if (ag.valorPacote != null) {
                       <p class="text-[10px] text-violet-600 tabular-nums mt-0.5">
-                        <span class="font-bold">{{ formatarValor(ag.valor_pacote) }}</span>
+                        <span class="font-bold">{{ formatarValor(ag.valorPacote) }}</span>
                         <span class="text-[9px] text-violet-400"> · total do pacote</span>
                       </p>
                     } @else {
-                      <p class="text-[10px] font-bold text-red-600 tabular-nums mt-0.5">{{ formatarValor(ag.valor_combinado) }}</p>
+                      <p class="text-[10px] font-bold text-red-600 tabular-nums mt-0.5">{{ formatarValor(ag.valorCombinado) }}</p>
                     }
                   </div>
                   
@@ -341,7 +341,7 @@
         </div>
         <div>
           <h2 class="text-sm font-bold text-gray-900">Confirmar pagamento do pacote</h2>
-          <p class="text-[10px] text-gray-400">{{ nomePaciente(agendamentoParaConfirmarPagamento()!.paciente_id) }}</p>
+          <p class="text-[10px] text-gray-400">{{ nomePaciente(agendamentoParaConfirmarPagamento()!.pacienteId) }}</p>
         </div>
       </div>
 
@@ -353,7 +353,7 @@
       <div class="flex items-center justify-between px-4 py-3 bg-violet-50 border border-violet-100 rounded-xl mb-5">
         <span class="text-[11px] text-violet-600 font-medium">Valor total do pacote</span>
         <span class="text-base font-black text-violet-800 tabular-nums">
-          {{ formatarValor(agendamentoParaConfirmarPagamento()!.valor_pacote!) }}
+          {{ formatarValor(agendamentoParaConfirmarPagamento()!.valorPacote!) }}
         </span>
       </div>
 

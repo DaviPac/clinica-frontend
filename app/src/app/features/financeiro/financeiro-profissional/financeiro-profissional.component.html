@@ -83,6 +83,13 @@
           </div>
         </div>
 
+        <app-toggle
+          formControlName="profissionalRecebe"
+          [checked]="form.get('profissionalRecebe')?.value"
+          label="Repasse para o profissional? (caso contrário, será registrado como repasse para a clínica)"
+          (changed)="form.get('profissionalRecebe')?.setValue($event)"
+        />
+
         <button
           type="submit"
           [disabled]="form.invalid || salvandoAcerto()"
@@ -102,13 +109,13 @@
   } @else {
     <div class="grid grid-cols-3 gap-3 mb-6">
       <div class="bg-gray-50 rounded-lg p-4">
-        <p class="text-xs text-gray-500 mb-1.5">A receber</p>
+        <p class="text-xs text-gray-500 mb-1.5">{{ (saldo()?.saldo_a_receber ?? 0) >= 0 ? "A repassar" : "A receber" }}</p>
         @if (carregandoSaldo()) {
           <p class="text-xl font-medium text-gray-300">—</p>
         } @else {
           <p
             class="text-xl font-medium font-mono"
-            [class]="(saldo()?.saldo_a_receber ?? 0) > 0 ? 'text-teal-700' : 'text-gray-400'">
+            [class]="(saldo()?.saldo_a_receber ?? 0) > 0 ? 'text-teal-700' : (saldo()?.saldo_a_receber ?? 0) === 0 ? 'text-gray-400' : 'text-red-700'">
             {{ formatarValor(saldo()?.saldo_a_receber ?? 0) }}
           </p>
         }
@@ -142,12 +149,12 @@
                       flex items-center justify-between hover:bg-gray-50 transition-colors">
             <div>
               <p class="text-sm font-medium text-gray-900">
-                {{ formatarValor(a.valor_pago) }}
+                {{ formatarValor(a.valorPago) }}
               </p>
               <p class="text-xs text-gray-500 mt-0.5">
-                {{ formatarMes(a.periodo_referencia) }}
+                {{ formatarMes(a.periodoReferencia) }}
                 @if (a.observacao) { · {{ a.observacao }} }
-                · {{ formatarData(a.data_pagamento) }}
+                · {{ formatarData(a.dataPagamento) }}
               </p>
             </div>
             <span class="bg-teal-50 text-teal-800 text-xs font-medium px-2 py-0.5 rounded shrink-0">
@@ -171,7 +178,7 @@
   <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4 backdrop-blur-sm">
     <div class="bg-white rounded-xl shadow-xl w-full max-w-md p-6 animate-fade-in-up">
       <div class="flex items-center gap-3 mb-4">
-        <div class="flex-shrink-0 w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
+        <div class="shrink-0 w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
           <svg class="w-6 h-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
           </svg>
@@ -181,7 +188,7 @@
       
       <p class="text-sm text-gray-600 mb-6 ml-13">
         Tem certeza que deseja registrar este repasse no valor de 
-        <strong class="text-gray-900">{{ formatarValor(form.get('valor_pago')?.value) }}</strong>?
+        <strong class="text-gray-900">{{ formatarValor(form.get('valor_pago')?.value) }}</strong> {{ form.get('profissionalRecebe')?.value ? 'para o profissional' : 'para a clínica' }}?
         <br><br>
         <span class="text-red-600 font-medium">Atenção:</span> Esta ação é definitiva e não poderá ser desfeita no sistema.
       </p>
@@ -198,7 +205,7 @@
           type="button"
           (click)="confirmarRepasse()"
           [disabled]="salvandoAcerto()"
-          class="px-5 py-2.5 text-sm font-medium text-white bg-[#BCA8A5] hover:bg-[#9A8683] rounded-lg transition-colors flex items-center justify-center min-w-[120px] disabled:opacity-50 cursor-pointer">
+          class="px-5 py-2.5 text-sm font-medium text-white bg-[#BCA8A5] hover:bg-[#9A8683] rounded-lg transition-colors flex items-center justify-center min-w-30 disabled:opacity-50 cursor-pointer">
           @if (salvandoAcerto()) {
             <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>

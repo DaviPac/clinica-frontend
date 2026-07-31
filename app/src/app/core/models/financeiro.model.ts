@@ -1,10 +1,11 @@
 export interface AcertoComissao {
   id: number;
-  profissional_id: number;
-  periodo_referencia: string;
-  valor_pago: number;
-  data_pagamento: string;
+  profissionalId: number;
+  periodoReferencia: string;
+  valorPago: number;
+  dataPagamento: string;
   observacao: string | null;
+  profissionalRecebe: boolean;
 }
 
 export interface DespesaClinica {

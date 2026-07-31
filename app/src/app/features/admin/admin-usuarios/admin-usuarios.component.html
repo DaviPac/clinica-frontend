@@ -33,9 +33,11 @@
             <th class="text-left px-4 py-2.5 font-medium text-gray-500 border-b border-gray-200">Nome</th>
             <th class="text-left px-4 py-2.5 font-medium text-gray-500 border-b border-gray-200">E-mail</th>
             <th class="text-left px-4 py-2.5 font-medium text-gray-500 border-b border-gray-200">Profissão</th>
-            <th class="text-left px-4 py-2.5 font-medium text-gray-500 border-b border-gray-200">Role</th>
+            <th class="text-left px-4 py-2.5 font-medium text-gray-500 border-b border-gray-200">Papel</th>
             <th class="text-left px-4 py-2.5 font-medium text-gray-500 border-b border-gray-200">Comissão</th>
             <th class="text-left px-4 py-2.5 font-medium text-gray-500 border-b border-gray-200">Desde</th>
+            <th class="text-left px-4 py-2.5 font-medium text-gray-500 border-b border-gray-200">Recebimento</th>
+            <th class="text-right px-4 py-2.5 font-medium text-gray-500 border-b border-gray-200"></th>
           </tr>
         </thead>
         <tbody>
@@ -56,10 +58,21 @@
                 }
               </td>
               <td class="px-4 py-3 text-gray-500 font-mono text-xs">
-                {{ u.taxa_comissao_padrao }}%
+                {{ u.taxaComissaoPadrao }}%
               </td>
               <td class="px-4 py-3 text-gray-500 text-xs">
-                {{ formatarData(u.criado_em) }}
+                {{ formatarData(u.criadoEm) }}
+              </td>
+              <td class="px-4 py-3 text-gray-500 text-xs">
+                {{ u.profissionalRecebe ? 'Direto' : 'Pela clínica' }}
+              </td>
+              <td class="px-4 py-3 text-right">
+                <a
+                  [routerLink]="[u.id]"
+                  class="text-xs text-[#9E8D8B] border border-[#BCA8A5]/40 rounded-md
+                         px-2.5 py-1 hover:bg-[#BCA8A5]/10 transition-colors">
+                  Ver
+                </a>
               </td>
             </tr>
           } @empty {
@@ -155,7 +168,7 @@
             <label class="block text-xs text-gray-500 mb-1.5">Comissão da clínica (%)</label>
             <input
               type="number"
-              formControlName="taxa_comissao_padrao"
+              formControlName="taxaComissaoPadrao"
               min="0"
               max="100"
               class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm

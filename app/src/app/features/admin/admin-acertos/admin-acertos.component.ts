@@ -16,6 +16,7 @@ interface RepasseSelecionado {
   profissionalId: number;
   valor: number;
   nome: string;
+  fluxo: 'paraProfissional' | 'paraClinica'; // Define se o repasse é para o profissional ou para a clínica
 }
 
 @Component({
@@ -42,8 +43,11 @@ export class AdminAcertosComponent implements OnInit {
   // Define o período atual (ex: "2026-04")
   periodoSelecionado = signal(this.obterPeriodoAtual());
 
-  totalPendente = computed(() =>
-    this.profissionaisPendentes().reduce((s, p) => s + p.pendente, 0)
+  totalPendenteAoProfissional = computed(() =>
+    this.profissionaisPendentes().reduce((s, p) => s + p.pendenteAoProfissional, 0)
+  );
+  totalPendenteAClinica = computed(() => 
+    this.profissionaisPendentes().reduce((s, p) => s + p.pendenteAClinica, 0)
   );
 
   constructor(
@@ -67,15 +71,15 @@ export class AdminAcertosComponent implements OnInit {
       next: ({ usuarios, relatorio, acertos }) => {
         this.usuarios.set(usuarios);
 
-        const pendentes = relatorio.profissionais.filter(p => p.pendente > 0);
+        const pendentes = relatorio.profissionais.filter(p => p.pendenteAoProfissional > 0 || p.pendenteAClinica > 0);
         this.profissionaisPendentes.set(pendentes);
 
         const enriquecidos = acertos
           .map(a => ({
             ...a,
-            nome_profissional: this.nomeDoUsuario(a.profissional_id),
+            nome_profissional: this.nomeDoUsuario(a.profissionalId),
           }))
-          .sort((a, b) => new Date(b.data_pagamento).getTime() - new Date(a.data_pagamento).getTime());
+          .sort((a, b) => new Date(b.dataPagamento).getTime() - new Date(a.dataPagamento).getTime());
         
         this.historicoAcertos.set(enriquecidos);
         this.carregando.set(false);
@@ -88,11 +92,12 @@ export class AdminAcertosComponent implements OnInit {
   }
 
   // Prepara os dados e abre o modal
-  iniciarRepasse(profissionalId: number, valorPendente: number, nome: string) {
+  iniciarRepasse(profissionalId: number, valorPendente: number, nome: string, fluxo: 'paraProfissional' | 'paraClinica') {
     this.repasseSelecionado.set({
       profissionalId,
       valor: valorPendente,
-      nome
+      nome,
+      fluxo
     });
   }
 
@@ -111,10 +116,11 @@ export class AdminAcertosComponent implements OnInit {
     this.repasseSelecionado.set(null); // Fecha o modal imediatamente
 
     const dto: AcertoDto = {
-      profissional_id: selecionado.profissionalId,
-      periodo_referencia: this.periodoSelecionado(),
-      valor_pago: selecionado.valor,
+      profissionalId: selecionado.profissionalId,
+      periodoReferencia: this.periodoSelecionado(),
+      valorPago: selecionado.valor,
       observacao: 'Repasse processado pela clínica',
+      profissionalRecebe: selecionado.fluxo === 'paraProfissional'
     };
 
     this.financeiroService.criarAcerto(dto).subscribe({

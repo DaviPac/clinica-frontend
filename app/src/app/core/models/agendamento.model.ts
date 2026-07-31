@@ -2,16 +2,17 @@ export type StatusAgendamento = 'AGENDADO' | 'REALIZADO' | 'FALTA' | 'CANCELADO'
 
 export interface Agendamento {
   id: number;
-  paciente_id: number;
-  profissional_id: number;
-  servico_id: number;
-  data_hora_inicio: string;
-  data_hora_fim: string;
-  valor_combinado: number;
-  valor_pacote: number | null;
-  percentual_comissao_momento: number;
+  pacienteId: number;
+  profissionalId: number;
+  servicoId: number;
+  dataHoraInicio: string;
+  dataHoraFim: string;
+  valorCombinado: number;
+  valorPacote: number | null;
+  percentualComissaoMomento: number;
   status: StatusAgendamento;
-  pago_pelo_paciente: boolean;
-  recorrencia_group_id: string | null;
-  criado_em: string;
+  pagoPeloPaciente: boolean;
+  recorrenciaGroupId: string | null;
+  criadoEm: string;
+  profissionalRecebe: boolean;
 }
