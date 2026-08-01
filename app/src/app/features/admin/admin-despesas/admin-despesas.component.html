@@ -1,6 +1,6 @@
-<div class="p-6">
+<div class="page">
 
-  <div class="flex items-center justify-between mb-6">
+  <div class="page-header">
     <div>
       <h1 class="text-lg font-medium text-gray-900">Despesas</h1>
       <p class="text-sm text-gray-500 mt-0.5">
@@ -9,24 +9,20 @@
     </div>
     <button
       (click)="modalAberto.set(true)"
-      class="bg-[#BCA8A5] hover:bg-[#9A8683] text-white text-sm font-medium
-             rounded-lg px-4 py-2 transition-colors cursor-pointer">
+      class="btn-primary w-full sm:w-auto">
       + Nova despesa
     </button>
   </div>
 
-  <label class="inline-flex items-center gap-2.5 mb-4 cursor-pointer select-none">
+  <div class="mb-4">
     <app-toggle
-      class="flex justify-end"
       [checked]="apenasEmAberto()"
       label="Apenas em aberto"
       (changed)="apenasEmAberto.set($event)" />
-  </label>
+  </div>
 
   @if (erro()) {
-    <div class="bg-red-50 border border-red-200 rounded-lg px-4 py-3 mb-4">
-      <p class="text-sm text-red-700">{{ erro() }}</p>
-    </div>
+    <app-alert class="block mb-4">{{ erro() }}</app-alert>
   }
 
   @if (carregando()) {
@@ -34,15 +30,15 @@
   }
 
   @if (!carregando()) {
-    <div class="border border-gray-200 rounded-xl overflow-hidden">
-      <table class="w-full text-sm border-collapse">
-        <thead class="bg-gray-50">
+    <div class="table-wrap">
+      <table class="min-w-[640px]">
+        <thead>
           <tr>
-            <th class="text-left px-4 py-2.5 font-medium text-gray-500 border-b border-gray-200">Descrição</th>
-            <th class="text-left px-4 py-2.5 font-medium text-gray-500 border-b border-gray-200">Valor</th>
-            <th class="text-left px-4 py-2.5 font-medium text-gray-500 border-b border-gray-200">Vencimento</th>
-            <th class="text-left px-4 py-2.5 font-medium text-gray-500 border-b border-gray-200">Categoria</th>
-            <th class="border-b border-gray-200"></th>
+            <th>Descrição</th>
+            <th>Valor</th>
+            <th>Vencimento</th>
+            <th>Categoria</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -50,25 +46,25 @@
             <tr
               class="border-b border-gray-100 last:border-0 transition-colors hover:bg-gray-50"
               [class.opacity-50]="d.status_pagamento">
-              <td class="px-4 py-3 font-medium text-gray-900">{{ d.descricao }}</td>
-              <td class="px-4 py-3 font-mono text-xs text-gray-900">{{ formatarValor(d.valor) }}</td>
-              <td class="px-4 py-3 text-xs {{ vencimentoClass(d.data_vencimento, d.status_pagamento) }}">
+              <td class="font-medium text-gray-900">{{ d.descricao }}</td>
+              <td class="font-mono text-xs text-gray-900 whitespace-nowrap">{{ formatarValor(d.valor) }}</td>
+              <td class="text-xs whitespace-nowrap {{ vencimentoClass(d.data_vencimento, d.status_pagamento) }}">
                 {{ formatarData(d.data_vencimento) }}
               </td>
-              <td class="px-4 py-3">
+              <td>
                 @if (d.categoria === 'FIXA') {
                   <span class="bg-blue-50 text-blue-800 text-xs font-medium px-2 py-0.5 rounded">Fixa</span>
                 } @else {
                   <span class="bg-amber-50 text-amber-800 text-xs font-medium px-2 py-0.5 rounded">Variável</span>
                 }
               </td>
-              <td class="px-4 py-3 text-right">
+              <td class="text-right">
                 @if (!d.status_pagamento) {
                   <button
                     (click)="marcarPago(d)"
                     [disabled]="pagando() === d.id"
                     class="text-xs bg-teal-600 hover:bg-teal-700 disabled:opacity-50
-                           text-white rounded-md px-2.5 py-1 transition-colors
+                           text-white rounded-md px-2.5 py-1 transition-colors whitespace-nowrap
                            cursor-pointer disabled:cursor-not-allowed">
                     {{ pagando() === d.id ? '...' : 'Marcar pago' }}
                   </button>
@@ -81,7 +77,7 @@
             </tr>
           } @empty {
             <tr>
-              <td colspan="5" class="px-4 py-10 text-center text-sm text-gray-400">
+              <td colspan="5" class="py-10 text-center text-sm text-gray-400">
                 Nenhuma despesa encontrada.
               </td>
             </tr>
@@ -95,101 +91,79 @@
 
 <!-- Modal nova despesa -->
 @if (modalAberto()) {
-  <div
-    class="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4"
-    (click)="modalAberto.set(false)">
-    <div
-      class="bg-white rounded-xl border border-gray-200 p-7 w-full max-w-sm"
-      (click)="$event.stopPropagation()">
+  <app-modal titulo="Nova despesa" maxWidth="max-w-sm" (fechar)="modalAberto.set(false)">
 
-      <div class="flex items-center justify-between mb-6">
-        <h2 class="text-base font-medium text-gray-900">Nova despesa</h2>
-        <button
-          (click)="modalAberto.set(false)"
-          class="text-gray-400 hover:text-gray-600 text-xl leading-none
-                 cursor-pointer bg-transparent border-none p-0">×</button>
+    @if (erroModal()) {
+      <app-alert class="block mb-4">{{ erroModal() }}</app-alert>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="flex flex-col gap-4">
+
+      <div>
+        <label class="ui-label" for="despesa-descricao">
+          Descrição <span class="text-red-500">*</span>
+        </label>
+        <input
+          id="despesa-descricao"
+          type="text"
+          formControlName="descricao"
+          placeholder="Ex: Aluguel da sala"
+          class="ui-input"
+        />
       </div>
 
-      @if (erroModal()) {
-        <div class="bg-red-50 border border-red-200 rounded-lg px-3 py-2.5 mb-4">
-          <p class="text-sm text-red-700">{{ erroModal() }}</p>
-        </div>
-      }
-
-      <form [formGroup]="form" (ngSubmit)="submit()" class="flex flex-col gap-4">
-
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div>
-          <label class="block text-xs text-gray-500 mb-1.5">
-            Descrição <span class="text-red-500">*</span>
+          <label class="ui-label" for="despesa-valor">
+            Valor (R$) <span class="text-red-500">*</span>
           </label>
           <input
-            type="text"
-            formControlName="descricao"
-            placeholder="Ex: Aluguel da sala"
-            class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
-                   focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]"
+            id="despesa-valor"
+            type="number"
+            formControlName="valor"
+            min="0.01"
+            step="0.01"
+            class="ui-input font-mono"
           />
         </div>
-
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block text-xs text-gray-500 mb-1.5">
-              Valor (R$) <span class="text-red-500">*</span>
-            </label>
-            <input
-              type="number"
-              formControlName="valor"
-              min="0.01"
-              step="0.01"
-              class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
-                     font-mono focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]"
-            />
-          </div>
-          <div>
-            <label class="block text-xs text-gray-500 mb-1.5">
-              Vencimento <span class="text-red-500">*</span>
-            </label>
-            <input
-              type="date"
-              formControlName="data_vencimento"
-              class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
-                     focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]"
-            />
-          </div>
-        </div>
-
         <div>
-          <label class="block text-xs text-gray-500 mb-1.5">
-            Categoria <span class="text-red-500">*</span>
+          <label class="ui-label" for="despesa-vencimento">
+            Vencimento <span class="text-red-500">*</span>
           </label>
-          <select
-            formControlName="categoria"
-            class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
-                   focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]">
-            <option value="FIXA">Fixa</option>
-            <option value="VARIAVEL">Variável</option>
-          </select>
+          <input
+            id="despesa-vencimento"
+            type="date"
+            formControlName="data_vencimento"
+            class="ui-input"
+          />
         </div>
+      </div>
 
-        <div class="flex gap-2.5 mt-2">
-          <button
-            type="button"
-            (click)="modalAberto.set(false)"
-            class="flex-1 border border-gray-200 rounded-lg py-2.5 text-sm
-                   text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer">
-            Cancelar
-          </button>
-          <button
-            type="submit"
-            [disabled]="form.invalid || salvando()"
-            class="flex-1 bg-[#BCA8A5] hover:bg-[#9A8683] disabled:opacity-50
-                   text-white text-sm font-medium rounded-lg py-2.5
-                   transition-colors cursor-pointer disabled:cursor-not-allowed">
-            {{ salvando() ? 'Salvando...' : 'Criar despesa' }}
-          </button>
-        </div>
+      <div>
+        <label class="ui-label" for="despesa-categoria">
+          Categoria <span class="text-red-500">*</span>
+        </label>
+        <select id="despesa-categoria" formControlName="categoria" class="ui-input">
+          <option value="FIXA">Fixa</option>
+          <option value="VARIAVEL">Variável</option>
+        </select>
+      </div>
 
-      </form>
-    </div>
-  </div>
+      <div class="flex gap-2.5 mt-2">
+        <button
+          type="button"
+          (click)="modalAberto.set(false)"
+          class="btn-outline flex-1">
+          Cancelar
+        </button>
+        <button
+          type="submit"
+          [disabled]="form.invalid || salvando()"
+          class="btn-primary flex-1">
+          {{ salvando() ? 'Salvando...' : 'Criar despesa' }}
+        </button>
+      </div>
+
+    </form>
+  </app-modal>
 }

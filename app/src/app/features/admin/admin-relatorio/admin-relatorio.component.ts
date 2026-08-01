@@ -1,5 +1,6 @@
 import { Component, OnInit, computed, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { AlertComponent } from '../../../shared/components/alert/alert.component';
 import { FinanceiroService, RelatorioFinanceiro } from '../../../core/services/financeiro/financeiro.service';
 
 type Direcao = 'CLINICA_PAGA' | 'PROFISSIONAL_PAGA' | 'MISTO' | 'NENHUM';
@@ -10,7 +11,7 @@ type LinhaRelatorio = ProfissionalRelatorio & { direcao: Direcao };
 @Component({
   selector: 'app-admin-relatorio',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, AlertComponent],
   templateUrl: './admin-relatorio.component.html',
 })
 export class AdminRelatorioComponent implements OnInit {

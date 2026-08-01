@@ -1,4 +1,4 @@
-<div class="p-6 max-w-3xl">
+<div class="page max-w-3xl">
 
   <div class="mb-6">
     <h1 class="text-lg font-medium text-gray-900">Meu perfil</h1>
@@ -8,10 +8,10 @@
   </div>
 
   <!-- Card: Dados pessoais -->
-  <div class="border border-gray-200 rounded-xl bg-white p-6 mb-5">
+  <div class="border border-gray-200 rounded-xl bg-white p-4 sm:p-6 mb-5">
     <div class="flex items-start gap-5">
-      <div class="w-16 h-16 rounded-full bg-[#F0EDED] flex items-center justify-center
-                  text-[#5E5253] text-lg font-medium shrink-0">
+      <div class="w-16 h-16 rounded-full bg-brand-100 flex items-center justify-center
+                  text-brand-800 text-lg font-medium shrink-0">
         {{ iniciais }}
       </div>
 
@@ -55,7 +55,7 @@
   </div>
 
   <!-- Card: Mudar senha -->
-  <div class="border border-gray-200 rounded-xl bg-white p-6">
+  <div class="border border-gray-200 rounded-xl bg-white p-4 sm:p-6">
     <div class="mb-5">
       <h2 class="text-base font-medium text-gray-900">Alterar senha</h2>
       <p class="text-xs text-gray-500 mt-0.5">
@@ -88,7 +88,7 @@
             formControlName="senhaAntiga"
             placeholder="••••••"
             class="w-full border border-gray-200 rounded-lg pl-3 pr-10 py-2 text-sm
-                   focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]"
+                   focus:outline-none focus:ring-2 focus:ring-brand-400"
           />
           <button
             type="button"
@@ -123,7 +123,7 @@
             formControlName="novaSenha"
             placeholder="Mínimo 6 caracteres"
             class="w-full border border-gray-200 rounded-lg pl-3 pr-10 py-2 text-sm
-                   focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]"
+                   focus:outline-none focus:ring-2 focus:ring-brand-400"
           />
           <button
             type="button"
@@ -161,7 +161,7 @@
             formControlName="confirmarNova"
             placeholder="Repita a nova senha"
             class="w-full border border-gray-200 rounded-lg pl-3 pr-10 py-2 text-sm
-                   focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]"
+                   focus:outline-none focus:ring-2 focus:ring-brand-400"
           />
           <button
             type="button"
@@ -192,7 +192,7 @@
         <button
           type="submit"
           [disabled]="form.invalid || salvando()"
-          class="bg-[#BCA8A5] hover:bg-[#9A8683] disabled:opacity-50
+          class="bg-brand-400 hover:bg-brand-600 disabled:opacity-50
                  text-white text-sm font-medium rounded-lg px-5 py-2.5
                  transition-colors cursor-pointer disabled:cursor-not-allowed">
           {{ salvando() ? 'Alterando...' : 'Alterar senha' }}

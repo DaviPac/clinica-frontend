@@ -6,6 +6,8 @@ import { Servico } from '../../../core/models/servico.model';
 import { ServicosModalComponent } from '../servicos-modal/servicos-modal.component';
 import { FiltroProfissionalComponent } from '../../../shared/components/filtro-profissional/filtro-profissional.component';
 import { AuthService } from '../../../core/services/auth/auth.service';
+import { AlertComponent } from '../../../shared/components/alert/alert.component';
+import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-servicos-lista',
@@ -15,6 +17,8 @@ import { AuthService } from '../../../core/services/auth/auth.service';
     ServicosModalComponent,
     ToggleComponent,
     FiltroProfissionalComponent,
+    AlertComponent,
+    ConfirmDialogComponent,
   ],
   templateUrl: './servicos-lista.component.html',
 })

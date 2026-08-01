@@ -1,156 +1,129 @@
-<div
-  class="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4"
-  (click)="fechar.emit()">
+<app-modal titulo="Novo paciente" (fechar)="fechar.emit()">
 
-  <div
-    class="bg-white rounded-xl border border-gray-200 p-7 w-full max-w-md
-           max-h-[90vh] overflow-y-auto"
-    (click)="$event.stopPropagation()">
+  @if (avisoVinculacao()) {
+    <app-alert variant="success" class="block mb-4">
+      Paciente já cadastrado no sistema — vinculado ao seu perfil.
+    </app-alert>
+  }
 
-    <div class="flex items-center justify-between mb-6">
-      <h2 class="text-base font-medium text-gray-900">Novo paciente</h2>
+  @if (erro()) {
+    <app-alert class="block mb-4">{{ erro() }}</app-alert>
+  }
+
+  <form [formGroup]="form" (ngSubmit)="submit()" class="flex flex-col gap-4">
+
+    @if (isAdmin) {
+      <div>
+        <label class="ui-label" for="paciente-profissional">
+          Profissional <span class="text-red-500">*</span>
+        </label>
+        <select
+          id="paciente-profissional"
+          formControlName="usuario_id"
+          [class.border-red-300]="campoInvalido('usuario_id')"
+          class="ui-input">
+          <option [value]="0" disabled>Selecione um profissional</option>
+          @for (u of usuarios(); track u.id) {
+            <option [value]="u.id">{{ u.nome || u.email }}</option>
+          }
+        </select>
+        @if (campoInvalido('usuario_id')) {
+          <p class="text-xs text-red-600 mt-1">Selecione um profissional.</p>
+        }
+      </div>
+    }
+
+    <div>
+      <label class="ui-label" for="paciente-nome">
+        Nome completo <span class="text-red-500">*</span>
+      </label>
+      <input
+        id="paciente-nome"
+        type="text"
+        formControlName="nome"
+        placeholder="Maria Oliveira"
+        [class.border-red-300]="campoInvalido('nome')"
+        class="ui-input"
+      />
+      @if (campoInvalido('nome')) {
+        <p class="text-xs text-red-600 mt-1">Informe o nome completo (mínimo 3 caracteres).</p>
+      }
+    </div>
+
+    <div>
+      <label class="ui-label" for="paciente-cpf">CPF</label>
+      <input
+        id="paciente-cpf"
+        type="text"
+        inputmode="numeric"
+        formControlName="cpf"
+        placeholder="123.456.789-00"
+        [class.border-red-300]="campoInvalido('cpf')"
+        class="ui-input font-mono"
+      />
+      @if (campoInvalido('cpf')) {
+        <p class="text-xs text-red-600 mt-1">Informe um CPF válido.</p>
+      }
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <div>
+        <label class="ui-label" for="paciente-telefone">Telefone</label>
+        <input
+          id="paciente-telefone"
+          type="tel"
+          formControlName="telefone"
+          placeholder="(81) 99999-0000"
+          class="ui-input"
+        />
+      </div>
+      <div>
+        <label class="ui-label" for="paciente-nascimento">Nascimento</label>
+        <input
+          id="paciente-nascimento"
+          type="date"
+          formControlName="dataNascimento"
+          class="ui-input"
+        />
+      </div>
+    </div>
+
+    <div>
+      <label class="ui-label" for="paciente-rg">RG</label>
+      <input
+        id="paciente-rg"
+        type="text"
+        formControlName="rg"
+        placeholder="00.000.000-0"
+        class="ui-input font-mono"
+      />
+    </div>
+
+    <div>
+      <label class="ui-label" for="paciente-endereco">Endereço completo</label>
+      <textarea
+        id="paciente-endereco"
+        formControlName="enderecoCompleto"
+        rows="2"
+        placeholder="Rua, número, bairro, cidade"
+        class="ui-input resize-none">
+      </textarea>
+    </div>
+
+    <div class="flex gap-2.5 mt-2">
       <button
         type="button"
         (click)="fechar.emit()"
-        class="text-gray-400 hover:text-gray-600 text-xl leading-none cursor-pointer
-               bg-transparent border-none p-0">
-        &times;
+        class="btn-outline flex-1">
+        Cancelar
+      </button>
+      <button
+        type="submit"
+        [disabled]="loading() || avisoVinculacao()"
+        class="btn-primary flex-1">
+        {{ loading() ? 'Salvando...' : 'Cadastrar' }}
       </button>
     </div>
 
-    @if (avisoVinculacao()) {
-      <div class="bg-teal-50 border border-teal-200 rounded-lg px-3 py-2.5 mb-4">
-        <p class="text-sm text-teal-800">
-          Paciente já cadastrado no sistema — vinculado ao seu perfil.
-        </p>
-      </div>
-    }
-
-    @if (erro()) {
-      <div class="bg-red-50 border border-red-200 rounded-lg px-3 py-2.5 mb-4">
-        <p class="text-sm text-red-700">{{ erro() }}</p>
-      </div>
-    }
-
-    <form [formGroup]="form" (ngSubmit)="submit()" class="flex flex-col gap-4">
-
-      @if (isAdmin) {
-        <div>
-          <label class="block text-xs text-gray-500 mb-1.5">
-            Profissional <span class="text-red-500">*</span>
-          </label>
-          <select
-            formControlName="usuario_id"
-            [class.border-red-300]="campoInvalido('usuario_id')"
-            class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
-                   focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]">
-            <option [value]="0" disabled>Selecione um profissional</option>
-            @for (u of usuarios(); track u.id) {
-              <option [value]="u.id">{{ u.nome || u.email }}</option>
-            }
-          </select>
-          @if (campoInvalido('usuario_id')) {
-            <p class="text-xs text-red-600 mt-1">Selecione um profissional.</p>
-          }
-        </div>
-      }
-
-      <div>
-        <label class="block text-xs text-gray-500 mb-1.5">
-          Nome completo <span class="text-red-500">*</span>
-        </label>
-        <input
-          type="text"
-          formControlName="nome"
-          placeholder="Maria Oliveira"
-          [class.border-red-300]="campoInvalido('nome')"
-          class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
-                 focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]"
-        />
-        @if (campoInvalido('nome')) {
-          <p class="text-xs text-red-600 mt-1">Informe o nome completo (mínimo 3 caracteres).</p>
-        }
-      </div>
-
-      <div>
-        <label class="block text-xs text-gray-500 mb-1.5">
-          CPF
-        </label>
-        <input
-          type="text"
-          formControlName="cpf"
-          placeholder="123.456.789-00"
-          [class.border-red-300]="campoInvalido('cpf')"
-          class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
-                 font-mono focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]"
-        />
-        @if (campoInvalido('cpf')) {
-          <p class="text-xs text-red-600 mt-1">Informe um CPF válido.</p>
-        }
-      </div>
-
-      <div class="grid grid-cols-2 gap-3">
-        <div>
-          <label class="block text-xs text-gray-500 mb-1.5">Telefone</label>
-          <input
-            type="text"
-            formControlName="telefone"
-            placeholder="(81) 99999-0000"
-            class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
-                   focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]"
-          />
-        </div>
-        <div>
-          <label class="block text-xs text-gray-500 mb-1.5">Nascimento</label>
-          <input
-            type="date"
-            formControlName="dataNascimento"
-            class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
-                   focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]"
-          />
-        </div>
-      </div>
-
-      <div>
-        <label class="block text-xs text-gray-500 mb-1.5">RG</label>
-        <input
-          type="text"
-          formControlName="rg"
-          placeholder="00.000.000-0"
-          class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
-                 font-mono focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]"
-        />
-      </div>
-
-      <div>
-        <label class="block text-xs text-gray-500 mb-1.5">Endereço completo</label>
-        <textarea
-          formControlName="enderecoCompleto"
-          rows="2"
-          placeholder="Rua, número, bairro, cidade"
-          class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
-                 focus:outline-none focus:ring-2 focus:ring-[#BCA8A5] resize-none">
-        </textarea>
-      </div>
-
-      <div class="flex gap-2.5 mt-2">
-        <button
-          type="button"
-          (click)="fechar.emit()"
-          class="flex-1 border border-gray-200 rounded-lg py-2.5 text-sm
-                 text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer">
-          Cancelar
-        </button>
-        <button
-          type="submit"
-          [disabled]="loading() || avisoVinculacao()"
-          class="flex-1 bg-[#BCA8A5] hover:bg-[#9A8683] disabled:opacity-50
-                 text-white text-sm font-medium rounded-lg py-2.5
-                 transition-colors cursor-pointer disabled:cursor-not-allowed">
-          {{ loading() ? 'Salvando...' : 'Cadastrar' }}
-        </button>
-      </div>
-
-    </form>
-  </div>
-</div>
+  </form>
+</app-modal>

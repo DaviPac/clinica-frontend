@@ -1,4 +1,4 @@
-<div class="p-6 max-w-2xl">
+<div class="page max-w-2xl">
 
   <!-- Voltar -->
   <a
@@ -13,13 +13,11 @@
   }
 
   @if (erro()) {
-    <div class="bg-red-50 border border-red-200 rounded-lg px-4 py-3">
-      <p class="text-sm text-red-700">{{ erro() }}</p>
-    </div>
+    <app-alert class="block">{{ erro() }}</app-alert>
   }
 
   @if (paciente(); as p) {
-    <div class="bg-white border border-gray-200 rounded-xl p-6">
+    <div class="bg-white border border-gray-200 rounded-xl p-4 sm:p-6">
 
       <div class="mb-6 pb-6 border-b border-gray-100">
         <h1 class="text-lg font-medium text-gray-900">Editar paciente</h1>
@@ -27,15 +25,13 @@
       </div>
 
       @if (erroSalvar()) {
-        <div class="bg-red-50 border border-red-200 rounded-lg px-3 py-2.5 mb-4">
-          <p class="text-sm text-red-700">{{ erroSalvar() }}</p>
-        </div>
+        <app-alert class="block mb-4">{{ erroSalvar() }}</app-alert>
       }
 
       <form [formGroup]="form" (ngSubmit)="salvar()" class="flex flex-col gap-4">
 
         <div>
-          <label class="block text-xs text-gray-500 mb-1.5">
+          <label class="ui-label">
             Nome completo <span class="text-red-500">*</span>
           </label>
           <input
@@ -43,8 +39,7 @@
             formControlName="nome"
             placeholder="Maria Oliveira"
             [class.border-red-300]="campoInvalido('nome')"
-            class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
-                   focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]"
+            class="ui-input"
           />
           @if (campoInvalido('nome')) {
             <p class="text-xs text-red-600 mt-1">Informe o nome completo (mínimo 3 caracteres).</p>
@@ -52,7 +47,7 @@
         </div>
 
         <div>
-          <label class="block text-xs text-gray-500 mb-1.5">
+          <label class="ui-label">
             CPF <span class="text-red-500">*</span>
           </label>
           <input
@@ -60,37 +55,34 @@
             formControlName="cpf"
             placeholder="123.456.789-00"
             [class.border-red-300]="campoInvalido('cpf')"
-            class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
-                   font-mono focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]"
+            class="ui-input font-mono"
           />
           @if (campoInvalido('cpf')) {
             <p class="text-xs text-red-600 mt-1">Informe um CPF válido.</p>
           }
         </div>
 
-        <div class="grid grid-cols-2 gap-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
-            <label class="block text-xs text-gray-500 mb-1.5">Telefone</label>
+            <label class="ui-label">Telefone</label>
             <input
               type="text"
               formControlName="telefone"
               placeholder="(81) 99999-0000"
               [class.border-amber-400]="foiLimpo('telefone')"
-              class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
-                     focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]"
+              class="ui-input"
             />
             @if (foiLimpo('telefone')) {
               <p class="text-xs text-amber-700 mt-1">Não é possível limpar este campo no momento.</p>
             }
           </div>
           <div>
-            <label class="block text-xs text-gray-500 mb-1.5">Nascimento</label>
+            <label class="ui-label">Nascimento</label>
             <input
               type="date"
               formControlName="dataNascimento"
               [class.border-amber-400]="foiLimpo('dataNascimento')"
-              class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
-                     focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]"
+              class="ui-input"
             />
             @if (foiLimpo('dataNascimento')) {
               <p class="text-xs text-amber-700 mt-1">Não é possível limpar este campo no momento.</p>
@@ -99,14 +91,13 @@
         </div>
 
         <div>
-          <label class="block text-xs text-gray-500 mb-1.5">RG</label>
+          <label class="ui-label">RG</label>
           <input
             type="text"
             formControlName="rg"
             placeholder="00.000.000-0"
             [class.border-amber-400]="foiLimpo('rg')"
-            class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
-                   font-mono focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]"
+            class="ui-input font-mono"
           />
           @if (foiLimpo('rg')) {
             <p class="text-xs text-amber-700 mt-1">Não é possível limpar este campo no momento.</p>
@@ -114,14 +105,13 @@
         </div>
 
         <div>
-          <label class="block text-xs text-gray-500 mb-1.5">Endereço completo</label>
+          <label class="ui-label">Endereço completo</label>
           <textarea
             formControlName="enderecoCompleto"
             rows="2"
             placeholder="Rua, número, bairro, cidade"
             [class.border-amber-400]="foiLimpo('enderecoCompleto')"
-            class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
-                   focus:outline-none focus:ring-2 focus:ring-[#BCA8A5] resize-none">
+            class="ui-input resize-none">
           </textarea>
           @if (foiLimpo('enderecoCompleto')) {
             <p class="text-xs text-amber-700 mt-1">Não é possível limpar este campo no momento.</p>
@@ -133,17 +123,13 @@
             type="button"
             (click)="cancelar()"
             [disabled]="salvando()"
-            class="flex-1 border border-gray-200 rounded-lg py-2.5 text-sm
-                   text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer
-                   disabled:opacity-50 disabled:cursor-not-allowed">
+            class="btn-outline flex-1">
             Cancelar
           </button>
           <button
             type="submit"
             [disabled]="salvando()"
-            class="flex-1 bg-[#BCA8A5] hover:bg-[#9A8683] disabled:opacity-50
-                   text-white text-sm font-medium rounded-lg py-2.5
-                   transition-colors cursor-pointer disabled:cursor-not-allowed">
+            class="btn-primary flex-1">
             {{ salvando() ? 'Salvando...' : 'Salvar alterações' }}
           </button>
         </div>

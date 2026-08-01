@@ -1,214 +1,184 @@
-<div
-  class="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4"
-  (click)="fechar.emit()">
+<app-modal titulo="Novo agendamento" (fechar)="fechar.emit()">
 
-  <div
-    class="bg-white rounded-xl border border-gray-200 p-7 w-full max-w-md
-           max-h-[90vh] overflow-y-auto"
-    (click)="$event.stopPropagation()">
+  @if (erro()) {
+    <app-alert class="block mb-4">{{ erro() }}</app-alert>
+  }
 
-    <div class="flex items-center justify-between mb-6">
-      <h2 class="text-base font-medium text-gray-900">Novo agendamento</h2>
-      <button
-        (click)="fechar.emit()"
-        class="text-gray-400 hover:text-gray-600 text-xl leading-none
-               cursor-pointer bg-transparent border-none p-0">×</button>
-    </div>
+  <form [formGroup]="form" (ngSubmit)="submit()" class="flex flex-col gap-4">
 
-    @if (erro()) {
-      <div class="bg-red-50 border border-red-200 rounded-lg px-3 py-2.5 mb-4">
-        <p class="text-sm text-red-700">{{ erro() }}</p>
+    @if (isAdmin) {
+      <div>
+        <label class="ui-label" for="ag-profissional">
+          Profissional <span class="text-red-500">*</span>
+        </label>
+        <select id="ag-profissional" formControlName="usuario_id" class="ui-input">
+          <option [value]="0" disabled>Selecione um profissional</option>
+          @for (u of usuarios(); track u.id) {
+            <option [value]="u.id">{{ u.nome || u.email }}</option>
+          }
+        </select>
       </div>
     }
 
-    <form [formGroup]="form" (ngSubmit)="submit()" class="flex flex-col gap-4">
+    <div>
+      <label class="ui-label" for="ag-paciente">
+        Paciente <span class="text-red-500">*</span>
+      </label>
+      <select id="ag-paciente" formControlName="paciente_id" class="ui-input">
+        <option [value]="0" disabled>Selecione um paciente</option>
+        @for (p of pacientes(); track p.id) {
+          <option [value]="p.id">{{ p.nome }}</option>
+        }
+      </select>
+    </div>
 
-      @if (isAdmin) {
-        <div>
-          <label class="block text-xs text-gray-500 mb-1.5">
-            Profissional <span class="text-red-500">*</span>
-          </label>
-          <select
-            formControlName="usuario_id"
-            class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
-                   focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]">
-            <option [value]="0" disabled>Selecione um profissional</option>
-            @for (u of usuarios(); track u.id) {
-              <option [value]="u.id">{{ u.nome || u.email }}</option>
-            }
-          </select>
-        </div>
-      }
+    <div>
+      <label class="ui-label" for="ag-servico">
+        Serviço <span class="text-red-500">*</span>
+      </label>
+      <select id="ag-servico" formControlName="servico_id" class="ui-input">
+        <option [value]="0" disabled>Selecione um serviço</option>
+        @for (s of servicos(); track s.id) {
+          <option [value]="s.id">
+            {{ s.nome }}
+            @if (s.is_pacote) { · pacote }
+            — {{ s.valor_atual | currency:'BRL' }}
+          </option>
+        }
+      </select>
+    </div>
 
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
       <div>
-        <label class="block text-xs text-gray-500 mb-1.5">
-          Paciente <span class="text-red-500">*</span>
-        </label>
-        <select
-          formControlName="paciente_id"
-          class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
-                 focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]">
-          <option [value]="0" disabled>Selecione um paciente</option>
-          @for (p of pacientes(); track p.id) {
-            <option [value]="p.id">{{ p.nome }}</option>
-          }
-        </select>
-      </div>
-
-      <div>
-        <label class="block text-xs text-gray-500 mb-1.5">
-          Serviço <span class="text-red-500">*</span>
-        </label>
-        <select
-          formControlName="servico_id"
-          class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
-                 focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]">
-          <option [value]="0" disabled>Selecione um serviço</option>
-          @for (s of servicos(); track s.id) {
-            <option [value]="s.id">
-              {{ s.nome }}
-              @if (s.is_pacote) { · pacote }
-              — {{ s.valor_atual | currency:'BRL' }}
-            </option>
-          }
-        </select>
-      </div>
-
-      <div class="grid grid-cols-2 gap-3">
-        <div>
-          <label class="block text-xs text-gray-500 mb-1.5">
-            Início <span class="text-red-500">*</span>
-          </label>
-          <input
-            type="datetime-local"
-            formControlName="data_hora_inicio"
-            class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
-                  focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]"
-          />
-        </div>
-        <div>
-          <label class="block text-xs text-gray-500 mb-1.5">
-            Duração (min) <span class="text-red-500">*</span>
-          </label>
-          <input
-            type="number"
-            formControlName="duracao_minutos"
-            min="1"
-            class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
-                  focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]"
-          />
-        </div>
-      </div>
-
-      <!-- Valor: comportamento difere se for pacote -->
-      <div>
-        <label class="block text-xs text-gray-500 mb-1.5">
-          @if (isPacote) {
-            Valor total do pacote (R$) <span class="text-red-500">*</span>
-          } @else {
-            Valor combinado por sessão (R$) <span class="text-red-500">*</span>
-          }
+        <label class="ui-label" for="ag-inicio">
+          Início <span class="text-red-500">*</span>
         </label>
         <input
-          type="number"
-          formControlName="valor_combinado"
-          min="0.01"
-          step="0.01"
-          class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
-                 font-mono focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]"
+          id="ag-inicio"
+          type="datetime-local"
+          formControlName="data_hora_inicio"
+          class="ui-input"
         />
-
-        @if (isPacote && valorPorSessaoDisplay() !== null) {
-          <!-- Derivado: mostra valor por sessão calculado -->
-          <p class="text-xs text-[#BCA8A5] mt-1 font-medium">
-            {{ valorPorSessaoDisplay() | currency:'BRL' }} por sessão
-            ({{ ctrl['total_sessoes'].value }} sessões)
-          </p>
-        } @else {
-          <p class="text-xs text-gray-400 mt-1">
-            Pré-preenchido com o valor do serviço. Ajuste se necessário.
-          </p>
-        }
       </div>
+      <div>
+        <label class="ui-label" for="ag-duracao">
+          Duração (min) <span class="text-red-500">*</span>
+        </label>
+        <input
+          id="ag-duracao"
+          type="number"
+          formControlName="duracao_minutos"
+          min="1"
+          class="ui-input"
+        />
+      </div>
+    </div>
 
-      <!-- Toggle recorrente: desabilitado e fixo quando for pacote -->
-      <div class="border border-gray-200 rounded-lg p-3"
-           [class.opacity-60]="isPacote">
-        <label class="flex items-center gap-3 select-none"
-               [class.cursor-pointer]="!isPacote"
-               [class.cursor-not-allowed]="isPacote">
+    <!-- Valor: comportamento difere se for pacote -->
+    <div>
+      <label class="ui-label" for="ag-valor">
+        @if (isPacote) {
+          Valor total do pacote (R$) <span class="text-red-500">*</span>
+        } @else {
+          Valor combinado por sessão (R$) <span class="text-red-500">*</span>
+        }
+      </label>
+      <input
+        id="ag-valor"
+        type="number"
+        formControlName="valor_combinado"
+        min="0.01"
+        step="0.01"
+        class="ui-input font-mono"
+      />
+
+      @if (isPacote && valorPorSessaoDisplay() !== null) {
+        <!-- Derivado: mostra valor por sessão calculado -->
+        <p class="text-xs text-brand-500 mt-1 font-medium">
+          {{ valorPorSessaoDisplay() | currency:'BRL' }} por sessão
+          ({{ ctrl['total_sessoes'].value }} sessões)
+        </p>
+      } @else {
+        <p class="text-xs text-gray-400 mt-1">
+          Pré-preenchido com o valor do serviço. Ajuste se necessário.
+        </p>
+      }
+    </div>
+
+    <!-- Toggle recorrente: desabilitado e fixo quando for pacote -->
+    <div class="border border-gray-200 rounded-lg p-3"
+         [class.opacity-60]="isPacote">
+      <label class="flex items-center gap-3 select-none"
+             [class.cursor-pointer]="!isPacote"
+             [class.cursor-not-allowed]="isPacote">
+        <div
+          class="relative w-9 h-5 rounded-full transition-colors shrink-0"
+          [class]="recorrente ? 'bg-brand-400' : 'bg-gray-200'">
           <div
-            class="relative w-9 h-5 rounded-full transition-colors shrink-0"
-            [class]="recorrente ? 'bg-[#BCA8A5]' : 'bg-gray-200'">
-            <div
-              class="absolute top-0.5 w-4 h-4 bg-white rounded-full shadow-sm
-                     transition-transform duration-200"
-              [class]="recorrente ? 'translate-x-[18px]' : 'translate-x-0.5'">
-            </div>
-            <input type="checkbox" formControlName="recorrente" class="sr-only" />
+            class="absolute top-0.5 w-4 h-4 bg-white rounded-full shadow-sm
+                   transition-transform duration-200"
+            [class]="recorrente ? 'translate-x-[18px]' : 'translate-x-0.5'">
+          </div>
+          <input type="checkbox" formControlName="recorrente" class="sr-only" />
+        </div>
+        <div>
+          <span class="text-sm font-medium text-gray-800">Sessão recorrente</span>
+          @if (isPacote) {
+            <span class="ml-1.5 text-xs text-brand-500 font-medium">· obrigatório para pacotes</span>
+          }
+        </div>
+      </label>
+
+      @if (recorrente) {
+        <div class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="ui-label" for="ag-sessoes">
+              Nº de sessões <span class="text-red-500">*</span>
+            </label>
+            <input
+              id="ag-sessoes"
+              type="number"
+              formControlName="total_sessoes"
+              min="2"
+              class="ui-input"
+            />
           </div>
           <div>
-            <span class="text-sm font-medium text-gray-800">Sessão recorrente</span>
-            @if (isPacote) {
-              <span class="ml-1.5 text-xs text-[#BCA8A5] font-medium">· obrigatório para pacotes</span>
-            }
+            <label class="ui-label" for="ag-intervalo">
+              Intervalo (semanas)
+            </label>
+            <input
+              id="ag-intervalo"
+              type="number"
+              formControlName="intervalo_semanas"
+              min="1"
+              class="ui-input"
+            />
           </div>
-        </label>
+        </div>
 
-        @if (recorrente) {
-          <div class="mt-3 grid grid-cols-2 gap-3">
-            <div>
-              <label class="block text-xs text-gray-500 mb-1.5">
-                Nº de sessões <span class="text-red-500">*</span>
-              </label>
-              <input
-                type="number"
-                formControlName="total_sessoes"
-                min="2"
-                class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
-                       focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]"
-              />
-            </div>
-            <div>
-              <label class="block text-xs text-gray-500 mb-1.5">
-                Intervalo (semanas)
-              </label>
-              <input
-                type="number"
-                formControlName="intervalo_semanas"
-                min="1"
-                class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
-                       focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]"
-              />
-            </div>
-          </div>
-
-          @if (previewUltimaSessao()) {
-            <p class="text-xs text-gray-500 mt-2">
-              {{ ctrl['total_sessoes'].value }} sessões ·
-              última em {{ previewUltimaSessao() }}
-            </p>
-          }
+        @if (previewUltimaSessao()) {
+          <p class="text-xs text-gray-500 mt-2">
+            {{ ctrl['total_sessoes'].value }} sessões ·
+            última em {{ previewUltimaSessao() }}
+          </p>
         }
-      </div>
+      }
+    </div>
 
-      <div class="flex gap-2.5 mt-2">
-        <button
-          type="button"
-          (click)="fechar.emit()"
-          class="flex-1 border border-gray-200 rounded-lg py-2.5 text-sm
-                 text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer">
-          Cancelar
-        </button>
-        <button
-          type="submit"
-          [disabled]="form.invalid || loading()"
-          class="flex-1 bg-[#BCA8A5] hover:bg-[#9A8683] disabled:opacity-50
-                 text-white text-sm font-medium rounded-lg py-2.5
-                 transition-colors cursor-pointer disabled:cursor-not-allowed">
-          {{ loading() ? 'Agendando...' : 'Agendar' }}
-        </button>
-      </div>
-    </form>
-  </div>
-</div>
+    <div class="flex gap-2.5 mt-2">
+      <button
+        type="button"
+        (click)="fechar.emit()"
+        class="btn-outline flex-1">
+        Cancelar
+      </button>
+      <button
+        type="submit"
+        [disabled]="form.invalid || loading()"
+        class="btn-primary flex-1">
+        {{ loading() ? 'Agendando...' : 'Agendar' }}
+      </button>
+    </div>
+  </form>
+</app-modal>

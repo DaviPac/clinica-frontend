@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { AgendamentoService } from '../../../core/services/agendamento/agendamento.service';
 import { Agendamento, StatusAgendamento } from '../../../core/models/agendamento.model';
 import { StatusBadgeComponent } from '../../../shared/components/status-badge/status-badge.component';
+import { ModalComponent } from '../../../shared/components/modal/modal.component';
+import { AlertComponent } from '../../../shared/components/alert/alert.component';
 
 const TRANSICOES: Record<StatusAgendamento, StatusAgendamento[]> = {
   AGENDADO:  ['REALIZADO', 'FALTA', 'CANCELADO'],
@@ -14,7 +16,7 @@ const TRANSICOES: Record<StatusAgendamento, StatusAgendamento[]> = {
 @Component({
   selector: 'app-agendamentos-status-modal',
   standalone: true,
-  imports: [CommonModule, StatusBadgeComponent],
+  imports: [CommonModule, StatusBadgeComponent, ModalComponent, AlertComponent],
   templateUrl: './agendamentos-status-modal.component.html',
 })
 export class AgendamentosStatusModalComponent {

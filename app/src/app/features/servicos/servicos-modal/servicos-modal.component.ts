@@ -6,6 +6,8 @@ import { CriarServicoDto, AtualizarServicoDto, ServicoService } from '../../../c
 import { Servico } from '../../../core/models/servico.model';
 import { FiltroProfissionalComponent } from '../../../shared/components/filtro-profissional/filtro-profissional.component';
 import { AuthService } from '../../../core/services/auth/auth.service';
+import { ModalComponent } from '../../../shared/components/modal/modal.component';
+import { AlertComponent } from '../../../shared/components/alert/alert.component';
 
 interface ServicoForm {
   nome: FormControl<string>;
@@ -21,6 +23,8 @@ interface ServicoForm {
     CommonModule,
     ReactiveFormsModule,
     FiltroProfissionalComponent,
+    ModalComponent,
+    AlertComponent,
   ],
   templateUrl: './servicos-modal.component.html',
 })

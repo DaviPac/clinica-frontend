@@ -6,11 +6,13 @@ import { AcertoComissao, SaldoAReceber } from '../../../core/models/financeiro.m
 import { AuthService } from '../../../core/services/auth/auth.service';
 import { UsuarioService } from '../../../core/services/usuario/usuario.service';
 import { ToggleComponent } from '../../../shared/components/toggle/toggle.component';
+import { AlertComponent } from '../../../shared/components/alert/alert.component';
+import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-financeiro-profissional',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ToggleComponent],
+  imports: [CommonModule, ReactiveFormsModule, ToggleComponent, AlertComponent, ConfirmDialogComponent],
   templateUrl: './financeiro-profissional.component.html',
 })
 export class FinanceiroProfissionalComponent implements OnInit {

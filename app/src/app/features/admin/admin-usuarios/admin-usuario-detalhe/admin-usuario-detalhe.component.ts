@@ -7,11 +7,12 @@ import {
   AtualizarUsuarioDto,
 } from '../../../../core/services/usuario/usuario.service';
 import { Role, Usuario } from '../../../../core/models/usuario.model';
+import { AlertComponent } from '../../../../shared/components/alert/alert.component';
 
 @Component({
   selector: 'app-usuario-detalhe',
   standalone: true,
-  imports: [CommonModule, RouterModule, ReactiveFormsModule],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, AlertComponent],
   templateUrl: './admin-usuario-detalhe.component.html',
 })
 export class AdminUsuarioDetalheComponent implements OnInit {

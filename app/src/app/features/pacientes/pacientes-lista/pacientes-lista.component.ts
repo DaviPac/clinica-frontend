@@ -10,6 +10,7 @@ import { UsuarioService } from '../../../core/services/usuario/usuario.service';
 import { AuthService } from '../../../core/services/auth/auth.service';
 import { Usuario } from '../../../core/models/usuario.model';
 import { FiltroProfissionalComponent } from '../../../shared/components/filtro-profissional/filtro-profissional.component';
+import { AlertComponent } from '../../../shared/components/alert/alert.component';
 
 @Component({
   selector: 'app-pacientes-lista',
@@ -20,7 +21,8 @@ import { FiltroProfissionalComponent } from '../../../shared/components/filtro-p
     FormsModule,
     PacientesModalComponent,
     ToggleComponent,
-    FiltroProfissionalComponent
+    FiltroProfissionalComponent,
+    AlertComponent
   ],
   templateUrl: './pacientes-lista.component.html',
 })

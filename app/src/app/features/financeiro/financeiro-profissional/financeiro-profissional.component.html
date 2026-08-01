@@ -1,55 +1,48 @@
-<div class="p-6 max-w-2xl">
+<div class="page max-w-2xl">
 
-  <div class="flex items-center justify-between mb-6">
+  <div class="page-header">
     <div>
       <h1 class="text-lg font-medium text-gray-900">Financeiro</h1>
       <p class="text-sm text-gray-500 mt-0.5">Comissões e repasses</p>
     </div>
     <input
       type="month"
+      aria-label="Período"
       [value]="periodoSelecionado()"
       (change)="onPeriodoChange($event)"
-      class="border border-gray-200 rounded-lg px-3 py-2 text-sm
-             focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]"
+      class="ui-input sm:w-auto"
     />
   </div>
 
   @if (erro()) {
-    <div class="bg-red-50 border border-red-200 rounded-lg px-4 py-3 mb-4">
-      <p class="text-sm text-red-700">{{ erro() }}</p>
-    </div>
+    <app-alert class="block mb-4">{{ erro() }}</app-alert>
   }
 
   <!-- Formulário de repasse: apenas admin -->
   @if (isAdmin) {
-    <div class="border border-gray-200 rounded-xl p-5 mb-6 bg-white">
+    <div class="border border-gray-200 rounded-xl p-4 sm:p-5 mb-6 bg-white">
       <p class="text-sm font-medium text-gray-900 mb-1">Registrar repasse</p>
       <p class="text-xs text-gray-500 mb-4">
         Informe o profissional e o valor repassado pela clínica.
       </p>
 
       @if (sucessoAcerto()) {
-        <div class="bg-teal-50 border border-teal-200 rounded-lg px-3 py-2.5 mb-4">
-          <p class="text-sm text-teal-800">Repasse registrado com sucesso.</p>
-        </div>
+        <app-alert variant="success" class="block mb-4">Repasse registrado com sucesso.</app-alert>
       }
 
       @if (erroAcerto()) {
-        <div class="bg-red-50 border border-red-200 rounded-lg px-3 py-2.5 mb-4">
-          <p class="text-sm text-red-700">{{ erroAcerto() }}</p>
-        </div>
+        <app-alert class="block mb-4">{{ erroAcerto() }}</app-alert>
       }
 
       <form [formGroup]="form" (ngSubmit)="submit()" class="flex flex-col gap-3">
         <div>
-          <label class="block text-xs text-gray-500 mb-1.5">
+          <label class="ui-label" for="repasse-profissional">
             Profissional <span class="text-red-500">*</span>
           </label>
           <select
+            id="repasse-profissional"
             formControlName="profissionalId"
-            class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
-                   bg-white focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]"
-          >
+            class="ui-input">
             <option [ngValue]="null">Selecione o profissional...</option>
             @for (prof of profissionais(); track prof.id) {
               <option [ngValue]="prof.id">{{ prof.nome }}</option>
@@ -57,28 +50,28 @@
           </select>
         </div>
 
-        <div class="grid grid-cols-2 gap-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
-            <label class="block text-xs text-gray-500 mb-1.5">
+            <label class="ui-label" for="repasse-valor">
               Valor (R$) <span class="text-red-500">*</span>
             </label>
             <input
+              id="repasse-valor"
               type="number"
               formControlName="valor_pago"
               min="0.01"
               step="0.01"
-              class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
-                     font-mono focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]"
+              class="ui-input font-mono"
             />
           </div>
           <div>
-            <label class="block text-xs text-gray-500 mb-1.5">Observação</label>
+            <label class="ui-label" for="repasse-obs">Observação</label>
             <input
+              id="repasse-obs"
               type="text"
               formControlName="observacao"
               placeholder="Ex: Pix em 30/06"
-              class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm
-                     focus:outline-none focus:ring-2 focus:ring-[#BCA8A5]"
+              class="ui-input"
             />
           </div>
         </div>
@@ -93,9 +86,7 @@
         <button
           type="submit"
           [disabled]="form.invalid || salvandoAcerto()"
-          class="w-full bg-[#BCA8A5] hover:bg-[#9A8683] disabled:opacity-50
-                 text-white text-sm font-medium rounded-lg py-2.5
-                 transition-colors cursor-pointer disabled:cursor-not-allowed">
+          class="btn-primary w-full">
           {{ salvandoAcerto() ? 'Registrando...' : 'Registrar repasse' }}
         </button>
       </form>
@@ -103,11 +94,11 @@
   }
 
   @if (isAdmin && !form.get('profissionalId')?.value) {
-    <div class="text-center py-8 text-sm text-gray-500 border border-dashed border-gray-300 rounded-xl">
+    <div class="text-center px-4 py-8 text-sm text-gray-500 border border-dashed border-gray-300 rounded-xl">
       Selecione um profissional acima para visualizar o saldo e o histórico de repasses.
     </div>
   } @else {
-    <div class="grid grid-cols-3 gap-3 mb-6">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
       <div class="bg-gray-50 rounded-lg p-4">
         <p class="text-xs text-gray-500 mb-1.5">{{ (saldo()?.saldo_a_receber ?? 0) >= 0 ? "A repassar" : "A receber" }}</p>
         @if (carregandoSaldo()) {
@@ -146,8 +137,8 @@
       <div class="flex flex-col gap-2">
         @for (a of acertos(); track a.id) {
           <div class="border border-gray-200 rounded-xl px-4 py-3
-                      flex items-center justify-between hover:bg-gray-50 transition-colors">
-            <div>
+                      flex items-center justify-between gap-3 hover:bg-gray-50 transition-colors">
+            <div class="min-w-0">
               <p class="text-sm font-medium text-gray-900">
                 {{ formatarValor(a.valorPago) }}
               </p>
@@ -175,48 +166,25 @@
 </div>
 
 @if (mostrarModal()) {
-  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4 backdrop-blur-sm">
-    <div class="bg-white rounded-xl shadow-xl w-full max-w-md p-6 animate-fade-in-up">
-      <div class="flex items-center gap-3 mb-4">
-        <div class="shrink-0 w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
-          <svg class="w-6 h-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-          </svg>
-        </div>
-        <h3 class="text-lg font-medium text-gray-900">Confirmar repasse</h3>
+  <app-confirm-dialog
+    titulo="Confirmar repasse"
+    [mensagem]="'Tem certeza que deseja registrar este repasse ' + (form.get('profissionalRecebe')?.value ? 'para o profissional' : 'para a clínica') + '?'"
+    variant="danger"
+    confirmLabel="Confirmar"
+    loadingLabel="Registrando..."
+    [loading]="salvandoAcerto()"
+    (confirmar)="confirmarRepasse()"
+    (cancelar)="fecharModal()">
+    <div class="flex flex-col gap-3">
+      <div class="flex items-center justify-between px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl">
+        <span class="text-[11px] text-gray-600 font-medium">Valor do repasse</span>
+        <span class="text-base font-bold text-gray-900 tabular-nums font-mono">
+          {{ formatarValor(form.get('valor_pago')?.value) }}
+        </span>
       </div>
-      
-      <p class="text-sm text-gray-600 mb-6 ml-13">
-        Tem certeza que deseja registrar este repasse no valor de 
-        <strong class="text-gray-900">{{ formatarValor(form.get('valor_pago')?.value) }}</strong> {{ form.get('profissionalRecebe')?.value ? 'para o profissional' : 'para a clínica' }}?
-        <br><br>
-        <span class="text-red-600 font-medium">Atenção:</span> Esta ação é definitiva e não poderá ser desfeita no sistema.
+      <p class="text-xs text-red-600">
+        <strong>Atenção:</strong> esta ação é definitiva e não poderá ser desfeita no sistema.
       </p>
-
-      <div class="flex justify-end gap-3 mt-2">
-        <button
-          type="button"
-          (click)="fecharModal()"
-          [disabled]="salvandoAcerto()"
-          class="px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 rounded-lg transition-colors disabled:opacity-50 cursor-pointer">
-          Cancelar
-        </button>
-        <button
-          type="button"
-          (click)="confirmarRepasse()"
-          [disabled]="salvandoAcerto()"
-          class="px-5 py-2.5 text-sm font-medium text-white bg-[#BCA8A5] hover:bg-[#9A8683] rounded-lg transition-colors flex items-center justify-center min-w-30 disabled:opacity-50 cursor-pointer">
-          @if (salvandoAcerto()) {
-            <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
-              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
-            Registrando...
-          } @else {
-            Confirmar
-          }
-        </button>
-      </div>
     </div>
-  </div>
+  </app-confirm-dialog>
 }

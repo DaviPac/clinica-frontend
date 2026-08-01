@@ -1,3 +1,79 @@
-/* You can add global styles to this file, and also import other style files */
+/* Estilos globais da aplicação */
 
 @import 'tailwindcss';
+
+/*
+ * Paleta da clínica (rosé/stone). Use sempre os tokens brand-* em vez de hex
+ * soltos nos templates — ex.: bg-brand-400, hover:bg-brand-600, text-brand-700.
+ */
+@theme {
+  --color-brand-50: #f7f4f3;
+  --color-brand-100: #f2eeed;
+  --color-brand-200: #eee9e8;
+  --color-brand-300: #e4d6d4;
+  --color-brand-400: #bca8a5;
+  --color-brand-500: #a99390;
+  --color-brand-600: #9a8683;
+  --color-brand-700: #826e6c;
+  --color-brand-800: #675350;
+  --color-brand-900: #544240;
+}
+
+@layer components {
+  /* Container de página com padding responsivo */
+  .page {
+    @apply p-4 sm:p-6;
+  }
+
+  /* Cabeçalho de página: empilha no mobile, alinha em linha no desktop */
+  .page-header {
+    @apply flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6;
+  }
+
+  /* Wrapper de tabela: borda arredondada + scroll horizontal no mobile */
+  .table-wrap {
+    @apply border border-gray-200 rounded-xl overflow-x-auto bg-white;
+    -webkit-overflow-scrolling: touch;
+  }
+  .table-wrap table {
+    @apply w-full text-sm border-collapse;
+  }
+  .table-wrap thead {
+    @apply bg-gray-50;
+  }
+  .table-wrap th {
+    @apply text-left px-4 py-2.5 font-medium text-gray-500 border-b border-gray-200 whitespace-nowrap;
+  }
+  .table-wrap td {
+    @apply px-4 py-3;
+  }
+
+  /* Campo de formulário padrão */
+  .ui-input {
+    @apply w-full border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white
+      focus:outline-none focus:ring-2 focus:ring-brand-400;
+  }
+
+  .ui-label {
+    @apply block text-xs text-gray-500 mb-1.5;
+  }
+
+  /* Botões */
+  .btn,
+  .btn-primary,
+  .btn-outline,
+  .btn-danger {
+    @apply inline-flex items-center justify-center gap-1.5 text-sm font-medium
+      rounded-lg px-4 py-2 transition-colors cursor-pointer
+      disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .btn-primary {
+    @apply bg-brand-400 hover:bg-brand-500 active:bg-brand-600 text-white;
+  }
+  .btn-outline {
+    @apply border border-gray-200 text-gray-700 hover:bg-gray-50;
+  }
+  .btn-danger {
+    @apply bg-red-600 hover:bg-red-700 text-white;
+  }
+}

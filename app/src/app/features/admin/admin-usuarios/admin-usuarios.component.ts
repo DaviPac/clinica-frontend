@@ -4,6 +4,8 @@ import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angula
 import { UsuarioService } from '../../../core/services/usuario/usuario.service';
 import { Usuario } from '../../../core/models/usuario.model';
 import { RouterLink } from '@angular/router';
+import { AlertComponent } from '../../../shared/components/alert/alert.component';
+import { ModalComponent } from '../../../shared/components/modal/modal.component';
 
 @Component({
   selector: 'app-admin-usuarios',
@@ -11,7 +13,9 @@ import { RouterLink } from '@angular/router';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    RouterLink
+    RouterLink,
+    AlertComponent,
+    ModalComponent
   ],
   templateUrl: './admin-usuarios.component.html',
 })

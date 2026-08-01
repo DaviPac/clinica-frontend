@@ -4,11 +4,13 @@ import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angula
 import { FinanceiroService } from '../../../core/services/financeiro/financeiro.service';
 import { DespesaClinica } from '../../../core/models/financeiro.model';
 import { ToggleComponent } from '../../../shared/components/toggle/toggle.component';
+import { AlertComponent } from '../../../shared/components/alert/alert.component';
+import { ModalComponent } from '../../../shared/components/modal/modal.component';
 
 @Component({
   selector: 'app-admin-despesas',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ToggleComponent],
+  imports: [CommonModule, ReactiveFormsModule, ToggleComponent, AlertComponent, ModalComponent],
   templateUrl: './admin-despesas.component.html',
 })
 export class AdminDespesasComponent implements OnInit {

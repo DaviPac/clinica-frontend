@@ -17,6 +17,8 @@ import { formatarDataHora, formatarHora } from '../../../core/utils/data.utils';
 import { Router, RouterLink } from '@angular/router';
 import { FiltroProfissionalComponent } from '../../../shared/components/filtro-profissional/filtro-profissional.component';
 import { ToggleComponent } from '../../../shared/components/toggle/toggle.component';
+import { AlertComponent } from '../../../shared/components/alert/alert.component';
+import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 
 type ModoVisualizacao = 'mensal' | 'semanal';
 
@@ -40,7 +42,8 @@ interface DiaSemana {
   imports: [
     CommonModule, FormsModule, StatusBadgeComponent,
     AgendamentosModalComponent, AgendamentosStatusModalComponent,
-    RouterLink, FiltroProfissionalComponent, ToggleComponent
+    RouterLink, FiltroProfissionalComponent, ToggleComponent,
+    AlertComponent, ConfirmDialogComponent
   ],
   templateUrl: './agendamentos-lista.component.html',
   styleUrl: './agendamentos-lista.component.css'

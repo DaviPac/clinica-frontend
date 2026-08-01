@@ -14,8 +14,8 @@
   display: inline-block;
   width: 14px;
   height: 14px;
-  border: 2px solid #E5D9D8;
-  border-top-color: #BCA8A5;
+  border: 2px solid var(--color-brand-300);
+  border-top-color: var(--color-brand-400);
   border-radius: 50%;
   animation: dashboard-spin 0.7s linear infinite;
 }
@@ -99,14 +99,14 @@
 }
 
 .dashboard-agendamento-row--today {
-  background-color: #FAF7F6;
-  border: 1px solid #EDE5E4;
+  background-color: var(--color-brand-50);
+  border: 1px solid var(--color-brand-200);
   border-radius: 0.75rem;
   padding: 0.625rem 0.75rem;
 }
 
 .dashboard-agendamento-row--today:hover {
-  background-color: #F5EFEE;
+  background-color: var(--color-brand-100);
 }
 
 /* ── Empty state ── */

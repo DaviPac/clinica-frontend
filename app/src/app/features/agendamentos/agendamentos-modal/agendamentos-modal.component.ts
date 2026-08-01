@@ -9,6 +9,8 @@ import { Servico } from '../../../core/models/servico.model';
 import { toRFC3339Brasilia, addSemanas } from '../../../core/utils/data.utils';
 import { AuthService } from '../../../core/services/auth/auth.service';
 import { UsuarioService } from '../../../core/services/usuario/usuario.service';
+import { ModalComponent } from '../../../shared/components/modal/modal.component';
+import { AlertComponent } from '../../../shared/components/alert/alert.component';
 
 interface Usuario {
   id: number;
@@ -32,7 +34,7 @@ interface FormRawValue {
 @Component({
   selector: 'app-agendamentos-modal',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, ModalComponent, AlertComponent],
   templateUrl: './agendamentos-modal.component.html',
 })
 export class AgendamentosModalComponent implements OnInit {

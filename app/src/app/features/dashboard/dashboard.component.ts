@@ -16,11 +16,13 @@ import { SaldoAReceber } from '../../core/models/financeiro.model'; // Mantido o
 import { StatusBadgeComponent } from '../../shared/components/status-badge/status-badge.component';
 import { AgendamentosStatusModalComponent } from '../agendamentos/agendamentos-status-modal/agendamentos-status-modal.component';
 import { formatarHora } from '../../core/utils/data.utils';
+import { AlertComponent } from '../../shared/components/alert/alert.component';
+import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterModule, StatusBadgeComponent, AgendamentosStatusModalComponent],
+  imports: [CommonModule, RouterModule, StatusBadgeComponent, AgendamentosStatusModalComponent, AlertComponent, ConfirmDialogComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
 })

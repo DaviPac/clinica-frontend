@@ -1,7 +1,7 @@
-<div class="p-6 relative">
+<div class="page relative">
 
-  <div class="flex items-center justify-between mb-6 gap-4">
-    <div class="flex-1 min-w-0">
+  <div class="page-header">
+    <div class="min-w-0">
       <h1 class="text-lg font-medium text-gray-900">Repasses a Profissionais</h1>
       <p class="text-sm text-gray-500 mt-0.5">
         @if (!mostrarHistorico()) {
@@ -10,32 +10,28 @@
           Histórico de repasses concluídos
         }
       </p>
-  </div>
+    </div>
 
-  <div class="flex items-center gap-3 shrink-0">
-    @if (!mostrarHistorico()) {
-      <input
-        type="month"
-        [value]="periodoSelecionado()"
-        (change)="onPeriodoChange($event)"
-        class="border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
-      />
-    }
+    <div class="flex flex-wrap items-center gap-3 shrink-0">
+      @if (!mostrarHistorico()) {
+        <input
+          type="month"
+          aria-label="Período"
+          [value]="periodoSelecionado()"
+          (change)="onPeriodoChange($event)"
+          class="ui-input w-auto"
+        />
+      }
 
-    <label class="flex items-center gap-2.5 cursor-pointer select-none">
       <app-toggle
-        class="flex justify-end"
         [checked]="mostrarHistorico()"
-        label="Mostrar Histórico"
+        label="Mostrar histórico"
         (changed)="mostrarHistorico.set($event)" />
-    </label>
+    </div>
   </div>
-</div>
 
   @if (erro()) {
-    <div class="bg-red-50 border border-red-200 rounded-lg px-4 py-3 mb-4">
-      <p class="text-sm text-red-700">{{ erro() }}</p>
-    </div>
+    <app-alert class="block mb-4">{{ erro() }}</app-alert>
   }
 
   @if (carregando()) {
@@ -48,47 +44,49 @@
       @if (!mostrarHistorico()) {
         @for (p of profissionaisPendentes(); track p.profissionalId) {
           <div class="border border-amber-200 bg-amber-50 rounded-xl p-4 transition-colors">
-            
-            <div class="flex items-start justify-between mb-4">
-              <div>
+
+            <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-4">
+              <div class="min-w-0">
                 <p class="text-sm font-medium text-gray-900">{{ p.nomeProfissional }}</p>
                 <p class="text-xs text-gray-500 mt-0.5">
                   Referência: {{ formatarMes(periodoSelecionado()) }}
                 </p>
-                <div class="mt-2 text-xs text-gray-600 flex gap-4">
+                <div class="mt-2 text-xs text-gray-600 flex flex-wrap gap-x-4 gap-y-1">
                   <span>Recebido: {{ formatarValor(p.totalFaturado) }}</span>
                   <span>Retido pela Clínica: {{ formatarValor(p.comissaoClinica) }}</span>
                 </div>
               </div>
-              
-              <div class="text-right shrink-0">
-                <p class="text-xs text-gray-500 mb-0.5">Valor do Repasse</p>
+
+              <div class="sm:text-right shrink-0">
+                <p class="text-xs text-gray-500 mb-0.5">Valor do repasse</p>
                 <p class="text-lg font-medium font-mono text-amber-700">
                   {{ formatarValor(p.pendenteAoProfissional > 0 && p.pendenteAClinica > 0 ? 0 : p.pendenteAoProfissional || p.pendenteAClinica) }}
                 </p>
               </div>
             </div>
 
-            @if (p.pendenteAoProfissional > 0) {
-              <button
-                (click)="iniciarRepasse(p.profissionalId, p.pendenteAoProfissional, p.nomeProfissional, 'paraProfissional')"
-                [disabled]="processando() === p.profissionalId"
-                class="w-full bg-teal-600 hover:bg-teal-700 disabled:opacity-50
-                      text-white text-sm font-medium rounded-lg py-2
-                      transition-colors cursor-pointer disabled:cursor-not-allowed">
-                {{ processando() === p.profissionalId ? 'Registrando pagamento...' : 'Registrar Repasse ao profissional' }}
-              </button>
-            }
-            @if (p.pendenteAClinica > 0) {
-              <button
-                (click)="iniciarRepasse(p.profissionalId, p.pendenteAClinica, p.nomeProfissional, 'paraClinica')"
-                [disabled]="processando() === p.profissionalId"
-                class="w-full bg-teal-600 hover:bg-teal-700 disabled:opacity-50
-                      text-white text-sm font-medium rounded-lg py-2
-                      transition-colors cursor-pointer disabled:cursor-not-allowed">
-                {{ processando() === p.profissionalId ? 'Registrando pagamento...' : 'Registrar Repasse do profissional à clínica' }}
-              </button>
-            }
+            <div class="flex flex-col gap-2">
+              @if (p.pendenteAoProfissional > 0) {
+                <button
+                  (click)="iniciarRepasse(p.profissionalId, p.pendenteAoProfissional, p.nomeProfissional, 'paraProfissional')"
+                  [disabled]="processando() === p.profissionalId"
+                  class="w-full bg-teal-600 hover:bg-teal-700 disabled:opacity-50
+                        text-white text-sm font-medium rounded-lg py-2
+                        transition-colors cursor-pointer disabled:cursor-not-allowed">
+                  {{ processando() === p.profissionalId ? 'Registrando pagamento...' : 'Registrar repasse ao profissional' }}
+                </button>
+              }
+              @if (p.pendenteAClinica > 0) {
+                <button
+                  (click)="iniciarRepasse(p.profissionalId, p.pendenteAClinica, p.nomeProfissional, 'paraClinica')"
+                  [disabled]="processando() === p.profissionalId"
+                  class="w-full bg-teal-600 hover:bg-teal-700 disabled:opacity-50
+                        text-white text-sm font-medium rounded-lg py-2
+                        transition-colors cursor-pointer disabled:cursor-not-allowed">
+                  {{ processando() === p.profissionalId ? 'Registrando pagamento...' : 'Registrar repasse do profissional à clínica' }}
+                </button>
+              }
+            </div>
 
           </div>
         } @empty {
@@ -101,8 +99,8 @@
       @if (mostrarHistorico()) {
         @for (a of historicoAcertos(); track a.id) {
           <div class="border border-gray-200 bg-white rounded-xl p-4 transition-colors">
-            <div class="flex items-start justify-between">
-              <div>
+            <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+              <div class="min-w-0">
                 <p class="text-sm font-medium text-gray-900">{{ a.nome_profissional }}</p>
                 <p class="text-xs text-gray-500 mt-0.5">
                   Referência: {{ formatarMes(a.periodoReferencia) }}
@@ -112,7 +110,7 @@
                   <p class="text-xs text-gray-500 mt-0.5">{{ a.observacao }}</p>
                 }
               </div>
-              <div class="text-right shrink-0">
+              <div class="sm:text-right shrink-0">
                 <p class="text-lg font-medium font-mono text-gray-900">
                   {{ formatarValor(a.valorPago) }}
                 </p>
@@ -133,49 +131,27 @@
   }
 
   @if (repasseSelecionado()) {
-    <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4">
-      <div class="bg-white rounded-xl shadow-xl w-full max-w-md overflow-hidden">
-        
-        <div class="p-6">
-          <h2 class="text-lg font-semibold text-gray-900 mb-2">Confirmar Repasse</h2>
-          <p class="text-sm text-gray-600 mb-4">
-            Deseja confirmar o repasse pendente {{ repasseSelecionado()?.fluxo === 'paraProfissional' ? 'ao profissional' : 'à clínica de' }} <span class="font-medium text-gray-900">{{ repasseSelecionado()?.nome }}</span>?
-          </p>
-          
-          <div class="flex flex-col items-center justify-center bg-gray-50 rounded-lg p-4 mb-4 border border-gray-100">
-            <span class="text-xs text-gray-500 uppercase tracking-wide font-medium mb-1">Valor a ser repassado</span>
-            <span class="text-2xl font-mono font-medium text-amber-700">
-              {{ formatarValor(repasseSelecionado()!.valor) }}
-            </span>
-          </div>
-
-          <div class="bg-red-50 border-l-4 border-red-500 p-3 rounded-r-md">
-            <div class="flex items-start">
-              <svg class="w-5 h-5 text-red-600 mt-0.5 mr-2 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-              </svg>
-              <p class="text-sm text-red-800 font-medium">
-                Atenção: Esta ação não pode ser desfeita. O sistema registrará este valor como pago definitivamente.
-              </p>
-            </div>
-          </div>
+    <app-confirm-dialog
+      titulo="Confirmar repasse"
+      [mensagem]="'Deseja confirmar o repasse pendente ' + (repasseSelecionado()?.fluxo === 'paraProfissional' ? 'ao profissional' : 'à clínica de') + ' ' + repasseSelecionado()?.nome + '?'"
+      variant="danger"
+      confirmLabel="Confirmar repasse"
+      loadingLabel="Registrando..."
+      [loading]="processando() !== null"
+      (confirmar)="confirmarRepasse()"
+      (cancelar)="cancelarRepasse()">
+      <div class="flex flex-col gap-3">
+        <div class="flex flex-col items-center justify-center bg-gray-50 rounded-xl p-4 border border-gray-100">
+          <span class="text-xs text-gray-500 uppercase tracking-wide font-medium mb-1">Valor a ser repassado</span>
+          <span class="text-2xl font-mono font-medium text-amber-700">
+            {{ formatarValor(repasseSelecionado()!.valor) }}
+          </span>
         </div>
-
-        <div class="bg-gray-50 px-6 py-4 flex justify-end gap-3 border-t border-gray-200">
-          <button
-            (click)="cancelarRepasse()"
-            class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
-            Cancelar
-          </button>
-          <button
-            (click)="confirmarRepasse()"
-            class="px-4 py-2 text-sm font-medium text-white bg-teal-600 rounded-lg hover:bg-teal-700 transition-colors shadow-sm">
-            Confirmar Repasse
-          </button>
-        </div>
-
+        <p class="text-xs text-red-600">
+          <strong>Atenção:</strong> esta ação não pode ser desfeita. O sistema registrará este valor como pago definitivamente.
+        </p>
       </div>
-    </div>
+    </app-confirm-dialog>
   }
 
 </div>

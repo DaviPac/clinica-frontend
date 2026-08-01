@@ -13,6 +13,9 @@ import { ServicoService } from '../../../core/services/servico/servico.service';
 import { StatusBadgeComponent } from '../../../shared/components/status-badge/status-badge.component';
 import { AgendamentosStatusModalComponent } from '../agendamentos-status-modal/agendamentos-status-modal.component';
 import { formatarDataHora, formatarHora } from '../../../core/utils/data.utils';
+import { AlertComponent } from '../../../shared/components/alert/alert.component';
+import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
+import { ModalComponent } from '../../../shared/components/modal/modal.component';
 
 @Component({
   selector: 'app-agendamento-detalhes',
@@ -21,6 +24,9 @@ import { formatarDataHora, formatarHora } from '../../../core/utils/data.utils';
     CommonModule,
     StatusBadgeComponent,
     AgendamentosStatusModalComponent,
+    AlertComponent,
+    ConfirmDialogComponent,
+    ModalComponent,
   ],
   templateUrl: './agendamento-detalhes.component.html',
   styleUrl: './agendamento-detalhes.component.css' // Opcional, pode usar o mesmo CSS da lista se desejar global

@@ -1,19 +1,13 @@
-<div class="dashboard min-h-screen bg-[#F7F4F3] p-4 lg:p-6 font-sans">
+<div class="dashboard min-h-screen bg-brand-50 page font-sans">
 
   <div class="mb-7">
-    <p class="text-xs text-[#BCA8A5] font-semibold uppercase tracking-widest mb-0.5">{{ saudacao() }}</p>
+    <p class="text-xs text-brand-400 font-semibold uppercase tracking-widest mb-0.5">{{ saudacao() }}</p>
     <h1 class="text-2xl font-bold text-gray-900 tracking-tight">Dashboard</h1>
     <p class="text-xs text-gray-400 mt-0.5">{{ periodoAtual() }} · Visão geral da clínica</p>
   </div>
 
   @if (erro()) {
-    <div class="flex items-center gap-2 px-4 py-3 bg-red-50 border border-red-100 text-red-600 text-xs rounded-xl mb-5">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="shrink-0">
-        <circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.4"/>
-        <path d="M7 4v3M7 9.5h.01" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
-      </svg>
-      {{ erro() }}
-    </div>
+    <app-alert class="block mb-5">{{ erro() }}</app-alert>
   }
 
   @if (carregando()) {
@@ -28,7 +22,7 @@
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
 
       <div class="dashboard-kpi-card">
-        <div class="dashboard-kpi-icon bg-[#EEE9E8]">
+        <div class="dashboard-kpi-icon bg-brand-200">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
             <rect x="1" y="2.5" width="14" height="12" rx="2" stroke="#BCA8A5" stroke-width="1.4"/>
             <path d="M5 1v3M11 1v3M1 6.5h14" stroke="#BCA8A5" stroke-width="1.4" stroke-linecap="round"/>
@@ -45,7 +39,7 @@
       </div>
 
       <div class="dashboard-kpi-card" [class.dashboard-kpi-card--alert]="totalPendentes() > 0">
-        <div class="dashboard-kpi-icon" [class]="totalPendentes() > 0 ? 'bg-amber-50' : 'bg-[#EEE9E8]'">
+        <div class="dashboard-kpi-icon" [class]="totalPendentes() > 0 ? 'bg-amber-50' : 'bg-brand-200'">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
             <path d="M8 1.5l6.5 11.5H1.5L8 1.5z" [attr.stroke]="totalPendentes() > 0 ? '#D97706' : '#BCA8A5'" stroke-width="1.4" stroke-linejoin="round"/>
             <path d="M8 6v3.5M8 11.5h.01" [attr.stroke]="totalPendentes() > 0 ? '#D97706' : '#BCA8A5'" stroke-width="1.4" stroke-linecap="round"/>
@@ -61,7 +55,7 @@
       </div>
 
       <div class="dashboard-kpi-card" [class.dashboard-kpi-card--alert]="totalPagamentos() > 0">
-        <div class="dashboard-kpi-icon" [class]="totalPagamentos() > 0 ? 'bg-red-50' : 'bg-[#EEE9E8]'">
+        <div class="dashboard-kpi-icon" [class]="totalPagamentos() > 0 ? 'bg-red-50' : 'bg-brand-200'">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
             <rect x="1" y="4" width="14" height="9" rx="1.5" [attr.stroke]="totalPagamentos() > 0 ? '#DC2626' : '#BCA8A5'" stroke-width="1.4"/>
             <path d="M1 7h14" [attr.stroke]="totalPagamentos() > 0 ? '#DC2626' : '#BCA8A5'" stroke-width="1.4"/>
@@ -79,7 +73,7 @@
 
       @if (!isAdmin()) {
         <div class="dashboard-kpi-card" [class.dashboard-kpi-card--alert]="totalSaldo() > 0">
-          <div class="dashboard-kpi-icon" [class]="totalSaldo() > 0 ? 'bg-violet-50' : 'bg-[#EEE9E8]'">
+          <div class="dashboard-kpi-icon" [class]="totalSaldo() > 0 ? 'bg-violet-50' : 'bg-brand-200'">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
               <circle cx="8" cy="8" r="6.5" [attr.stroke]="totalSaldo() > 0 ? '#7C3AED' : '#BCA8A5'" stroke-width="1.4"/>
               <path d="M8 4.5v1.25M8 10.25V11.5M6 6.75a2 2 0 1 1 4 0c0 1-1 1.5-2 2.25" [attr.stroke]="totalSaldo() > 0 ? '#7C3AED' : '#BCA8A5'" stroke-width="1.3" stroke-linecap="round"/>
@@ -117,12 +111,12 @@
       <div class="lg:col-span-2 dashboard-section">
         <div class="dashboard-section-header">
           <div class="flex items-center gap-2">
-            <div class="w-1.5 h-4 rounded-full bg-[#BCA8A5]"></div>
+            <div class="w-1.5 h-4 rounded-full bg-brand-400"></div>
             <h2 class="text-sm font-semibold text-gray-800">Próximos agendamentos</h2>
           </div>
           <a
             routerLink="/agendamentos"
-            class="text-[10px] font-semibold text-[#BCA8A5] hover:text-[#9E8785] transition-colors uppercase tracking-wider"
+            class="text-[10px] font-semibold text-brand-400 hover:text-brand-500 transition-colors uppercase tracking-wider"
           >Ver agenda →</a>
         </div>
 
@@ -144,7 +138,7 @@
             >
               <div class="flex flex-col items-center justify-center min-w-[48px] text-center shrink-0">
                 @if (isHoje(ag.dataHoraInicio)) {
-                  <span class="text-[9px] font-bold text-[#BCA8A5] uppercase tracking-widest">Hoje</span>
+                  <span class="text-[9px] font-bold text-brand-400 uppercase tracking-widest">Hoje</span>
                 } @else {
                   <span class="text-[9px] text-gray-400 capitalize">{{ formatarDataCurta(ag.dataHoraInicio).split(',')[0] }}</span>
                   <span class="text-[10px] font-bold text-gray-700 tabular-nums leading-tight">
@@ -167,7 +161,7 @@
                 <button
                   (click)="abrirModalStatus(ag)"
                   title="Alterar status"
-                  class="w-6 h-6 flex items-center justify-center rounded-md text-gray-300 hover:text-[#BCA8A5] hover:bg-[#F2EEED] transition-colors cursor-pointer"
+                  class="w-6 h-6 flex items-center justify-center rounded-md text-gray-300 hover:text-brand-400 hover:bg-brand-100 transition-colors cursor-pointer"
                 >
                   <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
                     <path d="M9 1.5l2.5 2.5L4 11.5H1.5V9L9 1.5z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
@@ -329,50 +323,22 @@
 </div>
 
 @if (agendamentoParaConfirmarPagamento()) {
-  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-    <div class="bg-white rounded-2xl shadow-xl p-6 w-full max-w-sm">
-
-      <div class="flex items-center gap-3 mb-4">
-        <div class="w-10 h-10 rounded-full bg-violet-50 border border-violet-100 flex items-center justify-center shrink-0">
-          <svg width="18" height="18" viewBox="0 0 10 10" fill="none">
-            <rect x="1" y="3" width="8" height="6" rx="1" stroke="#7C3AED" stroke-width="1.2"/>
-            <path d="M3.5 3V2a1.5 1.5 0 0 1 3 0v1" stroke="#7C3AED" stroke-width="1.2" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <div>
-          <h2 class="text-sm font-bold text-gray-900">Confirmar pagamento do pacote</h2>
-          <p class="text-[10px] text-gray-400">{{ nomePaciente(agendamentoParaConfirmarPagamento()!.pacienteId) }}</p>
-        </div>
-      </div>
-
-      <p class="text-xs text-gray-600 mb-4 leading-relaxed">
-        Este agendamento faz parte de um pacote. Ao confirmar, o pagamento será registrado para
-        <strong class="text-gray-800">todas as sessões do pacote</strong>.
-      </p>
-
-      <div class="flex items-center justify-between px-4 py-3 bg-violet-50 border border-violet-100 rounded-xl mb-5">
-        <span class="text-[11px] text-violet-600 font-medium">Valor total do pacote</span>
-        <span class="text-base font-black text-violet-800 tabular-nums">
-          {{ formatarValor(agendamentoParaConfirmarPagamento()!.valorPacote!) }}
-        </span>
-      </div>
-
-      <div class="flex gap-2.5">
-        <button
-          (click)="agendamentoParaConfirmarPagamento.set(null)"
-          class="flex-1 py-2 rounded-lg border border-gray-200 text-gray-600 text-xs font-semibold hover:bg-gray-50 transition">
-          Cancelar
-        </button>
-        <button
-          (click)="confirmarPagamentoPacote()"
-          [disabled]="atualizandoPagamento() !== null"
-          class="flex-1 py-2 rounded-lg bg-violet-600 text-white text-xs font-semibold hover:bg-violet-700 transition disabled:opacity-60">
-          Confirmar pagamento
-        </button>
-      </div>
-
+  <app-confirm-dialog
+    titulo="Confirmar pagamento do pacote"
+    [mensagem]="'Este agendamento de ' + nomePaciente(agendamentoParaConfirmarPagamento()!.pacienteId) + ' faz parte de um pacote. Ao confirmar, o pagamento será registrado para todas as sessões do pacote.'"
+    variant="success"
+    confirmLabel="Confirmar pagamento"
+    loadingLabel="Registrando..."
+    [loading]="atualizandoPagamento() !== null"
+    (confirmar)="confirmarPagamentoPacote()"
+    (cancelar)="agendamentoParaConfirmarPagamento.set(null)">
+    <div class="flex items-center justify-between px-4 py-3 bg-violet-50 border border-violet-100 rounded-xl">
+      <span class="text-[11px] text-violet-600 font-medium">Valor total do pacote</span>
+      <span class="text-base font-black text-violet-800 tabular-nums">
+        {{ formatarValor(agendamentoParaConfirmarPagamento()!.valorPacote!) }}
+      </span>
     </div>
-  </div>
+  </app-confirm-dialog>
 }
 
 @if (agendamentoParaStatus()) {

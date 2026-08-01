@@ -1,5 +1,6 @@
 import { Component, OnInit, signal, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { AlertComponent } from '../../../shared/components/alert/alert.component';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { PacienteService, AtualizarPacienteDto } from '../../../core/services/paciente/paciente.service';
@@ -12,7 +13,7 @@ type CampoOpcional = typeof CAMPOS_OPCIONAIS[number];
 @Component({
   selector: 'app-paciente-editar',
   standalone: true,
-  imports: [CommonModule, RouterModule, ReactiveFormsModule],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, AlertComponent],
   templateUrl: './paciente-editar.component.html',
 })
 export class PacienteEditarComponent implements OnInit {

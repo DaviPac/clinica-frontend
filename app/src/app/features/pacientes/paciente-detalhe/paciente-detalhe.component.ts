@@ -4,11 +4,13 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { PacienteService } from '../../../core/services/paciente/paciente.service';
 import { AuthService } from '../../../core/services/auth/auth.service';
 import { Paciente } from '../../../core/models/paciente.model';
+import { AlertComponent } from '../../../shared/components/alert/alert.component';
+import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-paciente-detalhe',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, AlertComponent, ConfirmDialogComponent],
   templateUrl: './paciente-detalhe.component.html',
 })
 export class PacienteDetalheComponent implements OnInit {

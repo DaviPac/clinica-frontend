@@ -31,7 +31,7 @@
       @for (item of navPrincipal; track item.path) {
         <a
           [routerLink]="item.path"
-          routerLinkActive="bg-stone-100 text-[#7A6C6D]"
+          routerLinkActive="bg-stone-100 text-brand-700"
           [routerLinkActiveOptions]="{ exact: false }"
           (click)="onNavClick()"
           class="flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-stone-600
@@ -63,7 +63,7 @@
           @for (item of navAdmin; track item.path) {
             <a
               [routerLink]="item.path"
-              routerLinkActive="bg-stone-100 text-[#7A6C6D]"
+              routerLinkActive="bg-stone-100 text-brand-700"
               [routerLinkActiveOptions]="{ exact: false }"
               (click)="onNavClick()"
               class="flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-stone-600
@@ -91,8 +91,8 @@
           (click)="onNavClick()"
           class="flex items-center gap-2.5 flex-1 min-w-0 no-underline
                 hover:bg-stone-50 rounded-md p-1 -m-1 transition-colors">
-          <div class="w-8 h-8 rounded-full bg-[#F0EDED] flex items-center justify-center
-                      text-[#5E5253] text-xs font-medium shrink-0">
+          <div class="w-8 h-8 rounded-full bg-brand-100 flex items-center justify-center
+                      text-brand-800 text-xs font-medium shrink-0">
             {{ iniciais }}
           </div>
 
