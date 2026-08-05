@@ -135,7 +135,7 @@
                 </button>
               }
 
-              @if (isAdmin()) {
+              @if (isAdmin() || ag.profissionalRecebe) {
                 <button 
                   (click)="iniciarTogglePagamento()"
                   [disabled]="atualizandoPagamento()"
