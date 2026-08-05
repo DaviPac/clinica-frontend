@@ -1,3 +1,3 @@
 export const environment = {
-    apiUrl: "https://clinica-backend-production-c069.up.railway.app"
+    apiUrl: "https://clinica-backend-production-ac4d.up.railway.app"
 };
