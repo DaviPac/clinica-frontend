@@ -99,7 +99,7 @@
 
         @for (dia of diasCalendario(); track $index) {
           <div
-            class="bg-white flex flex-col min-h-[140px] lg:min-h-[160px] p-1.5"
+            class="bg-white flex flex-col min-h-35 lg:min-h-40 p-1.5"
             [class.bg-gray-50]="!dia.diaNumero"
           >
             @if (dia.diaNumero) {
@@ -212,7 +212,7 @@
       {{ servicosDict()[ag.servicoId] || 'Serviço ' + ag.servicoId }}
     </p>
 
-    <div class="flex flex-wrap gap-1 mt-1.5 pt-1.5 border-t border-black/[.06]">
+    <div class="flex flex-wrap gap-1 mt-1.5 pt-1.5 border-t border-black/6">
 
       @if (ag.status !== 'CANCELADO') {
         <button
@@ -225,7 +225,7 @@
       <button
         type="button"
         (click)="$event.stopPropagation(); iniciarTogglePagamento(ag)"
-        [disabled]="!isAdmin() || atualizandoPagamento() === ag.id"
+        [disabled]="((!isAdmin()) && (!ag.profissionalRecebe)) || atualizandoPagamento() === ag.id"
         class="agenda-action-btn relative z-10"
         [class.agenda-action-btn--paid]="ag.pagoPeloPaciente"
         [class.agenda-action-btn--unpaid]="!ag.pagoPeloPaciente"
