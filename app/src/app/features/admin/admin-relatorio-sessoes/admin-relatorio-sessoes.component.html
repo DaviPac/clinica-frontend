@@ -1,0 +1,173 @@
+<div class="page">
+  <div class="page-header">
+    <div>
+      <h1 class="text-lg font-medium text-gray-900">Relatório por sessão</h1>
+      <p class="text-sm text-gray-500 mt-0.5">
+        Valores recebidos e devidos de cada parte, sessão a sessão
+      </p>
+    </div>
+  </div>
+
+  <div class="bg-white border border-gray-200 rounded-lg p-4 mb-4
+              flex flex-wrap items-end gap-3">
+    <div class="flex flex-col gap-1">
+      <label class="text-xs text-stone-500">De</label>
+      <input
+        type="date"
+        aria-label="Data inicial"
+        [value]="inicio()"
+        (change)="onDataChange('inicio', $event)"
+        class="ui-input sm:w-auto"
+      />
+    </div>
+    <div class="flex flex-col gap-1">
+      <label class="text-xs text-stone-500">Até</label>
+      <input
+        type="date"
+        aria-label="Data final"
+        [value]="fim()"
+        (change)="onDataChange('fim', $event)"
+        class="ui-input sm:w-auto"
+      />
+    </div>
+    <app-filtro-profissional
+      [profissionalId]="profissionalIdStr"
+      defaultText="Selecione o profissional"
+      (changed)="onProfissionalChange($event)"
+    />
+    <button
+      (click)="gerar()"
+      [disabled]="carregando()"
+      class="btn-primary">
+      {{ carregando() ? 'Gerando...' : 'Gerar relatório' }}
+    </button>
+  </div>
+
+  @if (erro()) {
+    <app-alert class="block mb-4">{{ erro() }}</app-alert>
+  }
+
+  @if (!carregando() && relatorio(); as r) {
+    <p class="text-sm text-gray-500 mb-3">
+      <span class="font-medium text-gray-900">{{ r.nomeProfissional }}</span>
+      · {{ formatarData(r.inicio) }} a {{ formatarData(r.fim) }}
+    </p>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 mb-6">
+      <div class="bg-gray-50 rounded-lg p-4">
+        <p class="text-xs text-gray-500 mb-1.5">Sessões</p>
+        <p class="text-xl font-medium font-mono text-gray-900">{{ r.totais.quantidadeSessoes }}</p>
+        <p class="text-[11px] text-gray-400 mt-1">Total {{ formatarValor(r.totais.valorTotal) }}</p>
+      </div>
+      <div class="bg-gray-50 rounded-lg p-4">
+        <p class="text-xs text-gray-500 mb-1.5">Recebido pela clínica</p>
+        <p class="text-xl font-medium font-mono text-teal-700">
+          {{ formatarValor(r.totais.recebidoPelaClinica) }}
+        </p>
+      </div>
+      <div class="bg-gray-50 rounded-lg p-4">
+        <p class="text-xs text-gray-500 mb-1.5">Recebido pelo profissional</p>
+        <p class="text-xl font-medium font-mono text-amber-700">
+          {{ formatarValor(r.totais.recebidoPeloProfissional) }}
+        </p>
+      </div>
+      <div class="bg-white border border-gray-200 rounded-lg p-4">
+        <p class="text-xs text-gray-500 mb-1.5">Devido ao profissional</p>
+        <p class="text-lg font-medium font-mono"
+           [class]="r.totais.devidoAoProfissional > 0 ? 'text-red-600' : 'text-gray-400'">
+          {{ formatarValor(r.totais.devidoAoProfissional) }}
+        </p>
+        <p class="text-[11px] text-gray-400 mt-1">Clínica repassa ao profissional</p>
+      </div>
+      <div class="bg-white border border-gray-200 rounded-lg p-4">
+        <p class="text-xs text-gray-500 mb-1.5">Devido à clínica</p>
+        <p class="text-lg font-medium font-mono"
+           [class]="r.totais.devidoAClinica > 0 ? 'text-amber-600' : 'text-gray-400'">
+          {{ formatarValor(r.totais.devidoAClinica) }}
+        </p>
+        <p class="text-[11px] text-gray-400 mt-1">Profissional repassa à clínica</p>
+      </div>
+    </div>
+
+    <h2 class="text-sm font-medium text-gray-900 mb-3">Sessões no período</h2>
+    <div class="table-wrap">
+      <table class="min-w-[980px]">
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>Paciente</th>
+            <th>Serviço</th>
+            <th>Status</th>
+            <th class="text-right">Valor</th>
+            <th class="text-right" title="Percentual de comissão da clínica no momento do agendamento">% com.</th>
+            <th class="text-right" title="Quem efetivamente recebeu o pagamento do paciente">Recebido</th>
+            <th class="text-right" title="Repasse devido gerado por esta sessão">Devido</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (s of r.sessoes; track s.agendamentoId) {
+            <tr class="border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors align-top">
+              <td class="whitespace-nowrap text-xs text-gray-600">
+                {{ formatarDataHora(s.dataHoraInicio) }}
+              </td>
+              <td class="font-medium text-gray-900">{{ s.nomePaciente }}</td>
+              <td class="text-xs text-gray-600">{{ s.nomeServico }}</td>
+              <td><app-status-badge [status]="s.status" /></td>
+
+              <td class="text-right font-mono text-xs text-gray-700">
+                {{ formatarValor(s.valorSessao) }}
+              </td>
+
+              <td class="text-right font-mono text-xs text-gray-500">
+                {{ s.percentualComissao }}%
+              </td>
+
+              <td class="text-right font-mono text-xs">
+                @if (!s.pagoPeloPaciente) {
+                  <span class="inline-block px-2 py-0.5 rounded-md text-[11px] font-medium
+                               bg-gray-50 text-gray-400 ring-1 ring-gray-100">
+                    Não pago
+                  </span>
+                } @else if (s.profissionalRecebe) {
+                  <div class="whitespace-nowrap text-amber-700">
+                    <span class="text-gray-400 mr-1">prof.</span>{{ formatarValor(s.recebidoPeloProfissional) }}
+                  </div>
+                } @else {
+                  <div class="whitespace-nowrap text-teal-700">
+                    <span class="text-gray-400 mr-1">clínica</span>{{ formatarValor(s.recebidoPelaClinica) }}
+                  </div>
+                }
+              </td>
+
+              <td class="text-right font-mono text-xs">
+                @if (s.devidoAoProfissional > 0) {
+                  <div class="whitespace-nowrap text-red-600">
+                    <span class="text-gray-400 mr-1">→ prof.</span>{{ formatarValor(s.devidoAoProfissional) }}
+                  </div>
+                } @else if (s.devidoAClinica > 0) {
+                  <div class="whitespace-nowrap text-amber-600">
+                    <span class="text-gray-400 mr-1">→ clínica</span>{{ formatarValor(s.devidoAClinica) }}
+                  </div>
+                } @else {
+                  <span class="text-gray-300">—</span>
+                }
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="8" class="py-10 text-center text-sm text-gray-400">
+                Nenhuma sessão no período selecionado.
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+  @if (!carregando() && !relatorio() && !erro()) {
+    <p class="text-sm text-gray-400 text-center py-10">
+      Selecione o período e o profissional e clique em "Gerar relatório".
+    </p>
+  }
+</div>

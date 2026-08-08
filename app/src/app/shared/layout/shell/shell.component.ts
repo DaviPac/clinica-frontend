@@ -65,6 +65,11 @@ export class ShellComponent {
       icon: 'M3 12l4-4 4 4 4-8M3 20h18',
     },
     {
+      label: 'Sessões',
+      path: '/admin/relatorio-sessoes',
+      icon: 'M9 17v-6m4 6V7m4 10v-3M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z',
+    },
+    {
       label: 'Acertos',
       path: '/admin/acertos',
       icon: 'M9 12l2 2 4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0z',

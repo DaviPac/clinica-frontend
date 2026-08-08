@@ -98,6 +98,14 @@ export const routes: Routes = [
             .then(m => m.AdminRelatorioComponent),
       },
       {
+        path: 'admin/relatorio-sessoes',
+        canActivate: [roleGuard],
+        data: { roles: ['ADMIN'] },
+        loadComponent: () =>
+          import('./features/admin/admin-relatorio-sessoes/admin-relatorio-sessoes.component')
+            .then(m => m.AdminRelatorioSessoesComponent),
+      },
+      {
         path: 'admin/usuarios',
         canActivate: [roleGuard],
         data: { roles: ['ADMIN'] },
