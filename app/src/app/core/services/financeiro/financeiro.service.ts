@@ -31,6 +31,40 @@ export interface RelatorioFinanceiro {
   lucroLiquido: number;
 }
 
+export interface SessaoRelatorio {
+  agendamentoId: number;
+  dataHoraInicio: string;
+  nomePaciente: string;
+  nomeServico: string;
+  status: 'AGENDADO' | 'REALIZADO' | 'FALTA' | 'CANCELADO';
+  pagoPeloPaciente: boolean;
+  profissionalRecebe: boolean;
+  valorSessao: number;
+  percentualComissao: number;
+  parteClinica: number;
+  parteProfissional: number;
+  recebidoPelaClinica: number;
+  recebidoPeloProfissional: number;
+  devidoAoProfissional: number;
+  devidoAClinica: number;
+}
+
+export interface RelatorioSessoes {
+  profissionalId: number;
+  nomeProfissional: string;
+  inicio: string;
+  fim: string;
+  sessoes: SessaoRelatorio[];
+  totais: {
+    quantidadeSessoes: number;
+    valorTotal: number;
+    recebidoPelaClinica: number;
+    recebidoPeloProfissional: number;
+    devidoAoProfissional: number;
+    devidoAClinica: number;
+  };
+}
+
 @Injectable({ providedIn: 'root' })
 export class FinanceiroService {
   constructor(private http: HttpClient) {}
@@ -57,6 +91,12 @@ export class FinanceiroService {
   getRelatorio(periodo?: string) {
     const qs = periodo ? `?periodo=${periodo}` : '';
     return this.http.get<RelatorioFinanceiro>(`/financeiro/relatorio${qs}`);
+  }
+
+  getRelatorioSessoes(inicio: string, fim: string, profissionalId?: number) {
+    const params = new URLSearchParams({ inicio, fim });
+    if (profissionalId) params.set('profissional_id', String(profissionalId));
+    return this.http.get<RelatorioSessoes>(`/financeiro/relatorio-sessoes?${params}`);
   }
 
   getDespesas(emAberto?: boolean) {
