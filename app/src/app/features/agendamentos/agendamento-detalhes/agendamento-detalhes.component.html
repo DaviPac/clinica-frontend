@@ -127,11 +127,20 @@
             
             <div class="flex flex-col gap-2.5">
               @if (ag.status !== 'CANCELADO') {
-                <button 
+                <button
                   (click)="abrirModalStatus()"
                   class="w-full px-4 py-2 bg-gray-50 border border-gray-200 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-100 transition-colors"
                 >
                   Alterar Status
+                </button>
+              }
+
+              @if (ag.status === 'AGENDADO') {
+                <button
+                  (click)="iniciarReagendamento()"
+                  class="w-full px-4 py-2 bg-gray-50 border border-gray-200 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-100 transition-colors"
+                >
+                  Reagendar
                 </button>
               }
 
@@ -223,6 +232,83 @@
     [loading]="cancelandoSerie()"
     (confirmar)="cancelarSerie()"
     (cancelar)="agendamentoParaCancelarSerie.set(null)" />
+}
+
+@if (reagendando()) {
+  <app-modal titulo="Reagendar sessão" maxWidth="max-w-sm" (fechar)="cancelarReagendamento()">
+    <div class="flex flex-col gap-4">
+      <p class="text-xs text-gray-500 -mt-3">
+        Horário atual: {{ formatarDataHora(agendamento()!.dataHoraInicio) }} – {{ formatarHora(agendamento()!.dataHoraFim) }}
+      </p>
+
+      <div>
+        <label class="ui-label" for="novo-inicio">Novo início</label>
+        <input
+          id="novo-inicio"
+          type="datetime-local"
+          [value]="novoInicioReagendamento()"
+          (input)="novoInicioReagendamento.set($any($event.target).value)"
+          class="ui-input"
+        />
+      </div>
+
+      <div>
+        <label class="ui-label" for="nova-duracao">Duração (minutos)</label>
+        <input
+          id="nova-duracao"
+          type="number"
+          min="1"
+          step="5"
+          [value]="novaDuracaoMinutos()"
+          (input)="novaDuracaoMinutos.set(+$any($event.target).value)"
+          class="ui-input font-mono"
+        />
+      </div>
+
+      @if (agendamento()!.recorrenciaGroupId) {
+        <label class="flex items-center gap-2.5 cursor-pointer select-none">
+          <input
+            type="checkbox"
+            [checked]="reagendarSerie()"
+            (change)="reagendarSerie.set($any($event.target).checked)"
+            class="w-4 h-4 rounded border-gray-300 accent-brand-400"
+          />
+          <span class="text-xs text-gray-600">Reagendar todas as sessões futuras desta série a partir do novo início</span>
+        </label>
+
+        @if (reagendarSerie()) {
+          <div>
+            <label class="ui-label" for="intervalo-semanas">Intervalo entre sessões (semanas)</label>
+            <input
+              id="intervalo-semanas"
+              type="number"
+              min="1"
+              step="1"
+              [value]="intervaloSemanasReagendamento()"
+              (input)="intervaloSemanasReagendamento.set(+$any($event.target).value)"
+              class="ui-input font-mono"
+            />
+          </div>
+        }
+      }
+
+      <div class="flex gap-2.5">
+        <button
+          type="button"
+          (click)="cancelarReagendamento()"
+          class="btn-outline flex-1">
+          Cancelar
+        </button>
+        <button
+          type="button"
+          (click)="confirmarReagendamento()"
+          [disabled]="salvandoReagendamento() || !novoInicioReagendamento() || !novaDuracaoMinutos() || novaDuracaoMinutos()! <= 0 || (reagendarSerie() && intervaloSemanasReagendamento() < 1)"
+          class="btn-primary flex-1">
+          {{ salvandoReagendamento() ? 'Salvando...' : 'Reagendar' }}
+        </button>
+      </div>
+    </div>
+  </app-modal>
 }
 
 @if (editandoValor()) {

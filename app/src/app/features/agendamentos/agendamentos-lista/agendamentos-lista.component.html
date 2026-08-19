@@ -173,11 +173,10 @@
 
 <!-- ===================== TEMPLATE DO CARD (compartilhado mês/semana) ===================== -->
 <ng-template #cardTpl let-ag="ag">
-  <div
-    class="agenda-card cursor-pointer relative focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+  <a
+    class="agenda-card block no-underline cursor-pointer relative focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
     [ngClass]="'agenda-card--' + (ag.status | lowercase)"
     [routerLink]="['/agendamentos', ag.id]"
-    tabindex="0"
   >
 
     <div class="flex items-start justify-between gap-1 mb-0.5">
@@ -217,14 +216,14 @@
       @if (ag.status !== 'CANCELADO') {
         <button
           type="button"
-          (click)="$event.stopPropagation(); abrirModalStatus(ag)"
+          (click)="$event.stopPropagation(); $event.preventDefault(); abrirModalStatus(ag)"
           class="agenda-action-btn relative z-10"
         >Status</button>
       }
 
       <button
         type="button"
-        (click)="$event.stopPropagation(); iniciarTogglePagamento(ag)"
+        (click)="$event.stopPropagation(); $event.preventDefault(); iniciarTogglePagamento(ag)"
         [disabled]="((!isAdmin()) && (!ag.profissionalRecebe)) || atualizandoPagamento() === ag.id"
         class="agenda-action-btn relative z-10"
         [class.agenda-action-btn--paid]="ag.pagoPeloPaciente"
@@ -242,13 +241,13 @@
       @if (ag.status === 'AGENDADO' && ag.recorrenciaGroupId) {
         <button
           type="button"
-          (click)="$event.stopPropagation(); confirmarCancelamentoSerie(ag)"
+          (click)="$event.stopPropagation(); $event.preventDefault(); confirmarCancelamentoSerie(ag)"
           class="agenda-action-btn agenda-action-btn--danger relative z-10"
         >Cancelar série</button>
       }
 
     </div>
-  </div>
+  </a>
 </ng-template>
 
 @if (agendamentoParaConfirmarPagamento()) {

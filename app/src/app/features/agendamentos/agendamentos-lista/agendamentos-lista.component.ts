@@ -14,7 +14,7 @@ import { StatusBadgeComponent } from '../../../shared/components/status-badge/st
 import { AgendamentosModalComponent } from '../agendamentos-modal/agendamentos-modal.component';
 import { AgendamentosStatusModalComponent } from '../agendamentos-status-modal/agendamentos-status-modal.component';
 import { formatarDataHora, formatarHora } from '../../../core/utils/data.utils';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FiltroProfissionalComponent } from '../../../shared/components/filtro-profissional/filtro-profissional.component';
 import { ToggleComponent } from '../../../shared/components/toggle/toggle.component';
 import { AlertComponent } from '../../../shared/components/alert/alert.component';
@@ -56,6 +56,7 @@ export class AgendamentosListaComponent implements OnInit {
   private service = inject(AgendamentoService);
 
   router = inject(Router)
+  private route = inject(ActivatedRoute);
 
   agendamentos = signal<Agendamento[]>([]);
   carregando = signal(true);
@@ -188,7 +189,39 @@ export class AgendamentosListaComponent implements OnInit {
   });
 
   ngOnInit() {
+    this.restaurarFiltrosDaUrl();
     this.carregarDadosBase();
+  }
+
+  // Restaura mês/semana, data, profissional e "mostrar canceladas" ao voltar para a tela
+  private restaurarFiltrosDaUrl() {
+    const params = this.route.snapshot.queryParamMap;
+
+    if (params.get('modo') === 'semanal') this.modoView.set('semanal');
+
+    const data = params.get('data');
+    if (data) {
+      const [ano, mes, dia] = data.split('-').map(Number);
+      if (ano && mes && dia) this.dataReferencia.set(new Date(ano, mes - 1, dia));
+    }
+
+    const profissionalId = params.get('profissional_id');
+    if (profissionalId) this.filtroProfissionalId.set(profissionalId);
+
+    if (params.get('inativos') === '1') this.mostrarInativos.set(true);
+  }
+
+  private sincronizarUrl() {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      replaceUrl: true,
+      queryParams: {
+        modo: this.modoView() === 'semanal' ? 'semanal' : null,
+        data: this.formatarISO(this.dataReferencia()),
+        profissional_id: this.filtroProfissionalId() ?? null,
+        inativos: this.mostrarInativos() ? '1' : null,
+      },
+    });
   }
 
   carregarDadosBase() {
@@ -235,6 +268,7 @@ export class AgendamentosListaComponent implements OnInit {
   setModoView(modo: ModoVisualizacao) {
     if (this.modoView() === modo) return;
     this.modoView.set(modo);
+    this.sincronizarUrl();
     this.carregarAgendamentos();
   }
 
@@ -248,12 +282,14 @@ export class AgendamentosListaComponent implements OnInit {
     } else {
       this.dataReferencia.set(new Date(ref.getFullYear(), ref.getMonth() + direcao, 1));
     }
+    this.sincronizarUrl();
     this.carregarAgendamentos();
   }
 
   // NOVO: volta para o período atual (mês/semana de hoje)
   irParaHoje() {
     this.dataReferencia.set(new Date());
+    this.sincronizarUrl();
     this.carregarAgendamentos();
   }
 
@@ -353,10 +389,12 @@ export class AgendamentosListaComponent implements OnInit {
 
   onFiltroChange(profissionalId?: string) {
     this.filtroProfissionalId.set(profissionalId);
+    this.sincronizarUrl();
     this.carregarAgendamentos()
   }
 
   onToggleInativos(inativo: boolean) {
     this.mostrarInativos.set(inativo);
+    this.sincronizarUrl();
   }
 }
