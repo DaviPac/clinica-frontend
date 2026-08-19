@@ -94,6 +94,15 @@ export class AgendamentoService {
     );
   }
 
+  reagendar(id: number, novoInicio: string, novoFim: string, reagendarRecorrencia: boolean, intervaloSemanas: number = 1) {
+    return this.http.patch<void>(`/agendamentos/${id}/reagendar`, {
+      novoInicio,
+      novoFim,
+      reagendarRecorrencia,
+      intervaloSemanas,
+    });
+  }
+
   cancelarRecorrencia(groupId: string) {
     return this.http.delete<{ mensagem: string }>(
       `/agendamentos/recorrencia/${groupId}`

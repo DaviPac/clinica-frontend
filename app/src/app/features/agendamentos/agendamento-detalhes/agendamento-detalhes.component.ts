@@ -12,7 +12,7 @@ import { ServicoService } from '../../../core/services/servico/servico.service';
 
 import { StatusBadgeComponent } from '../../../shared/components/status-badge/status-badge.component';
 import { AgendamentosStatusModalComponent } from '../agendamentos-status-modal/agendamentos-status-modal.component';
-import { formatarDataHora, formatarHora } from '../../../core/utils/data.utils';
+import { formatarDataHora, formatarHora, toRFC3339Brasilia } from '../../../core/utils/data.utils';
 import { AlertComponent } from '../../../shared/components/alert/alert.component';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { ModalComponent } from '../../../shared/components/modal/modal.component';
@@ -64,6 +64,13 @@ export class AgendamentoDetalhesComponent implements OnInit {
   novoValor = signal<number | null>(null);
   atualizandoValor = signal(false);
   atualizarValorRecorrente = signal(false);
+
+  reagendando = signal(false);
+  novoInicioReagendamento = signal<string>('');
+  novaDuracaoMinutos = signal<number | null>(null);
+  reagendarSerie = signal(false);
+  intervaloSemanasReagendamento = signal<number>(1);
+  salvandoReagendamento = signal(false);
 
   formatarDataHora = formatarDataHora;
   formatarHora = formatarHora;
@@ -202,6 +209,54 @@ export class AgendamentoDetalhesComponent implements OnInit {
         this.agendamentoParaCancelarSerie.set(null);
       },
     });
+  }
+
+  // --- Reagendamento ---
+
+  iniciarReagendamento() {
+    const ag = this.agendamento();
+    if (!ag) return;
+    const inicio = new Date(ag.dataHoraInicio);
+    const fim = new Date(ag.dataHoraFim);
+    this.novoInicioReagendamento.set(this.paraInputDateTimeLocal(inicio));
+    this.novaDuracaoMinutos.set(Math.round((fim.getTime() - inicio.getTime()) / 60000));
+    this.reagendarSerie.set(false);
+    this.intervaloSemanasReagendamento.set(1);
+    this.reagendando.set(true);
+  }
+
+  cancelarReagendamento() {
+    this.reagendando.set(false);
+  }
+
+  confirmarReagendamento() {
+    const ag = this.agendamento();
+    const inicioStr = this.novoInicioReagendamento();
+    const duracao = this.novaDuracaoMinutos();
+    const intervalo = this.intervaloSemanasReagendamento();
+    if (!ag || !inicioStr || duracao == null || duracao <= 0) return;
+    if (this.reagendarSerie() && intervalo < 1) return;
+
+    const inicio = new Date(inicioStr);
+    const fim = new Date(inicio.getTime() + duracao * 60000);
+
+    this.salvandoReagendamento.set(true);
+    this.service.reagendar(ag.id, toRFC3339Brasilia(inicio), toRFC3339Brasilia(fim), this.reagendarSerie(), intervalo).subscribe({
+      next: () => {
+        this.reagendando.set(false);
+        this.salvandoReagendamento.set(false);
+        this.carregarAgendamento(ag.id);
+      },
+      error: (err: Error) => {
+        this.erro.set('Erro ao reagendar: ' + err.message);
+        this.salvandoReagendamento.set(false);
+      },
+    });
+  }
+
+  private paraInputDateTimeLocal(d: Date): string {
+    const pad = (n: number) => String(n).padStart(2, '0');
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
   }
 
   formatarValor(v: number | null | undefined): string {
