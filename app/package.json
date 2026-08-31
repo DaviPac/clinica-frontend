@@ -6,7 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "vercel-build": "if [ \"$VERCEL_GIT_COMMIT_REF\" = \"dev\" ]; then ng build --configuration=dev; else ng build --configuration=production; fi"
   },
   "private": true,
   "packageManager": "npm@11.11.0",
