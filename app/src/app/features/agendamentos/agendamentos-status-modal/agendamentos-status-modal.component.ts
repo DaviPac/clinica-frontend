@@ -10,7 +10,7 @@ const TRANSICOES: Record<StatusAgendamento, StatusAgendamento[]> = {
   AGENDADO:  ['REALIZADO', 'FALTA', 'CANCELADO'],
   REALIZADO: ['AGENDADO'],
   FALTA:     ['AGENDADO', 'CANCELADO'],
-  CANCELADO: [],
+  CANCELADO: ['AGENDADO'],
 };
 
 @Component({

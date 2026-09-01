@@ -213,13 +213,11 @@
 
     <div class="flex flex-wrap gap-1 mt-1.5 pt-1.5 border-t border-black/6">
 
-      @if (ag.status !== 'CANCELADO') {
-        <button
-          type="button"
-          (click)="$event.stopPropagation(); $event.preventDefault(); abrirModalStatus(ag)"
-          class="agenda-action-btn relative z-10"
-        >Status</button>
-      }
+      <button
+        type="button"
+        (click)="$event.stopPropagation(); $event.preventDefault(); abrirModalStatus(ag)"
+        class="agenda-action-btn relative z-10"
+      >Status</button>
 
       <button
         type="button"
