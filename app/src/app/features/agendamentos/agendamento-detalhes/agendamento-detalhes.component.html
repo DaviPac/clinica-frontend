@@ -126,12 +126,14 @@
             <h2 class="text-sm font-semibold text-gray-900 mb-4 uppercase tracking-wider">Ações</h2>
             
             <div class="flex flex-col gap-2.5">
-              <button
-                (click)="abrirModalStatus()"
-                class="w-full px-4 py-2 bg-gray-50 border border-gray-200 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-100 transition-colors"
-              >
-                Alterar Status
-              </button>
+              @if (ag.status !== 'CANCELADO') {
+                <button
+                  (click)="abrirModalStatus()"
+                  class="w-full px-4 py-2 bg-gray-50 border border-gray-200 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-100 transition-colors"
+                >
+                  Alterar Status
+                </button>
+              }
 
               @if (ag.status === 'AGENDADO') {
                 <button
