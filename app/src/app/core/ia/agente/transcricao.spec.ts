@@ -93,6 +93,40 @@ describe('toGeminiContents', () => {
     expect(respostas[1].functionResponse?.response).toMatchObject({ erro: 'CPF inválido' });
   });
 
+  it('devolve o thoughtSignature junto da functionCall', () => {
+    // Com thinking ligado a API exige a assinatura de volta na mesma parte;
+    // sem ela responde 400 "Function call is missing a thought_signature".
+    const contents = toGeminiContents([
+      texto('usuario', 'liste'),
+      ferramenta('listar_agendamentos', 'executada', {
+        resultado: { total: 13 },
+        thoughtSignature: 'assinatura-opaca-abc',
+      }),
+    ]);
+
+    expect(contents[1].parts?.[0].thoughtSignature).toBe('assinatura-opaca-abc');
+  });
+
+  it('devolve o thoughtSignature de uma mensagem de texto do modelo', () => {
+    const comAssinatura: MensagemTexto = {
+      ...texto('assistente', 'pronto'),
+      thoughtSignature: 'assinatura-texto',
+    };
+
+    const contents = toGeminiContents([texto('usuario', 'oi'), comAssinatura]);
+
+    expect(contents[1].parts?.[0].thoughtSignature).toBe('assinatura-texto');
+  });
+
+  it('omite thoughtSignature quando o modelo não enviou nenhum', () => {
+    const contents = toGeminiContents([
+      texto('usuario', 'liste'),
+      ferramenta('listar_agendamentos', 'executada', { resultado: {} }),
+    ]);
+
+    expect(contents[1].parts?.[0]).not.toHaveProperty('thoughtSignature');
+  });
+
   it('ignora avisos internos', () => {
     const aviso: Mensagem = {
       id: 'a1',

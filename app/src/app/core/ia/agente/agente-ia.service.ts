@@ -251,7 +251,12 @@ export class AgenteIaService {
       }
 
       await this.registrarUso(resposta.uso);
-      await this.finalizarMensagemParcial(parcial.id, resposta.texto, resposta.raciocinio);
+      await this.finalizarMensagemParcial(
+        parcial.id,
+        resposta.texto,
+        resposta.raciocinio,
+        resposta.thoughtSignature,
+      );
 
       if (!resposta.chamadas.length) {
         // Fallback natural: o modelo respondeu em texto, sem chamar ferramenta.
@@ -274,6 +279,7 @@ export class AgenteIaService {
         id: novoId(),
         nome: c.nome,
         args: c.args,
+        ...(c.thoughtSignature ? { thoughtSignature: c.thoughtSignature } : {}),
       }));
 
       await this.mutarMeta((c) => ({ ...c, rodada: { chamadas, indice: 0, iteracao } }));
@@ -450,6 +456,7 @@ export class AgenteIaService {
       descricao: ferramenta?.descreverAcao(chamada.args) ?? chamada.nome,
       args: chamada.args,
       estado: escrita ? 'pendente' : 'executando',
+      ...(chamada.thoughtSignature ? { thoughtSignature: chamada.thoughtSignature } : {}),
     };
   }
 
@@ -512,6 +519,7 @@ export class AgenteIaService {
     mensagemId: string,
     texto: string,
     raciocinio: string,
+    thoughtSignature?: string,
   ): Promise<void> {
     const conversa = this._conversa();
     if (!conversa) return;
@@ -527,7 +535,12 @@ export class AgenteIaService {
     let final: MensagemTexto | null = null;
     const mensagens = conversa.mensagens.map((m) => {
       if (m.id !== mensagemId || m.tipo !== 'texto') return m;
-      final = { ...m, texto, ...(raciocinio ? { raciocinio } : {}) };
+      final = {
+        ...m,
+        texto,
+        ...(raciocinio ? { raciocinio } : {}),
+        ...(thoughtSignature ? { thoughtSignature } : {}),
+      };
       return final;
     });
     if (!final) return;
