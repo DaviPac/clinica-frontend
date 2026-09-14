@@ -71,6 +71,14 @@ export const routes: Routes = [
           import('./features/financeiro/financeiro-profissional/financeiro-profissional.component')
             .then(m => m.FinanceiroProfissionalComponent),
       },
+      {
+        // Sem roleGuard: os dois papéis usam o assistente — o que muda são as
+        // ferramentas oferecidas ao modelo, filtradas por papel no registro.
+        path: 'assistente',
+        loadComponent: () =>
+          import('./features/ia/assistente/assistente.component')
+            .then(m => m.AssistenteComponent),
+      },
 
       // ── Features exclusivas de admin ──
       {

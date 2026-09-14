@@ -49,6 +49,11 @@ export function semanaAtual(): { de: string; ate: string } {
   };
 }
 
+// Valor em reais no formato pt-BR: R$ 1.234,56
+export function formatarMoeda(valor: number | null | undefined): string {
+  return (valor ?? 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+}
+
 // Soma N semanas a uma Date
 export function addSemanas(date: Date, n: number): Date {
   const d = new Date(date);

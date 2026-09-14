@@ -1,0 +1,49 @@
+import { AbstractControl } from '@angular/forms';
+import { Servico } from '../../core/models/servico.model';
+
+/**
+ * Regras de negócio do agendamento, compartilhadas entre o modal de
+ * agendamentos e o formulário de confirmação do assistente de IA.
+ *
+ * Ficam fora dos componentes para as duas telas não divergirem: um pacote que
+ * deixasse de forçar recorrência numa delas geraria cobrança errada.
+ */
+
+export interface ControlesAgendamento {
+  recorrente: AbstractControl;
+  pacote: AbstractControl;
+  valor_combinado: AbstractControl;
+}
+
+/**
+ * Aplica ao formulário as regras do serviço selecionado.
+ *
+ * Pacote fechado: a série é obrigatória (o controle de recorrência fica travado)
+ * e `valor_combinado` recebe o valor TOTAL do pacote — o backend espera o total,
+ * não o valor por sessão.
+ */
+export function aplicarRegrasDoServico(
+  ctrls: ControlesAgendamento,
+  servico: Servico | null,
+): void {
+  if (!servico) return;
+
+  if (servico.is_pacote) {
+    ctrls.recorrente.setValue(true);
+    ctrls.pacote.setValue(true);
+    ctrls.recorrente.disable();
+    ctrls.valor_combinado.setValue(servico.valor_atual);
+    return;
+  }
+
+  ctrls.recorrente.enable();
+  ctrls.recorrente.setValue(false);
+  ctrls.pacote.setValue(false);
+  ctrls.valor_combinado.setValue(servico.valor_atual);
+}
+
+/** Valor por sessão de um pacote — exibição apenas, nunca enviado ao backend. */
+export function valorPorSessao(valorTotal: number, totalSessoes: number): number | null {
+  if (!Number.isFinite(valorTotal) || totalSessoes <= 0) return null;
+  return valorTotal / totalSessoes;
+}
