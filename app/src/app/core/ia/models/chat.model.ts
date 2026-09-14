@@ -25,6 +25,8 @@ export interface MensagemTexto extends MensagemBase {
   raciocinio?: string;
   /** Tokens do turno que produziu esta mensagem. */
   uso?: UsoTurno;
+  /** Ver ChamadaFerramenta.thoughtSignature. */
+  thoughtSignature?: string;
 }
 
 export interface MensagemFerramenta extends MensagemBase {
@@ -43,6 +45,8 @@ export interface MensagemFerramenta extends MensagemBase {
   resultado?: unknown;
   erro?: string;
   acao?: AcaoChat;
+  /** Ver ChamadaFerramenta.thoughtSignature. */
+  thoughtSignature?: string;
 }
 
 export interface MensagemAviso extends MensagemBase {
@@ -57,6 +61,12 @@ export interface ChamadaFerramenta {
   id: string;
   nome: string;
   args: Record<string, unknown>;
+  /**
+   * Assinatura opaca do raciocínio que gerou esta chamada. Precisa ser devolvida
+   * junto da functionCall no turno seguinte: com thinking ligado, a API recusa o
+   * turno com 400 INVALID_ARGUMENT se ela faltar.
+   */
+  thoughtSignature?: string;
 }
 
 /** Turno do modelo parcialmente processado — permite suspender e retomar o loop. */

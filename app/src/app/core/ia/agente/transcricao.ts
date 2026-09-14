@@ -14,6 +14,10 @@ import { Mensagem, MensagemFerramenta } from '../models/chat.model';
  * 2. Uma chamada ainda pendente (aguardando confirmação do usuário) não pode ser
  *    enviada, porque não existe resposta para ela. A rodada inteira é omitida
  *    nesse caso — o turno só é retomado depois que o usuário decide.
+ * 3. Com thinking ligado, cada parte gerada pelo modelo carrega um
+ *    `thoughtSignature` que precisa voltar exatamente onde estava. Reconstruir a
+ *    parte sem ele faz a API recusar o turno com 400 INVALID_ARGUMENT
+ *    ("Function call is missing a thought_signature in functionCall parts").
  */
 export function toGeminiContents(mensagens: Mensagem[]): Content[] {
   const saida: Content[] = [];
@@ -31,7 +35,12 @@ export function toGeminiContents(mensagens: Mensagem[]): Content[] {
       if (m.texto.trim()) {
         saida.push({
           role: m.papel === 'usuario' ? 'user' : 'model',
-          parts: [{ text: m.texto }],
+          parts: [
+            {
+              text: m.texto,
+              ...(m.thoughtSignature ? { thoughtSignature: m.thoughtSignature } : {}),
+            },
+          ],
         });
       }
       i++;
@@ -52,7 +61,12 @@ export function toGeminiContents(mensagens: Mensagem[]): Content[] {
 
     saida.push({
       role: 'model',
-      parts: grupo.map((f): Part => ({ functionCall: { name: f.nome, args: f.args } })),
+      parts: grupo.map(
+        (f): Part => ({
+          functionCall: { name: f.nome, args: f.args },
+          ...(f.thoughtSignature ? { thoughtSignature: f.thoughtSignature } : {}),
+        }),
+      ),
     });
     saida.push({
       role: 'user',
