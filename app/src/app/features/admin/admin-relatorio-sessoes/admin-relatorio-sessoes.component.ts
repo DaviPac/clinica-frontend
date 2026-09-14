@@ -18,6 +18,7 @@ export class AdminRelatorioSessoesComponent {
   profissionalId = signal<number | undefined>(undefined);
   carregando = signal(false);
   erro = signal<string | null>(null);
+  baixandoPdf = signal(false);
 
   constructor(private service: FinanceiroService) {}
 
@@ -44,6 +45,28 @@ export class AdminRelatorioSessoesComponent {
     this.service.getRelatorioSessoes(this.inicio(), this.fim(), this.profissionalId()).subscribe({
       next: r => { this.relatorio.set(r); this.carregando.set(false); },
       error: (err: Error) => { this.erro.set(err.message); this.carregando.set(false); },
+    });
+  }
+
+  baixarPdf() {
+    const profissionalId = this.profissionalId();
+    if (!profissionalId) return;
+    this.baixandoPdf.set(true);
+    this.erro.set(null);
+    this.service.baixarRelatorioSessoesPdf(this.inicio(), this.fim(), profissionalId).subscribe({
+      next: blob => {
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `relatorio-sessoes-${this.inicio()}-a-${this.fim()}.pdf`;
+        link.click();
+        URL.revokeObjectURL(url);
+        this.baixandoPdf.set(false);
+      },
+      error: () => {
+        this.erro.set('Não foi possível gerar o PDF do relatório.');
+        this.baixandoPdf.set(false);
+      },
     });
   }
 

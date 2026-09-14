@@ -48,10 +48,18 @@
   }
 
   @if (!carregando() && relatorio(); as r) {
-    <p class="text-sm text-gray-500 mb-3">
-      <span class="font-medium text-gray-900">{{ r.nomeProfissional }}</span>
-      · {{ formatarData(r.inicio) }} a {{ formatarData(r.fim) }}
-    </p>
+    <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
+      <p class="text-sm text-gray-500">
+        <span class="font-medium text-gray-900">{{ r.nomeProfissional }}</span>
+        · {{ formatarData(r.inicio) }} a {{ formatarData(r.fim) }}
+      </p>
+      <button
+        (click)="baixarPdf()"
+        [disabled]="baixandoPdf()"
+        class="btn-outline">
+        {{ baixandoPdf() ? 'Gerando PDF...' : 'Baixar PDF' }}
+      </button>
+    </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 mb-6">
       <div class="bg-gray-50 rounded-lg p-4">
