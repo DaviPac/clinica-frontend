@@ -28,6 +28,12 @@ export interface PedidoModelo {
 export interface ChamadaBruta {
   nome: string;
   args: Record<string, unknown>;
+  /**
+   * Assinatura do raciocínio que produziu esta chamada. Com thinking ligado, a
+   * API exige que ela volte junto da functionCall no turno seguinte — sem isso
+   * responde 400 INVALID_ARGUMENT.
+   */
+  thoughtSignature?: string;
 }
 
 export interface RespostaModelo {
@@ -35,6 +41,8 @@ export interface RespostaModelo {
   raciocinio: string;
   chamadas: ChamadaBruta[];
   uso: UsoTurno;
+  /** Assinatura da última parte de texto, quando houver. */
+  thoughtSignature?: string;
 }
 
 /** Erro de cota (429) — carrega a mensagem original do Google para exibição. */
@@ -87,6 +95,7 @@ export class GeminiChatClient {
     let raciocinio = '';
     const chamadas: ChamadaBruta[] = [];
     let uso: UsoTurno = { ...USO_VAZIO };
+    let assinaturaTexto: string | undefined;
 
     try {
       const fluxo = await ai.models.generateContentStream({
@@ -110,6 +119,9 @@ export class GeminiChatClient {
             chamadas.push({
               nome: parte.functionCall.name,
               args: (parte.functionCall.args ?? {}) as Record<string, unknown>,
+              ...(parte.thoughtSignature
+                ? { thoughtSignature: parte.thoughtSignature }
+                : {}),
             });
             continue;
           }
@@ -120,6 +132,7 @@ export class GeminiChatClient {
             pedido.onRaciocinio?.(parte.text);
           } else {
             texto += parte.text;
+            if (parte.thoughtSignature) assinaturaTexto = parte.thoughtSignature;
             pedido.onTexto?.(parte.text);
           }
         }
@@ -130,7 +143,13 @@ export class GeminiChatClient {
       throw traduzirErro(err);
     }
 
-    return { texto: texto.trim(), raciocinio: raciocinio.trim(), chamadas, uso };
+    return {
+      texto: texto.trim(),
+      raciocinio: raciocinio.trim(),
+      chamadas,
+      uso,
+      ...(assinaturaTexto ? { thoughtSignature: assinaturaTexto } : {}),
+    };
   }
 
   private configRaciocinio(nivel: NivelRaciocinio) {
