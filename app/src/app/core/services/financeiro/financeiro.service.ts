@@ -99,6 +99,12 @@ export class FinanceiroService {
     return this.http.get<RelatorioSessoes>(`/financeiro/relatorio-sessoes?${params}`);
   }
 
+  baixarRelatorioSessoesPdf(inicio: string, fim: string, profissionalId?: number) {
+    const params = new URLSearchParams({ inicio, fim });
+    if (profissionalId) params.set('profissional_id', String(profissionalId));
+    return this.http.get(`/financeiro/relatorio-sessoes/pdf?${params}`, { responseType: 'blob' });
+  }
+
   getDespesas(emAberto?: boolean) {
     const qs = emAberto ? '?em_aberto=true' : '';
     return this.http.get<DespesaClinica[]>(`/financeiro/despesas${qs}`);
