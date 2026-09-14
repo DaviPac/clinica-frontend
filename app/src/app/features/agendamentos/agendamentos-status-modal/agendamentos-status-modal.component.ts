@@ -5,13 +5,7 @@ import { Agendamento, StatusAgendamento } from '../../../core/models/agendamento
 import { StatusBadgeComponent } from '../../../shared/components/status-badge/status-badge.component';
 import { ModalComponent } from '../../../shared/components/modal/modal.component';
 import { AlertComponent } from '../../../shared/components/alert/alert.component';
-
-const TRANSICOES: Record<StatusAgendamento, StatusAgendamento[]> = {
-  AGENDADO:  ['REALIZADO', 'FALTA', 'CANCELADO'],
-  REALIZADO: ['AGENDADO'],
-  FALTA:     ['AGENDADO', 'CANCELADO'],
-  CANCELADO: [],
-};
+import { transicoesPermitidas } from '../agendamento.regras';
 
 @Component({
   selector: 'app-agendamentos-status-modal',
@@ -28,7 +22,7 @@ export class AgendamentosStatusModalComponent {
   erro = signal<string | null>(null);
 
   get opcoes(): StatusAgendamento[] {
-    return TRANSICOES[this.agendamento().status] ?? [];
+    return transicoesPermitidas(this.agendamento().status);
   }
 
   readonly labels: Record<StatusAgendamento, string> = {
