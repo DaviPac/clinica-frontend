@@ -10,22 +10,33 @@ import { PacienteService } from '../../../core/services/paciente/paciente.servic
 import { UsuarioService } from '../../../core/services/usuario/usuario.service';
 import { ServicoService } from '../../../core/services/servico/servico.service';
 
-import { StatusBadgeComponent } from '../../../shared/components/status-badge/status-badge.component';
 import { AgendamentosModalComponent } from '../agendamentos-modal/agendamentos-modal.component';
 import { AgendamentosStatusModalComponent } from '../agendamentos-status-modal/agendamentos-status-modal.component';
 import { formatarDataHora, formatarHora } from '../../../core/utils/data.utils';
-import { RouterLink } from '@angular/router';
 import { FiltroProfissionalComponent } from '../../../shared/components/filtro-profissional/filtro-profissional.component';
 import { ToggleComponent } from '../../../shared/components/toggle/toggle.component';
 import { AlertComponent } from '../../../shared/components/alert/alert.component';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
+import { ModalComponent } from '../../../shared/components/modal/modal.component';
+import { ViewportService } from '../../../core/services/viewport/viewport.service';
+import { AgendaCardComponent } from '../agenda-card/agenda-card.component';
+import { AgendaAcoesSheetComponent } from '../agenda-acoes-sheet/agenda-acoes-sheet.component';
 
 type ModoVisualizacao = 'mensal' | 'semanal';
 
+/** Quantas bolinhas de densidade cabem numa célula da grade mensal no mobile. */
+const MAX_DOTS = 3;
+
 interface DiaCalendario {
   diaNumero: number | null;
+  /** 'YYYY-MM-DD' — chave usada para abrir a sheet do dia. */
+  dataISO: string | null;
   agendamentos: Agendamento[];
   isToday: boolean;
+  /** Status das primeiras sessões, para as bolinhas do mobile. */
+  dots: StatusAgendamento[];
+  /** Quantas sessões ficaram além das bolinhas ("+N"). */
+  extras: number;
 }
 
 interface DiaSemana {
@@ -40,10 +51,11 @@ interface DiaSemana {
   selector: 'app-agendamentos-lista',
   standalone: true,
   imports: [
-    CommonModule, FormsModule, StatusBadgeComponent,
+    CommonModule, FormsModule,
     AgendamentosModalComponent, AgendamentosStatusModalComponent,
-    RouterLink, FiltroProfissionalComponent, ToggleComponent,
-    AlertComponent, ConfirmDialogComponent
+    FiltroProfissionalComponent, ToggleComponent,
+    AlertComponent, ConfirmDialogComponent, ModalComponent,
+    AgendaCardComponent, AgendaAcoesSheetComponent
   ],
   templateUrl: './agendamentos-lista.component.html',
   styleUrl: './agendamentos-lista.component.css'
@@ -54,6 +66,9 @@ export class AgendamentosListaComponent implements OnInit {
   private usuarioService = inject(UsuarioService);
   private servicoService = inject(ServicoService);
   private service = inject(AgendamentoService);
+  private viewport = inject(ViewportService);
+
+  isMobile = this.viewport.isMobile;
 
   agendamentos = signal<Agendamento[]>([]);
   carregando = signal(true);
@@ -70,6 +85,14 @@ export class AgendamentosListaComponent implements OnInit {
   pacientesDict = signal<Record<number, string>>({});
   usuariosDict = signal<Record<number, string>>({});
   servicosDict = signal<Record<number, string>>({});
+
+  /** Mobile: a barra de filtros fica recolhida por padrão. */
+  filtrosAbertos = signal(false);
+
+  /** Mobile: dia ('YYYY-MM-DD') cuja bottom sheet de sessões está aberta. */
+  diaSelecionado = signal<string | null>(null);
+  /** Mobile: sessão cuja bottom sheet de ações está aberta. */
+  agendamentoParaAcoes = signal<Agendamento | null>(null);
 
   modalCriacaoAberto = signal(false);
   agendamentoParaStatus = signal<Agendamento | null>(null);
@@ -150,17 +173,76 @@ export class AgendamentosListaComponent implements OnInit {
     const hoje = new Date();
 
     for (let i = 0; i < primeiroDia.getDay(); i++) {
-      dias.push({ diaNumero: null, agendamentos: [], isToday: false });
+      dias.push({ diaNumero: null, dataISO: null, agendamentos: [], isToday: false, dots: [], extras: 0 });
     }
 
     for (let d = 1; d <= ultimoDia.getDate(); d++) {
       const dataStr = `${ano}-${String(mes + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
       const isToday = d === hoje.getDate() && mes === hoje.getMonth() && ano === hoje.getFullYear();
-      dias.push({ diaNumero: d, agendamentos: this.filtrarPorData(dataStr), isToday });
+      const ags = this.filtrarPorData(dataStr);
+      dias.push({
+        diaNumero: d,
+        dataISO: dataStr,
+        agendamentos: ags,
+        isToday,
+        dots: ags.slice(0, MAX_DOTS).map(a => a.status),
+        extras: Math.max(0, ags.length - MAX_DOTS),
+      });
     }
 
     return dias;
   });
+
+  /**
+   * Sessões da sheet do dia. É um computed sobre `agendamentos()` — e não uma
+   * cópia congelada — para que a sheet se atualize sozinha quando uma mudança
+   * de status ou de pagamento dispara `carregarAgendamentos()`.
+   */
+  agendamentosDoDia = computed(() => {
+    const dia = this.diaSelecionado();
+    return dia ? this.filtrarPorData(dia) : [];
+  });
+
+  labelDiaSelecionado = computed(() => {
+    const dia = this.diaSelecionado();
+    if (!dia) return '';
+    const [ano, mes, d] = dia.split('-').map(Number);
+    const label = new Date(ano, mes - 1, d).toLocaleDateString('pt-BR', {
+      weekday: 'long', day: '2-digit', month: 'long',
+    });
+    return label.charAt(0).toUpperCase() + label.slice(1);
+  });
+
+  abrirDia(dia: DiaCalendario) {
+    if (dia.dataISO && dia.agendamentos.length) this.diaSelecionado.set(dia.dataISO);
+  }
+
+  /**
+   * Fechar a sheet de ações é no-op enquanto houver um diálogo por cima:
+   * todos os overlays escutam Esc no `document`, então sem essa guarda um
+   * único Esc fecharia os dois de uma vez.
+   */
+  fecharAcoes() {
+    if (this.agendamentoParaStatus() || this.agendamentoParaCancelarSerie()
+      || this.agendamentoParaConfirmarPagamento() || this.agendamentoParaCancelarPagamento()) return;
+    this.agendamentoParaAcoes.set(null);
+  }
+
+  /** Período ou filtro mudou — as sheets apontariam para dados velhos. */
+  private fecharSheets() {
+    this.diaSelecionado.set(null);
+    this.agendamentoParaAcoes.set(null);
+  }
+
+  dotClass(status: StatusAgendamento): string {
+    const map: Record<StatusAgendamento, string> = {
+      AGENDADO: 'bg-blue-500',
+      REALIZADO: 'bg-teal-500',
+      FALTA: 'bg-amber-500',
+      CANCELADO: 'bg-gray-400',
+    };
+    return map[status];
+  }
 
   // NOVO: grade semanal (7 dias, domingo -> sábado)
   diasSemana = computed<DiaSemana[]>(() => {
@@ -278,6 +360,7 @@ export class AgendamentosListaComponent implements OnInit {
   setModoView(modo: ModoVisualizacao) {
     if (this.modoView() === modo) return;
     this.modoView.set(modo);
+    this.fecharSheets();
     this.salvarFiltrosNoCache();
     this.carregarAgendamentos();
   }
@@ -292,6 +375,7 @@ export class AgendamentosListaComponent implements OnInit {
     } else {
       this.dataReferencia.set(new Date(ref.getFullYear(), ref.getMonth() + direcao, 1));
     }
+    this.fecharSheets();
     this.salvarFiltrosNoCache();
     this.carregarAgendamentos();
   }
@@ -299,6 +383,7 @@ export class AgendamentosListaComponent implements OnInit {
   // NOVO: volta para o período atual (mês/semana de hoje)
   irParaHoje() {
     this.dataReferencia.set(new Date());
+    this.fecharSheets();
     this.salvarFiltrosNoCache();
     this.carregarAgendamentos();
   }
@@ -334,6 +419,7 @@ export class AgendamentosListaComponent implements OnInit {
     this.service.atualizarPagamento(ag.id, !ag.pagoPeloPaciente).subscribe({
       next: () => {
         this.atualizandoPagamento.set(null);
+        this.agendamentoParaAcoes.set(null);
         this.carregarAgendamentos();
       },
       error: (err: Error) => {
@@ -349,6 +435,7 @@ export class AgendamentosListaComponent implements OnInit {
 
   onStatusAtualizado(payload: { id: number; status: StatusAgendamento }) {
     this.agendamentoParaStatus.set(null);
+    this.agendamentoParaAcoes.set(null);
     this.carregarAgendamentos();
   }
 
@@ -369,6 +456,7 @@ export class AgendamentosListaComponent implements OnInit {
     this.service.cancelarRecorrencia(ag.recorrenciaGroupId).subscribe({
       next: () => {
         this.agendamentoParaCancelarSerie.set(null);
+        this.agendamentoParaAcoes.set(null);
         this.cancelandoSerie.set(false);
         this.carregarAgendamentos();
       },
@@ -387,18 +475,9 @@ export class AgendamentosListaComponent implements OnInit {
     return v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   }
 
-  cardClass(status: StatusAgendamento): string {
-    const map: Record<StatusAgendamento, string> = {
-      AGENDADO:  'border-blue-200 bg-blue-50',
-      REALIZADO: 'border-teal-200 bg-teal-50',
-      FALTA:     'border-red-200 bg-red-50',
-      CANCELADO: 'border-gray-200 bg-gray-100 opacity-60',
-    };
-    return map[status];
-  }
-
   onFiltroChange(profissionalId?: string) {
     this.filtroProfissionalId.set(profissionalId);
+    this.fecharSheets();
     this.salvarFiltrosNoCache();
     this.carregarAgendamentos()
   }
