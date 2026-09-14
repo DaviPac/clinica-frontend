@@ -1,0 +1,56 @@
+<app-modal titulo="Ações da sessão" maxWidth="max-w-sm" (fechar)="fechar.emit()">
+
+  <div class="flex flex-col gap-4 -mt-2">
+
+    <div class="flex flex-col gap-1.5 pb-4 border-b border-gray-100">
+      <div class="flex items-center justify-between gap-3">
+        <span class="text-sm font-bold tabular-nums text-gray-900">
+          {{ formatarHora(agendamento().dataHoraInicio) }}
+        </span>
+        <app-status-badge [status]="agendamento().status" />
+      </div>
+      <p class="text-sm font-semibold text-gray-900">{{ pacienteNome() }}</p>
+      @if (profissionalNome()) {
+        <p class="text-xs text-gray-500">{{ profissionalNome() }}</p>
+      }
+      <p class="text-xs text-gray-400">{{ servicoNome() }}</p>
+    </div>
+
+    <div class="flex flex-col gap-2.5">
+
+      <a
+        [routerLink]="['/agendamentos', agendamento().id]"
+        class="btn btn-outline w-full min-h-11 no-underline">Ver detalhes</a>
+
+      @if (podeAlterarStatus()) {
+        <button type="button" (click)="status.emit()" class="btn btn-outline w-full min-h-11">
+          Alterar status
+        </button>
+      }
+
+      <button
+        type="button"
+        (click)="pagamento.emit()"
+        [disabled]="pagamentoBloqueado()"
+        class="btn w-full min-h-11"
+        [class]="agendamento().pagoPeloPaciente
+          ? 'btn-outline border-teal-200 bg-teal-50 text-teal-800 hover:bg-teal-100'
+          : 'btn-outline'">
+        {{ agendamento().pagoPeloPaciente ? 'Desmarcar pagamento' : 'Marcar como pago' }}
+      </button>
+
+      <!-- Destrutivo: fica em contorno, não em bloco sólido, para não
+           virar o alvo mais fácil de tocar por acidente no rodapé. -->
+      @if (podeCancelarSerie()) {
+        <button
+          type="button"
+          (click)="cancelarSerie.emit()"
+          class="btn w-full min-h-11 border border-red-200 bg-red-50 text-red-700 hover:bg-red-100">
+          Cancelar série
+        </button>
+      }
+
+    </div>
+  </div>
+
+</app-modal>
