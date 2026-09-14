@@ -55,6 +55,11 @@ export class ShellComponent {
       path: '/financeiro',
       icon: 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-4H9l3-3 3 3h-2v4zm0-8h-2V7h2v2z',
     },
+    {
+      label: 'Assistente',
+      path: '/assistente',
+      icon: 'M12 3l1.9 4.8L18.7 9.7l-4.8 1.9L12 16.4l-1.9-4.8L5.3 9.7l4.8-1.9L12 3zM18 15.5l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8.8-2z',
+    },
   ];
 
   // Itens exclusivos de admin
