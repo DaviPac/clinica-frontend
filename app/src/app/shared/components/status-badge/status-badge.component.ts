@@ -13,11 +13,7 @@ const CONFIG: Record<StatusAgendamento, { label: string; classes: string }> = {
   selector: 'app-status-badge',
   standalone: true,
   imports: [CommonModule],
-  template: `
-    <span class="text-xs font-medium px-2 py-0.5 rounded {{ config.classes }}">
-      {{ config.label }}
-    </span>
-  `,
+  templateUrl: './status-badge.component.html',
 })
 export class StatusBadgeComponent {
   status = input.required<StatusAgendamento>();

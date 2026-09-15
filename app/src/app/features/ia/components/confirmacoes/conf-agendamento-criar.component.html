@@ -1,0 +1,90 @@
+<form [formGroup]="form" class="flex flex-col gap-3">
+  @if (isAdmin) {
+    <div class="flex flex-col gap-1">
+      <label class="ui-label mb-0" for="conf-ag-prof">Profissional <span class="text-red-500">*</span></label>
+      <select id="conf-ag-prof" formControlName="profissional_id" class="ui-input">
+        <option [value]="0">Selecione…</option>
+        @for (p of catalogo.profissionais(); track p.id) {
+          <option [value]="p.id">{{ p.nome }}</option>
+        }
+      </select>
+    </div>
+  }
+
+  <div class="flex flex-col gap-1">
+    <label class="ui-label mb-0" for="conf-ag-pac">Paciente <span class="text-red-500">*</span></label>
+    <select id="conf-ag-pac" formControlName="paciente_id" class="ui-input">
+      <option [value]="0">Selecione…</option>
+      @for (p of pacientes(); track p.id) {
+        <option [value]="p.id">{{ p.nome }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="flex flex-col gap-1">
+    <label class="ui-label mb-0" for="conf-ag-serv">Serviço <span class="text-red-500">*</span></label>
+    <select id="conf-ag-serv" formControlName="servico_id" class="ui-input">
+      <option [value]="0">Selecione…</option>
+      @for (s of servicos(); track s.id) {
+        <option [value]="s.id">
+          {{ s.nome }} — {{ moeda(s.valor_atual) }}{{ s.is_pacote ? ' (pacote)' : '' }}
+        </option>
+      }
+    </select>
+  </div>
+
+  <div class="grid grid-cols-2 gap-3">
+    <div class="flex flex-col gap-1">
+      <label class="ui-label mb-0" for="conf-ag-ini">Início <span class="text-red-500">*</span></label>
+      <input id="conf-ag-ini" type="datetime-local" formControlName="data_hora_inicio" class="ui-input" />
+    </div>
+    <div class="flex flex-col gap-1">
+      <label class="ui-label mb-0" for="conf-ag-dur">Duração (min) <span class="text-red-500">*</span></label>
+      <input id="conf-ag-dur" type="number" min="1" formControlName="duracao_minutos" class="ui-input" />
+    </div>
+  </div>
+
+  <div class="flex flex-col gap-1">
+    <label class="ui-label mb-0" for="conf-ag-valor">
+      {{ ehPacote() ? 'Valor total do pacote' : 'Valor combinado' }}
+      <span class="text-red-500">*</span>
+    </label>
+    <input id="conf-ag-valor" type="number" step="0.01" min="0" formControlName="valor_combinado" class="ui-input" />
+    @if (ehPacote() && valorSessao() !== null) {
+      <p class="text-[11px] text-stone-500">
+        Equivale a {{ moeda(valorSessao()!) }} por sessão.
+      </p>
+    }
+  </div>
+
+  <div class="flex flex-col gap-2 pt-1 border-t border-stone-100">
+    <label class="flex items-center gap-2 cursor-pointer">
+      <input
+        type="checkbox"
+        formControlName="recorrente"
+        class="w-4 h-4 accent-brand-400 cursor-pointer" />
+      <span class="text-sm text-stone-700">Sessões recorrentes</span>
+    </label>
+    @if (ehPacote()) {
+      <p class="text-[11px] text-stone-500 -mt-1">
+        Pacotes são sempre recorrentes e o valor informado é o total do pacote.
+      </p>
+    }
+
+    @if (recorrente()) {
+      <div class="grid grid-cols-2 gap-3">
+        <div class="flex flex-col gap-1">
+          <label class="ui-label mb-0" for="conf-ag-sessoes">Total de sessões</label>
+          <input id="conf-ag-sessoes" type="number" min="2" formControlName="total_sessoes" class="ui-input" />
+        </div>
+        <div class="flex flex-col gap-1">
+          <label class="ui-label mb-0" for="conf-ag-intervalo">Intervalo (semanas)</label>
+          <input id="conf-ag-intervalo" type="number" min="1" formControlName="intervalo_semanas" class="ui-input" />
+        </div>
+      </div>
+      @if (ultimaSessao(); as ultima) {
+        <p class="text-[11px] text-stone-500">Última sessão em {{ ultima }}.</p>
+      }
+    }
+  </div>
+</form>

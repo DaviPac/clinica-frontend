@@ -1,0 +1,150 @@
+/* ──────────────────────────────────────────────
+   Card de sessão — mobile-first.
+   O padrão é o layout confortável de toque; a partir
+   de `sm` (640px) volta ao card compacto do desktop.
+─────────────────────────────────────────────── */
+:host {
+  display: block;
+}
+
+.agenda-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  padding: 10px 12px;
+  gap: 4px;
+  border-left: 4px solid #d1d5db;
+  background: #f9fafb;
+  border-top: 1px solid #f3f4f6;
+  border-right: 1px solid #f3f4f6;
+  border-bottom: 1px solid #f3f4f6;
+  transition: box-shadow 0.2s ease, transform 0.2s ease, filter 0.2s ease;
+}
+
+.agenda-card:hover {
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.08), 0 2px 4px -1px rgb(0 0 0 / 0.04);
+  transform: translateY(-1px);
+  filter: brightness(0.97);
+}
+
+/* Região de informação (link no desktop, botão no mobile) */
+.agenda-card__link {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  border-radius: 4px;
+}
+
+.agenda-card__link--btn {
+  width: 100%;
+  min-height: 44px;
+  justify-content: center;
+  text-align: left;
+  background: transparent;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+.agenda-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px solid rgb(0 0 0 / 0.06);
+}
+
+/* Variantes por status — alinhadas às cores do <app-status-badge> */
+.agenda-card--agendado {
+  border-left-color: #3b82f6; /* blue-500  */
+  background: #eff6ff;        /* blue-50   */
+}
+.agenda-card--realizado {
+  border-left-color: #14b8a6; /* teal-500  */
+  background: #f0fdfa;        /* teal-50   */
+}
+.agenda-card--falta {
+  border-left-color: #f59e0b; /* amber-500 */
+  background: #fffbeb;        /* amber-50  */
+}
+.agenda-card--cancelado {
+  border-left-color: #ef4444; /* red-500   */
+  background: #fef2f2;        /* red-50    */
+  opacity: 0.72;
+}
+
+/* ──────────────────────────────────────────────
+   Botões de ação (só no desktop)
+─────────────────────────────────────────────── */
+.agenda-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid #d1d5db; /* gray-300 */
+  background: #fff;
+  color: #374151;            /* gray-700 */
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s;
+  line-height: 1.4;
+}
+.agenda-action-btn:hover:not(:disabled) {
+  background: #f3f4f6;
+  border-color: #9ca3af;
+}
+.agenda-action-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.agenda-action-btn--paid {
+  background: #f0fdf4;
+  border-color: #86efac;
+  color: #15803d; /* green-700 */
+}
+.agenda-action-btn--unpaid {
+  background: #f9fafb;
+  color: #6b7280;
+}
+.agenda-action-btn--danger {
+  background: #fef2f2;
+  border-color: #fecaca;
+  color: #dc2626; /* red-600 */
+}
+.agenda-action-btn--danger:hover:not(:disabled) {
+  background: #fee2e2;
+  border-color: #ef4444;
+}
+
+/* O badge é um componente filho: só dá para encolher por transform */
+.agenda-badge-wrap {
+  flex-shrink: 0;
+}
+
+/* ──────────────────────────────────────────────
+   ≥ sm — card compacto do desktop, sem mudanças
+   em relação ao visual anterior
+─────────────────────────────────────────────── */
+@media (min-width: 640px) {
+  .agenda-card {
+    border-radius: 6px;
+    padding: 5px 6px;
+    gap: 2px;
+    border-left-width: 3px;
+  }
+
+  .agenda-card__link {
+    gap: 2px;
+  }
+
+  .agenda-badge-wrap {
+    transform: scale(0.72);
+    transform-origin: top right;
+  }
+}
