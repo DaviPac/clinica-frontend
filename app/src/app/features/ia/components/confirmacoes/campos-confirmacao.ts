@@ -26,18 +26,42 @@ export type TipoCampo =
 
 export type Entidade = 'paciente' | 'servico' | 'profissional' | 'agendamento' | 'despesa';
 
+/**
+ * Cada metadado abaixo espelha um Validators da tela correspondente. Quando um
+ * campo tem `min`/`minLength`/`email` aqui, é porque o formulário da tela tem o
+ * mesmo — não porque pareceu razoável.
+ */
 export interface CampoConfirmacao {
   nome: string;
   rotulo: string;
   tipo: TipoCampo;
   obrigatorio?: boolean;
+  /** A tela só exige este campo quando o usuário é admin (ex.: profissional). */
+  obrigatorioSeAdmin?: boolean;
   opcoes?: { valor: string; rotulo: string }[];
   entidade?: Entidade;
   ajuda?: string;
+  min?: number;
+  max?: number;
+  minLength?: number;
+  maxLength?: number;
+  email?: boolean;
+  /** Valor inicial quando a IA não informou nada (espelha o default da tela). */
+  padrao?: unknown;
   /** Campo só aparece quando este outro campo está preenchido. */
   dependeDe?: string;
   /** Só admin vê/edita. */
   somenteAdmin?: boolean;
+  /**
+   * Ao escolher a entidade neste campo, carrega os valores atuais do registro
+   * nos demais campos — como as telas de edição, que abrem pré-preenchidas.
+   * O que a IA propôs tem precedência sobre o valor atual.
+   */
+  preencherDemais?: Entidade;
+  /** Só oferece agendamentos que fazem parte de uma série. */
+  somenteRecorrentes?: boolean;
+  /** Filtra as opções do enum pelo registro escolhido em `dependeDeEntidade`. */
+  opcoesConformeStatusDe?: string;
 }
 
 const STATUS_AGENDAMENTO = [
@@ -60,7 +84,15 @@ const CATEGORIAS_DESPESA = [
 export const CAMPOS_POR_FERRAMENTA: Record<string, CampoConfirmacao[]> = {
   atualizar_status_agendamento: [
     { nome: 'agendamento_id', rotulo: 'Agendamento', tipo: 'entidade', entidade: 'agendamento', obrigatorio: true },
-    { nome: 'status', rotulo: 'Novo status', tipo: 'enum', opcoes: STATUS_AGENDAMENTO, obrigatorio: true },
+    {
+      nome: 'status',
+      rotulo: 'Novo status',
+      tipo: 'enum',
+      opcoes: STATUS_AGENDAMENTO,
+      obrigatorio: true,
+      // A tela só oferece as transições válidas; aqui é o mesmo mapa.
+      opcoesConformeStatusDe: 'agendamento_id',
+    },
   ],
 
   atualizar_pagamento_agendamento: [
@@ -70,7 +102,7 @@ export const CAMPOS_POR_FERRAMENTA: Record<string, CampoConfirmacao[]> = {
 
   atualizar_valor_agendamento: [
     { nome: 'agendamento_id', rotulo: 'Agendamento', tipo: 'entidade', entidade: 'agendamento', obrigatorio: true },
-    { nome: 'valor_combinado', rotulo: 'Novo valor', tipo: 'moeda', obrigatorio: true },
+    { nome: 'valor_combinado', rotulo: 'Novo valor', tipo: 'moeda', obrigatorio: true, min: 0 },
     {
       nome: 'recorrente',
       rotulo: 'Aplicar a toda a série',
@@ -82,34 +114,58 @@ export const CAMPOS_POR_FERRAMENTA: Record<string, CampoConfirmacao[]> = {
   reagendar_agendamento: [
     { nome: 'agendamento_id', rotulo: 'Agendamento', tipo: 'entidade', entidade: 'agendamento', obrigatorio: true },
     { nome: 'novo_inicio', rotulo: 'Nova data e hora', tipo: 'datahora', obrigatorio: true },
-    { nome: 'duracao_minutos', rotulo: 'Duração (minutos)', tipo: 'numero', obrigatorio: true },
+    { nome: 'duracao_minutos', rotulo: 'Duração (minutos)', tipo: 'numero', obrigatorio: true, min: 1 },
     { nome: 'reagendar_recorrencia', rotulo: 'Reagendar a série inteira', tipo: 'booleano' },
-    { nome: 'intervalo_semanas', rotulo: 'Intervalo entre sessões (semanas)', tipo: 'numero', dependeDe: 'reagendar_recorrencia' },
+    {
+      nome: 'intervalo_semanas',
+      rotulo: 'Intervalo entre sessões (semanas)',
+      tipo: 'numero',
+      dependeDe: 'reagendar_recorrencia',
+      obrigatorio: true,
+      min: 1,
+      padrao: 1,
+    },
   ],
 
   cancelar_recorrencia: [
     {
-      nome: 'group_id',
-      rotulo: 'ID do grupo de recorrência',
-      tipo: 'texto',
+      nome: 'agendamento_id',
+      rotulo: 'Série recorrente',
+      tipo: 'entidade',
+      entidade: 'agendamento',
       obrigatorio: true,
+      somenteRecorrentes: true,
       ajuda: 'Todos os agendamentos futuros desta série serão cancelados.',
     },
   ],
 
   criar_paciente: [
-    { nome: 'nome', rotulo: 'Nome completo', tipo: 'texto', obrigatorio: true },
-    { nome: 'cpf', rotulo: 'CPF', tipo: 'texto', obrigatorio: true },
+    { nome: 'nome', rotulo: 'Nome completo', tipo: 'texto', obrigatorio: true, minLength: 3 },
+    { nome: 'cpf', rotulo: 'CPF', tipo: 'texto' },
     { nome: 'telefone', rotulo: 'Telefone', tipo: 'texto' },
     { nome: 'dataNascimento', rotulo: 'Data de nascimento', tipo: 'data' },
     { nome: 'rg', rotulo: 'RG', tipo: 'texto' },
     { nome: 'enderecoCompleto', rotulo: 'Endereço', tipo: 'texto' },
-    { nome: 'profissional_id', rotulo: 'Profissional', tipo: 'entidade', entidade: 'profissional', somenteAdmin: true },
+    {
+      nome: 'profissional_id',
+      rotulo: 'Profissional',
+      tipo: 'entidade',
+      entidade: 'profissional',
+      somenteAdmin: true,
+      obrigatorioSeAdmin: true,
+    },
   ],
 
   atualizar_paciente: [
-    { nome: 'paciente_id', rotulo: 'Paciente', tipo: 'entidade', entidade: 'paciente', obrigatorio: true },
-    { nome: 'nome', rotulo: 'Nome completo', tipo: 'texto' },
+    {
+      nome: 'paciente_id',
+      rotulo: 'Paciente',
+      tipo: 'entidade',
+      entidade: 'paciente',
+      obrigatorio: true,
+      preencherDemais: 'paciente',
+    },
+    { nome: 'nome', rotulo: 'Nome completo', tipo: 'texto', obrigatorio: true, minLength: 3 },
     { nome: 'cpf', rotulo: 'CPF', tipo: 'texto' },
     { nome: 'telefone', rotulo: 'Telefone', tipo: 'texto' },
     { nome: 'dataNascimento', rotulo: 'Data de nascimento', tipo: 'data' },
@@ -127,15 +183,22 @@ export const CAMPOS_POR_FERRAMENTA: Record<string, CampoConfirmacao[]> = {
 
   criar_servico: [
     { nome: 'nome', rotulo: 'Nome do serviço', tipo: 'texto', obrigatorio: true },
-    { nome: 'valor_atual', rotulo: 'Valor', tipo: 'moeda', obrigatorio: true },
+    { nome: 'valor_atual', rotulo: 'Valor', tipo: 'moeda', obrigatorio: true, min: 0.01 },
     { nome: 'pacote', rotulo: 'É um pacote fechado', tipo: 'booleano', ajuda: 'Pacotes geram séries recorrentes e o valor é o total.' },
     { nome: 'profissional_id', rotulo: 'Profissional', tipo: 'entidade', entidade: 'profissional', somenteAdmin: true },
   ],
 
   atualizar_servico: [
-    { nome: 'servico_id', rotulo: 'Serviço', tipo: 'entidade', entidade: 'servico', obrigatorio: true },
-    { nome: 'nome', rotulo: 'Nome do serviço', tipo: 'texto' },
-    { nome: 'valor_atual', rotulo: 'Valor', tipo: 'moeda' },
+    {
+      nome: 'servico_id',
+      rotulo: 'Serviço',
+      tipo: 'entidade',
+      entidade: 'servico',
+      obrigatorio: true,
+      preencherDemais: 'servico',
+    },
+    { nome: 'nome', rotulo: 'Nome do serviço', tipo: 'texto', obrigatorio: true },
+    { nome: 'valor_atual', rotulo: 'Valor', tipo: 'moeda', obrigatorio: true, min: 0.01 },
     { nome: 'pacote', rotulo: 'É um pacote fechado', tipo: 'booleano' },
     { nome: 'ativo', rotulo: 'Ativo', tipo: 'booleano' },
   ],
@@ -146,9 +209,16 @@ export const CAMPOS_POR_FERRAMENTA: Record<string, CampoConfirmacao[]> = {
 
   criar_despesa: [
     { nome: 'descricao', rotulo: 'Descrição', tipo: 'texto', obrigatorio: true },
-    { nome: 'valor', rotulo: 'Valor', tipo: 'moeda', obrigatorio: true },
+    { nome: 'valor', rotulo: 'Valor', tipo: 'moeda', obrigatorio: true, min: 0.01 },
     { nome: 'data_vencimento', rotulo: 'Vencimento', tipo: 'data', obrigatorio: true },
-    { nome: 'categoria', rotulo: 'Categoria', tipo: 'enum', opcoes: CATEGORIAS_DESPESA, obrigatorio: true },
+    {
+      nome: 'categoria',
+      rotulo: 'Categoria',
+      tipo: 'enum',
+      opcoes: CATEGORIAS_DESPESA,
+      obrigatorio: true,
+      padrao: 'FIXA',
+    },
   ],
 
   pagar_despesa: [
@@ -157,12 +227,19 @@ export const CAMPOS_POR_FERRAMENTA: Record<string, CampoConfirmacao[]> = {
 
   criar_acerto: [
     { nome: 'profissional_id', rotulo: 'Profissional', tipo: 'entidade', entidade: 'profissional', obrigatorio: true },
-    { nome: 'periodo_referencia', rotulo: 'Período de referência', tipo: 'mes', obrigatorio: true },
-    { nome: 'valor_pago', rotulo: 'Valor', tipo: 'moeda', obrigatorio: true },
+    {
+      nome: 'periodo_referencia',
+      rotulo: 'Período de referência',
+      tipo: 'mes',
+      obrigatorio: true,
+      padrao: mesCorrente(),
+    },
+    { nome: 'valor_pago', rotulo: 'Valor', tipo: 'moeda', obrigatorio: true, min: 0.01 },
     {
       nome: 'profissional_recebe',
       rotulo: 'A clínica paga o profissional',
       tipo: 'booleano',
+      padrao: true,
       ajuda: 'Desmarque se for o profissional repassando à clínica.',
     },
     { nome: 'observacao', rotulo: 'Observação', tipo: 'textarea' },
@@ -170,29 +247,57 @@ export const CAMPOS_POR_FERRAMENTA: Record<string, CampoConfirmacao[]> = {
 
   criar_usuario: [
     { nome: 'nome', rotulo: 'Nome completo', tipo: 'texto', obrigatorio: true },
-    { nome: 'email', rotulo: 'E-mail', tipo: 'texto', obrigatorio: true },
+    { nome: 'email', rotulo: 'E-mail', tipo: 'texto', obrigatorio: true, email: true },
     {
       nome: 'senha',
       rotulo: 'Senha inicial',
       tipo: 'senha',
       obrigatorio: true,
+      minLength: 6,
       ajuda: 'Mínimo de 6 caracteres. A IA não vê nem sugere senhas — defina você.',
     },
-    { nome: 'role', rotulo: 'Papel', tipo: 'enum', opcoes: PAPEIS, obrigatorio: true },
+    { nome: 'role', rotulo: 'Papel', tipo: 'enum', opcoes: PAPEIS, obrigatorio: true, padrao: 'PROFISSIONAL' },
     { nome: 'profissao', rotulo: 'Profissão', tipo: 'texto' },
-    { nome: 'taxaComissaoPadrao', rotulo: 'Comissão da clínica (%)', tipo: 'numero' },
+    {
+      nome: 'taxaComissaoPadrao',
+      rotulo: 'Comissão da clínica (%)',
+      tipo: 'numero',
+      obrigatorio: true,
+      min: 0,
+      max: 100,
+      padrao: 40,
+    },
   ],
 
   atualizar_usuario: [
-    { nome: 'usuario_id', rotulo: 'Usuário', tipo: 'entidade', entidade: 'profissional', obrigatorio: true },
-    { nome: 'nome', rotulo: 'Nome completo', tipo: 'texto' },
-    { nome: 'email', rotulo: 'E-mail', tipo: 'texto' },
-    { nome: 'role', rotulo: 'Papel', tipo: 'enum', opcoes: PAPEIS },
+    {
+      nome: 'usuario_id',
+      rotulo: 'Usuário',
+      tipo: 'entidade',
+      entidade: 'profissional',
+      obrigatorio: true,
+      preencherDemais: 'profissional',
+    },
+    { nome: 'nome', rotulo: 'Nome completo', tipo: 'texto', obrigatorio: true, maxLength: 120 },
+    { nome: 'email', rotulo: 'E-mail', tipo: 'texto', obrigatorio: true, email: true },
+    { nome: 'role', rotulo: 'Papel', tipo: 'enum', opcoes: PAPEIS, obrigatorio: true },
     { nome: 'profissao', rotulo: 'Profissão', tipo: 'texto' },
-    { nome: 'taxaComissaoPadrao', rotulo: 'Comissão da clínica (%)', tipo: 'numero' },
+    {
+      nome: 'taxaComissaoPadrao',
+      rotulo: 'Comissão da clínica (%)',
+      tipo: 'numero',
+      obrigatorio: true,
+      min: 0,
+      max: 100,
+    },
     { nome: 'profissionalRecebe', rotulo: 'A clínica repassa ao profissional', tipo: 'booleano' },
   ],
 };
+
+/** Mês corrente no formato YYYY-MM — o mesmo default das telas financeiras. */
+function mesCorrente(): string {
+  return new Date().toISOString().slice(0, 7);
+}
 
 /** Fallback: deriva campos de texto a partir das chaves recebidas. */
 export function camposDerivados(args: Record<string, unknown>): CampoConfirmacao[] {
