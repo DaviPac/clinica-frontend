@@ -13,62 +13,7 @@ import { MarkdownPipe } from '../../../../shared/markdown/markdown.pipe';
   selector: 'app-mensagem-chat',
   standalone: true,
   imports: [MarkdownPipe],
-  template: `
-    @let m = mensagem();
-
-    @if (m.papel === 'usuario') {
-      <div class="flex justify-end">
-        <div class="max-w-[85%] bg-brand-100 text-stone-900 rounded-2xl rounded-tr-sm
-                    px-4 py-2.5 text-sm leading-relaxed whitespace-pre-wrap break-words">
-          {{ m.texto }}
-        </div>
-      </div>
-    } @else {
-      <div class="group flex gap-3">
-        <div class="w-7 h-7 shrink-0 rounded-full bg-brand-100 flex items-center justify-center mt-0.5">
-          <svg class="w-3.5 h-3.5 text-brand-700" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-               stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 3l1.9 4.8L18.7 9.7l-4.8 1.9L12 16.4l-1.9-4.8L5.3 9.7l4.8-1.9L12 3z" />
-          </svg>
-        </div>
-
-        <div class="min-w-0 flex-1">
-          @if (m.raciocinio) {
-            <details class="mb-2">
-              <summary class="inline-flex items-center gap-1.5 cursor-pointer list-none
-                              text-xs text-stone-400 hover:text-stone-600">
-                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z" />
-                </svg>
-                Raciocínio
-              </summary>
-              <div class="mt-1.5 pl-3 border-l-2 border-stone-200 text-xs text-stone-500
-                          leading-relaxed whitespace-pre-wrap">{{ m.raciocinio }}</div>
-            </details>
-          }
-
-          @if (m.texto) {
-            <div class="md" [innerHTML]="m.texto | markdown"></div>
-
-            <button
-              type="button"
-              (click)="copiar(m.texto)"
-              class="mt-1.5 inline-flex items-center gap-1 text-[11px] text-stone-400
-                     hover:text-stone-600 opacity-0 group-hover:opacity-100 transition-opacity
-                     cursor-pointer bg-transparent border-none p-0">
-              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                   stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="9" y="9" width="11" height="11" rx="2" />
-                <path d="M5 15V5a2 2 0 0 1 2-2h10" />
-              </svg>
-              {{ copiado() ? 'Copiado' : 'Copiar' }}
-            </button>
-          }
-        </div>
-      </div>
-    }
-  `,
+  templateUrl: './mensagem-chat.component.html',
 })
 export class MensagemChatComponent {
   readonly mensagem = input.required<MensagemTexto>();

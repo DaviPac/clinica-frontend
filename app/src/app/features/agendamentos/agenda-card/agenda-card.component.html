@@ -1,0 +1,91 @@
+<article class="agenda-card" [ngClass]="'agenda-card--' + (agendamento().status | lowercase)">
+
+  @if (modoToque()) {
+    <button
+      type="button"
+      (click)="acoes.emit()"
+      [attr.aria-label]="'Ações de ' + pacienteNome()"
+      class="agenda-card__link agenda-card__link--btn focus:outline-none
+             focus-visible:ring-2 focus-visible:ring-brand-400">
+      <ng-container *ngTemplateOutlet="infoTpl"></ng-container>
+    </button>
+  } @else {
+    <a
+      [routerLink]="['/agendamentos', agendamento().id]"
+      [attr.aria-label]="'Ver detalhes de ' + pacienteNome()"
+      class="agenda-card__link no-underline focus:outline-none
+             focus-visible:ring-2 focus-visible:ring-brand-400">
+      <ng-container *ngTemplateOutlet="infoTpl"></ng-container>
+    </a>
+
+    <div class="agenda-card__actions">
+
+      @if (podeAlterarStatus()) {
+        <button type="button" (click)="status.emit()" class="agenda-action-btn">Status</button>
+      }
+
+      <button
+        type="button"
+        (click)="pagamento.emit()"
+        [disabled]="pagamentoBloqueado()"
+        class="agenda-action-btn"
+        [class.agenda-action-btn--paid]="agendamento().pagoPeloPaciente"
+        [class.agenda-action-btn--unpaid]="!agendamento().pagoPeloPaciente">
+        @if (agendamento().pagoPeloPaciente) {
+          <svg width="8" height="8" viewBox="0 0 8 8" fill="none" aria-hidden="true">
+            <path d="M1 4l2 2 4-3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Pago
+        } @else { A pagar }
+      </button>
+
+      @if (podeCancelarSerie()) {
+        <button
+          type="button"
+          (click)="cancelarSerie.emit()"
+          class="agenda-action-btn agenda-action-btn--danger">Cancelar série</button>
+      }
+
+    </div>
+  }
+
+</article>
+
+<!-- Região de informação — idêntica nos dois modos, só muda o elemento que a embrulha -->
+<ng-template #infoTpl>
+
+  <div class="flex items-start justify-between gap-1.5">
+    <span class="text-xs sm:text-[10px] font-bold tabular-nums text-gray-800 leading-none pt-px">
+      {{ formatarHora(agendamento().dataHoraInicio) }}
+    </span>
+    <div class="agenda-badge-wrap shrink-0">
+      <app-status-badge [status]="agendamento().status" />
+    </div>
+  </div>
+
+  <p class="text-[13px] sm:text-[11px] font-bold text-gray-900 truncate leading-tight"
+    [title]="'Paciente: ' + pacienteNome()">
+    {{ pacienteNome() }}
+  </p>
+
+  @if (profissionalNome()) {
+    <p class="flex items-center gap-1.5 sm:gap-1 text-xs sm:text-[10px] text-gray-500 truncate"
+      [title]="profissionalNome()">
+      <svg viewBox="0 0 9 9" fill="none" class="w-3 h-3 sm:w-[9px] sm:h-[9px] shrink-0 opacity-50" aria-hidden="true">
+        <circle cx="4.5" cy="3" r="1.8" stroke="currentColor" stroke-width="1.1"/>
+        <path d="M1 8.5c0-1.933 1.567-3.5 3.5-3.5s3.5 1.567 3.5 3.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+      </svg>
+      {{ profissionalNome() }}
+    </p>
+  }
+
+  <p class="flex items-center gap-1.5 sm:gap-1 text-xs sm:text-[10px] text-gray-400 truncate"
+    [title]="servicoNome()">
+    <svg viewBox="0 0 9 9" fill="none" class="w-3 h-3 sm:w-[9px] sm:h-[9px] shrink-0 opacity-50" aria-hidden="true">
+      <rect x="0.8" y="1.5" width="7.4" height="6" rx="1" stroke="currentColor" stroke-width="1.1"/>
+      <path d="M3 1.5V1M6 1.5V1M0.8 4h7.4" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+    </svg>
+    {{ servicoNome() }}
+  </p>
+
+</ng-template>

@@ -1,76 +1,95 @@
-<div class="min-h-screen bg-gray-50 page font-sans">
+<div class="min-h-full bg-gray-50 page font-sans">
 
-  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-
-    <div>
-      <h1 class="text-xl font-semibold text-gray-900 capitalize tracking-tight">{{ labelPeriodo() }}</h1>
+  <!-- Linha 1: título + CTA. O pl-12 reserva espaço para o hambúrguer
+       flutuante do shell, que é `fixed top-4 left-4` abaixo de md. -->
+  <div class="page-header">
+    <div class="min-w-0 pl-12 md:pl-0">
+      <h1 class="text-lg sm:text-xl font-semibold text-gray-900 capitalize tracking-tight">{{ labelPeriodo() }}</h1>
       <p class="text-xs text-gray-400 mt-0.5">{{ subtituloPeriodo() }}</p>
     </div>
 
-    <div class="flex flex-wrap items-center gap-3">
+    <button
+      (click)="modalCriacaoAberto.set(true)"
+      class="btn btn-primary w-full sm:w-auto text-xs sm:text-sm whitespace-nowrap shrink-0"
+    >
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+        <path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+      Novo agendamento
+    </button>
+  </div>
 
+  <!-- Linha 2: modo de visualização + navegação (cabe numa linha só em 360px) -->
+  <div class="flex items-center gap-2 mb-3">
+
+    <div class="flex rounded-lg border border-gray-200 bg-white overflow-hidden shrink-0">
+      <button
+        (click)="setModoView('mensal')"
+        class="px-4 sm:px-3 py-2.5 sm:py-2 text-xs font-medium transition-colors cursor-pointer"
+        [ngClass]="modoView() === 'mensal' ? 'bg-brand-400 text-white' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'"
+      >Mês</button>
+      <button
+        (click)="setModoView('semanal')"
+        class="px-4 sm:px-3 py-2.5 sm:py-2 text-xs font-medium border-l border-gray-200 transition-colors cursor-pointer"
+        [ngClass]="modoView() === 'semanal' ? 'bg-brand-400 text-white' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'"
+      >Semana</button>
+    </div>
+
+    <div class="flex rounded-lg border border-gray-200 bg-white overflow-hidden ml-auto">
+      <button
+        (click)="navegar(-1)"
+        aria-label="Período anterior"
+        class="flex items-center gap-1.5 px-3 py-2.5 sm:py-2 text-xs font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors cursor-pointer"
+      >
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+          <path d="M9 11L5 7l4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="hidden sm:inline">Anterior</span>
+      </button>
+      <button
+        (click)="irParaHoje()"
+        class="px-3 py-2.5 sm:py-2 text-xs font-medium text-gray-600 border-l border-gray-200 hover:bg-gray-50 hover:text-gray-900 transition-colors cursor-pointer"
+      >Hoje</button>
+      <button
+        (click)="navegar(1)"
+        aria-label="Próximo período"
+        class="flex items-center gap-1.5 px-3 py-2.5 sm:py-2 text-xs font-medium text-gray-600 border-l border-gray-200 hover:bg-gray-50 hover:text-gray-900 transition-colors cursor-pointer"
+      >
+        <span class="hidden sm:inline">Próximo</span>
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+          <path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <button
+      (click)="filtrosAbertos.set(!filtrosAbertos())"
+      [attr.aria-expanded]="filtrosAbertos()"
+      aria-label="Filtros"
+      class="sm:hidden shrink-0 w-10 h-10 flex items-center justify-center rounded-lg border border-gray-200 bg-white cursor-pointer transition-colors"
+      [ngClass]="filtrosAbertos() ? 'text-brand-700 bg-brand-100 border-brand-200' : 'text-gray-600'"
+    >
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M2 4h12M4 8h8M6.5 12h3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+    </button>
+
+  </div>
+
+  <!-- Linha 3: filtros — sempre visíveis no desktop, recolhidos no mobile -->
+  @if (!isMobile() || filtrosAbertos()) {
+    <div class="flex flex-wrap items-center gap-3 mb-4">
       @if (isAdmin()) {
         <app-filtro-profissional
           [profissionalId]="filtroProfissionalId()"
           (changed)="onFiltroChange($event)"/>
       }
       <app-toggle
-        class="flex justify-end"
         [checked]="mostrarInativos()"
         label="Mostrar canceladas"
         (changed)="onToggleInativos($event)" />
-
-      <!-- Alternador Mês / Semana -->
-      <div class="flex rounded-lg border border-gray-200 bg-white overflow-hidden">
-        <button
-          (click)="setModoView('mensal')"
-          class="px-3 py-2 text-xs font-medium transition-colors cursor-pointer"
-          [ngClass]="modoView() === 'mensal' ? 'bg-brand-400 text-white' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'"
-        >Mês</button>
-        <button
-          (click)="setModoView('semanal')"
-          class="px-3 py-2 text-xs font-medium border-l border-gray-200 transition-colors cursor-pointer"
-          [ngClass]="modoView() === 'semanal' ? 'bg-brand-400 text-white' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'"
-        >Semana</button>
-      </div>
-
-      <div class="flex rounded-lg border border-gray-200 bg-white overflow-hidden">
-        <button
-          (click)="navegar(-1)"
-          class="flex items-center gap-1.5 px-3 py-2 text-xs font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors cursor-pointer"
-        >
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <path d="M9 11L5 7l4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          Anterior
-        </button>
-        <button
-          (click)="irParaHoje()"
-          class="px-3 py-2 text-xs font-medium text-gray-600 border-l border-gray-200 hover:bg-gray-50 hover:text-gray-900 transition-colors cursor-pointer"
-        >Hoje</button>
-        <button
-          (click)="navegar(1)"
-          class="flex items-center gap-1.5 px-3 py-2 text-xs font-medium text-gray-600 border-l border-gray-200 hover:bg-gray-50 hover:text-gray-900 transition-colors cursor-pointer"
-        >
-          Próximo
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-      </div>
-
-      <button
-        (click)="modalCriacaoAberto.set(true)"
-        class="flex items-center justify-center gap-1.5 px-4 py-2 w-full sm:w-auto bg-brand-400 hover:bg-brand-500 active:bg-brand-600 text-white text-xs font-semibold rounded-lg transition-colors cursor-pointer whitespace-nowrap"
-      >
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-          <path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-        </svg>
-        Novo agendamento
-      </button>
-
     </div>
-  </div>
+  }
 
   @if (erro()) {
     <app-alert class="block mb-4">{{ erro() }}</app-alert>
@@ -89,7 +108,7 @@
 
       <div class="grid grid-cols-7 bg-gray-50 border-b border-gray-200">
         @for (d of ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb']; track d) {
-          <div class="py-2.5 text-center text-[10px] font-semibold text-gray-400 uppercase tracking-widest select-none">
+          <div class="py-2 sm:py-2.5 text-center text-[10px] font-semibold text-gray-400 uppercase tracking-widest select-none">
             {{ d }}
           </div>
         }
@@ -99,31 +118,62 @@
 
         @for (dia of diasCalendario(); track $index) {
           <div
-            class="bg-white flex flex-col min-h-35 lg:min-h-40 p-1.5"
+            class="bg-white flex flex-col min-h-16 sm:min-h-35 lg:min-h-40 p-0.5 sm:p-1.5"
             [class.bg-gray-50]="!dia.diaNumero"
           >
             @if (dia.diaNumero) {
 
-              <div class="flex items-center justify-between mb-1 px-0.5">
-                <span
-                  class="text-xs font-medium w-6 h-6 flex items-center justify-center rounded-full transition-colors"
-                  [class]="dia.isToday
-                    ? 'bg-brand-400 text-white font-bold'
-                    : 'text-gray-500 hover:bg-gray-100'"
-                >{{ dia.diaNumero }}</span>
+              @if (isMobile()) {
+                <!-- Mobile: célula compacta com densidade; toque abre a sheet do dia -->
+                <button
+                  type="button"
+                  (click)="abrirDia(dia)"
+                  [disabled]="!dia.agendamentos.length"
+                  [attr.aria-label]="dia.diaNumero + ': ' + dia.agendamentos.length + ' sessões'"
+                  class="w-full flex-1 flex flex-col items-center gap-1 pt-1 rounded-lg bg-transparent
+                         border-none cursor-pointer transition-colors active:bg-brand-100
+                         disabled:cursor-default disabled:active:bg-transparent"
+                >
+                  <span
+                    class="text-xs w-7 h-7 flex items-center justify-center rounded-full"
+                    [class]="dia.isToday ? 'bg-brand-400 text-white font-bold' : 'text-gray-600'"
+                  >{{ dia.diaNumero }}</span>
 
-                @if (dia.agendamentos.length > 0) {
-                  <span class="text-[9px] font-bold text-brand-700 bg-brand-100 rounded-full px-1.5 py-px leading-none">
-                    {{ dia.agendamentos.length }}
-                  </span>
-                }
-              </div>
+                  @if (dia.dots.length) {
+                    <span class="flex gap-0.5">
+                      @for (s of dia.dots; track $index) {
+                        <span class="w-1.5 h-1.5 rounded-full" [class]="dotClass(s)"></span>
+                      }
+                    </span>
+                  }
 
-              <div class="flex flex-col gap-1 flex-1 agenda-day-events">
-                @for (ag of dia.agendamentos; track ag.id) {
-                  <ng-container *ngTemplateOutlet="cardTpl; context: { ag: ag }"></ng-container>
-                }
-              </div>
+                  @if (dia.extras) {
+                    <span class="text-[9px] font-semibold text-gray-400 leading-none">+{{ dia.extras }}</span>
+                  }
+                </button>
+
+              } @else {
+                <div class="flex items-center justify-between mb-1 px-0.5">
+                  <span
+                    class="text-xs font-medium w-6 h-6 flex items-center justify-center rounded-full transition-colors"
+                    [class]="dia.isToday
+                      ? 'bg-brand-400 text-white font-bold'
+                      : 'text-gray-500 hover:bg-gray-100'"
+                  >{{ dia.diaNumero }}</span>
+
+                  @if (dia.agendamentos.length > 0) {
+                    <span class="text-[9px] font-bold text-brand-700 bg-brand-100 rounded-full px-1.5 py-px leading-none">
+                      {{ dia.agendamentos.length }}
+                    </span>
+                  }
+                </div>
+
+                <div class="flex flex-col gap-1 flex-1 agenda-day-events">
+                  @for (ag of dia.agendamentos; track ag.id) {
+                    <ng-container *ngTemplateOutlet="cardTpl; context: { ag: ag }"></ng-container>
+                  }
+                </div>
+              }
 
             }
           </div>
@@ -140,13 +190,14 @@
       @for (dia of diasSemana(); track dia.data.toISOString()) {
         <div class="bg-white flex flex-col lg:max-h-[calc(100vh-220px)]">
 
-          <div class="flex items-center justify-between px-3 py-2.5 border-b border-gray-100 sticky top-0 bg-white z-10">
+          <div class="flex items-center justify-between px-3 py-3 sm:py-2.5 border-b border-gray-100 sticky top-0 bg-white z-10">
             <div class="flex items-center gap-2">
               <span class="text-[10px] font-semibold uppercase tracking-widest text-gray-400 select-none">{{ dia.nomeDia }}</span>
               <span
-                class="text-sm font-medium w-7 h-7 flex items-center justify-center rounded-full transition-colors"
+                class="text-base sm:text-sm font-medium w-8 h-8 sm:w-7 sm:h-7 flex items-center justify-center rounded-full transition-colors"
                 [class]="dia.isToday ? 'bg-brand-400 text-white font-bold' : 'text-gray-700'"
               >{{ dia.diaNumero }}</span>
+              <span class="sm:hidden text-xs text-gray-400">{{ dia.data | date:'dd/MM' }}</span>
             </div>
             @if (dia.agendamentos.length > 0) {
               <span class="text-[9px] font-bold text-brand-700 bg-brand-100 rounded-full px-1.5 py-px leading-none">
@@ -155,11 +206,11 @@
             }
           </div>
 
-          <div class="flex flex-col gap-1.5 p-2 flex-1 min-h-0 overflow-y-auto agenda-week-col">
+          <div class="flex flex-col gap-2 sm:gap-1.5 p-3 sm:p-2 flex-1 min-h-0 overflow-y-auto">
             @for (ag of dia.agendamentos; track ag.id) {
               <ng-container *ngTemplateOutlet="cardTpl; context: { ag: ag }"></ng-container>
             } @empty {
-              <p class="text-[10px] text-gray-300 text-center py-6 select-none">Sem sessões</p>
+              <p class="text-[10px] text-gray-300 text-center py-3 sm:py-6 select-none">Sem sessões</p>
             }
           </div>
 
@@ -171,84 +222,51 @@
 
 </div>
 
-<!-- ===================== TEMPLATE DO CARD (compartilhado mês/semana) ===================== -->
+<!-- ===================== CARD (compartilhado mês/semana/sheet do dia) ===================== -->
 <ng-template #cardTpl let-ag="ag">
-  <a
-    class="agenda-card block no-underline cursor-pointer relative focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
-    [ngClass]="'agenda-card--' + (ag.status | lowercase)"
-    [routerLink]="['/agendamentos', ag.id]"
-  >
-
-    <div class="flex items-start justify-between gap-1 mb-0.5">
-      <span class="text-[10px] font-bold tabular-nums text-gray-800 leading-none pt-px">
-        {{ formatarHora(ag.dataHoraInicio) }}
-      </span>
-      <div class="agenda-badge-wrap shrink-0">
-        <app-status-badge [status]="ag.status" />
-      </div>
-    </div>
-
-    <p class="text-[11px] font-bold text-gray-900 truncate leading-tight"
-      [title]="'Paciente: ' + (pacientesDict()[ag.pacienteId] || ag.pacienteId)">
-      {{ pacientesDict()[ag.pacienteId] || 'Paciente ' + ag.pacienteId }}
-    </p>
-
-    <p class="flex items-center gap-1 text-[10px] text-gray-500 truncate mt-0.5"
-      [title]="usuariosDict()[ag.profissionalId!] || ag.profissionalId">
-      <svg width="9" height="9" viewBox="0 0 9 9" fill="none" class="shrink-0 opacity-50">
-        <circle cx="4.5" cy="3" r="1.8" stroke="currentColor" stroke-width="1.1"/>
-        <path d="M1 8.5c0-1.933 1.567-3.5 3.5-3.5s3.5 1.567 3.5 3.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
-      </svg>
-      {{ usuariosDict()[ag.profissionalId!] || ag.profissionalId }}
-    </p>
-
-    <p class="flex items-center gap-1 text-[10px] text-gray-400 truncate"
-      [title]="servicosDict()[ag.servicoId] || ag.servicoId">
-      <svg width="9" height="9" viewBox="0 0 9 9" fill="none" class="shrink-0 opacity-50">
-        <rect x="0.8" y="1.5" width="7.4" height="6" rx="1" stroke="currentColor" stroke-width="1.1"/>
-        <path d="M3 1.5V1M6 1.5V1M0.8 4h7.4" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
-      </svg>
-      {{ servicosDict()[ag.servicoId] || 'Serviço ' + ag.servicoId }}
-    </p>
-
-    <div class="flex flex-wrap gap-1 mt-1.5 pt-1.5 border-t border-black/6">
-
-      @if (ag.status !== 'CANCELADO') {
-        <button
-          type="button"
-          (click)="$event.stopPropagation(); $event.preventDefault(); abrirModalStatus(ag)"
-          class="agenda-action-btn relative z-10"
-        >Status</button>
-      }
-
-      <button
-        type="button"
-        (click)="$event.stopPropagation(); $event.preventDefault(); iniciarTogglePagamento(ag)"
-        [disabled]="((!isAdmin()) && (!ag.profissionalRecebe)) || atualizandoPagamento() === ag.id"
-        class="agenda-action-btn relative z-10"
-        [class.agenda-action-btn--paid]="ag.pagoPeloPaciente"
-        [class.agenda-action-btn--unpaid]="!ag.pagoPeloPaciente"
-      >
-        @if (atualizandoPagamento() === ag.id) {
-          } @else if (ag.pagoPeloPaciente) {
-          <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
-            <path d="M1 4l2 2 4-3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          Pago
-        } @else { A pagar }
-      </button>
-
-      @if (ag.status === 'AGENDADO' && ag.recorrenciaGroupId) {
-        <button
-          type="button"
-          (click)="$event.stopPropagation(); $event.preventDefault(); confirmarCancelamentoSerie(ag)"
-          class="agenda-action-btn agenda-action-btn--danger relative z-10"
-        >Cancelar série</button>
-      }
-
-    </div>
-  </a>
+  <app-agenda-card
+    [agendamento]="ag"
+    [pacienteNome]="pacientesDict()[ag.pacienteId] || 'Paciente ' + ag.pacienteId"
+    [profissionalNome]="usuariosDict()[ag.profissionalId] || ''"
+    [servicoNome]="servicosDict()[ag.servicoId] || 'Serviço ' + ag.servicoId"
+    [isAdmin]="isAdmin()"
+    [atualizandoPagamento]="atualizandoPagamento() === ag.id"
+    [modoToque]="isMobile()"
+    (acoes)="agendamentoParaAcoes.set(ag)"
+    (status)="abrirModalStatus(ag)"
+    (pagamento)="iniciarTogglePagamento(ag)"
+    (cancelarSerie)="confirmarCancelamentoSerie(ag)" />
 </ng-template>
+
+<!-- Mobile: sessões do dia tocado na grade mensal.
+     Fica escondida enquanto a sheet de ações está aberta, para nunca
+     empilhar dois bottom sheets — fechar as ações volta para cá. -->
+@if (diaSelecionado() && !agendamentoParaAcoes()) {
+  <app-modal [titulo]="labelDiaSelecionado()" maxWidth="max-w-md" (fechar)="diaSelecionado.set(null)">
+    <div class="flex flex-col gap-2.5 -mt-2">
+      @for (ag of agendamentosDoDia(); track ag.id) {
+        <ng-container *ngTemplateOutlet="cardTpl; context: { ag: ag }"></ng-container>
+      } @empty {
+        <p class="text-sm text-gray-400 text-center py-6">Sem sessões neste dia.</p>
+      }
+    </div>
+  </app-modal>
+}
+
+<!-- Mobile: ações da sessão tocada -->
+@if (agendamentoParaAcoes(); as ag) {
+  <app-agenda-acoes-sheet
+    [agendamento]="ag"
+    [pacienteNome]="pacientesDict()[ag.pacienteId] || 'Paciente ' + ag.pacienteId"
+    [profissionalNome]="usuariosDict()[ag.profissionalId] || ''"
+    [servicoNome]="servicosDict()[ag.servicoId] || 'Serviço ' + ag.servicoId"
+    [isAdmin]="isAdmin()"
+    [atualizandoPagamento]="atualizandoPagamento() === ag.id"
+    (fechar)="fecharAcoes()"
+    (status)="abrirModalStatus(ag)"
+    (pagamento)="iniciarTogglePagamento(ag)"
+    (cancelarSerie)="confirmarCancelamentoSerie(ag)" />
+}
 
 @if (agendamentoParaConfirmarPagamento()) {
   <app-confirm-dialog
