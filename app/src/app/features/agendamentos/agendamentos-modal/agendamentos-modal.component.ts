@@ -11,6 +11,7 @@ import { AuthService } from '../../../core/services/auth/auth.service';
 import { UsuarioService } from '../../../core/services/usuario/usuario.service';
 import { ModalComponent } from '../../../shared/components/modal/modal.component';
 import { AlertComponent } from '../../../shared/components/alert/alert.component';
+import { MIN_SESSOES_RECORRENCIA } from '../agendamento.regras';
 
 interface Usuario {
   id: number;
@@ -99,7 +100,7 @@ export class AgendamentosModalComponent implements OnInit {
     valor_combinado:   [0, [Validators.required, Validators.min(0.01)]],
     recorrente:        [false],
     pacote:            [false],
-    total_sessoes:     [10],
+    total_sessoes:     [10, Validators.min(MIN_SESSOES_RECORRENCIA)],
     intervalo_semanas: [1],
   });
 

@@ -1,4 +1,5 @@
 import { AbstractControl } from '@angular/forms';
+import { StatusAgendamento } from '../../core/models/agendamento.model';
 import { Servico } from '../../core/models/servico.model';
 
 /**
@@ -47,3 +48,30 @@ export function valorPorSessao(valorTotal: number, totalSessoes: number): number
   if (!Number.isFinite(valorTotal) || totalSessoes <= 0) return null;
   return valorTotal / totalSessoes;
 }
+
+/**
+ * Transições de status permitidas. CANCELADO é terminal.
+ *
+ * Mora aqui para a tela de status e o assistente de IA oferecerem exatamente as
+ * mesmas opções — antes cada um tinha a sua ideia do que era possível.
+ */
+export const TRANSICOES_STATUS: Record<StatusAgendamento, StatusAgendamento[]> = {
+  AGENDADO: ['REALIZADO', 'FALTA', 'CANCELADO'],
+  REALIZADO: ['AGENDADO'],
+  FALTA: ['AGENDADO', 'CANCELADO'],
+  CANCELADO: [],
+};
+
+export function transicoesPermitidas(atual: StatusAgendamento): StatusAgendamento[] {
+  return TRANSICOES_STATUS[atual] ?? [];
+}
+
+export function transicaoValida(
+  atual: StatusAgendamento,
+  destino: StatusAgendamento,
+): boolean {
+  return transicoesPermitidas(atual).includes(destino);
+}
+
+/** Número mínimo de sessões numa série recorrente (a tela declara min="2"). */
+export const MIN_SESSOES_RECORRENCIA = 2;

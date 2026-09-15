@@ -70,7 +70,7 @@ export class FerramentasUsuario {
             role: S.opcoes('Papel do usuário.', PAPEIS),
             profissao: S.txt('Profissão, para profissionais.'),
             taxaComissaoPadrao: S.numero(
-              'Percentual de comissão da clínica, de 0 a 100. Ex.: 40 para 40%.',
+              'Percentual de comissão da clínica, entre 0 e 100. Ex.: 40 para 40%. Padrão 40.',
             ),
           },
           ['nome', 'email', 'role'],
@@ -113,7 +113,7 @@ export class FerramentasUsuario {
             email: S.txt('E-mail de acesso.'),
             role: S.opcoes('Papel do usuário.', PAPEIS),
             profissao: S.txt('Profissão.'),
-            taxaComissaoPadrao: S.numero('Percentual de comissão da clínica, de 0 a 100.'),
+            taxaComissaoPadrao: S.numero('Percentual de comissão da clínica, entre 0 e 100.'),
             profissionalRecebe: S.booleano(
               'true quando a clínica repassa ao profissional; false quando é o contrário.',
             ),

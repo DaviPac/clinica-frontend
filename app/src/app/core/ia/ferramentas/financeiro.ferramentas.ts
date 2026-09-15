@@ -150,7 +150,7 @@ export class FerramentasFinanceiro {
         parameters: S.obj(
           {
             descricao: S.txt('Descrição da despesa.'),
-            valor: S.numero('Valor em reais.'),
+            valor: S.numero('Valor em reais, mínimo 0,01.'),
             data_vencimento: S.data('Data de vencimento.'),
             categoria: S.opcoes('FIXA para recorrentes, VARIAVEL para eventuais.', CATEGORIAS),
           },
@@ -201,7 +201,7 @@ export class FerramentasFinanceiro {
           {
             profissional_id: S.inteiro('ID do profissional.'),
             periodo_referencia: S.mes('Período de referência do acerto.'),
-            valor_pago: S.numero('Valor em reais.'),
+            valor_pago: S.numero('Valor em reais, mínimo 0,01.'),
             profissional_recebe: S.booleano('Direção do repasse. Padrão true.'),
             observacao: S.txt('Observação livre.'),
           },

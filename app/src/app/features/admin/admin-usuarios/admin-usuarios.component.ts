@@ -39,7 +39,9 @@ export class AdminUsuariosComponent implements OnInit {
       senha:                ['', [Validators.required, Validators.minLength(6)]],
       role:                 ['PROFISSIONAL' as 'ADMIN' | 'PROFISSIONAL', Validators.required],
       profissao:            [''],
-      taxaComissaoPadrao: [40],
+      // O HTML já declarava min=0 max=100, mas atributo não bloqueia submit:
+      // sem estes validadores passava 250% ou valor negativo.
+      taxaComissaoPadrao: [40, [Validators.required, Validators.min(0), Validators.max(100)]],
     });
   }
 
