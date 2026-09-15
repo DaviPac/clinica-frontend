@@ -39,4 +39,10 @@ export class UsuarioService {
   atualizar(id: number, dto: AtualizarUsuarioDto) {
     return this.http.put<Usuario>(`/usuarios/${id}`, dto);
   }
+
+  // Soft delete — o cadastro continua no banco, mas perde o acesso e sai das
+  // listagens. Não existe endpoint de reativação: é irreversível pela interface.
+  inativar(id: number) {
+    return this.http.delete<void>(`/usuarios/${id}`);
+  }
 }

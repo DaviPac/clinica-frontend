@@ -1,23 +1,33 @@
-import { Component, OnInit, signal, inject } from '@angular/core';
+import { Component, OnInit, computed, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
   UsuarioService,
   AtualizarUsuarioDto,
 } from '../../../../core/services/usuario/usuario.service';
+import { AuthService } from '../../../../core/services/auth/auth.service';
 import { Role, Usuario } from '../../../../core/models/usuario.model';
 import { AlertComponent } from '../../../../shared/components/alert/alert.component';
+import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-usuario-detalhe',
   standalone: true,
-  imports: [CommonModule, RouterModule, ReactiveFormsModule, AlertComponent],
+  imports: [
+    CommonModule,
+    RouterModule,
+    ReactiveFormsModule,
+    AlertComponent,
+    ConfirmDialogComponent,
+  ],
   templateUrl: './admin-usuario-detalhe.component.html',
 })
 export class AdminUsuarioDetalheComponent implements OnInit {
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
   private service = inject(UsuarioService);
+  private auth = inject(AuthService);
   private fb = inject(FormBuilder);
 
   usuario = signal<Usuario | null>(null);
@@ -27,6 +37,17 @@ export class AdminUsuarioDetalheComponent implements OnInit {
   modalAberto = signal(false);
   salvando = signal(false);
   erroSalvar = signal<string | null>(null);
+
+  modalInativarAberto = signal(false);
+  inativando = signal(false);
+  erroInativar = signal<string | null>(null);
+
+  /** Inativar a propria conta derrubaria a sessao do admin no ato. */
+  ehProprioUsuario = computed(() => {
+    const logado = this.auth.usuario();
+    const atual = this.usuario();
+    return !!logado && !!atual && logado.id === atual.id;
+  });
 
   form = this.fb.nonNullable.group({
     nome: ['', [Validators.required, Validators.maxLength(120)]],
@@ -134,6 +155,34 @@ export class AdminUsuarioDetalheComponent implements OnInit {
       error: (err: Error) => {
         this.erroSalvar.set(err.message);
         this.salvando.set(false);
+      },
+    });
+  }
+
+  abrirInativacao() {
+    if (this.ehProprioUsuario()) return;
+    this.erroInativar.set(null);
+    this.modalInativarAberto.set(true);
+  }
+
+  fecharInativacao() {
+    if (this.inativando()) return;
+    this.modalInativarAberto.set(false);
+  }
+
+  inativar() {
+    const u = this.usuario();
+    if (!u || this.ehProprioUsuario()) return;
+
+    this.inativando.set(true);
+    this.erroInativar.set(null);
+
+    this.service.inativar(u.id).subscribe({
+      // O usuario sai das listagens: nao ha mais o que exibir nesta tela
+      next: () => this.router.navigate(['/admin/usuarios']),
+      error: (err: Error) => {
+        this.erroInativar.set(err.message);
+        this.inativando.set(false);
       },
     });
   }

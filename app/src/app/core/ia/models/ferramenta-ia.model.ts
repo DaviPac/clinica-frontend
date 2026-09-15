@@ -25,6 +25,7 @@ export type FormularioConfirmacao =
   | 'despesa-pagar'
   | 'acerto'
   | 'usuario'
+  | 'usuario-inativacao'
   | 'generico';
 
 /** Card clicável proposto pelo assistente. Nunca age sozinho. */

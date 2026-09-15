@@ -292,6 +292,16 @@ export const CAMPOS_POR_FERRAMENTA: Record<string, CampoConfirmacao[]> = {
     },
     { nome: 'profissionalRecebe', rotulo: 'A clínica repassa ao profissional', tipo: 'booleano' },
   ],
+
+  inativar_usuario: [
+    {
+      nome: 'usuario_id',
+      rotulo: 'Usuário',
+      tipo: 'entidade',
+      entidade: 'profissional',
+      obrigatorio: true,
+    },
+  ],
 };
 
 /** Mês corrente no formato YYYY-MM — o mesmo default das telas financeiras. */

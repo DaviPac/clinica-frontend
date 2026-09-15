@@ -6,7 +6,12 @@ import {
   UsuarioService,
 } from '../../services/usuario/usuario.service';
 import { Role } from '../../models/usuario.model';
-import { FerramentaIA, ResultadoFerramenta, SO_ADMIN } from '../models/ferramenta-ia.model';
+import {
+  ContextoExecucao,
+  FerramentaIA,
+  ResultadoFerramenta,
+  SO_ADMIN,
+} from '../models/ferramenta-ia.model';
 import { Args, bool, enumObrig, num, numObrig, str, strObrig } from './args.utils';
 import { S, SEM_PARAMETROS, resumirParaModelo, resumirQuantidade } from './schema.utils';
 
@@ -124,7 +129,34 @@ export class FerramentasUsuario {
       descreverAcao: (a) => `Atualizar usuário #${num(a, 'usuario_id')}`,
       executar: (args) => this.atualizarMesclando(args),
     },
+
+    {
+      nome: 'inativar_usuario',
+      escopo: 'escrita',
+      papeis: SO_ADMIN,
+      formulario: 'usuario-inativacao',
+      declaracao: {
+        name: 'inativar_usuario',
+        description:
+          'Inativa um usuário: ele perde o acesso ao sistema e sai das listagens. Os ' +
+          'agendamentos e demais registros são preservados. Não há como reativar pelo sistema.',
+        parameters: S.obj({ usuario_id: S.inteiro('ID do usuário.') }, ['usuario_id']),
+      },
+      descreverAcao: (a) => `Inativar usuário #${num(a, 'usuario_id')}`,
+      executar: (args, ctx) => this.inativar(args, ctx),
+    },
   ];
+
+  /** Inativar a própria conta derrubaria a sessão do admin — a tela também bloqueia. */
+  private inativar(args: Args, ctx: ContextoExecucao) {
+    const id = numObrig(args, 'usuario_id');
+    if (id === ctx.usuario.id) {
+      throw new Error('Você não pode inativar a sua própria conta.');
+    }
+    return this.usuarios
+      .inativar(id)
+      .pipe(map(() => escrita({ inativado: true }, 'usuário inativado')));
+  }
 
   /**
    * `PUT /usuarios/:id` substitui o registro inteiro; buscar e mesclar evita que
