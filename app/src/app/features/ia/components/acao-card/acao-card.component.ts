@@ -13,39 +13,7 @@ import { FinanceiroService } from '../../../../core/services/financeiro/financei
   selector: 'app-acao-card',
   standalone: true,
   imports: [RouterLink],
-  template: `
-    @if (acao(); as a) {
-      <div class="flex flex-col gap-1.5">
-        @if (a.tipo === 'navegar') {
-          <a
-            [routerLink]="a.comandos"
-            class="btn btn-outline w-fit gap-2 no-underline">
-            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                 stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M5 12h14M13 6l6 6-6 6" />
-            </svg>
-            {{ a.rotulo }}
-          </a>
-        } @else {
-          <button
-            type="button"
-            class="btn btn-outline w-fit gap-2"
-            [disabled]="baixando()"
-            (click)="baixar(a)">
-            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                 stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 3v12m0 0l-4-4m4 4l4-4M4 19h16" />
-            </svg>
-            {{ baixando() ? 'Gerando PDF…' : a.rotulo }}
-          </button>
-        }
-
-        @if (erro(); as e) {
-          <p class="text-xs text-red-600">{{ e }}</p>
-        }
-      </div>
-    }
-  `,
+  templateUrl: './acao-card.component.html',
 })
 export class AcaoCardComponent {
   private readonly financeiro = inject(FinanceiroService);
