@@ -87,24 +87,26 @@ export class FerramentasPaciente {
           'apenas vincula o paciente existente ao profissional em vez de duplicar.',
         parameters: S.obj(
           {
-            nome: S.txt('Nome completo.'),
-            cpf: S.txt('CPF, só dígitos.'),
+            nome: S.txt('Nome completo. Mínimo de 3 caracteres.'),
+            cpf: S.txt('CPF, só dígitos. Opcional.'),
             telefone: S.txt('Telefone com DDD.'),
             dataNascimento: S.data('Data de nascimento.'),
             rg: S.txt('RG.'),
             enderecoCompleto: S.txt('Endereço completo.'),
             profissional_id: S.inteiro(
-              'Profissional a quem o paciente fica vinculado. Apenas administradores.',
+              'Profissional a quem o paciente fica vinculado. Apenas administradores. '
+                + 'Obrigatório quando quem executa é administrador.',
             ),
           },
-          ['nome', 'cpf'],
+          // Só `nome` — a tela de cadastro não valida CPF.
+          ['nome'],
         ),
       },
       descreverAcao: (a) => `Cadastrar paciente ${str(a, 'nome') ?? ''}`.trim(),
       executar: (args, ctx) => {
         const dto: CriarPacienteDto = limparUndefined({
           nome: strObrig(args, 'nome'),
-          cpf: strObrig(args, 'cpf'),
+          cpf: str(args, 'cpf') ?? '',
           telefone: str(args, 'telefone'),
           dataNascimento: str(args, 'dataNascimento'),
           rg: str(args, 'rg'),

@@ -6,6 +6,7 @@ import { Servico } from '../../../../core/models/servico.model';
 import { AuthService } from '../../../../core/services/auth/auth.service';
 import { addSemanas, formatarMoeda } from '../../../../core/utils/data.utils';
 import {
+  MIN_SESSOES_RECORRENCIA,
   aplicarRegrasDoServico,
   valorPorSessao,
 } from '../../../agendamentos/agendamento.regras';
@@ -101,7 +102,7 @@ import { comoBooleano, comoNumero, paraDatetimeLocal } from './contrato';
           <div class="grid grid-cols-2 gap-3">
             <div class="flex flex-col gap-1">
               <label class="ui-label mb-0" for="conf-ag-sessoes">Total de sessões</label>
-              <input id="conf-ag-sessoes" type="number" min="1" formControlName="total_sessoes" class="ui-input" />
+              <input id="conf-ag-sessoes" type="number" min="2" formControlName="total_sessoes" class="ui-input" />
             </div>
             <div class="flex flex-col gap-1">
               <label class="ui-label mb-0" for="conf-ag-intervalo">Intervalo (semanas)</label>
@@ -133,6 +134,8 @@ export class ConfAgendamentoCriarComponent implements OnInit {
   private readonly gatilho = signal(0);
 
   readonly form: FormGroup = this.fb.nonNullable.group({
+    // Espelha o constructor do modal: para admin, escolher o profissional é
+    // obrigatório; para profissional, o campo nem aparece.
     profissional_id: [0],
     paciente_id: [0, [Validators.required, Validators.min(1)]],
     servico_id: [0, [Validators.required, Validators.min(1)]],
@@ -141,7 +144,7 @@ export class ConfAgendamentoCriarComponent implements OnInit {
     valor_combinado: [0, [Validators.required, Validators.min(0.01)]],
     recorrente: [false],
     pacote: [false],
-    total_sessoes: [10, Validators.min(1)],
+    total_sessoes: [10, Validators.min(MIN_SESSOES_RECORRENCIA)],
     intervalo_semanas: [1, Validators.min(1)],
   });
 
@@ -175,6 +178,16 @@ export class ConfAgendamentoCriarComponent implements OnInit {
       { day: '2-digit', month: '2-digit', year: 'numeric' },
     );
   });
+
+  constructor() {
+    if (this.isAdmin) {
+      const ctrl = this.form.controls['profissional_id'];
+      ctrl.addValidators([Validators.required, Validators.min(1)]);
+      // addValidators não revalida sozinho: sem isto o controle fica VALID
+      // com valor 0 até a primeira alteração.
+      ctrl.updateValueAndValidity({ emitEvent: false });
+    }
+  }
 
   async ngOnInit(): Promise<void> {
     await this.catalogo.garantirCarregado();

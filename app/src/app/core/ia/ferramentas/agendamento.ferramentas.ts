@@ -1,11 +1,12 @@
 import { Injectable, inject } from '@angular/core';
-import { map } from 'rxjs';
+import { map, switchMap } from 'rxjs';
 import {
   AgendamentoDto,
   AgendamentoService,
 } from '../../services/agendamento/agendamento.service';
 import { StatusAgendamento } from '../../models/agendamento.model';
 import { formatarMoeda, toRFC3339Brasilia } from '../../utils/data.utils';
+import { transicaoValida } from '../../../features/agendamentos/agendamento.regras';
 import {
   AMBOS_PAPEIS,
   ContextoExecucao,
@@ -123,16 +124,17 @@ export class FerramentasAgendamento {
             paciente_id: S.inteiro('ID do paciente.'),
             servico_id: S.inteiro('ID do serviço.'),
             data_hora_inicio: S.dataHora('Início da primeira sessão.'),
-            duracao_minutos: S.inteiro('Duração de cada sessão em minutos.'),
+            duracao_minutos: S.inteiro('Duração de cada sessão em minutos, mínimo 1.'),
             valor_combinado: S.numero(
-              'Valor em reais. Para pacotes, o valor total do pacote.',
+              'Valor em reais, mínimo 0,01. Para pacotes, o valor total do pacote.',
             ),
             recorrente: S.booleano('Se a série se repete semanalmente.'),
             pacote: S.booleano('Se o serviço é um pacote fechado.'),
-            total_sessoes: S.inteiro('Quantidade de sessões, quando recorrente.'),
+            total_sessoes: S.inteiro('Quantidade de sessões, mínimo 2, quando recorrente.'),
             intervalo_semanas: S.inteiro('Intervalo entre sessões em semanas. Padrão 1.'),
             profissional_id: S.inteiro(
-              'Profissional dono do agendamento. Apenas administradores podem definir.',
+              'Profissional dono do agendamento. Apenas administradores podem definir, '
+                + 'e para eles é obrigatório.',
             ),
           },
           [
@@ -203,13 +205,24 @@ export class FerramentasAgendamento {
       },
       descreverAcao: (a) =>
         `Marcar agendamento #${num(a, 'agendamento_id')} como ${str(a, 'status')}`,
-      executar: (args) =>
-        this.agendamentos
-          .atualizarStatus(
-            numObrig(args, 'agendamento_id'),
-            enumObrig(args, 'status', STATUS),
-          )
-          .pipe(map((r) => escrita(r, 'status atualizado'))),
+      executar: (args) => {
+        const id = numObrig(args, 'agendamento_id');
+        const destino = enumObrig(args, 'status', STATUS);
+
+        // Mesma regra da tela de status: CANCELADO é terminal, REALIZADO só
+        // volta para AGENDADO. Recusar aqui evita um 4xx e uma explicação ruim.
+        return this.agendamentos.obterPorId(id).pipe(
+          switchMap((atual) => {
+            if (atual && !transicaoValida(atual.status, destino)) {
+              throw new Error(
+                `Não é possível mudar de ${atual.status} para ${destino}.`,
+              );
+            }
+            return this.agendamentos.atualizarStatus(id, destino);
+          }),
+          map((r) => escrita(r, 'status atualizado')),
+        );
+      },
     },
 
     {
@@ -312,14 +325,38 @@ export class FerramentasAgendamento {
         name: 'cancelar_recorrencia',
         description:
           'Cancela todos os agendamentos futuros de uma série recorrente. ' +
-          'O group_id vem do campo recorrenciaGroupId de um agendamento da série.',
-        parameters: S.obj({ group_id: S.txt('ID do grupo de recorrência.') }, ['group_id']),
+          'Informe o ID de qualquer agendamento da série: o grupo é derivado dele.',
+        parameters: S.obj(
+          {
+            agendamento_id: S.inteiro('ID de um agendamento pertencente à série.'),
+            group_id: S.txt(
+              'ID do grupo de recorrência, se já conhecido. Dispensável quando '
+                + 'agendamento_id é informado.',
+            ),
+          },
+          ['agendamento_id'],
+        ),
       },
       descreverAcao: () => 'Cancelar série recorrente de agendamentos',
-      executar: (args) =>
-        this.agendamentos
-          .cancelarRecorrencia(strObrig(args, 'group_id'))
-          .pipe(map((r) => escrita(r, 'série cancelada'))),
+      executar: (args) => {
+        // A tela cancela pelo botão da própria série; ninguém digita o UUID.
+        const informado = str(args, 'group_id');
+        if (informado) {
+          return this.agendamentos
+            .cancelarRecorrencia(informado)
+            .pipe(map((r) => escrita(r, 'série cancelada')));
+        }
+
+        return this.agendamentos.obterPorId(numObrig(args, 'agendamento_id')).pipe(
+          switchMap((ag) => {
+            if (!ag?.recorrenciaGroupId) {
+              throw new Error('Este agendamento não faz parte de uma série recorrente.');
+            }
+            return this.agendamentos.cancelarRecorrencia(ag.recorrenciaGroupId);
+          }),
+          map((r) => escrita(r, 'série cancelada')),
+        );
+      },
     },
   ];
 

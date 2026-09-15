@@ -58,7 +58,7 @@ export class FerramentasServico {
         parameters: S.obj(
           {
             nome: S.txt('Nome do serviço.'),
-            valor_atual: S.numero('Valor em reais. Para pacote, o valor total.'),
+            valor_atual: S.numero('Valor em reais, mínimo 0,01. Para pacote, o valor total.'),
             pacote: S.booleano('Se é um pacote fechado de sessões.'),
             profissional_id: S.inteiro(
               'Profissional dono do serviço. Apenas administradores.',

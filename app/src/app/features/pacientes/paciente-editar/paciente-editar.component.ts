@@ -38,7 +38,9 @@ export class PacienteEditarComponent implements OnInit {
   constructor() {
     this.form = this.fb.nonNullable.group({
       nome: ['', [Validators.required, Validators.minLength(3)]],
-      cpf: ['', [Validators.required, Validators.minLength(11)]],
+      // Sem validador, como na tela de cadastro. Exigir CPF aqui impedia salvar
+      // um paciente que foi criado sem ele.
+      cpf: [''],
       telefone: [''],
       dataNascimento: [''],
       rg: [''],

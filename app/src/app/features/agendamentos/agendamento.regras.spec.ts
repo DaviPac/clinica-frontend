@@ -1,7 +1,12 @@
 import { FormBuilder } from '@angular/forms';
 import { describe, expect, it } from 'vitest';
 import { Servico } from '../../core/models/servico.model';
-import { aplicarRegrasDoServico, valorPorSessao } from './agendamento.regras';
+import {
+  aplicarRegrasDoServico,
+  transicaoValida,
+  transicoesPermitidas,
+  valorPorSessao,
+} from './agendamento.regras';
 
 function formulario() {
   const fb = new FormBuilder();
@@ -65,6 +70,35 @@ describe('aplicarRegrasDoServico', () => {
     aplicarRegrasDoServico(ctrls, null);
 
     expect(grupo.getRawValue().valor_combinado).toBe(99);
+  });
+});
+
+describe('transicoesPermitidas', () => {
+  it('oferece os três destinos a partir de AGENDADO', () => {
+    expect(transicoesPermitidas('AGENDADO')).toEqual(['REALIZADO', 'FALTA', 'CANCELADO']);
+  });
+
+  it('só permite voltar para AGENDADO a partir de REALIZADO', () => {
+    expect(transicoesPermitidas('REALIZADO')).toEqual(['AGENDADO']);
+  });
+
+  it('trata CANCELADO como terminal', () => {
+    expect(transicoesPermitidas('CANCELADO')).toEqual([]);
+  });
+});
+
+describe('transicaoValida', () => {
+  it('aceita uma transição prevista', () => {
+    expect(transicaoValida('AGENDADO', 'REALIZADO')).toBe(true);
+    expect(transicaoValida('FALTA', 'CANCELADO')).toBe(true);
+  });
+
+  it('recusa reabrir um agendamento cancelado', () => {
+    expect(transicaoValida('CANCELADO', 'AGENDADO')).toBe(false);
+  });
+
+  it('recusa pular de REALIZADO direto para CANCELADO', () => {
+    expect(transicaoValida('REALIZADO', 'CANCELADO')).toBe(false);
   });
 });
 
