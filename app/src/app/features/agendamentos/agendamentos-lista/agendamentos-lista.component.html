@@ -26,12 +26,12 @@
       <button
         (click)="setModoView('mensal')"
         class="px-4 sm:px-3 py-2.5 sm:py-2 text-xs font-medium transition-colors cursor-pointer"
-        [ngClass]="modoView() === 'mensal' ? 'bg-brand-400 text-white' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'"
+        [ngClass]="modoView() === 'mensal' ? 'bg-brand-400 text-on-accent' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'"
       >Mês</button>
       <button
         (click)="setModoView('semanal')"
         class="px-4 sm:px-3 py-2.5 sm:py-2 text-xs font-medium border-l border-gray-200 transition-colors cursor-pointer"
-        [ngClass]="modoView() === 'semanal' ? 'bg-brand-400 text-white' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'"
+        [ngClass]="modoView() === 'semanal' ? 'bg-brand-400 text-on-accent' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'"
       >Semana</button>
     </div>
 
@@ -136,7 +136,7 @@
                 >
                   <span
                     class="text-xs w-7 h-7 flex items-center justify-center rounded-full"
-                    [class]="dia.isToday ? 'bg-brand-400 text-white font-bold' : 'text-gray-600'"
+                    [class]="dia.isToday ? 'bg-brand-400 text-on-accent font-bold' : 'text-gray-600'"
                   >{{ dia.diaNumero }}</span>
 
                   @if (dia.dots.length) {
@@ -157,7 +157,7 @@
                   <span
                     class="text-xs font-medium w-6 h-6 flex items-center justify-center rounded-full transition-colors"
                     [class]="dia.isToday
-                      ? 'bg-brand-400 text-white font-bold'
+                      ? 'bg-brand-400 text-on-accent font-bold'
                       : 'text-gray-500 hover:bg-gray-100'"
                   >{{ dia.diaNumero }}</span>
 
@@ -195,7 +195,7 @@
               <span class="text-[10px] font-semibold uppercase tracking-widest text-gray-400 select-none">{{ dia.nomeDia }}</span>
               <span
                 class="text-base sm:text-sm font-medium w-8 h-8 sm:w-7 sm:h-7 flex items-center justify-center rounded-full transition-colors"
-                [class]="dia.isToday ? 'bg-brand-400 text-white font-bold' : 'text-gray-700'"
+                [class]="dia.isToday ? 'bg-brand-400 text-on-accent font-bold' : 'text-gray-700'"
               >{{ dia.diaNumero }}</span>
               <span class="sm:hidden text-xs text-gray-400">{{ dia.data | date:'dd/MM' }}</span>
             </div>

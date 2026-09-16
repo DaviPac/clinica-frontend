@@ -71,7 +71,7 @@
                   (click)="iniciarRepasse(p.profissionalId, p.pendenteAoProfissional, p.nomeProfissional, 'paraProfissional')"
                   [disabled]="processando() === p.profissionalId"
                   class="w-full bg-teal-600 hover:bg-teal-700 disabled:opacity-50
-                        text-white text-sm font-medium rounded-lg py-2
+                        text-on-accent text-sm font-medium rounded-lg py-2
                         transition-colors cursor-pointer disabled:cursor-not-allowed">
                   {{ processando() === p.profissionalId ? 'Registrando pagamento...' : 'Registrar repasse ao profissional' }}
                 </button>
@@ -81,7 +81,7 @@
                   (click)="iniciarRepasse(p.profissionalId, p.pendenteAClinica, p.nomeProfissional, 'paraClinica')"
                   [disabled]="processando() === p.profissionalId"
                   class="w-full bg-teal-600 hover:bg-teal-700 disabled:opacity-50
-                        text-white text-sm font-medium rounded-lg py-2
+                        text-on-accent text-sm font-medium rounded-lg py-2
                         transition-colors cursor-pointer disabled:cursor-not-allowed">
                   {{ processando() === p.profissionalId ? 'Registrando pagamento...' : 'Registrar repasse do profissional à clínica' }}
                 </button>

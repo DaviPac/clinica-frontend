@@ -26,24 +26,25 @@
 
 /* ── KPI Card ── */
 .dashboard-kpi-card {
-  background: #fff;
+  background: var(--color-white);
   border-radius: 1rem;
-  border: 1px solid #f3f4f6;
+  border: 1px solid var(--color-gray-200);
   padding: 1rem;
   display: flex;
   align-items: flex-start;
   gap: 0.75rem;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.45);
+  transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
 }
 
 .dashboard-kpi-card:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+  box-shadow: 0 10px 24px -8px rgba(0, 0, 0, 0.7);
+  border-color: var(--color-gray-300);
   transform: translateY(-1px);
 }
 
 .dashboard-kpi-card--alert {
-  border-color: #fde68a;
+  border-color: var(--color-amber-300);
 }
 
 .dashboard-kpi-icon {
@@ -58,23 +59,23 @@
 
 /* ── Section ── */
 .dashboard-section {
-  background: #fff;
+  background: var(--color-white);
   border-radius: 1rem;
-  border: 1px solid #f3f4f6;
+  border: 1px solid var(--color-gray-200);
   padding: 1rem;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.45);
 }
 
 .dashboard-section--amber {
-  border-color: #fde68a;
+  border-color: var(--color-amber-300);
 }
 
 .dashboard-section--red {
-  border-color: #fecaca;
+  border-color: var(--color-red-300);
 }
 
 .dashboard-section--violet {
-  border-color: #ddd6fe;
+  border-color: var(--color-violet-300);
 }
 
 .dashboard-section-header {
@@ -95,7 +96,7 @@
 }
 
 .dashboard-agendamento-row:hover {
-  background-color: #f9fafb;
+  background-color: var(--color-gray-50);
 }
 
 .dashboard-agendamento-row--today {

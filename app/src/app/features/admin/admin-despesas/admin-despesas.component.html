@@ -64,7 +64,7 @@
                     (click)="marcarPago(d)"
                     [disabled]="pagando() === d.id"
                     class="text-xs bg-teal-600 hover:bg-teal-700 disabled:opacity-50
-                           text-white rounded-md px-2.5 py-1 transition-colors whitespace-nowrap
+                           text-on-accent rounded-md px-2.5 py-1 transition-colors whitespace-nowrap
                            cursor-pointer disabled:cursor-not-allowed">
                     {{ pagando() === d.id ? '...' : 'Marcar pago' }}
                   </button>
