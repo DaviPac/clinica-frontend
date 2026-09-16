@@ -15,16 +15,16 @@
   gap: 4px;
   border-left: 4px solid var(--color-gray-300);
   background: var(--color-gray-50);
-  border-top: 1px solid var(--color-gray-200);
-  border-right: 1px solid var(--color-gray-200);
-  border-bottom: 1px solid var(--color-gray-200);
+  border-top: 1px solid var(--color-gray-100);
+  border-right: 1px solid var(--color-gray-100);
+  border-bottom: 1px solid var(--color-gray-100);
   transition: box-shadow 0.2s ease, transform 0.2s ease, filter 0.2s ease;
 }
 
 .agenda-card:hover {
-  box-shadow: 0 6px 14px -4px rgb(0 0 0 / 0.55), 0 2px 6px -2px rgb(0 0 0 / 0.4);
+  box-shadow: var(--shadow-sm);
   transform: translateY(-1px);
-  filter: brightness(1.18);
+  filter: brightness(var(--card-hover-brightness));
 }
 
 /* Região de informação (link no desktop, botão no mobile) */
@@ -54,7 +54,7 @@
   gap: 4px;
   margin-top: 6px;
   padding-top: 6px;
-  border-top: 1px solid rgb(255 255 255 / 0.07);
+  border-top: 1px solid var(--hairline);
 }
 
 /* Variantes por status — alinhadas às cores do <app-status-badge> */

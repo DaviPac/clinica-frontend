@@ -1,24 +1,30 @@
 <!doctype html>
-<html lang="en" style="color-scheme: dark">
+<html lang="pt-br">
 <head>
   <meta charset="utf-8">
   <title>Instituto CIN</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#0a0e16">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
 
-  <!-- Tipografia do tema escuro: Inter (UI) + JetBrains Mono (código) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
-    rel="stylesheet">
 
-  <!-- Evita o flash branco antes do CSS da aplicação carregar -->
-  <style>
-    html, body { background-color: #0a0e16; }
-  </style>
+  <!--
+    Aplica o tema antes do primeiro pixel: se isto rodasse só no Angular,
+    a página piscaria no tema errado enquanto o bundle carrega.
+    A mesma regra vive em core/services/tema/tema.service.ts.
+  -->
+  <script>
+    (function () {
+      var tema;
+      try { tema = localStorage.getItem('tema'); } catch (e) { /* sem storage */ }
+      if (tema !== 'claro' && tema !== 'escuro') {
+        tema = window.matchMedia &&
+          window.matchMedia('(prefers-color-scheme: dark)').matches ? 'escuro' : 'claro';
+      }
+      document.documentElement.dataset.theme = tema;
+      document.documentElement.style.backgroundColor = tema === 'escuro' ? '#0a0e16' : '#fafaf9';
+    })();
+  </script>
 </head>
 <body>
   <app-root></app-root>
