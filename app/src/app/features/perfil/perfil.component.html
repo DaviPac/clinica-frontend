@@ -54,6 +54,19 @@
     </div>
   </div>
 
+  <!-- Card: Aparência -->
+  <div class="border border-gray-200 rounded-xl bg-white p-4 sm:p-6 mb-5">
+    <div class="mb-4">
+      <h2 class="text-base font-medium text-gray-900">Aparência</h2>
+      <p class="text-xs text-gray-500 mt-0.5">
+        Escolha o tema da interface. "Sistema" acompanha a configuração do seu
+        aparelho.
+      </p>
+    </div>
+
+    <app-seletor-tema />
+  </div>
+
   <!-- Card: Mudar senha -->
   <div class="border border-gray-200 rounded-xl bg-white p-4 sm:p-6">
     <div class="mb-5">
@@ -192,8 +205,8 @@
         <button
           type="submit"
           [disabled]="form.invalid || salvando()"
-          class="bg-brand-400 hover:bg-brand-600 disabled:opacity-50
-                 text-white text-sm font-medium rounded-lg px-5 py-2.5
+          class="bg-brand-400 hover:bg-brand-500 disabled:opacity-50
+                 text-on-accent text-sm font-medium rounded-lg px-5 py-2.5
                  transition-colors cursor-pointer disabled:cursor-not-allowed">
           {{ salvando() ? 'Alterando...' : 'Alterar senha' }}
         </button>

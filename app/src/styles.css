@@ -1,147 +1,23 @@
-/* Estilos globais da aplicação */
-
-@import 'tailwindcss';
-
 /*
- * Paleta da clínica (rosé/stone). Use sempre os tokens brand-* em vez de hex
- * soltos nos templates — ex.: bg-brand-400, hover:bg-brand-600, text-brand-700.
+ * Estilos globais da aplicação.
+ *
+ * Sem framework de CSS: o visual vem de quatro arquivos próprios.
+ * A precedência é dada por cascade layers, não por especificidade —
+ * é o que garante que `px-4` no template vença o padding de `.table-wrap td`
+ * mesmo o seletor do componente sendo mais específico.
+ *
+ *   tokens (sem layer) → variáveis dos temas claro e escuro
+ *   base               → reset e estilos de elemento
+ *   components         → .page, .table-wrap, .ui-input, .btn-*, .md
+ *   utilities          → as classes utilitárias usadas nos templates
+ *
+ * A troca de tema acontece pelo atributo data-theme no <html>; veja
+ * `core/services/tema/tema.service.ts`.
  */
-@theme {
-  --color-brand-50: #f7f4f3;
-  --color-brand-100: #f2eeed;
-  --color-brand-200: #eee9e8;
-  --color-brand-300: #e4d6d4;
-  --color-brand-400: #bca8a5;
-  --color-brand-500: #a99390;
-  --color-brand-600: #9a8683;
-  --color-brand-700: #826e6c;
-  --color-brand-800: #675350;
-  --color-brand-900: #544240;
-}
 
-@layer components {
-  /* Container de página com padding responsivo */
-  .page {
-    @apply p-4 sm:p-6;
-  }
+@layer base, components, utilities;
 
-  /* Cabeçalho de página: empilha no mobile, alinha em linha no desktop */
-  .page-header {
-    @apply flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6;
-  }
-
-  /* Wrapper de tabela: borda arredondada + scroll horizontal no mobile */
-  .table-wrap {
-    @apply border border-gray-200 rounded-xl overflow-x-auto bg-white;
-    -webkit-overflow-scrolling: touch;
-  }
-  .table-wrap table {
-    @apply w-full text-sm border-collapse;
-  }
-  .table-wrap thead {
-    @apply bg-gray-50;
-  }
-  .table-wrap th {
-    @apply text-left px-4 py-2.5 font-medium text-gray-500 border-b border-gray-200 whitespace-nowrap;
-  }
-  .table-wrap td {
-    @apply px-4 py-3;
-  }
-
-  /* Campo de formulário padrão */
-  .ui-input {
-    @apply w-full border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white
-      focus:outline-none focus:ring-2 focus:ring-brand-400;
-  }
-
-  .ui-label {
-    @apply block text-xs text-gray-500 mb-1.5;
-  }
-
-  /* Botões */
-  .btn,
-  .btn-primary,
-  .btn-outline,
-  .btn-danger {
-    @apply inline-flex items-center justify-center gap-1.5 text-sm font-medium
-      rounded-lg px-4 py-2 transition-colors cursor-pointer
-      disabled:opacity-50 disabled:cursor-not-allowed;
-  }
-  .btn-primary {
-    @apply bg-brand-400 hover:bg-brand-500 active:bg-brand-600 text-white;
-  }
-  .btn-outline {
-    @apply border border-gray-200 text-gray-700 hover:bg-gray-50;
-  }
-  .btn-danger {
-    @apply bg-red-600 hover:bg-red-700 text-white;
-  }
-
-  /*
-   * Markdown renderizado pelo assistente de IA.
-   * Precisa ser global: conteúdo injetado via [innerHTML] não recebe os estilos
-   * encapsulados do componente.
-   */
-  .md {
-    @apply text-sm leading-relaxed text-stone-800;
-  }
-  .md > * + * {
-    @apply mt-3;
-  }
-  .md h1 {
-    @apply text-base font-semibold text-stone-900 mt-5;
-  }
-  .md h2 {
-    @apply text-sm font-semibold text-stone-900 mt-5;
-  }
-  .md h3,
-  .md h4 {
-    @apply text-sm font-medium text-stone-900 mt-4;
-  }
-  .md ul {
-    @apply list-disc pl-5 space-y-1;
-  }
-  .md ol {
-    @apply list-decimal pl-5 space-y-1;
-  }
-  .md li > ul,
-  .md li > ol {
-    @apply mt-1;
-  }
-  .md a {
-    @apply text-brand-700 underline underline-offset-2 hover:text-brand-800;
-  }
-  .md strong {
-    @apply font-semibold text-stone-900;
-  }
-  .md code {
-    @apply bg-stone-100 text-stone-800 rounded px-1 py-0.5 text-[0.85em] font-mono;
-  }
-  .md pre {
-    @apply bg-stone-900 text-stone-100 rounded-lg p-3 overflow-x-auto text-xs;
-  }
-  .md pre code {
-    @apply bg-transparent text-inherit p-0;
-  }
-  .md blockquote {
-    @apply border-l-2 border-brand-300 pl-3 text-stone-600 italic;
-  }
-  .md hr {
-    @apply border-stone-200 my-4;
-  }
-  .md table {
-    @apply w-full text-sm border-collapse;
-  }
-  .md thead {
-    @apply bg-stone-50;
-  }
-  .md th {
-    @apply text-left px-3 py-2 font-medium text-stone-500 border-b border-stone-200 whitespace-nowrap;
-  }
-  .md td {
-    @apply px-3 py-2 border-b border-stone-100 align-top;
-  }
-  .md tr:last-child td {
-    @apply border-b-0;
-  }
-}
+@import './styles/tokens.css';
+@import './styles/base.css';
+@import './styles/components.css';
+@import './styles/utilities.css';

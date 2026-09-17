@@ -6,7 +6,7 @@
   display: inline-block;
   width: 16px;
   height: 16px;
-  border: 2px solid #e5e7eb;      /* gray-200 */
+  border: 2px solid var(--color-gray-200);
   border-top-color: var(--color-brand-400);
   border-radius: 50%;
   animation: agenda-spin 0.65s linear infinite;
@@ -28,4 +28,4 @@
 }
 .agenda-day-events::-webkit-scrollbar        { width: 3px; }
 .agenda-day-events::-webkit-scrollbar-track  { background: transparent; }
-.agenda-day-events::-webkit-scrollbar-thumb  { background: #d1d5db; border-radius: 2px; }
+.agenda-day-events::-webkit-scrollbar-thumb  { background: var(--color-gray-300); border-radius: 2px; }

@@ -1,0 +1,381 @@
+/* ════════════════════════════════════════════════════════════════════
+   TOKENS DE DESIGN
+   ────────────────────────────────────────────────────────────────────
+   Escalas independentes de tema (espaçamento, tipografia, raio) e as
+   duas paletas: clara (padrão) e escura.
+
+   O tema ativo é escolhido pelo atributo `data-theme` no <html>:
+
+     <html data-theme="claro">   → paleta clara
+     <html data-theme="escuro">  → paleta escura
+
+   Quem define o atributo é o `ThemeService` (e o script inline do
+   index.html, que roda antes da aplicação para evitar flash). Não há
+   fallback em @media: o atributo está sempre presente.
+
+   Convenção das escalas de cor (a mesma nos dois temas):
+     50 · 100 · 200 · 300  → superfícies, fundos tonalizados e bordas
+     400 · 500 · 600       → texto secundário / cores sólidas de ação
+     700 · 800 · 900       → texto de destaque
+   ══════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── Espaçamento: todas as utilidades numéricas multiplicam isto ── */
+  --space: 0.25rem;
+
+  /* ── Tipografia ── */
+  --font-sans: ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    'Liberation Mono', 'Courier New', monospace;
+
+  --text-xs: 0.75rem;
+  --text-xs-lh: calc(1 / 0.75);
+  --text-sm: 0.875rem;
+  --text-sm-lh: calc(1.25 / 0.875);
+  --text-base: 1rem;
+  --text-base-lh: 1.5;
+  --text-lg: 1.125rem;
+  --text-lg-lh: calc(1.75 / 1.125);
+  --text-xl: 1.25rem;
+  --text-xl-lh: calc(1.75 / 1.25);
+  --text-2xl: 1.5rem;
+  --text-2xl-lh: calc(2 / 1.5);
+
+  --leading-tight: 1.25;
+  --leading-snug: 1.375;
+  --leading-relaxed: 1.625;
+
+  --tracking-tight: -0.025em;
+  --tracking-wide: 0.025em;
+  --tracking-wider: 0.05em;
+  --tracking-widest: 0.1em;
+
+  /* ── Raio de borda ── */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-2xl: 1rem;
+
+  /* ── Larguras de container (max-w-*) ── */
+  --container-sm: 24rem;
+  --container-md: 28rem;
+  --container-xl: 36rem;
+  --container-2xl: 42rem;
+  --container-3xl: 48rem;
+  --container-4xl: 56rem;
+
+  /* ── Transição padrão ── */
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --duration: 0.15s;
+
+  /* ── Cores sem tema ── */
+  --color-black: #000;
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   TEMA CLARO — a paleta original da clínica (rosé/stone sobre branco)
+   ══════════════════════════════════════════════════════════════════ */
+:root,
+[data-theme='claro'] {
+  color-scheme: light;
+
+  /* Fundo da aplicação e brilhos decorativos (nenhum no tema claro) */
+  --app-bg: #fafaf9;
+  --app-glow: none;
+
+  /* Marca: rosé/stone */
+  --color-brand-50: #f7f4f3;
+  --color-brand-100: #f2eeed;
+  --color-brand-200: #eee9e8;
+  --color-brand-300: #e4d6d4;
+  --color-brand-400: #bca8a5;
+  --color-brand-500: #a99390;
+  --color-brand-600: #9a8683;
+  --color-brand-700: #826e6c;
+  --color-brand-800: #675350;
+  --color-brand-900: #544240;
+
+  /* Acento secundário (código inline no markdown) */
+  --color-accent-600: #0e7490;
+
+  --accent-glow: transparent;
+
+  --color-white: #fff;
+
+  --color-gray-50: oklch(98.5% 0.002 247.839);
+  --color-gray-100: oklch(96.7% 0.003 264.542);
+  --color-gray-200: oklch(92.8% 0.006 264.531);
+  --color-gray-300: oklch(87.2% 0.01 258.338);
+  --color-gray-400: oklch(70.7% 0.022 261.325);
+  --color-gray-500: oklch(55.1% 0.027 264.364);
+  --color-gray-600: oklch(44.6% 0.03 256.802);
+  --color-gray-700: oklch(37.3% 0.034 259.733);
+  --color-gray-800: oklch(27.8% 0.033 256.848);
+  --color-gray-900: oklch(21% 0.034 264.665);
+
+  --color-stone-50: oklch(98.5% 0.001 106.423);
+  --color-stone-100: oklch(97% 0.001 106.424);
+  --color-stone-200: oklch(92.3% 0.003 48.717);
+  --color-stone-300: oklch(86.9% 0.005 56.366);
+  --color-stone-400: oklch(70.9% 0.01 56.259);
+  --color-stone-500: oklch(55.3% 0.013 58.071);
+  --color-stone-600: oklch(44.4% 0.011 73.639);
+  --color-stone-700: oklch(37.4% 0.01 67.558);
+  --color-stone-800: oklch(26.8% 0.007 34.298);
+  --color-stone-900: oklch(21.6% 0.006 56.043);
+
+  --color-red-50: oklch(97.1% 0.013 17.38);
+  --color-red-100: oklch(93.6% 0.032 17.717);
+  --color-red-200: oklch(88.5% 0.062 18.334);
+  --color-red-300: oklch(80.8% 0.114 19.571);
+  --color-red-400: oklch(70.4% 0.191 22.216);
+  --color-red-500: oklch(63.7% 0.237 25.331);
+  --color-red-600: oklch(57.7% 0.245 27.325);
+  --color-red-700: oklch(50.5% 0.213 27.518);
+  --color-red-800: oklch(44.4% 0.177 26.899);
+  --color-red-900: oklch(39.6% 0.141 25.723);
+
+  --color-teal-50: oklch(98.4% 0.014 180.72);
+  --color-teal-100: oklch(95.3% 0.051 180.801);
+  --color-teal-200: oklch(91% 0.096 180.426);
+  --color-teal-300: oklch(85.5% 0.138 181.071);
+  --color-teal-500: oklch(70.4% 0.14 182.503);
+  --color-teal-600: oklch(60% 0.118 184.704);
+  --color-teal-700: oklch(51.1% 0.096 186.391);
+  --color-teal-800: oklch(43.7% 0.078 188.216);
+
+  --color-emerald-50: oklch(97.9% 0.021 166.113);
+  --color-emerald-100: oklch(95% 0.052 163.051);
+  --color-emerald-200: oklch(90.5% 0.093 164.15);
+  --color-emerald-300: oklch(84.5% 0.143 164.978);
+  --color-emerald-500: oklch(69.6% 0.17 162.48);
+  --color-emerald-600: oklch(59.6% 0.145 163.225);
+  --color-emerald-700: oklch(50.8% 0.118 165.612);
+  --color-emerald-800: oklch(43.2% 0.095 166.913);
+
+  --color-green-50: oklch(98.2% 0.018 155.826);
+  --color-green-100: oklch(96.2% 0.044 156.743);
+  --color-green-200: oklch(92.5% 0.084 155.995);
+  --color-green-300: oklch(87.1% 0.15 154.449);
+  --color-green-700: oklch(52.7% 0.154 150.069);
+
+  --color-amber-50: oklch(98.7% 0.022 95.277);
+  --color-amber-100: oklch(96.2% 0.059 95.617);
+  --color-amber-200: oklch(92.4% 0.12 95.746);
+  --color-amber-300: oklch(87.9% 0.169 91.605);
+  --color-amber-400: oklch(82.8% 0.189 84.429);
+  --color-amber-500: oklch(76.9% 0.188 70.08);
+  --color-amber-600: oklch(66.6% 0.179 58.318);
+  --color-amber-700: oklch(55.5% 0.163 48.998);
+  --color-amber-800: oklch(47.3% 0.137 46.201);
+  --color-amber-900: oklch(41.4% 0.112 45.904);
+
+  --color-blue-50: oklch(97% 0.014 254.604);
+  --color-blue-100: oklch(93.2% 0.032 255.585);
+  --color-blue-200: oklch(88.2% 0.059 254.128);
+  --color-blue-500: oklch(62.3% 0.214 259.815);
+  --color-blue-600: oklch(54.6% 0.245 262.881);
+  --color-blue-800: oklch(42.4% 0.199 265.638);
+
+  --color-violet-50: oklch(96.9% 0.016 293.756);
+  --color-violet-100: oklch(94.3% 0.029 294.588);
+  --color-violet-200: oklch(89.4% 0.057 293.283);
+  --color-violet-300: oklch(81.1% 0.111 293.571);
+  --color-violet-400: oklch(70.2% 0.183 293.541);
+  --color-violet-500: oklch(60.6% 0.25 292.717);
+  --color-violet-600: oklch(54.1% 0.281 293.009);
+  --color-violet-700: oklch(49.1% 0.27 292.581);
+  --color-violet-800: oklch(43.2% 0.232 292.759);
+
+  --color-purple-50: oklch(97.7% 0.014 308.299);
+  --color-purple-100: oklch(94.6% 0.033 307.174);
+  --color-purple-700: oklch(49.6% 0.265 301.924);
+  --color-purple-800: oklch(43.8% 0.218 303.724);
+
+  /* Sombras discretas sobre fundo claro */
+  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+
+  /*
+   * Tokens semânticos dos componentes: é aqui que os dois temas diferem
+   * de verdade, e não só na tonalidade da mesma escala.
+   */
+  --body-fg: #000; /* o tema claro nunca definiu cor no body: herda o preto do navegador */
+  --input-bg: var(--color-white);
+  --knob-bg: #fff;
+  --hairline: rgb(0 0 0 / 0.06);
+  --card-hover-brightness: 0.97;
+  --btn-outline-bg: transparent;
+  --btn-outline-bg-hover: var(--color-gray-50);
+  --btn-outline-border-hover: var(--color-gray-200);
+  --danger-bg: var(--color-red-600);
+  --danger-bg-hover: var(--color-red-700);
+  --surface-shadow: none;
+
+  /* Markdown do assistente */
+  --md-fg: var(--color-stone-800);
+  --md-muted: var(--color-stone-600);
+  --code-inline-fg: var(--color-stone-800);
+  --code-bg: oklch(21.6% 0.006 56.043);
+  --code-fg: oklch(97% 0.001 106.424);
+  --code-border: transparent;
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   TEMA ESCURO "NEBULA" — slate quase preto + acento índigo elétrico
+   ══════════════════════════════════════════════════════════════════ */
+[data-theme='escuro'] {
+  color-scheme: dark;
+
+  --app-bg: #0a0e16;
+  --app-glow:
+    radial-gradient(60rem 38rem at 10% -8%, rgb(75 91 245 / 0.2), transparent 60%),
+    radial-gradient(48rem 32rem at 100% -5%, rgb(34 211 238 / 0.12), transparent 58%),
+    radial-gradient(44rem 44rem at 75% 115%, rgb(139 92 246 / 0.12), transparent 60%);
+
+  /* Marca: índigo elétrico */
+  --color-brand-50: #141833;
+  --color-brand-100: #1a1f4d;
+  --color-brand-200: #232c6b;
+  --color-brand-300: #2f3a8f;
+  --color-brand-400: #4b5bf5;
+  --color-brand-500: #6470ff;
+  --color-brand-600: #8b93ff;
+  --color-brand-700: #a5abff;
+  --color-brand-800: #c3c7ff;
+  --color-brand-900: #e0e2ff;
+
+  /* Acento secundário: ciano */
+  --color-accent-600: #67e8f9;
+
+  --accent-glow: rgb(75 91 245 / 0.35);
+
+  /* Superfície de card/sidebar (o "branco" do tema escuro) */
+  --color-white: #121926;
+
+  /*
+   * Neutros (slate frio). gray-*, stone-* e slate-* compartilham os
+   * mesmos valores: os templates usam as três escalas de forma
+   * intercambiável, e unificá-las evita degraus de cor entre telas.
+   */
+  --color-gray-50: #1a2231;
+  --color-gray-100: #212b3b;
+  --color-gray-200: #2b3648;
+  --color-gray-300: #4a5870;
+  --color-gray-400: #7c8aa0;
+  --color-gray-500: #97a4b8;
+  --color-gray-600: #b2bdcd;
+  --color-gray-700: #c9d3e0;
+  --color-gray-800: #dee5ee;
+  --color-gray-900: #f0f4fa;
+
+  --color-stone-50: #1a2231;
+  --color-stone-100: #212b3b;
+  --color-stone-200: #2b3648;
+  --color-stone-300: #4a5870;
+  --color-stone-400: #7c8aa0;
+  --color-stone-500: #97a4b8;
+  --color-stone-600: #b2bdcd;
+  --color-stone-700: #c9d3e0;
+  --color-stone-800: #dee5ee;
+  --color-stone-900: #f0f4fa;
+
+  --color-red-50: #2a1218;
+  --color-red-100: #3a171e;
+  --color-red-200: #522029;
+  --color-red-300: #6e2a34;
+  --color-red-400: #ff9a9e;
+  --color-red-500: #e5484d;
+  --color-red-600: #f05a5f;
+  --color-red-700: #ff8085;
+  --color-red-800: #ffb3b6;
+  --color-red-900: #ffd6d8;
+
+  --color-teal-50: #0b2a2a;
+  --color-teal-100: #123b39;
+  --color-teal-200: #1c5450;
+  --color-teal-300: #247068;
+  --color-teal-500: #14b8a6;
+  --color-teal-600: #0d9488;
+  --color-teal-700: #2dd4bf;
+  --color-teal-800: #5eead4;
+
+  --color-emerald-50: #0b2a1d;
+  --color-emerald-100: #123b29;
+  --color-emerald-200: #1b5a3f;
+  --color-emerald-300: #237a54;
+  --color-emerald-500: #10b981;
+  --color-emerald-600: #34d399;
+  --color-emerald-700: #6ee7b7;
+  --color-emerald-800: #a7f3d0;
+
+  --color-green-50: #0d2a1a;
+  --color-green-100: #143d26;
+  --color-green-200: #1d5a37;
+  --color-green-300: #257a4a;
+  --color-green-700: #86efac;
+
+  --color-amber-50: #2b2008;
+  --color-amber-100: #3b2c0a;
+  --color-amber-200: #56410f;
+  --color-amber-300: #7a5c14;
+  --color-amber-400: #fbbf24;
+  --color-amber-500: #f59e0b;
+  --color-amber-600: #fbbf24;
+  --color-amber-700: #fcd34d;
+  --color-amber-800: #fde68a;
+  --color-amber-900: #fef3c7;
+
+  --color-blue-50: #101f3d;
+  --color-blue-100: #162b52;
+  --color-blue-200: #1f3f77;
+  --color-blue-500: #3b82f6;
+  --color-blue-600: #60a5fa;
+  --color-blue-800: #a8ccff;
+
+  --color-violet-50: #1d1638;
+  --color-violet-100: #281f4f;
+  --color-violet-200: #392c73;
+  --color-violet-300: #4c3b99;
+  --color-violet-400: #a78bfa;
+  --color-violet-500: #a78bfa;
+  --color-violet-600: #b9a2ff;
+  --color-violet-700: #c9b8ff;
+  --color-violet-800: #ded4ff;
+
+  --color-purple-50: #211640;
+  --color-purple-100: #2e1f57;
+  --color-purple-700: #d8b4fe;
+  --color-purple-800: #e9d5ff;
+
+  /* Sombras mais profundas, já que o fundo é escuro */
+  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.5), 0 1px 2px -1px rgb(0 0 0 / 0.4);
+  --shadow-lg: 0 12px 28px -8px rgb(0 0 0 / 0.65), 0 4px 10px -4px rgb(0 0 0 / 0.45);
+  --shadow-xl: 0 24px 48px -12px rgb(0 0 0 / 0.7);
+
+  /*
+   * No escuro os campos e o botão de contorno precisam de superfície
+   * própria: transparente sobre card escuro não se distingue da borda.
+   */
+  --body-fg: var(--color-gray-600);
+  --input-bg: var(--color-gray-50);
+  --knob-bg: #e2e8f2;
+  --hairline: rgb(255 255 255 / 0.07);
+  --card-hover-brightness: 1.18;
+  --btn-outline-bg: var(--color-gray-50);
+  --btn-outline-bg-hover: var(--color-gray-100);
+  --btn-outline-border-hover: var(--color-gray-300);
+  --danger-bg: var(--color-red-500);
+  --danger-bg-hover: var(--color-red-600);
+  --surface-shadow: var(--shadow-sm);
+
+  --md-fg: var(--color-stone-600);
+  --md-muted: var(--color-stone-500);
+  --code-inline-fg: var(--color-accent-600);
+  --code-bg: #080c14;
+  --code-fg: #c9d3e0;
+  --code-border: #2b3648;
+}

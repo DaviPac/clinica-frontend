@@ -2,11 +2,12 @@ import { Component, computed, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators, FormGroup, AbstractControl, ValidationErrors } from '@angular/forms';
 import { AuthService } from '../../core/services/auth/auth.service';
+import { SeletorTemaComponent } from '../../shared/components/seletor-tema/seletor-tema.component';
 
 @Component({
   selector: 'app-perfil',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, SeletorTemaComponent],
   templateUrl: './perfil.component.html',
 })
 export class PerfilComponent {

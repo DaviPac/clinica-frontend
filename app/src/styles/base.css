@@ -1,0 +1,255 @@
+/* ════════════════════════════════════════════════════════════════════
+   BASE — reset e estilos de elemento
+   ────────────────────────────────────────────────────────────────────
+   Normalização mínima e previsível: zera margens/bordas herdadas do
+   navegador para que as utilidades sejam a única fonte de espaçamento,
+   e aplica a cara do tema ativo no documento.
+   ══════════════════════════════════════════════════════════════════ */
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    border: 0 solid;
+  }
+
+  html {
+    line-height: 1.5;
+    -webkit-text-size-adjust: 100%;
+    tab-size: 4;
+    font-family: var(--font-sans);
+    background-color: var(--app-bg);
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background-color: var(--app-bg);
+    background-image: var(--app-glow);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: var(--body-fg);
+    font-family: inherit;
+    line-height: inherit;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Sem margens implícitas: quem espaça são as utilidades */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  blockquote,
+  figure,
+  pre,
+  dl,
+  dd,
+  hr {
+    margin: 0;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-size: inherit;
+    font-weight: inherit;
+  }
+
+  ul,
+  ol,
+  menu {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  hr {
+    height: 0;
+    color: inherit;
+    border-top-width: 1px;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: inherit;
+  }
+
+  b,
+  strong {
+    font-weight: bolder;
+  }
+
+  code,
+  kbd,
+  samp,
+  pre {
+    font-family: var(--font-mono);
+    font-size: 1em;
+  }
+
+  small {
+    font-size: 80%;
+  }
+
+  img,
+  svg,
+  video,
+  canvas,
+  audio,
+  iframe,
+  embed,
+  object {
+    display: block;
+    vertical-align: middle;
+  }
+
+  /* Só mídia rasterizada é fluida; o svg respeita a largura do template */
+  img,
+  video {
+    max-width: 100%;
+    height: auto;
+  }
+
+  table {
+    border-collapse: collapse;
+    border-color: inherit;
+    text-indent: 0;
+  }
+
+  /* ── Formulários ── */
+  button,
+  input,
+  optgroup,
+  select,
+  textarea {
+    font: inherit;
+    color: inherit;
+    letter-spacing: inherit;
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
+    border-radius: 0;
+  }
+
+  button,
+  [type='button'],
+  [type='reset'],
+  [type='submit'] {
+    appearance: button;
+    background-image: none;
+    cursor: pointer;
+  }
+
+  button:disabled,
+  input:disabled,
+  select:disabled,
+  textarea:disabled {
+    cursor: default;
+  }
+
+  textarea {
+    resize: vertical;
+  }
+
+  /*
+   * Placeholder derivado da própria cor do campo, como era antes: assim
+   * ele acompanha qualquer text-* aplicado no template e os dois temas.
+   */
+  ::placeholder {
+    color: color-mix(in oklab, currentcolor 50%, transparent);
+    opacity: 1;
+  }
+
+  ::-webkit-date-time-edit-fields-wrapper {
+    padding: 0;
+  }
+
+  [hidden] {
+    display: none !important;
+  }
+
+  /* ── Acessibilidade e seleção ── */
+  :focus-visible {
+    outline: 2px solid var(--color-brand-400);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background-color: color-mix(in srgb, var(--color-brand-400) 35%, transparent);
+  }
+
+  /* ── Barras de rolagem alinhadas ao tema ── */
+  * {
+    scrollbar-color: var(--color-gray-300) transparent;
+    scrollbar-width: thin;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-gray-200);
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    border-radius: 999px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-gray-300);
+    background-clip: padding-box;
+  }
+
+  /*
+   * No tema escuro o ícone do seletor de data vem preto do navegador e
+   * some sobre o campo; invertê-lo é a única forma de clareá-lo.
+   */
+  [data-theme='escuro'] input::-webkit-calendar-picker-indicator {
+    filter: invert(1) brightness(1.6);
+    opacity: 0.55;
+    cursor: pointer;
+  }
+
+  [data-theme='escuro'] input::-webkit-calendar-picker-indicator:hover {
+    opacity: 1;
+  }
+
+  /* ── Animações usadas pelas utilidades animate-* ── */
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes pulse {
+    50% {
+      opacity: 0.5;
+    }
+  }
+
+  @keyframes bounce {
+    0%,
+    100% {
+      transform: translateY(-25%);
+      animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+    }
+    50% {
+      transform: none;
+      animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    }
+  }
+
+}

@@ -1,4 +1,4 @@
-<div class="dashboard min-h-screen bg-brand-50 page font-sans">
+<div class="dashboard min-h-screen bg-app page font-sans">
 
   <div class="mb-7">
     <p class="text-xs text-brand-400 font-semibold uppercase tracking-widest mb-0.5">{{ saudacao() }}</p>
@@ -22,13 +22,13 @@
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
 
       <div class="dashboard-kpi-card">
-        <div class="dashboard-kpi-icon bg-brand-200">
+        <div class="dashboard-kpi-icon bg-brand-200 text-brand-400">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <rect x="1" y="2.5" width="14" height="12" rx="2" stroke="#BCA8A5" stroke-width="1.4"/>
-            <path d="M5 1v3M11 1v3M1 6.5h14" stroke="#BCA8A5" stroke-width="1.4" stroke-linecap="round"/>
-            <circle cx="5.5" cy="10" r="1" fill="#BCA8A5"/>
-            <circle cx="8" cy="10" r="1" fill="#BCA8A5"/>
-            <circle cx="10.5" cy="10" r="1" fill="#BCA8A5"/>
+            <rect x="1" y="2.5" width="14" height="12" rx="2" stroke="currentColor" stroke-width="1.4"/>
+            <path d="M5 1v3M11 1v3M1 6.5h14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            <circle cx="5.5" cy="10" r="1" fill="currentColor"/>
+            <circle cx="8" cy="10" r="1" fill="currentColor"/>
+            <circle cx="10.5" cy="10" r="1" fill="currentColor"/>
           </svg>
         </div>
         <div>
@@ -39,10 +39,10 @@
       </div>
 
       <div class="dashboard-kpi-card" [class.dashboard-kpi-card--alert]="totalPendentes() > 0">
-        <div class="dashboard-kpi-icon" [class]="totalPendentes() > 0 ? 'bg-amber-50' : 'bg-brand-200'">
+        <div class="dashboard-kpi-icon" [class]="totalPendentes() > 0 ? 'bg-amber-50 text-amber-600' : 'bg-brand-200 text-brand-400'">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <path d="M8 1.5l6.5 11.5H1.5L8 1.5z" [attr.stroke]="totalPendentes() > 0 ? '#D97706' : '#BCA8A5'" stroke-width="1.4" stroke-linejoin="round"/>
-            <path d="M8 6v3.5M8 11.5h.01" [attr.stroke]="totalPendentes() > 0 ? '#D97706' : '#BCA8A5'" stroke-width="1.4" stroke-linecap="round"/>
+            <path d="M8 1.5l6.5 11.5H1.5L8 1.5z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+            <path d="M8 6v3.5M8 11.5h.01" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
           </svg>
         </div>
         <div>
@@ -55,11 +55,11 @@
       </div>
 
       <div class="dashboard-kpi-card" [class.dashboard-kpi-card--alert]="totalPagamentos() > 0">
-        <div class="dashboard-kpi-icon" [class]="totalPagamentos() > 0 ? 'bg-red-50' : 'bg-brand-200'">
+        <div class="dashboard-kpi-icon" [class]="totalPagamentos() > 0 ? 'bg-red-50 text-red-600' : 'bg-brand-200 text-brand-400'">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <rect x="1" y="4" width="14" height="9" rx="1.5" [attr.stroke]="totalPagamentos() > 0 ? '#DC2626' : '#BCA8A5'" stroke-width="1.4"/>
-            <path d="M1 7h14" [attr.stroke]="totalPagamentos() > 0 ? '#DC2626' : '#BCA8A5'" stroke-width="1.4"/>
-            <circle cx="4.5" cy="10" r="1" [attr.fill]="totalPagamentos() > 0 ? '#DC2626' : '#BCA8A5'"/>
+            <rect x="1" y="4" width="14" height="9" rx="1.5" stroke="currentColor" stroke-width="1.4"/>
+            <path d="M1 7h14" stroke="currentColor" stroke-width="1.4"/>
+            <circle cx="4.5" cy="10" r="1" fill="currentColor"/>
           </svg>
         </div>
         <div>
@@ -73,10 +73,10 @@
 
       @if (!isAdmin()) {
         <div class="dashboard-kpi-card" [class.dashboard-kpi-card--alert]="totalSaldo() > 0">
-          <div class="dashboard-kpi-icon" [class]="totalSaldo() > 0 ? 'bg-violet-50' : 'bg-brand-200'">
+          <div class="dashboard-kpi-icon" [class]="totalSaldo() > 0 ? 'bg-violet-50 text-violet-500' : 'bg-brand-200 text-brand-400'">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <circle cx="8" cy="8" r="6.5" [attr.stroke]="totalSaldo() > 0 ? '#7C3AED' : '#BCA8A5'" stroke-width="1.4"/>
-              <path d="M8 4.5v1.25M8 10.25V11.5M6 6.75a2 2 0 1 1 4 0c0 1-1 1.5-2 2.25" [attr.stroke]="totalSaldo() > 0 ? '#7C3AED' : '#BCA8A5'" stroke-width="1.3" stroke-linecap="round"/>
+              <circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.4"/>
+              <path d="M8 4.5v1.25M8 10.25V11.5M6 6.75a2 2 0 1 1 4 0c0 1-1 1.5-2 2.25" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
             </svg>
           </div>
           <div>
@@ -91,9 +91,9 @@
 
       @if (isAdmin()) {
         <div class="dashboard-kpi-card">
-          <div class="dashboard-kpi-icon bg-emerald-50">
+          <div class="dashboard-kpi-icon bg-emerald-50 text-emerald-600">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M2 11L6 7l3 3 5-6" stroke="#059669" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M2 11L6 7l3 3 5-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </div>
           <div>
@@ -306,9 +306,9 @@
 
         @if (agendamentosPendentes().length === 0 && pagamentosPendentes().length === 0 && (isAdmin() || totalSaldo() === 0)) {
           <div class="dashboard-section flex flex-col items-center justify-center py-8 text-center">
-            <div class="w-12 h-12 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center mb-3">
+            <div class="w-12 h-12 rounded-full bg-emerald-50 border border-emerald-100 text-emerald-600 flex items-center justify-center mb-3">
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path d="M4 10l4.5 4.5L16 6" stroke="#059669" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M4 10l4.5 4.5L16 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
             <p class="text-xs font-semibold text-emerald-700">Tudo em dia!</p>

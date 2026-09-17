@@ -1,0 +1,306 @@
+/* ════════════════════════════════════════════════════════════════════
+   COMPONENTES
+   ────────────────────────────────────────────────────────────────────
+   Classes de alto nível reutilizadas pelos templates. Ficam na layer
+   `components`, que perde para `utilities`: assim uma utilidade solta no
+   template sempre sobrescreve o componente, mesmo quando o seletor do
+   componente é mais específico (ex.: `.table-wrap td` vs `py-10`).
+   ══════════════════════════════════════════════════════════════════ */
+
+@layer components {
+  /* Container de página com padding responsivo */
+  .page {
+    padding: calc(var(--space) * 4);
+  }
+
+  /* Cabeçalho de página: empilha no mobile, alinha em linha no desktop */
+  .page-header {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--space) * 3);
+    margin-bottom: calc(var(--space) * 6);
+  }
+
+  /* Wrapper de tabela: borda arredondada + scroll horizontal no mobile */
+  .table-wrap {
+    overflow-x: auto;
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--color-gray-200);
+    background-color: var(--color-white);
+    box-shadow: var(--surface-shadow);
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .table-wrap table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-sm);
+    line-height: var(--text-sm-lh);
+  }
+
+  .table-wrap thead {
+    background-color: var(--color-gray-50);
+  }
+
+  .table-wrap th {
+    padding: calc(var(--space) * 2.5) calc(var(--space) * 4);
+    border-bottom: 1px solid var(--color-gray-200);
+    text-align: left;
+    font-weight: 500;
+    white-space: nowrap;
+    color: var(--color-gray-500);
+  }
+
+  .table-wrap td {
+    padding: calc(var(--space) * 3) calc(var(--space) * 4);
+  }
+
+  /* ── Formulário ── */
+  .ui-input {
+    width: 100%;
+    border: 1px solid var(--color-gray-200);
+    border-radius: var(--radius-lg);
+    background-color: var(--input-bg);
+    padding: calc(var(--space) * 2) calc(var(--space) * 3);
+    font-size: var(--text-sm);
+    line-height: var(--text-sm-lh);
+    color: var(--color-gray-800);
+    transition: color var(--duration) var(--ease), background-color var(--duration) var(--ease),
+      border-color var(--duration) var(--ease), box-shadow var(--duration) var(--ease);
+  }
+
+  .ui-input:focus {
+    outline: none;
+    border-color: var(--color-brand-400);
+    box-shadow: 0 0 0 2px var(--color-brand-400);
+  }
+
+  .ui-label {
+    display: block;
+    margin-bottom: calc(var(--space) * 1.5);
+    font-size: var(--text-xs);
+    line-height: var(--text-xs-lh);
+    color: var(--color-gray-500);
+  }
+
+  /* ── Botões ── */
+  .btn,
+  .btn-primary,
+  .btn-outline,
+  .btn-danger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: calc(var(--space) * 1.5);
+    border-radius: var(--radius-lg);
+    padding: calc(var(--space) * 2) calc(var(--space) * 4);
+    font-size: var(--text-sm);
+    line-height: var(--text-sm-lh);
+    font-weight: 500;
+    cursor: pointer;
+    transition: color var(--duration) var(--ease), background-color var(--duration) var(--ease),
+      border-color var(--duration) var(--ease), box-shadow var(--duration) var(--ease);
+  }
+
+  .btn:disabled,
+  .btn-primary:disabled,
+  .btn-outline:disabled,
+  .btn-danger:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .btn-primary {
+    background-color: var(--color-brand-400);
+    color: #fff;
+    box-shadow: 0 6px 18px -8px var(--accent-glow);
+  }
+
+  .btn-primary:active {
+    background-color: var(--color-brand-600);
+  }
+
+  .btn-outline {
+    border: 1px solid var(--color-gray-200);
+    background-color: var(--btn-outline-bg);
+    color: var(--color-gray-700);
+  }
+
+  .btn-danger {
+    background-color: var(--danger-bg);
+    color: #fff;
+  }
+
+  /*
+   * Markdown renderizado pelo assistente de IA.
+   * Precisa ser global: conteúdo injetado via [innerHTML] não recebe os
+   * estilos encapsulados do componente.
+   */
+  .md {
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    color: var(--md-fg);
+  }
+
+  .md > * + * {
+    margin-top: calc(var(--space) * 3);
+  }
+
+  .md h1 {
+    margin-top: calc(var(--space) * 5);
+    font-size: var(--text-base);
+    line-height: var(--text-base-lh);
+    font-weight: 600;
+    color: var(--color-stone-900);
+  }
+
+  .md h2 {
+    margin-top: calc(var(--space) * 5);
+    font-size: var(--text-sm);
+    line-height: var(--text-sm-lh);
+    font-weight: 600;
+    color: var(--color-stone-900);
+  }
+
+  .md h3,
+  .md h4 {
+    margin-top: calc(var(--space) * 4);
+    font-size: var(--text-sm);
+    line-height: var(--text-sm-lh);
+    font-weight: 500;
+    color: var(--color-stone-900);
+  }
+
+  .md ul {
+    list-style-type: disc;
+    padding-left: calc(var(--space) * 5);
+  }
+
+  .md ol {
+    list-style-type: decimal;
+    padding-left: calc(var(--space) * 5);
+  }
+
+  .md ul > * + *,
+  .md ol > * + * {
+    margin-top: calc(var(--space) * 1);
+  }
+
+  .md li > ul,
+  .md li > ol {
+    margin-top: calc(var(--space) * 1);
+  }
+
+  .md a {
+    color: var(--color-brand-700);
+    text-decoration-line: underline;
+    text-underline-offset: 2px;
+  }
+
+  .md strong {
+    font-weight: 600;
+    color: var(--color-stone-900);
+  }
+
+  .md code {
+    border-radius: var(--radius-sm);
+    background-color: var(--color-stone-100);
+    padding: calc(var(--space) * 0.5) calc(var(--space) * 1);
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    color: var(--code-inline-fg);
+  }
+
+  .md pre {
+    overflow-x: auto;
+    border: 1px solid var(--code-border);
+    border-radius: var(--radius-lg);
+    padding: calc(var(--space) * 3);
+    font-size: var(--text-xs);
+    line-height: var(--text-xs-lh);
+    background: var(--code-bg);
+    color: var(--code-fg);
+  }
+
+  .md pre code {
+    background-color: transparent;
+    padding: 0;
+    color: inherit;
+  }
+
+  .md blockquote {
+    border-left: 2px solid var(--color-brand-300);
+    padding-left: calc(var(--space) * 3);
+    color: var(--md-muted);
+    font-style: italic;
+  }
+
+  .md hr {
+    margin-block: calc(var(--space) * 4);
+    border-color: var(--color-stone-200);
+  }
+
+  .md table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-sm);
+    line-height: var(--text-sm-lh);
+  }
+
+  .md thead {
+    background-color: var(--color-stone-50);
+  }
+
+  .md th {
+    padding: calc(var(--space) * 2) calc(var(--space) * 3);
+    border-bottom: 1px solid var(--color-stone-200);
+    text-align: left;
+    font-weight: 500;
+    white-space: nowrap;
+    color: var(--color-stone-500);
+  }
+
+  .md td {
+    padding: calc(var(--space) * 2) calc(var(--space) * 3);
+    border-bottom: 1px solid var(--color-stone-100);
+    vertical-align: top;
+  }
+
+  .md tr:last-child td {
+    border-bottom-width: 0;
+  }
+
+  /* ── Estados de hover: só em ponteiros de verdade ── */
+  @media (hover: hover) {
+    .btn-primary:hover:not(:disabled) {
+      background-color: var(--color-brand-500);
+      box-shadow: 0 8px 22px -8px var(--accent-glow);
+    }
+
+    .btn-outline:hover:not(:disabled) {
+      background-color: var(--btn-outline-bg-hover);
+      border-color: var(--btn-outline-border-hover);
+    }
+
+    .btn-danger:hover:not(:disabled) {
+      background-color: var(--danger-bg-hover);
+    }
+
+    .md a:hover {
+      color: var(--color-brand-800);
+    }
+  }
+
+  @media (width >= 40rem) {
+    .page {
+      padding: calc(var(--space) * 6);
+    }
+
+    .page-header {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+
+}
