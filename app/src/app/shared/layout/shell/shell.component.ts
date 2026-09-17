@@ -2,7 +2,6 @@ import { Component, signal, computed, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../../core/services/auth/auth.service';
-import { TemaToggleComponent } from '../../components/tema-toggle/tema-toggle.component';
 
 interface NavItem {
   label: string;
@@ -13,7 +12,7 @@ interface NavItem {
 @Component({
   selector: 'app-shell',
   standalone: true,
-  imports: [CommonModule, RouterModule, RouterLinkActive, TemaToggleComponent],
+  imports: [CommonModule, RouterModule, RouterLinkActive],
   templateUrl: './shell.component.html',
 })
 export class ShellComponent {

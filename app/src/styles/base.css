@@ -159,8 +159,12 @@
     resize: vertical;
   }
 
+  /*
+   * Placeholder derivado da própria cor do campo, como era antes: assim
+   * ele acompanha qualquer text-* aplicado no template e os dois temas.
+   */
   ::placeholder {
-    color: var(--color-gray-400);
+    color: color-mix(in oklab, currentcolor 50%, transparent);
     opacity: 1;
   }
 

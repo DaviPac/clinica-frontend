@@ -107,13 +107,9 @@
         </a>
       </div>
 
-      <div class="mt-2">
-        <app-tema-toggle [mostrarRotulo]="sidebarAberta()" />
-      </div>
-
       <button
         (click)="sidebarAberta.set(!sidebarAberta())"
-        class="mt-1 w-full flex items-center justify-center p-1.5 text-stone-400
+        class="mt-2 w-full flex items-center justify-center p-1.5 text-stone-400
                hover:text-stone-600 hover:bg-stone-50 rounded-md transition-colors
                cursor-pointer border-none bg-transparent text-xs gap-1.5">
         @if (sidebarAberta()) {

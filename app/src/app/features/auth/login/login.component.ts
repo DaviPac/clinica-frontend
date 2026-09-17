@@ -3,12 +3,11 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth/auth.service';
-import { TemaToggleComponent } from '../../../shared/components/tema-toggle/tema-toggle.component';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, TemaToggleComponent],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './login.component.html',
 })
 export class LoginComponent {

@@ -15,12 +15,12 @@
   -->
   <script>
     (function () {
-      var tema;
-      try { tema = localStorage.getItem('tema'); } catch (e) { /* sem storage */ }
-      if (tema !== 'claro' && tema !== 'escuro') {
-        tema = window.matchMedia &&
-          window.matchMedia('(prefers-color-scheme: dark)').matches ? 'escuro' : 'claro';
-      }
+      var escolha;
+      try { escolha = localStorage.getItem('tema'); } catch (e) { /* sem storage */ }
+      var tema = escolha === 'claro' || escolha === 'escuro'
+        ? escolha
+        : (window.matchMedia &&
+           window.matchMedia('(prefers-color-scheme: dark)').matches ? 'escuro' : 'claro');
       document.documentElement.dataset.theme = tema;
       document.documentElement.style.backgroundColor = tema === 'escuro' ? '#0a0e16' : '#fafaf9';
     })();

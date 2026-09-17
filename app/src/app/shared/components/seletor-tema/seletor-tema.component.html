@@ -1,0 +1,32 @@
+<div
+  role="radiogroup"
+  aria-label="Tema da interface"
+  class="inline-flex items-center gap-1 p-1 rounded-lg border border-gray-200 bg-gray-50">
+  @for (op of opcoes; track op.valor) {
+    <button
+      type="button"
+      role="radio"
+      [attr.aria-checked]="preferencia() === op.valor"
+      (click)="selecionar(op.valor)"
+      [class]="
+        preferencia() === op.valor
+          ? 'bg-brand-400 text-on-accent'
+          : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+      "
+      class="flex items-center gap-1.5 text-xs font-medium rounded-md px-3 py-2
+             transition-colors cursor-pointer border-none">
+      <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        @if (op.valor === 'claro') {
+          <circle cx="12" cy="12" r="4" />
+        }
+        <path [attr.d]="op.icone" />
+      </svg>
+      {{ op.rotulo }}
+    </button>
+  }
+</div>
+
+@if (descricao()) {
+  <p class="text-xs text-gray-400 mt-2">{{ descricao() }}</p>
+}
