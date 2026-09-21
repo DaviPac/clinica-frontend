@@ -1,0 +1,9 @@
+<div class="kpi__icone"><ng-content /></div>
+
+<div>
+  <p class="kpi__rotulo">{{ rotulo() }}</p>
+  <p class="kpi__valor" [class.kpi__valor--tabular]="tabular()">{{ valor() }}</p>
+  @if (detalhe()) {
+    <p class="kpi__detalhe">{{ detalhe() }}</p>
+  }
+</div>

@@ -1,0 +1,52 @@
+:host {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--space) * 2);
+  padding: calc(var(--space) * 2) calc(var(--space) * 3);
+  border: 1px solid var(--color-amber-100);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-amber-50);
+}
+
+.pendente__quem {
+  flex: 1;
+  min-width: 0;
+}
+
+.pendente__paciente {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-amber-900);
+}
+
+.pendente__quando {
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-amber-600);
+}
+
+.pendente__acao {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--space) * 1);
+  flex-shrink: 0;
+  padding: calc(var(--space) * 1) calc(var(--space) * 2.5);
+  border: none;
+  border-radius: var(--radius-md);
+  background-color: var(--color-amber-100);
+  font-size: 10px;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--color-amber-800);
+  cursor: pointer;
+  transition: background-color var(--duration) var(--ease);
+}
+
+@media (hover: hover) {
+  .pendente__acao:hover {
+    background-color: var(--color-amber-200);
+  }
+}

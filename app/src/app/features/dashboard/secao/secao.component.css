@@ -1,0 +1,76 @@
+:host {
+  display: block;
+  padding: 1rem;
+  border: 1px solid var(--color-gray-100);
+  border-radius: 1rem;
+  background: var(--color-white);
+  box-shadow: var(--shadow-sm);
+}
+
+:host([data-tom='ambar'])    { border-color: var(--color-amber-200); }
+:host([data-tom='vermelho']) { border-color: var(--color-red-200); }
+:host([data-tom='violeta'])  { border-color: var(--color-violet-200); }
+
+.secao__cabecalho {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.secao__identidade {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--space) * 2);
+}
+
+/* A barrinha vertical que identifica o assunto do bloco */
+.secao__marca {
+  width: calc(var(--space) * 1.5);
+  height: calc(var(--space) * 4);
+  border-radius: 9999px;
+  background-color: var(--color-brand-400);
+}
+
+:host([data-tom='ambar'])    .secao__marca { background-color: var(--color-amber-400); }
+:host([data-tom='vermelho']) .secao__marca { background-color: var(--color-red-400); }
+:host([data-tom='violeta'])  .secao__marca { background-color: var(--color-violet-400); }
+
+.secao__titulo {
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+  font-weight: 600;
+  color: var(--color-gray-800);
+}
+
+:host([data-tom='ambar'])    .secao__titulo { color: var(--color-amber-800); }
+:host([data-tom='vermelho']) .secao__titulo { color: var(--color-red-800); }
+:host([data-tom='violeta'])  .secao__titulo { color: var(--color-violet-800); }
+
+.secao__contador {
+  padding: calc(var(--space) * 0.5) calc(var(--space) * 2);
+  border-radius: 9999px;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+:host([data-tom='ambar']) .secao__contador {
+  background-color: var(--color-amber-100);
+  color: var(--color-amber-600);
+}
+
+:host([data-tom='vermelho']) .secao__contador {
+  background-color: var(--color-red-100);
+  color: var(--color-red-600);
+}
+
+/* Sobe até encostar no cabeçalho, de onde é continuação */
+.secao__nota {
+  margin-top: calc(var(--space) * -1);
+  margin-bottom: calc(var(--space) * 3);
+  font-size: 10px;
+}
+
+:host([data-tom='ambar'])    .secao__nota { color: var(--color-amber-600); }
+:host([data-tom='vermelho']) .secao__nota { color: var(--color-red-500); }
+:host([data-tom='violeta'])  .secao__nota { color: var(--color-violet-500); }

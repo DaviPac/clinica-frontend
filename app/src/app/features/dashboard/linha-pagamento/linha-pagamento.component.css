@@ -1,0 +1,124 @@
+:host {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--space) * 2);
+  padding: calc(var(--space) * 2) calc(var(--space) * 3);
+  border: 1px solid var(--color-red-100);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-red-50);
+}
+
+.pagamento__quem {
+  flex: 1;
+  min-width: 0;
+}
+
+.pagamento__nome-linha {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: calc(var(--space) * 1.5);
+}
+
+.pagamento__paciente {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-red-900);
+}
+
+.pagamento__pacote {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--space) * 0.5);
+  flex-shrink: 0;
+  padding: calc(var(--space) * 0.5) calc(var(--space) * 1.5);
+  border-radius: 9999px;
+  background-color: var(--color-violet-100);
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--color-violet-700);
+}
+
+.pagamento__quando {
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-red-400);
+}
+
+.pagamento__valor {
+  margin-top: calc(var(--space) * 0.5);
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+}
+
+.pagamento__valor--avulso {
+  font-weight: 700;
+  color: var(--color-red-600);
+}
+
+.pagamento__valor--pacote {
+  color: var(--color-violet-600);
+}
+
+.pagamento__valor-forte {
+  font-weight: 700;
+}
+
+.pagamento__valor-nota {
+  font-size: 9px;
+  color: var(--color-violet-400);
+}
+
+.pagamento__acao {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--space) * 1);
+  flex-shrink: 0;
+  padding: calc(var(--space) * 1) calc(var(--space) * 2.5);
+  border: none;
+  border-radius: var(--radius-md);
+  background-color: var(--color-red-100);
+  font-size: 10px;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--color-red-700);
+  cursor: pointer;
+  transition: color var(--duration) var(--ease), background-color var(--duration) var(--ease);
+}
+
+.pagamento__acao:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagamento__roda {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border: 1.5px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  opacity: 0.6;
+  animation: spin 0.7s linear infinite;
+}
+
+.pagamento__pendente {
+  flex-shrink: 0;
+  padding: calc(var(--space) * 1) calc(var(--space) * 2);
+  border-radius: var(--radius-md);
+  background-color: var(--color-red-100);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--color-red-700);
+  cursor: default;
+}
+
+@media (hover: hover) {
+  .pagamento__acao:hover {
+    background-color: var(--color-emerald-100);
+    color: var(--color-emerald-700);
+  }
+}

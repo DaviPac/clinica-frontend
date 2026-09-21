@@ -1,0 +1,124 @@
+:host {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.625rem 0.25rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.15s ease;
+}
+
+:host(:hover) {
+  background-color: var(--color-gray-50);
+}
+
+/* A sessão de hoje ganha destaque na lista */
+:host([data-hoje]) {
+  padding: 0.625rem 0.75rem;
+  border: 1px solid var(--color-brand-200);
+  border-radius: 0.75rem;
+  background-color: var(--color-brand-50);
+}
+
+:host([data-hoje]:hover) {
+  background-color: var(--color-brand-100);
+}
+
+.linha__quando {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  min-width: 48px;
+  text-align: center;
+}
+
+.linha__hoje {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+  color: var(--color-brand-400);
+}
+
+.linha__dia-semana {
+  font-size: 9px;
+  text-transform: capitalize;
+  color: var(--color-gray-400);
+}
+
+.linha__dia {
+  font-size: 10px;
+  line-height: var(--leading-tight);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-gray-700);
+}
+
+.linha__hora {
+  margin-top: calc(var(--space) * 0.5);
+  font-size: 11px;
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-gray-900);
+}
+
+.linha__filete {
+  flex-shrink: 0;
+  width: 1px;
+  height: calc(var(--space) * 8);
+  margin-inline: calc(var(--space) * 1);
+  background-color: var(--color-gray-100);
+}
+
+.linha__quem {
+  flex: 1;
+  min-width: 0;
+}
+
+.linha__paciente {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  font-weight: 600;
+  color: var(--color-gray-900);
+}
+
+.linha__secundario {
+  margin-top: calc(var(--space) * 0.5);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 10px;
+  color: var(--color-gray-400);
+}
+
+.linha__estado {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--space) * 1.5);
+  flex-shrink: 0;
+}
+
+.linha__editar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(var(--space) * 6);
+  height: calc(var(--space) * 6);
+  border: none;
+  border-radius: var(--radius-md);
+  background-color: transparent;
+  color: var(--color-gray-300);
+  cursor: pointer;
+  transition: color var(--duration) var(--ease), background-color var(--duration) var(--ease);
+}
+
+@media (hover: hover) {
+  .linha__editar:hover {
+    background-color: var(--color-brand-100);
+    color: var(--color-brand-400);
+  }
+}

@@ -1,0 +1,103 @@
+:host {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem;
+  border: 1px solid var(--color-gray-100);
+  border-radius: 1rem;
+  background: var(--color-white);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+}
+
+:host(:hover) {
+  border-color: var(--color-gray-300);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-1px);
+}
+
+/* Há algo a resolver neste indicador */
+:host([data-alerta]) {
+  border-color: var(--color-amber-200);
+}
+
+.kpi__icone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 0.75rem;
+}
+
+.kpi__rotulo {
+  margin-bottom: calc(var(--space) * 1);
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+}
+
+.kpi__valor {
+  font-size: var(--text-2xl);
+  line-height: 1;
+  font-weight: 700;
+}
+
+:host([data-tamanho='medio']) .kpi__valor {
+  font-size: var(--text-lg);
+}
+
+.kpi__valor--tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+.kpi__detalhe {
+  margin-top: calc(var(--space) * 0.5);
+  font-size: 10px;
+}
+
+/* ──────────────────────────────────────────────
+   Tons — o neutro é o indicador sem pendência
+─────────────────────────────────────────────── */
+:host([data-tom='neutro']) .kpi__icone {
+  background-color: var(--color-brand-200);
+  color: var(--color-brand-400);
+}
+:host([data-tom='neutro']) .kpi__rotulo,
+:host([data-tom='neutro']) .kpi__detalhe { color: var(--color-gray-400); }
+:host([data-tom='neutro']) .kpi__valor { color: var(--color-gray-900); }
+
+:host([data-tom='ambar']) .kpi__icone {
+  background-color: var(--color-amber-50);
+  color: var(--color-amber-600);
+}
+:host([data-tom='ambar']) .kpi__rotulo  { color: var(--color-amber-600); }
+:host([data-tom='ambar']) .kpi__valor   { color: var(--color-amber-700); }
+:host([data-tom='ambar']) .kpi__detalhe { color: var(--color-amber-500); }
+
+:host([data-tom='vermelho']) .kpi__icone {
+  background-color: var(--color-red-50);
+  color: var(--color-red-600);
+}
+:host([data-tom='vermelho']) .kpi__rotulo  { color: var(--color-red-500); }
+:host([data-tom='vermelho']) .kpi__valor   { color: var(--color-red-600); }
+:host([data-tom='vermelho']) .kpi__detalhe { color: var(--color-red-400); }
+
+:host([data-tom='violeta']) .kpi__icone {
+  background-color: var(--color-violet-50);
+  color: var(--color-violet-500);
+}
+:host([data-tom='violeta']) .kpi__rotulo  { color: var(--color-violet-500); }
+:host([data-tom='violeta']) .kpi__valor   { color: var(--color-violet-700); }
+:host([data-tom='violeta']) .kpi__detalhe { color: var(--color-violet-400); }
+
+:host([data-tom='esmeralda']) .kpi__icone {
+  background-color: var(--color-emerald-50);
+  color: var(--color-emerald-600);
+}
+:host([data-tom='esmeralda']) .kpi__rotulo  { color: var(--color-emerald-600); }
+:host([data-tom='esmeralda']) .kpi__valor   { color: var(--color-emerald-700); }
+:host([data-tom='esmeralda']) .kpi__detalhe { color: var(--color-emerald-500); }

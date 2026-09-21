@@ -1,0 +1,45 @@
+<div class="pagamento__quem">
+  <div class="pagamento__nome-linha">
+    <p class="pagamento__paciente">{{ paciente() }}</p>
+    @if (valorPacote() !== null) {
+      <span class="pagamento__pacote">
+        <svg width="8" height="8" viewBox="0 0 10 10" fill="none">
+          <rect x="1" y="3" width="8" height="6" rx="1" stroke="currentColor" stroke-width="1.2"/>
+          <path d="M3.5 3V2a1.5 1.5 0 0 1 3 0v1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+        Pacote
+      </span>
+    }
+  </div>
+
+  <p class="pagamento__quando">{{ quando() }}</p>
+
+  @if (valorPacote() !== null) {
+    <p class="pagamento__valor pagamento__valor--pacote">
+      <span class="pagamento__valor-forte">{{ valorPacote() }}</span>
+      <span class="pagamento__valor-nota"> · total do pacote</span>
+    </p>
+  } @else {
+    <p class="pagamento__valor pagamento__valor--avulso">{{ valor() }}</p>
+  }
+</div>
+
+@if (podeMarcar()) {
+  <button
+    type="button"
+    class="pagamento__acao"
+    title="Marcar como pago"
+    [disabled]="atualizando()"
+    (click)="marcarPago.emit()">
+    @if (atualizando()) {
+      <span class="pagamento__roda"></span>
+    } @else {
+      <svg width="9" height="9" viewBox="0 0 10 10" fill="none">
+        <path d="M1.5 5l2.5 2.5 4.5-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    }
+    Pago
+  </button>
+} @else {
+  <span class="pagamento__pendente">Pendente</span>
+}
