@@ -15,12 +15,14 @@ import { Component, computed, input } from '@angular/core';
 export class AvatarComponent {
   nome = input('');
   tamanho = input<'p' | 'm' | 'g' | 'gg'>('m');
+  /** Quantas iniciais mostrar. */
+  letras = input(2);
 
   readonly iniciais = computed(() =>
     this.nome()
       .split(' ')
       .filter(Boolean)
-      .slice(0, 2)
+      .slice(0, this.letras())
       .map((parte) => parte[0])
       .join('')
       .toUpperCase(),

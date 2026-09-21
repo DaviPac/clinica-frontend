@@ -21,3 +21,19 @@
 :host(:disabled) {
   opacity: 0.5;
 }
+
+:host([data-estado='invalido']) {
+  border-color: var(--color-red-300);
+}
+
+:host([data-estado='aviso']) {
+  border-color: var(--color-amber-400);
+}
+
+:host([data-fonte='mono']) {
+  font-family: var(--font-mono);
+}
+
+:host(textarea) {
+  resize: none;
+}

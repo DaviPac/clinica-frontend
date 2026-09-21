@@ -1,9 +1,11 @@
 :host {
   display: block;
-  margin-bottom: calc(var(--space) * 6);
 }
 
 .voltar__link {
+  /* a margem fica no link, e não no host: como caixa inline-atômica ele
+     participa da altura da linha, e mover isso desloca a tela em 2px. */
+  margin-bottom: calc(var(--space) * 6);
   display: inline-flex;
   align-items: center;
   gap: calc(var(--space) * 1.5);

@@ -1,0 +1,32 @@
+.modal-paciente__aviso {
+  display: block;
+  margin-bottom: calc(var(--space) * 4);
+}
+
+.modal-paciente__form {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--space) * 4);
+}
+
+.modal-paciente__dupla {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: calc(var(--space) * 3);
+}
+
+.modal-paciente__acoes {
+  display: flex;
+  gap: calc(var(--space) * 2.5);
+  margin-top: calc(var(--space) * 2);
+}
+
+.modal-paciente__acoes > * {
+  flex: 1;
+}
+
+@media (width >= 40rem) {
+  .modal-paciente__dupla {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

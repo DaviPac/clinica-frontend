@@ -1,0 +1,117 @@
+.pacientes__novo {
+  width: 100%;
+}
+
+.pacientes__busca,
+.pacientes__filtros,
+.pacientes__erro {
+  margin-bottom: calc(var(--space) * 4);
+}
+
+.pacientes__filtros {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  column-gap: calc(var(--space) * 4);
+  row-gap: calc(var(--space) * 2);
+}
+
+.pacientes__erro {
+  display: block;
+}
+
+.pacientes__carregando {
+  padding-block: calc(var(--space) * 12);
+  color: var(--color-stone-400);
+}
+
+/* ── Linhas da tabela ── */
+.pacientes__linha {
+  border-bottom: 1px solid var(--color-stone-100);
+  transition: background-color var(--duration) var(--ease);
+}
+
+.pacientes__linha:last-child {
+  border-bottom-width: 0;
+}
+
+.pacientes__nome {
+  font-weight: 500;
+  color: var(--color-stone-900);
+}
+
+.pacientes__cpf {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  white-space: nowrap;
+  color: var(--color-stone-500);
+}
+
+.pacientes__dado {
+  white-space: nowrap;
+  color: var(--color-stone-500);
+}
+
+.pacientes__acoes {
+  text-align: right;
+}
+
+.pacientes__celula-vazia {
+  padding: 0;
+}
+
+.pacientes__ver {
+  /* inline de propósito: como inline-block, o padding vertical aumentaria
+     a altura da linha da tabela. */
+  padding: calc(var(--space) * 1) calc(var(--space) * 2.5);
+  border: 1px solid color-mix(in srgb, var(--color-brand-400) 40%, transparent);
+  border-radius: var(--radius-md);
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  color: var(--color-brand-500);
+  text-decoration: none;
+  transition: background-color var(--duration) var(--ease);
+}
+
+/* ── Nota de rodapé ── */
+.pacientes__nota {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--space) * 2);
+  margin-top: calc(var(--space) * 3);
+  padding: calc(var(--space) * 2.5) calc(var(--space) * 3);
+  border: 1px solid var(--color-stone-200);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-stone-50);
+}
+
+.pacientes__ponto {
+  flex-shrink: 0;
+  width: calc(var(--space) * 2);
+  height: calc(var(--space) * 2);
+  border-radius: 50%;
+  background-color: var(--color-brand-400);
+}
+
+.pacientes__nota-texto {
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  color: var(--color-stone-500);
+}
+
+@media (hover: hover) {
+  .pacientes__linha:hover {
+    background-color: var(--color-stone-50);
+  }
+
+  .pacientes__ver:hover {
+    background-color: color-mix(in srgb, var(--color-brand-400) 10%, transparent);
+  }
+}
+
+@media (width >= 40rem) {
+  .pacientes__novo {
+    width: auto;
+  }
+}

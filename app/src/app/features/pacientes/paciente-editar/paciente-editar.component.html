@@ -1,135 +1,111 @@
-<div class="page max-w-2xl">
+<div appPagina class="editar">
 
-  <!-- Voltar -->
-  <a
-    [routerLink]="paciente() ? ['/pacientes', paciente()!.id] : ['/pacientes']"
-    class="inline-flex items-center gap-1.5 text-sm text-gray-500
-           hover:text-gray-900 transition-colors mb-6">
-    ← Voltar
-  </a>
+  <app-link-voltar
+    [rota]="paciente() ? '/pacientes/' + paciente()!.id : '/pacientes'"
+    texto="Voltar" />
 
   @if (carregando()) {
-    <p class="text-sm text-gray-400">Carregando...</p>
+    <app-carregando texto="Carregando..." espaco="nenhum" />
   }
 
   @if (erro()) {
-    <app-alert class="block">{{ erro() }}</app-alert>
+    <app-alert class="editar__alerta">{{ erro() }}</app-alert>
   }
 
   @if (paciente(); as p) {
-    <div class="bg-white border border-gray-200 rounded-xl p-4 sm:p-6">
+    <app-cartao>
 
-      <div class="mb-6 pb-6 border-b border-gray-100">
-        <h1 class="text-lg font-medium text-gray-900">Editar paciente</h1>
-        <p class="text-sm text-gray-500">Atualize os dados de {{ p.nome }}</p>
+      <div class="editar__cabecalho">
+        <h1 class="editar__titulo">Editar paciente</h1>
+        <p class="editar__subtitulo">Atualize os dados de {{ p.nome }}</p>
       </div>
 
       @if (erroSalvar()) {
-        <app-alert class="block mb-4">{{ erroSalvar() }}</app-alert>
+        <app-alert class="editar__alerta editar__alerta--espacado">{{ erroSalvar() }}</app-alert>
       }
 
-      <form [formGroup]="form" (ngSubmit)="salvar()" class="flex flex-col gap-4">
+      <form class="editar__form" [formGroup]="form" (ngSubmit)="salvar()">
 
-        <div>
-          <label class="ui-label">
-            Nome completo <span class="text-red-500">*</span>
-          </label>
+        <app-campo-form
+          rotulo="Nome completo"
+          [obrigatorio]="true"
+          [erro]="campoInvalido('nome') ? 'Informe o nome completo (mínimo 3 caracteres).' : null">
           <input
+            appCampo
             type="text"
             formControlName="nome"
             placeholder="Maria Oliveira"
-            [class.border-red-300]="campoInvalido('nome')"
-            class="ui-input"
+            [estado]="campoInvalido('nome') ? 'invalido' : 'normal'"
           />
-          @if (campoInvalido('nome')) {
-            <p class="text-xs text-red-600 mt-1">Informe o nome completo (mínimo 3 caracteres).</p>
-          }
-        </div>
+        </app-campo-form>
 
-        <div>
-          <label class="ui-label">CPF</label>
-          <input
-            type="text"
-            formControlName="cpf"
-            placeholder="123.456.789-00"
-            class="ui-input font-mono"
-          />
-        </div>
+        <app-campo-form rotulo="CPF">
+          <input appCampo [mono]="true" type="text" formControlName="cpf" placeholder="123.456.789-00" />
+        </app-campo-form>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div>
-            <label class="ui-label">Telefone</label>
+        <div class="editar__dupla">
+          <app-campo-form
+            rotulo="Telefone"
+            [erro]="foiLimpo('telefone') ? 'Não é possível limpar este campo no momento.' : null">
             <input
+              appCampo
               type="text"
               formControlName="telefone"
               placeholder="(81) 99999-0000"
-              [class.border-amber-400]="foiLimpo('telefone')"
-              class="ui-input"
+              [estado]="foiLimpo('telefone') ? 'aviso' : 'normal'"
             />
-            @if (foiLimpo('telefone')) {
-              <p class="text-xs text-amber-700 mt-1">Não é possível limpar este campo no momento.</p>
-            }
-          </div>
-          <div>
-            <label class="ui-label">Nascimento</label>
+          </app-campo-form>
+
+          <app-campo-form
+            rotulo="Nascimento"
+            [erro]="foiLimpo('dataNascimento') ? 'Não é possível limpar este campo no momento.' : null">
             <input
+              appCampo
               type="date"
               formControlName="dataNascimento"
-              [class.border-amber-400]="foiLimpo('dataNascimento')"
-              class="ui-input"
+              [estado]="foiLimpo('dataNascimento') ? 'aviso' : 'normal'"
             />
-            @if (foiLimpo('dataNascimento')) {
-              <p class="text-xs text-amber-700 mt-1">Não é possível limpar este campo no momento.</p>
-            }
-          </div>
+          </app-campo-form>
         </div>
 
-        <div>
-          <label class="ui-label">RG</label>
+        <app-campo-form
+          rotulo="RG"
+          tomErro="aviso"
+          [erro]="foiLimpo('rg') ? 'Não é possível limpar este campo no momento.' : null">
           <input
+            appCampo
+            [mono]="true"
             type="text"
             formControlName="rg"
             placeholder="00.000.000-0"
-            [class.border-amber-400]="foiLimpo('rg')"
-            class="ui-input font-mono"
+            [estado]="foiLimpo('rg') ? 'aviso' : 'normal'"
           />
-          @if (foiLimpo('rg')) {
-            <p class="text-xs text-amber-700 mt-1">Não é possível limpar este campo no momento.</p>
-          }
-        </div>
+        </app-campo-form>
 
-        <div>
-          <label class="ui-label">Endereço completo</label>
+        <app-campo-form
+          rotulo="Endereço completo"
+          tomErro="aviso"
+          [erro]="foiLimpo('enderecoCompleto') ? 'Não é possível limpar este campo no momento.' : null">
           <textarea
+            appCampo
             formControlName="enderecoCompleto"
             rows="2"
             placeholder="Rua, número, bairro, cidade"
-            [class.border-amber-400]="foiLimpo('enderecoCompleto')"
-            class="ui-input resize-none">
+            [estado]="foiLimpo('enderecoCompleto') ? 'aviso' : 'normal'">
           </textarea>
-          @if (foiLimpo('enderecoCompleto')) {
-            <p class="text-xs text-amber-700 mt-1">Não é possível limpar este campo no momento.</p>
-          }
-        </div>
+        </app-campo-form>
 
-        <div class="flex gap-2.5 mt-2 pt-4 border-t border-gray-100">
-          <button
-            type="button"
-            (click)="cancelar()"
-            [disabled]="salvando()"
-            class="btn-outline flex-1">
+        <div class="editar__acoes">
+          <button appBotao variante="contorno" type="button" (click)="cancelar()" [disabled]="salvando()">
             Cancelar
           </button>
-          <button
-            type="submit"
-            [disabled]="salvando()"
-            class="btn-primary flex-1">
+          <button appBotao type="submit" [disabled]="salvando()">
             {{ salvando() ? 'Salvando...' : 'Salvar alterações' }}
           </button>
         </div>
 
       </form>
-    </div>
+    </app-cartao>
   }
 
 </div>

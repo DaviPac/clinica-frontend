@@ -1,123 +1,81 @@
-<div class="page max-w-2xl">
+<div appPagina class="detalhe">
 
-  <!-- Voltar -->
-  <a
-    routerLink="/pacientes"
-    class="inline-flex items-center gap-1.5 text-sm text-gray-500
-           hover:text-gray-900 transition-colors mb-6">
-    ← Voltar para pacientes
-  </a>
+  <app-link-voltar rota="/pacientes" texto="Voltar para pacientes" />
 
   @if (carregando()) {
-    <p class="text-sm text-gray-400">Carregando...</p>
+    <app-carregando texto="Carregando..." espaco="nenhum" />
   }
 
   @if (erro()) {
-    <app-alert class="block">{{ erro() }}</app-alert>
+    <app-alert class="detalhe__alerta">{{ erro() }}</app-alert>
   }
 
   @if (paciente(); as p) {
-    <!-- Card de dados -->
-    <div class="bg-white border border-gray-200 rounded-xl p-4 sm:p-6">
-      <!-- Avatar + nome + acoes -->
-      <div class="flex flex-col sm:flex-row sm:items-center gap-4 mb-6 pb-6 border-b border-gray-100">
-        <div class="flex items-center gap-4 flex-1 min-w-0">
-          <div class="w-12 h-12 rounded-full bg-brand-400 flex items-center
-                      justify-center text-brand-800 font-medium text-sm shrink-0"
-              [class.opacity-50]="!p.ativo">
-            {{ p.nome.charAt(0).toUpperCase() }}
-          </div>
-          <div class="flex-1 min-w-0">
-            <div class="flex items-center gap-2 flex-wrap">
-              <h1 class="text-lg font-medium text-gray-900">{{ p.nome }}</h1>
+    <app-cartao>
+
+      <div class="detalhe__topo">
+        <div class="detalhe__identidade">
+          <app-avatar
+            class="detalhe__avatar"
+            [class.detalhe__avatar--inativo]="!p.ativo"
+            [nome]="p.nome"
+            [letras]="1"
+            tamanho="g" />
+
+          <div class="detalhe__nomes">
+            <div class="detalhe__linha-nome">
+              <h1 class="detalhe__nome">{{ p.nome }}</h1>
               @if (!p.ativo) {
-                <span class="inline-flex items-center gap-1 text-xs font-medium
-                            text-stone-600 bg-stone-100 border border-stone-200
-                            px-2 py-0.5 rounded-full">
-                  <span class="w-1.5 h-1.5 rounded-full bg-stone-400"></span>
+                <span class="detalhe__inativo">
+                  <span class="detalhe__ponto"></span>
                   Inativo
                 </span>
               }
             </div>
-            <p class="text-sm text-gray-500">Paciente #{{ p.id }}</p>
+            <p class="detalhe__id">Paciente #{{ p.id }}</p>
           </div>
         </div>
 
-        <!-- Acoes -->
-        <div class="flex items-center gap-2 shrink-0">
+        <div class="detalhe__acoes">
           @if (p.ativo) {
-            <button
-              type="button"
-              (click)="irParaEdicao()"
-              class="text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-100
-                    px-3 py-1.5 rounded-lg transition-colors cursor-pointer">
+            <button type="button" class="detalhe__acao" (click)="irParaEdicao()">
               Editar
             </button>
-            <button
-              type="button"
-              (click)="abrirModal('inativar')"
-              class="text-sm text-red-600 hover:text-red-700 hover:bg-red-50
-                    px-3 py-1.5 rounded-lg transition-colors cursor-pointer">
+            <button type="button" class="detalhe__acao detalhe__acao--perigo" (click)="abrirModal('inativar')">
               {{ auth.isAdmin() ? 'Inativar paciente' : 'Remover vínculo' }}
             </button>
           } @else if (auth.isAdmin()) {
-            <button
-              type="button"
-              (click)="abrirModal('ativar')"
-              class="text-sm text-emerald-700 hover:text-emerald-800 hover:bg-emerald-50
-                    border border-emerald-200 px-3 py-1.5 rounded-lg
-                    transition-colors cursor-pointer">
+            <button type="button" class="detalhe__acao detalhe__acao--reativar" (click)="abrirModal('ativar')">
               Reativar
             </button>
           }
         </div>
       </div>
 
-      <!-- Dados -->
-      <dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-5 text-sm">
-        <div>
-          <dt class="text-xs text-gray-500 mb-1">CPF</dt>
-          <dd class="font-mono text-gray-900">{{ p.cpf }}</dd>
-        </div>
-        <div>
-          <dt class="text-xs text-gray-500 mb-1">Telefone</dt>
-          <dd class="text-gray-900">{{ p.telefone ?? '—' }}</dd>
-        </div>
-        <div>
-          <dt class="text-xs text-gray-500 mb-1">Data de nascimento</dt>
-          <dd class="text-gray-900">{{ formatarData(p.dataNascimento) }}</dd>
-        </div>
-        <div>
-          <dt class="text-xs text-gray-500 mb-1">Idade</dt>
-          <dd class="text-gray-900">{{ calcularIdade(p.dataNascimento) }}</dd>
-        </div>
+      <dl class="detalhe__dados">
+        <app-item-descricao rotulo="CPF" [mono]="true">{{ p.cpf }}</app-item-descricao>
+        <app-item-descricao rotulo="Telefone">{{ p.telefone ?? '—' }}</app-item-descricao>
+        <app-item-descricao rotulo="Data de nascimento">{{ formatarData(p.dataNascimento) }}</app-item-descricao>
+        <app-item-descricao rotulo="Idade">{{ calcularIdade(p.dataNascimento) }}</app-item-descricao>
         @if (p.rg) {
-          <div>
-            <dt class="text-xs text-gray-500 mb-1">RG</dt>
-            <dd class="text-gray-900">{{ p.rg }}</dd>
-          </div>
+          <app-item-descricao rotulo="RG">{{ p.rg }}</app-item-descricao>
         }
         @if (p.enderecoCompleto) {
-          <div class="sm:col-span-2">
-            <dt class="text-xs text-gray-500 mb-1">Endereço</dt>
-            <dd class="text-gray-900">{{ p.enderecoCompleto }}</dd>
-          </div>
+          <app-item-descricao class="detalhe__dados--largo" rotulo="Endereço">
+            {{ p.enderecoCompleto }}
+          </app-item-descricao>
         }
-        <div>
-          <dt class="text-xs text-gray-500 mb-1">Cadastrado em</dt>
-          <dd class="text-gray-900">{{ formatarData(p.criadoEm) }}</dd>
-        </div>
+        <app-item-descricao rotulo="Cadastrado em">{{ formatarData(p.criadoEm) }}</app-item-descricao>
       </dl>
-    </div>
+    </app-cartao>
 
     <!-- Placeholder para agendamentos do paciente (Fase 2c) -->
-    <div class="mt-4 border border-dashed border-gray-200 rounded-xl px-6 py-8 text-center">
-      <p class="text-sm text-gray-400">
+    <div class="detalhe__futuro">
+      <p class="detalhe__futuro-texto">
         Agendamentos deste paciente aparecerão aqui.
       </p>
     </div>
 
-    <!-- Modal de confirmacao -->
     @if (modalAberto()) {
       <app-confirm-dialog
         [titulo]="acao() === 'ativar'
@@ -135,7 +93,7 @@
         (confirmar)="confirmarAcao()"
         (cancelar)="fecharModal()">
         @if (erroInativar()) {
-          <app-alert class="block">{{ erroInativar() }}</app-alert>
+          <app-alert class="detalhe__alerta">{{ erroInativar() }}</app-alert>
         }
       </app-confirm-dialog>
     }

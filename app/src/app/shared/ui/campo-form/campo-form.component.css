@@ -13,6 +13,10 @@
   color: var(--color-red-600);
 }
 
+:host([data-tom-erro='aviso']) .campo__erro {
+  color: var(--color-amber-700);
+}
+
 .campo__ajuda {
   margin-top: calc(var(--space) * 1);
   font-size: var(--text-xs);

@@ -1,0 +1,161 @@
+.detalhe {
+  max-width: var(--container-2xl);
+}
+
+.detalhe__alerta {
+  display: block;
+}
+
+/* ── Topo: avatar, nome e ações ── */
+.detalhe__topo {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--space) * 4);
+  margin-bottom: calc(var(--space) * 6);
+  padding-bottom: calc(var(--space) * 6);
+  border-bottom: 1px solid var(--color-gray-100);
+}
+
+.detalhe__identidade {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--space) * 4);
+  flex: 1;
+  min-width: 0;
+}
+
+.detalhe__avatar--inativo {
+  opacity: 0.5;
+}
+
+.detalhe__nomes {
+  flex: 1;
+  min-width: 0;
+}
+
+.detalhe__linha-nome {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: calc(var(--space) * 2);
+}
+
+.detalhe__nome {
+  font-size: var(--text-lg);
+  line-height: var(--text-lg-lh);
+  font-weight: 500;
+  color: var(--color-gray-900);
+}
+
+.detalhe__inativo {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--space) * 1);
+  padding: calc(var(--space) * 0.5) calc(var(--space) * 2);
+  border: 1px solid var(--color-stone-200);
+  border-radius: 9999px;
+  background-color: var(--color-stone-100);
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  font-weight: 500;
+  color: var(--color-stone-600);
+}
+
+.detalhe__ponto {
+  width: calc(var(--space) * 1.5);
+  height: calc(var(--space) * 1.5);
+  border-radius: 50%;
+  background-color: var(--color-stone-400);
+}
+
+.detalhe__id {
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+  color: var(--color-gray-500);
+}
+
+/* ── Ações do cabeçalho ── */
+.detalhe__acoes {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--space) * 2);
+  flex-shrink: 0;
+}
+
+.detalhe__acao {
+  padding: calc(var(--space) * 1.5) calc(var(--space) * 3);
+  border: none;
+  border-radius: var(--radius-lg);
+  background-color: transparent;
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+  color: var(--color-gray-700);
+  cursor: pointer;
+  transition: color var(--duration) var(--ease), background-color var(--duration) var(--ease);
+}
+
+.detalhe__acao--perigo {
+  color: var(--color-red-600);
+}
+
+.detalhe__acao--reativar {
+  border: 1px solid var(--color-emerald-200);
+  color: var(--color-emerald-700);
+}
+
+/* ── Lista de dados ── */
+.detalhe__dados {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  column-gap: calc(var(--space) * 8);
+  row-gap: calc(var(--space) * 5);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+}
+
+/* ── Espaço reservado para os agendamentos do paciente ── */
+.detalhe__futuro {
+  margin-top: calc(var(--space) * 4);
+  padding: calc(var(--space) * 8) calc(var(--space) * 6);
+  border: 1px dashed var(--color-gray-200);
+  border-radius: var(--radius-xl);
+  text-align: center;
+}
+
+.detalhe__futuro-texto {
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+  color: var(--color-gray-400);
+}
+
+@media (hover: hover) {
+  .detalhe__acao:hover {
+    background-color: var(--color-gray-100);
+    color: var(--color-gray-900);
+  }
+
+  .detalhe__acao--perigo:hover {
+    background-color: var(--color-red-50);
+    color: var(--color-red-700);
+  }
+
+  .detalhe__acao--reativar:hover {
+    background-color: var(--color-emerald-50);
+    color: var(--color-emerald-800);
+  }
+}
+
+@media (width >= 40rem) {
+  .detalhe__topo {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .detalhe__dados {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .detalhe__dados--largo {
+    grid-column: span 2 / span 2;
+  }
+}

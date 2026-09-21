@@ -16,6 +16,7 @@ import { RotuloComponent } from '../rotulo/rotulo.component';
   imports: [RotuloComponent],
   templateUrl: './campo-form.component.html',
   styleUrl: './campo-form.component.css',
+  host: { '[attr.data-tom-erro]': 'tomErro()' },
 })
 export class CampoFormComponent {
   rotulo = input('');
@@ -23,6 +24,8 @@ export class CampoFormComponent {
   para = input('');
   obrigatorio = input(false);
   erro = input<string | null>(null);
+  /** `aviso` pinta a mensagem de âmbar em vez de vermelho. */
+  tomErro = input<'erro' | 'aviso'>('erro');
   /** Texto de apoio abaixo do controle, quando não há erro. */
   ajuda = input('');
 }

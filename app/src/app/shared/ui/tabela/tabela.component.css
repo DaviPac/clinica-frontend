@@ -1,0 +1,42 @@
+/*
+ * As regras dos elementos usam `:where()` para ficarem com especificidade
+ * de classe simples — assim a tela que chama consegue ajustar uma célula
+ * específica com uma classe própria, sem precisar de !important.
+ *
+ * ViewEncapsulation.None: todo seletor começa em `.tabela` para os estilos
+ * não escaparem para o resto da aplicação.
+ */
+.tabela {
+  display: block;
+  overflow-x: auto;
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-xl);
+  background-color: var(--color-white);
+  box-shadow: var(--surface-shadow);
+  -webkit-overflow-scrolling: touch;
+}
+
+.tabela :where(table) {
+  width: 100%;
+  min-width: var(--tabela-largura-minima, 0);
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+}
+
+.tabela :where(thead) {
+  background-color: var(--color-gray-50);
+}
+
+.tabela :where(th) {
+  padding: calc(var(--space) * 2.5) calc(var(--space) * 4);
+  border-bottom: 1px solid var(--color-gray-200);
+  text-align: left;
+  font-weight: 500;
+  white-space: nowrap;
+  color: var(--color-gray-500);
+}
+
+.tabela :where(td) {
+  padding: calc(var(--space) * 3) calc(var(--space) * 4);
+}
