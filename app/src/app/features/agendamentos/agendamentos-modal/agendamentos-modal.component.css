@@ -1,0 +1,93 @@
+.modal-agendamento__aviso {
+  display: block;
+  margin-bottom: calc(var(--space) * 4);
+}
+
+.modal-agendamento__form {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--space) * 4);
+}
+
+.modal-agendamento__dupla {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: calc(var(--space) * 3);
+}
+
+/* Valor por sessão calculado a partir do total do pacote */
+.modal-agendamento__derivado {
+  margin-top: calc(var(--space) * 1);
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  font-weight: 500;
+  color: var(--color-brand-500);
+}
+
+/* ── Bloco de recorrência ── */
+.modal-agendamento__recorrencia {
+  padding: calc(var(--space) * 3);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-lg);
+}
+
+/* Pacote força a recorrência: o bloco fica visivelmente travado */
+.modal-agendamento__recorrencia--travada {
+  opacity: 0.6;
+}
+
+.modal-agendamento__recorrencia-topo {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--space) * 3);
+}
+
+/*
+ * O <app-toggle> é inline por padrão; como item de flex isso o deixaria
+ * numa caixa de linha, com o descendente da fonte somando altura à faixa.
+ */
+.modal-agendamento__recorrencia-topo app-toggle {
+  display: flex;
+}
+
+.modal-agendamento__recorrencia-rotulo {
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+  font-weight: 500;
+  color: var(--color-gray-800);
+}
+
+.modal-agendamento__recorrencia-nota {
+  margin-left: calc(var(--space) * 1.5);
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  font-weight: 500;
+  color: var(--color-brand-500);
+}
+
+.modal-agendamento__dupla--recorrencia {
+  margin-top: calc(var(--space) * 3);
+}
+
+.modal-agendamento__previa {
+  margin-top: calc(var(--space) * 2);
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  color: var(--color-gray-500);
+}
+
+.modal-agendamento__acoes {
+  display: flex;
+  gap: calc(var(--space) * 2.5);
+  margin-top: calc(var(--space) * 2);
+}
+
+.modal-agendamento__acoes > * {
+  flex: 1;
+}
+
+@media (width >= 40rem) {
+  .modal-agendamento__dupla {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

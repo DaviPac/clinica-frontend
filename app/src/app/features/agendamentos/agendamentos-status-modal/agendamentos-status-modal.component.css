@@ -1,0 +1,62 @@
+.status__atual {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--space) * 2);
+  margin-top: calc(var(--space) * -3);
+  margin-bottom: calc(var(--space) * 5);
+}
+
+.status__rotulo {
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  color: var(--color-gray-500);
+}
+
+.status__alerta {
+  display: block;
+  margin-bottom: calc(var(--space) * 4);
+}
+
+.status__sem-opcoes {
+  padding-block: calc(var(--space) * 4);
+  text-align: center;
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+  color: var(--color-gray-400);
+}
+
+.status__opcoes {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--space) * 2);
+}
+
+.status__opcao {
+  width: 100%;
+  padding-block: calc(var(--space) * 2.5);
+  border: 1px solid;
+  border-radius: var(--radius-lg);
+  background-color: transparent;
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color var(--duration) var(--ease);
+}
+
+.status__opcao:disabled {
+  opacity: 0.5;
+}
+
+/* Um tom por destino, espelhando o selo de status */
+.status__opcao--agendado  { border-color: var(--color-blue-200);  color: var(--color-blue-800); }
+.status__opcao--realizado { border-color: var(--color-teal-200);  color: var(--color-teal-800); }
+.status__opcao--falta     { border-color: var(--color-amber-200); color: var(--color-amber-800); }
+.status__opcao--cancelado { border-color: var(--color-red-200);   color: var(--color-red-700); }
+
+@media (hover: hover) {
+  .status__opcao--agendado:hover  { background-color: var(--color-blue-50); }
+  .status__opcao--realizado:hover { background-color: var(--color-teal-50); }
+  .status__opcao--falta:hover     { background-color: var(--color-amber-50); }
+  .status__opcao--cancelado:hover { background-color: var(--color-red-50); }
+}

@@ -21,42 +21,29 @@ import { ModalComponent } from '../../../shared/components/modal/modal.component
 import { ViewportService } from '../../../core/services/viewport/viewport.service';
 import { AgendaCardComponent } from '../agenda-card/agenda-card.component';
 import { AgendaAcoesSheetComponent } from '../agenda-acoes-sheet/agenda-acoes-sheet.component';
+import { AgendaBarraComponent } from '../agenda-barra/agenda-barra.component';
+import { MesCelulaComponent } from '../mes-celula/mes-celula.component';
+import { SemanaColunaComponent } from '../semana-coluna/semana-coluna.component';
+import { DiaCalendario, DiaSemana } from '../agenda.tipos';
+import { PaginaComponent } from '../../../shared/ui/pagina/pagina.component';
+import { BotaoComponent } from '../../../shared/ui/botao/botao.component';
+import { CarregandoComponent } from '../../../shared/ui/carregando/carregando.component';
+import { DestaqueValorComponent } from '../../../shared/ui/destaque-valor/destaque-valor.component';
 
 type ModoVisualizacao = 'mensal' | 'semanal';
 
 /** Quantas bolinhas de densidade cabem numa célula da grade mensal no mobile. */
 const MAX_DOTS = 3;
 
-interface DiaCalendario {
-  diaNumero: number | null;
-  /** 'YYYY-MM-DD' — chave usada para abrir a sheet do dia. */
-  dataISO: string | null;
-  agendamentos: Agendamento[];
-  isToday: boolean;
-  /** Status das primeiras sessões, para as bolinhas do mobile. */
-  dots: StatusAgendamento[];
-  /** Quantas sessões ficaram além das bolinhas ("+N"). */
-  extras: number;
-}
-
-interface DiaSemana {
-  data: Date;
-  diaNumero: number;
-  nomeDia: string;
-  agendamentos: Agendamento[];
-  isToday: boolean;
-}
-
 @Component({
   selector: 'app-agendamentos-lista',
   standalone: true,
-  imports: [
-    CommonModule, FormsModule,
+  imports: [CommonModule, FormsModule,
     AgendamentosModalComponent, AgendamentosStatusModalComponent,
     FiltroProfissionalComponent, ToggleComponent,
     AlertComponent, ConfirmDialogComponent, ModalComponent,
-    AgendaCardComponent, AgendaAcoesSheetComponent
-  ],
+    AgendaCardComponent, AgendaAcoesSheetComponent,
+    AgendaBarraComponent, MesCelulaComponent, SemanaColunaComponent, PaginaComponent, BotaoComponent, CarregandoComponent, DestaqueValorComponent],
   templateUrl: './agendamentos-lista.component.html',
   styleUrl: './agendamentos-lista.component.css'
 })
@@ -232,16 +219,6 @@ export class AgendamentosListaComponent implements OnInit {
   private fecharSheets() {
     this.diaSelecionado.set(null);
     this.agendamentoParaAcoes.set(null);
-  }
-
-  dotClass(status: StatusAgendamento): string {
-    const map: Record<StatusAgendamento, string> = {
-      AGENDADO: 'bg-blue-500',
-      REALIZADO: 'bg-teal-500',
-      FALTA: 'bg-amber-500',
-      CANCELADO: 'bg-gray-400',
-    };
-    return map[status];
   }
 
   // NOVO: grade semanal (7 dias, domingo -> sábado)

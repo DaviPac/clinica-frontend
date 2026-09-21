@@ -1,51 +1,42 @@
 <app-modal titulo="Ações da sessão" tamanho="pequeno" (fechar)="fechar.emit()">
 
-  <div class="flex flex-col gap-4 -mt-2">
+  <div class="sheet">
 
-    <div class="flex flex-col gap-1.5 pb-4 border-b border-gray-100">
-      <div class="flex items-center justify-between gap-3">
-        <span class="text-sm font-bold tabular-nums text-gray-900">
-          {{ formatarHora(agendamento().dataHoraInicio) }}
-        </span>
+    <div class="sheet__resumo">
+      <div class="sheet__cabecalho">
+        <span class="sheet__hora">{{ formatarHora(agendamento().dataHoraInicio) }}</span>
         <app-status-badge [status]="agendamento().status" />
       </div>
-      <p class="text-sm font-semibold text-gray-900">{{ pacienteNome() }}</p>
+      <p class="sheet__paciente">{{ pacienteNome() }}</p>
       @if (profissionalNome()) {
-        <p class="text-xs text-gray-500">{{ profissionalNome() }}</p>
+        <p class="sheet__profissional">{{ profissionalNome() }}</p>
       }
-      <p class="text-xs text-gray-400">{{ servicoNome() }}</p>
+      <p class="sheet__servico">{{ servicoNome() }}</p>
     </div>
 
-    <div class="flex flex-col gap-2.5">
+    <div class="sheet__acoes">
 
-      <a
-        [routerLink]="['/agendamentos', agendamento().id]"
-        class="btn btn-outline w-full min-h-11 no-underline">Ver detalhes</a>
+      <a class="sheet__botao" [routerLink]="['/agendamentos', agendamento().id]">Ver detalhes</a>
 
       @if (podeAlterarStatus()) {
-        <button type="button" (click)="status.emit()" class="btn btn-outline w-full min-h-11">
+        <button type="button" class="sheet__botao" (click)="status.emit()">
           Alterar status
         </button>
       }
 
       <button
         type="button"
-        (click)="pagamento.emit()"
+        class="sheet__botao"
+        [class.sheet__botao--pago]="agendamento().pagoPeloPaciente"
         [disabled]="pagamentoBloqueado()"
-        class="btn w-full min-h-11"
-        [class]="agendamento().pagoPeloPaciente
-          ? 'btn-outline border-teal-200 bg-teal-50 text-teal-800 hover:bg-teal-100'
-          : 'btn-outline'">
+        (click)="pagamento.emit()">
         {{ agendamento().pagoPeloPaciente ? 'Desmarcar pagamento' : 'Marcar como pago' }}
       </button>
 
       <!-- Destrutivo: fica em contorno, não em bloco sólido, para não
            virar o alvo mais fácil de tocar por acidente no rodapé. -->
       @if (podeCancelarSerie()) {
-        <button
-          type="button"
-          (click)="cancelarSerie.emit()"
-          class="btn w-full min-h-11 border border-red-200 bg-red-50 text-red-700 hover:bg-red-100">
+        <button type="button" class="sheet__botao sheet__botao--perigo" (click)="cancelarSerie.emit()">
           Cancelar série
         </button>
       }

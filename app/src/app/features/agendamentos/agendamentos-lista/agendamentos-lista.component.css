@@ -1,31 +1,182 @@
-/* ──────────────────────────────────────────────
-   Loading spinner
-   (animação keyframe não existe em Tailwind core)
-─────────────────────────────────────────────── */
-.agenda-spinner {
-  display: inline-block;
-  width: 16px;
-  height: 16px;
-  border: 2px solid var(--color-gray-200);
-  border-top-color: var(--color-brand-400);
-  border-radius: 50%;
-  animation: agenda-spin 0.65s linear infinite;
-  flex-shrink: 0;
-}
-@keyframes agenda-spin {
-  to { transform: rotate(360deg); }
+/*
+ * A agenda pinta o próprio fundo: as células da grade são claras e
+ * precisam de um contraste constante atrás, sem o brilho do documento.
+ */
+.agenda {
+  min-height: 100%;
+  background-color: var(--color-gray-50);
 }
 
 /* ──────────────────────────────────────────────
-   Scroll de eventos dentro de cada célula do mês
-   (scrollbar customizada — sem suporte Tailwind).
-   Só existe no desktop: no mobile a célula mostra
-   densidade e as sessões vão para a bottom sheet.
+   Cabeçalho da página
 ─────────────────────────────────────────────── */
-.agenda-day-events {
-  overflow-y: auto;
-  max-height: 260px;
+.agenda__cabecalho {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--space) * 3);
+  margin-bottom: calc(var(--space) * 6);
 }
-.agenda-day-events::-webkit-scrollbar        { width: 3px; }
-.agenda-day-events::-webkit-scrollbar-track  { background: transparent; }
-.agenda-day-events::-webkit-scrollbar-thumb  { background: var(--color-gray-300); border-radius: 2px; }
+
+/* O recuo reserva espaço para o hambúrguer fixo do shell */
+.agenda__titulos {
+  min-width: 0;
+  padding-left: calc(var(--space) * 12);
+}
+
+.agenda__titulo {
+  font-size: var(--text-lg);
+  line-height: var(--text-lg-lh);
+  font-weight: 600;
+  letter-spacing: var(--tracking-tight);
+  text-transform: capitalize;
+  color: var(--color-gray-900);
+}
+
+.agenda__subtitulo {
+  margin-top: calc(var(--space) * 0.5);
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  color: var(--color-gray-400);
+}
+
+/* `button` na frente para vencer o `:host` do appBotao sem depender de ordem */
+button.agenda__novo {
+  width: 100%;
+  flex-shrink: 0;
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  white-space: nowrap;
+}
+
+/* ──────────────────────────────────────────────
+   Filtros, erro e carregamento
+─────────────────────────────────────────────── */
+.agenda__filtros {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: calc(var(--space) * 3);
+  margin-bottom: calc(var(--space) * 4);
+}
+
+.agenda__erro {
+  display: block;
+  margin-bottom: calc(var(--space) * 4);
+}
+
+/* Esta tela carrega o calendário inteiro: o respiro é maior que o padrão */
+app-carregando.agenda__carregando {
+  padding-block: calc(var(--space) * 16);
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+}
+
+/* ──────────────────────────────────────────────
+   Grade mensal
+─────────────────────────────────────────────── */
+.agenda__mes {
+  overflow: hidden;
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-2xl);
+  background-color: var(--color-white);
+  box-shadow: var(--shadow-sm);
+}
+
+.agenda__semanas {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  border-bottom: 1px solid var(--color-gray-200);
+  background-color: var(--color-gray-50);
+}
+
+.agenda__semana-nome {
+  padding-block: calc(var(--space) * 2);
+  font-size: 10px;
+  font-weight: 600;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+  color: var(--color-gray-400);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* O `gap` pintado de cinza é o que desenha as linhas da grade */
+.agenda__grade {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 1px;
+  background-color: var(--color-gray-200);
+}
+
+/* ──────────────────────────────────────────────
+   Grade semanal
+─────────────────────────────────────────────── */
+.agenda__semana {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 1px;
+  overflow: hidden;
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-2xl);
+  background-color: var(--color-gray-200);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ──────────────────────────────────────────────
+   Sheet das sessões do dia (mobile)
+─────────────────────────────────────────────── */
+.agenda__dia-sessoes {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--space) * 2.5);
+  margin-top: calc(var(--space) * -2);
+}
+
+.agenda__dia-vazio {
+  padding-block: calc(var(--space) * 6);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+  text-align: center;
+  color: var(--color-gray-400);
+}
+
+@media (width >= 40rem) {
+  .agenda__cabecalho {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  button.agenda__novo {
+    width: auto;
+    font-size: var(--text-sm);
+    line-height: var(--text-sm-lh);
+  }
+
+  .agenda__titulo {
+    font-size: var(--text-xl);
+    line-height: var(--text-xl-lh);
+  }
+
+
+  .agenda__semana {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .agenda__semana-nome {
+    padding-block: calc(var(--space) * 2.5);
+  }
+}
+
+@media (width >= 48rem) {
+  .agenda__titulos {
+    padding-left: 0;
+  }
+}
+
+@media (width >= 64rem) {
+  .agenda__semana {
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+  }
+}

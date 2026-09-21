@@ -1,0 +1,44 @@
+@if (dia().diaNumero) {
+
+  @if (modoToque()) {
+    <!-- Mobile: célula compacta com densidade; toque abre a sheet do dia -->
+    <button
+      type="button"
+      class="celula__toque"
+      [disabled]="!dia().agendamentos.length"
+      [attr.aria-label]="dia().diaNumero + ': ' + dia().agendamentos.length + ' sessões'"
+      (click)="abrir.emit()">
+      <span class="celula__numero" [class.celula__numero--hoje]="dia().isToday">{{ dia().diaNumero }}</span>
+
+      @if (dia().dots.length) {
+        <span class="celula__pontos">
+          @for (s of dia().dots; track $index) {
+            <span class="celula__ponto" [class]="classePonto(s)"></span>
+          }
+        </span>
+      }
+
+      @if (dia().extras) {
+        <span class="celula__extras">+{{ dia().extras }}</span>
+      }
+    </button>
+
+  } @else {
+    <div class="celula__cabecalho">
+      <span class="celula__numero celula__numero--desktop" [class.celula__numero--hoje]="dia().isToday">
+        {{ dia().diaNumero }}
+      </span>
+
+      @if (dia().agendamentos.length > 0) {
+        <span class="celula__contador">{{ dia().agendamentos.length }}</span>
+      }
+    </div>
+
+    <div class="celula__eventos">
+      @for (ag of dia().agendamentos; track ag.id) {
+        <ng-container *ngTemplateOutlet="cardTpl(); context: { ag: ag }"></ng-container>
+      }
+    </div>
+  }
+
+}

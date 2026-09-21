@@ -1,0 +1,111 @@
+.sheet {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--space) * 4);
+  margin-top: calc(var(--space) * -2);
+}
+
+/* ── Resumo da sessão ── */
+.sheet__resumo {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--space) * 1.5);
+  padding-bottom: calc(var(--space) * 4);
+  border-bottom: 1px solid var(--color-gray-100);
+}
+
+.sheet__cabecalho {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(var(--space) * 3);
+}
+
+.sheet__hora {
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-gray-900);
+}
+
+.sheet__paciente {
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+  font-weight: 600;
+  color: var(--color-gray-900);
+}
+
+.sheet__profissional {
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  color: var(--color-gray-500);
+}
+
+.sheet__servico {
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  color: var(--color-gray-400);
+}
+
+/* ── Ações: alvos grandes, pensados para o toque ── */
+.sheet__acoes {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--space) * 2.5);
+}
+
+.sheet__botao {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--space) * 1.5);
+  width: 100%;
+  min-height: calc(var(--space) * 11);
+  padding: calc(var(--space) * 2) calc(var(--space) * 4);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-lg);
+  background-color: var(--btn-outline-bg);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+  font-weight: 500;
+  color: var(--color-gray-700);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color var(--duration) var(--ease),
+    background-color var(--duration) var(--ease), border-color var(--duration) var(--ease);
+}
+
+.sheet__botao:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.sheet__botao--pago {
+  border-color: var(--color-teal-200);
+  background-color: var(--color-teal-50);
+  color: var(--color-teal-800);
+}
+
+.sheet__botao--perigo {
+  border-color: var(--color-red-200);
+  background-color: var(--color-red-50);
+  color: var(--color-red-700);
+}
+
+@media (hover: hover) {
+  .sheet__botao:hover:not(:disabled) {
+    background-color: var(--btn-outline-bg-hover);
+    border-color: var(--btn-outline-border-hover);
+  }
+
+  .sheet__botao--pago:hover:not(:disabled) {
+    background-color: var(--color-teal-100);
+    border-color: var(--color-teal-200);
+  }
+
+  .sheet__botao--perigo:hover:not(:disabled) {
+    background-color: var(--color-red-100);
+    border-color: var(--color-red-200);
+  }
+}

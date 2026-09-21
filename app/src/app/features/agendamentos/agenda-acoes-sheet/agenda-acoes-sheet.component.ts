@@ -20,6 +20,7 @@ import { formatarHora } from '../../../core/utils/data.utils';
   standalone: true,
   imports: [CommonModule, RouterLink, ModalComponent, StatusBadgeComponent],
   templateUrl: './agenda-acoes-sheet.component.html',
+  styleUrl: './agenda-acoes-sheet.component.css',
 })
 export class AgendaAcoesSheetComponent {
   agendamento = input.required<Agendamento>();

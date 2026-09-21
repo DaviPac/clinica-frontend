@@ -1,0 +1,123 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-white);
+}
+
+/* Fica grudado no topo ao rolar a lista de sessões da coluna */
+.coluna__cabecalho {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: calc(var(--space) * 3);
+  border-bottom: 1px solid var(--color-gray-100);
+  background-color: var(--color-white);
+}
+
+.coluna__dia {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--space) * 2);
+}
+
+.coluna__nome {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+  color: var(--color-gray-400);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.coluna__numero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(var(--space) * 8);
+  height: calc(var(--space) * 8);
+  border-radius: 9999px;
+  font-size: var(--text-base);
+  line-height: var(--text-base-lh);
+  font-weight: 500;
+  color: var(--color-gray-700);
+  transition: background-color var(--duration) var(--ease), color var(--duration) var(--ease);
+}
+
+.coluna__numero--hoje {
+  background-color: var(--color-brand-400);
+  font-weight: 700;
+  color: #fff;
+}
+
+/* A data por extenso só existe no mobile, onde a coluna ocupa a largura toda */
+.coluna__data {
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  color: var(--color-gray-400);
+}
+
+.coluna__contador {
+  padding-inline: calc(var(--space) * 1.5);
+  padding-block: 1px;
+  border-radius: 9999px;
+  background-color: var(--color-brand-100);
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--color-brand-700);
+}
+
+.coluna__sessoes {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: calc(var(--space) * 2);
+  min-height: 0;
+  overflow-y: auto;
+  padding: calc(var(--space) * 3);
+}
+
+.coluna__vazio {
+  padding-block: calc(var(--space) * 3);
+  font-size: 10px;
+  text-align: center;
+  color: var(--color-gray-300);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+@media (width >= 40rem) {
+  .coluna__cabecalho {
+    padding-block: calc(var(--space) * 2.5);
+  }
+
+  .coluna__numero {
+    width: calc(var(--space) * 7);
+    height: calc(var(--space) * 7);
+    font-size: var(--text-sm);
+    line-height: var(--text-sm-lh);
+  }
+
+  .coluna__data {
+    display: none;
+  }
+
+  .coluna__sessoes {
+    gap: calc(var(--space) * 1.5);
+    padding: calc(var(--space) * 2);
+  }
+
+  .coluna__vazio {
+    padding-block: calc(var(--space) * 6);
+  }
+}
+
+@media (width >= 64rem) {
+  :host {
+    max-height: calc(100vh - 220px);
+  }
+}

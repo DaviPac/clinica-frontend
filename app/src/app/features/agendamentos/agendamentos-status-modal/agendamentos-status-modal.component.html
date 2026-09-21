@@ -1,29 +1,27 @@
 <app-modal titulo="Alterar status" tamanho="pequeno" (fechar)="fechar.emit()">
 
-  <div class="flex items-center gap-2 -mt-3 mb-5">
-    <span class="text-xs text-gray-500">Status atual:</span>
+  <div class="status__atual">
+    <span class="status__rotulo">Status atual:</span>
     <app-status-badge [status]="agendamento().status" />
   </div>
 
   @if (erro()) {
-    <app-alert class="block mb-4">{{ erro() }}</app-alert>
+    <app-alert class="status__alerta">{{ erro() }}</app-alert>
   }
 
   @if (opcoes.length === 0) {
-    <p class="text-sm text-gray-400 text-center py-4">
+    <p class="status__sem-opcoes">
       Não há transições disponíveis para este status.
     </p>
   }
 
-  <div class="flex flex-col gap-2">
+  <div class="status__opcoes">
     @for (op of opcoes; track op) {
       <button
         type="button"
-        (click)="selecionar(op)"
+        class="status__opcao {{ btnClass[op] }}"
         [disabled]="!!loading()"
-        class="w-full border rounded-lg py-2.5 text-sm font-medium
-               transition-colors cursor-pointer disabled:opacity-50
-               {{ btnClass[op] }}">
+        (click)="selecionar(op)">
         {{ loading() === op ? 'Salvando...' : labels[op] }}
       </button>
     }

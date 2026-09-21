@@ -12,6 +12,7 @@ import { transicoesPermitidas } from '../agendamento.regras';
   standalone: true,
   imports: [CommonModule, StatusBadgeComponent, ModalComponent, AlertComponent],
   templateUrl: './agendamentos-status-modal.component.html',
+  styleUrl: './agendamentos-status-modal.component.css',
 })
 export class AgendamentosStatusModalComponent {
   agendamento = input.required<Agendamento>();
@@ -33,10 +34,10 @@ export class AgendamentosStatusModalComponent {
   };
 
   readonly btnClass: Record<StatusAgendamento, string> = {
-    AGENDADO:  'border-blue-200 text-blue-800 hover:bg-blue-50',
-    REALIZADO: 'border-teal-200 text-teal-800 hover:bg-teal-50',
-    FALTA:     'border-amber-200 text-amber-800 hover:bg-amber-50',
-    CANCELADO: 'border-red-200 text-red-700 hover:bg-red-50',
+    AGENDADO:  'status__opcao--agendado',
+    REALIZADO: 'status__opcao--realizado',
+    FALTA:     'status__opcao--falta',
+    CANCELADO: 'status__opcao--cancelado',
   };
 
   constructor(private service: AgendamentoService) {}
