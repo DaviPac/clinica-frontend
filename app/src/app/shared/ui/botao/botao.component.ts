@@ -1,6 +1,6 @@
 import { Component, input } from '@angular/core';
 
-export type VarianteBotao = 'primario' | 'contorno' | 'perigo';
+export type VarianteBotao = 'primario' | 'contorno' | 'contorno-perigo' | 'perigo';
 export type TamanhoBotao = 'pequeno' | 'padrao' | 'grande';
 
 /**

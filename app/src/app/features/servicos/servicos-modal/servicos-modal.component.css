@@ -1,0 +1,44 @@
+.servico-modal__erro {
+  display: block;
+  margin-bottom: calc(var(--space) * 4);
+}
+
+.servico-modal__form {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--space) * 4);
+}
+
+/* Linha de opção: interruptor + explicação */
+.servico-modal__opcao {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--space) * 3);
+  padding: calc(var(--space) * 3);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-gray-50);
+}
+
+.servico-modal__opcao-titulo {
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+  font-weight: 500;
+  color: var(--color-gray-800);
+}
+
+.servico-modal__opcao-texto {
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  color: var(--color-gray-500);
+}
+
+.servico-modal__acoes {
+  display: flex;
+  gap: calc(var(--space) * 2.5);
+  margin-top: calc(var(--space) * 2);
+}
+
+.servico-modal__acoes > * {
+  flex: 1;
+}

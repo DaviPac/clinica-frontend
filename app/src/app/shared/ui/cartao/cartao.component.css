@@ -20,6 +20,14 @@
   margin-bottom: calc(var(--space) * 5);
 }
 
+:host([data-espaco-titulo='compacto']) .cartao__cabecalho {
+  margin-bottom: calc(var(--space) * 4);
+}
+
+:host([data-espaco-titulo='solto']) .cartao__cabecalho {
+  margin-bottom: calc(var(--space) * 6);
+}
+
 .cartao__titulo {
   font-size: var(--text-base);
   line-height: var(--text-base-lh);

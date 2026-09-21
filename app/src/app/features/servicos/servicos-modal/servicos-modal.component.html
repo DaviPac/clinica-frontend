@@ -1,11 +1,10 @@
 <app-modal [titulo]="titulo" tamanho="pequeno" (fechar)="fechar.emit()">
 
-  <!-- Erro -->
   @if (erro()) {
-    <app-alert class="block mb-4">{{ erro() }}</app-alert>
+    <app-alert class="servico-modal__erro">{{ erro() }}</app-alert>
   }
 
-  <form [formGroup]="form" (ngSubmit)="submit()" class="flex flex-col gap-4">
+  <form class="servico-modal__form" [formGroup]="form" (ngSubmit)="submit()">
 
     @if (isAdmin() && !modoEdicao) {
       <app-filtro-profissional
@@ -14,94 +13,59 @@
         [defaultText]="'--'"/>
     }
 
-    <div>
-      <label class="ui-label" for="servico-nome">
-        Nome do serviço <span class="text-red-500">*</span>
-      </label>
+    <app-campo-form rotulo="Nome do serviço" para="servico-nome" [obrigatorio]="true">
       <input
+        appCampo
         id="servico-nome"
         type="text"
         formControlName="nome"
         placeholder="Ex: Sessão de Psicologia"
-        class="ui-input"
       />
-    </div>
+    </app-campo-form>
 
-    <div>
-      <label class="ui-label" for="servico-valor">
-        Valor (R$) <span class="text-red-500">*</span>
-      </label>
+    <app-campo-form rotulo="Valor (R$)" para="servico-valor" [obrigatorio]="true">
       <input
+        appCampo
+        [mono]="true"
         id="servico-valor"
         type="number"
         formControlName="valor_atual"
         min="0.01"
         step="0.01"
         placeholder="0,00"
-        class="ui-input font-mono"
       />
+    </app-campo-form>
+
+    <div class="servico-modal__opcao">
+      <app-toggle
+        [checked]="!!form.controls.pacote.value"
+        (changed)="form.controls.pacote.setValue($event)" />
+      <div>
+        <p class="servico-modal__opcao-titulo">Pacote de sessões</p>
+        <p class="servico-modal__opcao-texto">Agrupa múltiplas sessões em um único serviço</p>
+      </div>
     </div>
 
-    <div>
-      <label class="flex items-center gap-3 p-3 bg-gray-50 border border-gray-200
-                    rounded-lg cursor-pointer select-none">
-        <div
-          class="relative w-9 h-5 rounded-full transition-colors shrink-0"
-          [class]="form.controls.pacote.value ? 'bg-brand-400' : 'bg-gray-300'">
-          <div
-            class="absolute top-0.5 w-4 h-4 bg-knob rounded-full shadow-sm
-                  transition-transform duration-200"
-            [class]="form.controls.pacote.value ? 'translate-x-4' : 'translate-x-0.5'">
-          </div>
-          <input type="checkbox" formControlName="pacote" class="sr-only" />
-        </div>
-        <div>
-          <p class="text-sm font-medium text-gray-800">Pacote de sessões</p>
-          <p class="text-xs text-gray-500">Agrupa múltiplas sessões em um único serviço</p>
-        </div>
-      </label>
-    </div>
-
-    <!-- Toggle ativo — só aparece no modo edição -->
+    <!-- Estado do serviço — só aparece no modo edição -->
     @if (modoEdicao) {
-      <label class="flex items-center gap-3 p-3 bg-gray-50 border border-gray-200
-                    rounded-lg cursor-pointer select-none">
-        <div
-          class="relative w-9 h-5 rounded-full transition-colors shrink-0"
-          [class]="form.controls['ativo'].value ? 'bg-brand-400' : 'bg-gray-300'">
-          <div
-            class="absolute top-0.5 w-4 h-4 bg-knob rounded-full shadow-sm
-                   transition-transform duration-200"
-            [class]="form.controls['ativo'].value ? 'translate-x-4' : 'translate-x-0.5'">
-          </div>
-          <!-- input invisível para acessibilidade -->
-          <input
-            type="checkbox"
-            formControlName="ativo"
-            class="sr-only"
-          />
-        </div>
+      <div class="servico-modal__opcao">
+        <app-toggle
+          [checked]="!!form.controls['ativo'].value"
+          (changed)="form.controls['ativo'].setValue($event)" />
         <div>
-          <p class="text-sm font-medium text-gray-800">
+          <p class="servico-modal__opcao-titulo">
             {{ form.controls['ativo'].value ? 'Serviço ativo' : 'Serviço inativo' }}
           </p>
-          <p class="text-xs text-gray-500">Aparece na criação de agendamentos</p>
+          <p class="servico-modal__opcao-texto">Aparece na criação de agendamentos</p>
         </div>
-      </label>
+      </div>
     }
 
-    <!-- Ações -->
-    <div class="flex gap-2.5 mt-2">
-      <button
-        type="button"
-        (click)="fechar.emit()"
-        class="btn-outline flex-1">
+    <div class="servico-modal__acoes">
+      <button appBotao variante="contorno" type="button" (click)="fechar.emit()">
         Cancelar
       </button>
-      <button
-        type="submit"
-        [disabled]="form.invalid || loading()"
-        class="btn-primary flex-1">
+      <button appBotao type="submit" [disabled]="form.invalid || loading()">
         {{ loading() ? 'Salvando...' : labelBotao }}
       </button>
     </div>

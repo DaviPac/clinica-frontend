@@ -52,6 +52,13 @@
   color: var(--color-gray-700);
 }
 
+/* ── Contorno perigo: ação destrutiva discreta, em linha de tabela ── */
+:host([data-variante='contorno-perigo']) {
+  border: 1px solid var(--color-red-200);
+  background-color: transparent;
+  color: var(--color-red-700);
+}
+
 /* ── Perigo: ação destrutiva ── */
 :host([data-variante='perigo']) {
   background-color: var(--danger-bg);
@@ -67,6 +74,10 @@
   :host([data-variante='contorno']:hover:not(:disabled)) {
     background-color: var(--btn-outline-bg-hover);
     border-color: var(--btn-outline-border-hover);
+  }
+
+  :host([data-variante='contorno-perigo']:hover:not(:disabled)) {
+    background-color: var(--color-red-50);
   }
 
   :host([data-variante='perigo']:hover:not(:disabled)) {
