@@ -20,22 +20,12 @@
       }
 
       @for (item of navPrincipal; track item.path) {
-        <a
-          class="shell__item"
-          [routerLink]="item.path"
-          routerLinkActive="shell__item--ativo"
-          [routerLinkActiveOptions]="{ exact: false }"
-          (click)="onNavClick()">
-          <svg
-            class="shell__icone"
-            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
-            stroke-linecap="round" stroke-linejoin="round">
-            <path [attr.d]="item.icon" />
-          </svg>
-          @if (sidebarAberta()) {
-            <span class="shell__item-texto">{{ item.label }}</span>
-          }
-        </a>
+        <app-item-nav
+          [rota]="item.path"
+          [rotulo]="item.label"
+          [icone]="item.icon"
+          [mostrarTexto]="sidebarAberta()"
+          (navegar)="onNavClick()" />
       }
 
       @if (isAdmin) {
@@ -47,22 +37,13 @@
           }
 
           @for (item of navAdmin; track item.path) {
-            <a
-              class="shell__item shell__item--admin"
-              [routerLink]="item.path"
-              routerLinkActive="shell__item--ativo"
-              [routerLinkActiveOptions]="{ exact: false }"
-              (click)="onNavClick()">
-              <svg
-                class="shell__icone"
-                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
-                stroke-linecap="round" stroke-linejoin="round">
-                <path [attr.d]="item.icon" />
-              </svg>
-              @if (sidebarAberta()) {
-                <span class="shell__item-texto">{{ item.label }}</span>
-              }
-            </a>
+            <app-item-nav
+              [rota]="item.path"
+              [rotulo]="item.label"
+              [icone]="item.icon"
+              [mostrarTexto]="sidebarAberta()"
+              [admin]="true"
+              (navegar)="onNavClick()" />
           }
         </div>
       }

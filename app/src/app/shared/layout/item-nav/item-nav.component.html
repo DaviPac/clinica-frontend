@@ -1,0 +1,16 @@
+<a
+  class="item-nav__link"
+  [routerLink]="rota()"
+  routerLinkActive="item-nav__link--ativo"
+  [routerLinkActiveOptions]="{ exact: false }"
+  (click)="navegar.emit()">
+  <svg
+    class="item-nav__icone"
+    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+    stroke-linecap="round" stroke-linejoin="round">
+    <path [attr.d]="icone()" />
+  </svg>
+  @if (mostrarTexto()) {
+    <span class="item-nav__texto">{{ rotulo() }}</span>
+  }
+</a>

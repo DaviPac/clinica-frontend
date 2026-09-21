@@ -101,41 +101,7 @@
   border-top: 1px solid var(--color-stone-100);
 }
 
-.shell__item {
-  display: flex;
-  align-items: center;
-  gap: calc(var(--space) * 2.5);
-  padding: calc(var(--space) * 2) calc(var(--space) * 2.5);
-  border-radius: var(--radius-lg);
-  font-size: var(--text-sm);
-  line-height: var(--text-sm-lh);
-  color: var(--color-stone-600);
-  text-decoration: none;
-  transition: color var(--duration) var(--ease), background-color var(--duration) var(--ease);
-}
-
-.shell__item--admin {
-  margin-top: calc(var(--space) * 0.5);
-}
-
-/*
- * O item ativo recebe só o realce de fundo. A cor do texto continua a do
- * item normal: era assim antes da saída do CSS utilitário e manter igual
- * evita mudar o visual numa refatoração que não é de design.
- */
-.shell__item--ativo {
-  background-color: var(--color-stone-100);
-}
-
-.shell__icone {
-  width: calc(var(--space) * 4);
-  height: calc(var(--space) * 4);
-  flex-shrink: 0;
-}
-
-.shell__item-texto {
-  white-space: nowrap;
-}
+/* Os links em si são o <app-item-nav>, dono do próprio CSS */
 
 /* ── Rodapé: usuário e botão de recolher ── */
 .shell__rodape {
@@ -237,11 +203,6 @@
 }
 
 @media (hover: hover) {
-  .shell__item:hover {
-    background-color: var(--color-stone-50);
-    color: var(--color-stone-900);
-  }
-
   .shell__perfil:hover {
     background-color: var(--color-stone-50);
   }
