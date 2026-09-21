@@ -1,0 +1,29 @@
+:host {
+  display: inline-block;
+  padding: calc(var(--space) * 0.5) calc(var(--space) * 2);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+:host([data-formato='pilula']) {
+  border-radius: 9999px;
+}
+
+:host([data-tom='azul'])     { background-color: var(--color-blue-50);    color: var(--color-blue-800); }
+:host([data-tom='teal'])     { background-color: var(--color-teal-50);    color: var(--color-teal-800); }
+:host([data-tom='ambar'])    { background-color: var(--color-amber-50);   color: var(--color-amber-800); }
+:host([data-tom='vermelho']) { background-color: var(--color-red-50);     color: var(--color-red-800); }
+:host([data-tom='violeta'])  { background-color: var(--color-violet-50);  color: var(--color-violet-800); }
+:host([data-tom='roxo'])     { background-color: var(--color-purple-50);  color: var(--color-purple-800); }
+:host([data-tom='verde'])    { background-color: var(--color-green-50);   color: var(--color-green-700); }
+:host([data-tom='cinza'])    { background-color: var(--color-gray-100);   color: var(--color-gray-600); }
+:host([data-tom='marca'])    { background-color: var(--color-brand-100);  color: var(--color-brand-800); }
+
+/* O anel usa box-shadow para não alterar a caixa do selo. */
+:host([data-anel='sim'][data-tom='teal'])     { box-shadow: 0 0 0 1px var(--color-teal-100); }
+:host([data-anel='sim'][data-tom='ambar'])    { box-shadow: 0 0 0 1px var(--color-amber-100); }
+:host([data-anel='sim'][data-tom='roxo'])     { box-shadow: 0 0 0 1px var(--color-purple-100); }
+:host([data-anel='sim'][data-tom='cinza'])    { box-shadow: 0 0 0 1px var(--color-gray-100); }

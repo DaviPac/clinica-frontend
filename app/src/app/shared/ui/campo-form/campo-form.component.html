@@ -1,0 +1,13 @@
+@if (rotulo()) {
+  <label appRotulo [attr.for]="para() || null">
+    {{ rotulo() }}@if (obrigatorio()) {<span class="campo__obrigatorio"> *</span>}
+  </label>
+}
+
+<ng-content />
+
+@if (erro()) {
+  <p class="campo__erro">{{ erro() }}</p>
+} @else if (ajuda()) {
+  <p class="campo__ajuda">{{ ajuda() }}</p>
+}

@@ -1,6 +1,6 @@
 import { Component, input, signal } from '@angular/core';
 import { MensagemTexto } from '../../../../core/ia/models/chat.model';
-import { MarkdownPipe } from '../../../../shared/markdown/markdown.pipe';
+import { MarkdownComponent } from '../../../../shared/ui/markdown/markdown.component';
 
 /**
  * Bolha de mensagem.
@@ -12,7 +12,7 @@ import { MarkdownPipe } from '../../../../shared/markdown/markdown.pipe';
 @Component({
   selector: 'app-mensagem-chat',
   standalone: true,
-  imports: [MarkdownPipe],
+  imports: [MarkdownComponent],
   templateUrl: './mensagem-chat.component.html',
 })
 export class MensagemChatComponent {

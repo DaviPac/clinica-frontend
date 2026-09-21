@@ -1,0 +1,35 @@
+:host {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: none;
+  border-radius: var(--radius-lg);
+  background-color: transparent;
+  color: var(--color-gray-400);
+  cursor: pointer;
+  transition: color var(--duration) var(--ease), background-color var(--duration) var(--ease);
+}
+
+:host([data-tamanho='p']) {
+  width: calc(var(--space) * 6);
+  height: calc(var(--space) * 6);
+  border-radius: var(--radius-md);
+}
+
+:host([data-tamanho='m']) {
+  width: calc(var(--space) * 8);
+  height: calc(var(--space) * 8);
+}
+
+:host([data-tamanho='g']) {
+  width: calc(var(--space) * 9);
+  height: calc(var(--space) * 9);
+}
+
+@media (hover: hover) {
+  :host(:hover:not(:disabled)) {
+    background-color: var(--color-gray-50);
+    color: var(--color-gray-600);
+  }
+}

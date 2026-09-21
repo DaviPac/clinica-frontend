@@ -1,0 +1,20 @@
+:host {
+  display: block;
+}
+
+.item__rotulo {
+  margin-bottom: calc(var(--space) * 1);
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  color: var(--color-gray-500);
+}
+
+.item__valor {
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+  color: var(--color-gray-900);
+}
+
+:host([data-fonte='mono']) .item__valor {
+  font-family: var(--font-mono);
+}

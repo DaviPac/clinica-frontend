@@ -1,0 +1,7 @@
+:host {
+  display: block;
+  margin-bottom: calc(var(--space) * 1.5);
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  color: var(--color-gray-500);
+}

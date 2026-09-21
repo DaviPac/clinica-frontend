@@ -45,10 +45,10 @@ export class MarkdownPipe implements PipeTransform {
       link.setAttribute('rel', 'noopener noreferrer');
     }
 
-    // Tabelas herdam o wrapper com scroll horizontal usado no resto do app.
+    // Tabelas ganham o wrapper de rolagem do <app-markdown>.
     for (const tabela of Array.from(fragmento.querySelectorAll('table'))) {
       const wrapper = document.createElement('div');
-      wrapper.className = 'table-wrap';
+      wrapper.className = 'md__tabela';
       tabela.replaceWith(wrapper);
       wrapper.appendChild(tabela);
     }

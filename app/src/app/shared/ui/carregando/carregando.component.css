@@ -1,0 +1,25 @@
+:host {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--space) * 2.5);
+  padding-block: calc(var(--space) * 10);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+  color: var(--color-gray-400);
+}
+
+:host([data-espaco='nenhum']) {
+  padding-block: 0;
+  justify-content: flex-start;
+}
+
+.carregando__roda {
+  width: calc(var(--space) * 4);
+  height: calc(var(--space) * 4);
+  border: 2px solid var(--color-gray-200);
+  border-top-color: var(--color-brand-400);
+  border-radius: 50%;
+  animation: spin 0.65s linear infinite;
+  flex-shrink: 0;
+}

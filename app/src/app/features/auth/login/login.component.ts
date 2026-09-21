@@ -3,12 +3,17 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth/auth.service';
+import { AlertComponent } from '../../../shared/components/alert/alert.component';
+import { BotaoComponent } from '../../../shared/ui/botao/botao.component';
+import { CampoComponent } from '../../../shared/ui/campo/campo.component';
+import { RotuloComponent } from '../../../shared/ui/rotulo/rotulo.component';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, AlertComponent, BotaoComponent, CampoComponent, RotuloComponent],
   templateUrl: './login.component.html',
+  styleUrl: './login.component.css',
 })
 export class LoginComponent {
   form: FormGroup;

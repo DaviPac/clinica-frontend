@@ -1,0 +1,158 @@
+/*
+ * Estilos do markdown do assistente.
+ *
+ * O componente usa ViewEncapsulation.None, então estas regras entram no
+ * documento inteiro — por isso toda uma delas começa em `.md`.
+ */
+.md {
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+  color: var(--md-fg);
+}
+
+.md > * + * {
+  margin-top: calc(var(--space) * 3);
+}
+
+.md h1 {
+  margin-top: calc(var(--space) * 5);
+  font-size: var(--text-base);
+  line-height: var(--text-base-lh);
+  font-weight: 600;
+  color: var(--color-stone-900);
+}
+
+.md h2 {
+  margin-top: calc(var(--space) * 5);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+  font-weight: 600;
+  color: var(--color-stone-900);
+}
+
+.md h3,
+.md h4 {
+  margin-top: calc(var(--space) * 4);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+  font-weight: 500;
+  color: var(--color-stone-900);
+}
+
+.md ul {
+  list-style-type: disc;
+  padding-left: calc(var(--space) * 5);
+}
+
+.md ol {
+  list-style-type: decimal;
+  padding-left: calc(var(--space) * 5);
+}
+
+.md ul > * + *,
+.md ol > * + * {
+  margin-top: calc(var(--space) * 1);
+}
+
+.md li > ul,
+.md li > ol {
+  margin-top: calc(var(--space) * 1);
+}
+
+.md a {
+  color: var(--color-brand-700);
+  text-decoration-line: underline;
+  text-underline-offset: 2px;
+}
+
+.md strong {
+  font-weight: 600;
+  color: var(--color-stone-900);
+}
+
+.md code {
+  border-radius: var(--radius-sm);
+  background-color: var(--color-stone-100);
+  padding: calc(var(--space) * 0.5) calc(var(--space) * 1);
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  color: var(--code-inline-fg);
+}
+
+.md pre {
+  overflow-x: auto;
+  border: 1px solid var(--code-border);
+  border-radius: var(--radius-lg);
+  padding: calc(var(--space) * 3);
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  background: var(--code-bg);
+  color: var(--code-fg);
+}
+
+.md pre code {
+  background-color: transparent;
+  padding: 0;
+  color: inherit;
+}
+
+.md blockquote {
+  border-left: 2px solid var(--color-brand-300);
+  padding-left: calc(var(--space) * 3);
+  color: var(--md-muted);
+  font-style: italic;
+}
+
+.md hr {
+  margin-block: calc(var(--space) * 4);
+  border-color: var(--color-stone-200);
+}
+
+/*
+ * Tabelas injetadas: o pipe embrulha cada <table> num .md__tabela para
+ * garantir a rolagem horizontal no mobile.
+ */
+.md .md__tabela {
+  overflow-x: auto;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-gray-200);
+  background-color: var(--color-white);
+  box-shadow: var(--surface-shadow);
+  -webkit-overflow-scrolling: touch;
+}
+
+.md table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+}
+
+.md thead {
+  background-color: var(--color-stone-50);
+}
+
+.md th {
+  padding: calc(var(--space) * 2) calc(var(--space) * 3);
+  border-bottom: 1px solid var(--color-stone-200);
+  text-align: left;
+  font-weight: 500;
+  white-space: nowrap;
+  color: var(--color-stone-500);
+}
+
+.md td {
+  padding: calc(var(--space) * 2) calc(var(--space) * 3);
+  border-bottom: 1px solid var(--color-stone-100);
+  vertical-align: top;
+}
+
+.md tr:last-child td {
+  border-bottom-width: 0;
+}
+
+@media (hover: hover) {
+  .md a:hover {
+    color: var(--color-brand-800);
+  }
+}

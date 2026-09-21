@@ -1,0 +1,10 @@
+:host {
+  display: block;
+  padding: calc(var(--space) * 4);
+}
+
+@media (width >= 40rem) {
+  :host {
+    padding: calc(var(--space) * 6);
+  }
+}

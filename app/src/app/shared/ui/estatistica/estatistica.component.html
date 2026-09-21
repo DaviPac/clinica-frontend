@@ -1,0 +1,5 @@
+<p class="estatistica__rotulo">{{ rotulo() }}</p>
+<p class="estatistica__valor">{{ valor() }}<ng-content /></p>
+@if (detalhe()) {
+  <p class="estatistica__detalhe">{{ detalhe() }}</p>
+}

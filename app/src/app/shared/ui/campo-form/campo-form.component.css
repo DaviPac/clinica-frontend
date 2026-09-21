@@ -1,0 +1,21 @@
+:host {
+  display: block;
+}
+
+.campo__obrigatorio {
+  color: var(--color-red-500);
+}
+
+.campo__erro {
+  margin-top: calc(var(--space) * 1);
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  color: var(--color-red-600);
+}
+
+.campo__ajuda {
+  margin-top: calc(var(--space) * 1);
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  color: var(--color-gray-400);
+}

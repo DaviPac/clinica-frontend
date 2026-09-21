@@ -1,0 +1,21 @@
+:host {
+  display: block;
+  margin-bottom: calc(var(--space) * 6);
+}
+
+.voltar__link {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--space) * 1.5);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+  color: var(--color-gray-500);
+  text-decoration: none;
+  transition: color var(--duration) var(--ease);
+}
+
+@media (hover: hover) {
+  .voltar__link:hover {
+    color: var(--color-gray-900);
+  }
+}

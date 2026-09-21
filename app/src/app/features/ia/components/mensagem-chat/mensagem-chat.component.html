@@ -33,7 +33,7 @@
       }
 
       @if (m.texto) {
-        <div class="md" [innerHTML]="m.texto | markdown"></div>
+        <app-markdown [texto]="m.texto" />
 
         <button
           type="button"

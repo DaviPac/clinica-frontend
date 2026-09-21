@@ -1,0 +1,23 @@
+:host {
+  width: 100%;
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-lg);
+  background-color: var(--input-bg);
+  padding: calc(var(--space) * 2) calc(var(--space) * 3);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+  color: var(--color-gray-800);
+  transition: color var(--duration) var(--ease),
+    background-color var(--duration) var(--ease), border-color var(--duration) var(--ease),
+    box-shadow var(--duration) var(--ease);
+}
+
+:host(:focus) {
+  outline: none;
+  border-color: var(--color-brand-400);
+  box-shadow: 0 0 0 2px var(--color-brand-400);
+}
+
+:host(:disabled) {
+  opacity: 0.5;
+}
