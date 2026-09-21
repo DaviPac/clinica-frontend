@@ -1,0 +1,272 @@
+/* ──────────────────────────────────────────────
+   Moldura da aplicação: barra lateral + conteúdo.
+   No mobile a barra vira gaveta sobre o conteúdo;
+   a partir de `md` (768px) ela ocupa lugar no fluxo.
+─────────────────────────────────────────────── */
+.shell {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Escurece o conteúdo enquanto a gaveta está aberta no mobile */
+.shell__cortina {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  background-color: rgb(0 0 0 / 0.3);
+}
+
+.shell__barra {
+  position: fixed;
+  inset-block: 0;
+  left: 0;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  width: calc(var(--space) * 56);
+  border-right: 1px solid var(--color-stone-200);
+  background-color: var(--color-white);
+  transition: all 0.2s var(--ease);
+}
+
+.shell__barra--recolhida {
+  width: 0;
+  overflow: hidden;
+}
+
+/* ── Topo: logo e nome ── */
+.shell__marca {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--space) * 2.5);
+  flex-shrink: 0;
+  padding: calc(var(--space) * 5) calc(var(--space) * 4);
+  border-bottom: 1px solid var(--color-stone-200);
+}
+
+.shell__logo {
+  width: calc(var(--space) * 7);
+  height: calc(var(--space) * 7);
+  border-radius: var(--radius-lg);
+  flex-shrink: 0;
+}
+
+.shell__nome {
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+  font-weight: 500;
+  white-space: nowrap;
+  color: var(--color-stone-900);
+}
+
+/* ── Navegação ── */
+.shell__nav {
+  flex: 1;
+  overflow-y: auto;
+  padding: calc(var(--space) * 3) calc(var(--space) * 2);
+}
+
+/*
+ * `:where()` zera a especificidade de propósito: o respiro de 2px entre
+ * irmãos é o padrão, mas qualquer item com margem própria (os títulos de
+ * grupo, por exemplo) precisa vencer esta regra.
+ */
+.shell__nav > :where(:not(:last-child)) {
+  margin-bottom: calc(var(--space) * 0.5);
+}
+
+.shell__grupo {
+  margin-top: calc(var(--space) * 1);
+  margin-bottom: calc(var(--space) * 1.5);
+  padding-inline: calc(var(--space) * 2);
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+  color: var(--color-stone-400);
+}
+
+.shell__grupo--admin {
+  margin-top: 0;
+}
+
+.shell__secao {
+  padding-top: calc(var(--space) * 3);
+}
+
+.shell__divisor {
+  margin-block: calc(var(--space) * 1);
+  border-top: 1px solid var(--color-stone-100);
+}
+
+.shell__item {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--space) * 2.5);
+  padding: calc(var(--space) * 2) calc(var(--space) * 2.5);
+  border-radius: var(--radius-lg);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+  color: var(--color-stone-600);
+  text-decoration: none;
+  transition: color var(--duration) var(--ease), background-color var(--duration) var(--ease);
+}
+
+.shell__item--admin {
+  margin-top: calc(var(--space) * 0.5);
+}
+
+/*
+ * O item ativo recebe só o realce de fundo. A cor do texto continua a do
+ * item normal: era assim antes da saída do CSS utilitário e manter igual
+ * evita mudar o visual numa refatoração que não é de design.
+ */
+.shell__item--ativo {
+  background-color: var(--color-stone-100);
+}
+
+.shell__icone {
+  width: calc(var(--space) * 4);
+  height: calc(var(--space) * 4);
+  flex-shrink: 0;
+}
+
+.shell__item-texto {
+  white-space: nowrap;
+}
+
+/* ── Rodapé: usuário e botão de recolher ── */
+.shell__rodape {
+  flex-shrink: 0;
+  padding: calc(var(--space) * 3);
+  border-top: 1px solid var(--color-stone-200);
+}
+
+.shell__usuario {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--space) * 2.5);
+}
+
+.shell__perfil {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--space) * 2.5);
+  flex: 1;
+  min-width: 0;
+  padding: calc(var(--space) * 1);
+  margin: calc(var(--space) * -1);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  transition: background-color var(--duration) var(--ease);
+}
+
+.shell__perfil-textos {
+  flex: 1;
+  min-width: 0;
+}
+
+.shell__perfil-nome {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  font-weight: 500;
+  color: var(--color-stone-900);
+}
+
+.shell__perfil-papel {
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  color: var(--color-stone-500);
+}
+
+.shell__recolher {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--space) * 1.5);
+  width: 100%;
+  margin-top: calc(var(--space) * 2);
+  padding: calc(var(--space) * 1.5);
+  border: none;
+  border-radius: var(--radius-md);
+  background-color: transparent;
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  color: var(--color-stone-400);
+  cursor: pointer;
+  transition: color var(--duration) var(--ease), background-color var(--duration) var(--ease);
+}
+
+.shell__recolher-icone {
+  width: calc(var(--space) * 3.5);
+  height: calc(var(--space) * 3.5);
+}
+
+/* ── Botão flutuante que reabre a gaveta no mobile ── */
+.shell__abrir {
+  position: fixed;
+  top: calc(var(--space) * 4);
+  left: calc(var(--space) * 4);
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(var(--space) * 9);
+  height: calc(var(--space) * 9);
+  border: 1px solid var(--color-stone-200);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-white);
+  box-shadow: var(--shadow-sm);
+  color: var(--color-stone-600);
+  cursor: pointer;
+}
+
+.shell__abrir-icone {
+  width: calc(var(--space) * 4);
+  height: calc(var(--space) * 4);
+}
+
+.shell__conteudo {
+  flex: 1;
+  overflow-y: auto;
+}
+
+@media (hover: hover) {
+  .shell__item:hover {
+    background-color: var(--color-stone-50);
+    color: var(--color-stone-900);
+  }
+
+  .shell__perfil:hover {
+    background-color: var(--color-stone-50);
+  }
+
+  .shell__recolher:hover {
+    background-color: var(--color-stone-50);
+    color: var(--color-stone-600);
+  }
+
+  .shell__abrir:hover {
+    color: var(--color-stone-900);
+  }
+}
+
+@media (width >= 48rem) {
+  .shell__barra {
+    position: static;
+  }
+
+  .shell__barra--recolhida {
+    width: calc(var(--space) * 14);
+  }
+
+  .shell__cortina,
+  .shell__abrir {
+    display: none;
+  }
+}
