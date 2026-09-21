@@ -1,0 +1,117 @@
+/* ── Mensagem de quem pergunta ── */
+.mensagem__fila {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.mensagem__balao {
+  max-width: 85%;
+  padding: calc(var(--space) * 2.5) calc(var(--space) * 4);
+  border-radius: var(--radius-2xl);
+  border-top-right-radius: var(--radius-sm);
+  background-color: var(--color-brand-100);
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  color: var(--color-stone-900);
+}
+
+/* ── Resposta do assistente ── */
+.mensagem__resposta {
+  display: flex;
+  gap: calc(var(--space) * 3);
+}
+
+.mensagem__avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: calc(var(--space) * 7);
+  height: calc(var(--space) * 7);
+  margin-top: calc(var(--space) * 0.5);
+  border-radius: 9999px;
+  background-color: var(--color-brand-100);
+}
+
+.mensagem__avatar-icone {
+  width: calc(var(--space) * 3.5);
+  height: calc(var(--space) * 3.5);
+  color: var(--color-brand-700);
+}
+
+.mensagem__corpo {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ── Raciocínio, recolhido por padrão ── */
+.mensagem__raciocinio {
+  margin-bottom: calc(var(--space) * 2);
+}
+
+.mensagem__raciocinio-titulo {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--space) * 1.5);
+  list-style: none;
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  color: var(--color-stone-400);
+  cursor: pointer;
+}
+
+.mensagem__raciocinio-titulo::-webkit-details-marker {
+  display: none;
+}
+
+.mensagem__raciocinio-icone {
+  width: calc(var(--space) * 3.5);
+  height: calc(var(--space) * 3.5);
+}
+
+.mensagem__raciocinio-texto {
+  margin-top: calc(var(--space) * 1.5);
+  padding-left: calc(var(--space) * 3);
+  border-left: 2px solid var(--color-stone-200);
+  font-size: var(--text-xs);
+  line-height: var(--leading-relaxed);
+  white-space: pre-wrap;
+  color: var(--color-stone-500);
+}
+
+/* Só aparece com o ponteiro sobre a resposta */
+.mensagem__copiar {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--space) * 1);
+  margin-top: calc(var(--space) * 1.5);
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  font-size: 11px;
+  color: var(--color-stone-400);
+  opacity: 0;
+  cursor: pointer;
+  transition: opacity var(--duration) var(--ease);
+}
+
+.mensagem__copiar-icone {
+  width: calc(var(--space) * 3);
+  height: calc(var(--space) * 3);
+}
+
+@media (hover: hover) {
+  .mensagem__raciocinio-titulo:hover {
+    color: var(--color-stone-600);
+  }
+
+  .mensagem__resposta:hover .mensagem__copiar {
+    opacity: 1;
+  }
+
+  .mensagem__copiar:hover {
+    color: var(--color-stone-600);
+  }
+}

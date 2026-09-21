@@ -1,0 +1,142 @@
+.seletor {
+  position: relative;
+}
+
+.seletor__gatilho {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--space) * 1.5);
+  padding: calc(var(--space) * 1.5) calc(var(--space) * 2.5);
+  border: none;
+  border-radius: var(--radius-lg);
+  background-color: transparent;
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  color: var(--color-stone-600);
+  cursor: pointer;
+  transition: background-color var(--duration) var(--ease);
+}
+
+.seletor__modelo {
+  font-weight: 500;
+}
+
+.seletor__nivel {
+  color: var(--color-brand-600);
+}
+
+.seletor__seta {
+  width: calc(var(--space) * 3);
+  height: calc(var(--space) * 3);
+  color: var(--color-stone-400);
+}
+
+/* Captura o clique fora para fechar o painel */
+.seletor__fora {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+}
+
+.seletor__painel {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 40;
+  width: 18rem;
+  margin-top: calc(var(--space) * 1);
+  overflow: hidden;
+  border: 1px solid var(--color-stone-200);
+  border-radius: var(--radius-xl);
+  background-color: var(--color-white);
+  box-shadow: var(--shadow-lg);
+}
+
+.seletor__secao {
+  padding: calc(var(--space) * 3) calc(var(--space) * 3) calc(var(--space) * 1.5);
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+  color: var(--color-stone-400);
+}
+
+.seletor__opcao {
+  display: flex;
+  align-items: flex-start;
+  gap: calc(var(--space) * 2);
+  width: 100%;
+  padding: calc(var(--space) * 2) calc(var(--space) * 3);
+  border: none;
+  background-color: transparent;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color var(--duration) var(--ease);
+}
+
+.seletor__opcao--nivel {
+  align-items: center;
+}
+
+/* A bolinha só ganha cor na opção escolhida, mas ocupa espaço sempre */
+.seletor__marca {
+  flex-shrink: 0;
+  width: calc(var(--space) * 1.5);
+  height: calc(var(--space) * 1.5);
+  border-radius: 9999px;
+  background-color: transparent;
+}
+
+.seletor__marca--alto {
+  margin-top: calc(var(--space) * 1);
+}
+
+.seletor__marca--ativa {
+  background-color: var(--color-brand-500);
+}
+
+.seletor__texto {
+  min-width: 0;
+}
+
+.seletor__rotulo {
+  display: block;
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+  color: var(--color-stone-900);
+}
+
+.seletor__descricao {
+  display: block;
+  font-size: 11px;
+  line-height: var(--leading-snug);
+  color: var(--color-stone-500);
+}
+
+.seletor__nome-nivel {
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+  color: var(--color-stone-700);
+}
+
+.seletor__raciocinio {
+  margin-top: calc(var(--space) * 1);
+  border-top: 1px solid var(--color-stone-100);
+}
+
+.seletor__nota {
+  padding: calc(var(--space) * 1) calc(var(--space) * 3) calc(var(--space) * 3);
+  font-size: 11px;
+  line-height: var(--leading-snug);
+  color: var(--color-stone-400);
+}
+
+@media (hover: hover) {
+  .seletor__gatilho:hover {
+    background-color: var(--color-stone-100);
+  }
+
+  .seletor__opcao:hover {
+    background-color: var(--color-stone-50);
+  }
+}

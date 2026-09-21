@@ -25,6 +25,7 @@ import { AlertComponent } from '../../../shared/components/alert/alert.component
 import { ChatComposerComponent } from '../components/chat-composer/chat-composer.component';
 import { ConversasSidebarComponent } from '../components/conversas-sidebar/conversas-sidebar.component';
 import { FerramentaCardComponent } from '../components/ferramenta-card/ferramenta-card.component';
+import { InicioConversaComponent } from '../components/inicio-conversa/inicio-conversa.component';
 import { MensagemChatComponent } from '../components/mensagem-chat/mensagem-chat.component';
 import { PainelUsoComponent } from '../components/painel-uso/painel-uso.component';
 import { SeletorModeloComponent } from '../components/seletor-modelo/seletor-modelo.component';
@@ -37,14 +38,13 @@ import { SeletorModeloComponent } from '../components/seletor-modelo/seletor-mod
     ChatComposerComponent,
     ConversasSidebarComponent,
     FerramentaCardComponent,
+    InicioConversaComponent,
     MensagemChatComponent,
     PainelUsoComponent,
     SeletorModeloComponent,
   ],
-  // A página é dona do próprio scroll: o <main> do shell já rola, então sem
-  // h-full/min-h-0 aqui o composer flutuaria no meio do documento.
-  host: { class: 'flex h-full min-h-0' },
   templateUrl: './assistente.component.html',
+  styleUrl: './assistente.component.css',
 })
 export class AssistenteComponent implements OnInit {
   readonly agente = inject(AgenteIaService);

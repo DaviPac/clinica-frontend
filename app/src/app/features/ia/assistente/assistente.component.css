@@ -1,0 +1,186 @@
+/*
+ * A página é dona do próprio scroll: o <main> do shell já rola, então sem
+ * height/min-height aqui o composer flutuaria no meio do documento.
+ */
+:host {
+  display: flex;
+  height: 100%;
+  min-height: 0;
+}
+
+.assistente {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  background-color: var(--color-white);
+}
+
+/* Escurece a conversa enquanto a lista está aberta no mobile */
+.assistente__cortina {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  background-color: rgb(0 0 0 / 0.3);
+}
+
+/* ──────────────────────────────────────────────
+   Lista de conversas — gaveta no mobile
+─────────────────────────────────────────────── */
+.assistente__lateral {
+  position: fixed;
+  inset-block: 0;
+  left: 0;
+  z-index: 30;
+  flex-shrink: 0;
+  width: 18rem;
+  border-right: 1px solid var(--color-stone-200);
+  transform: translateX(-100%);
+  transition: transform 0.2s var(--ease);
+}
+
+.assistente__lateral--aberta {
+  transform: translateX(0);
+}
+
+/* ──────────────────────────────────────────────
+   Coluna da conversa
+─────────────────────────────────────────────── */
+.assistente__conversa {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+.assistente__topo {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--space) * 2);
+  flex-shrink: 0;
+  padding: calc(var(--space) * 2.5) calc(var(--space) * 3);
+  border-bottom: 1px solid var(--color-stone-200);
+}
+
+.assistente__alternar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(var(--space) * 8);
+  height: calc(var(--space) * 8);
+  border: none;
+  border-radius: var(--radius-lg);
+  background-color: transparent;
+  color: var(--color-stone-400);
+  cursor: pointer;
+  transition: color var(--duration) var(--ease), background-color var(--duration) var(--ease);
+}
+
+.assistente__alternar-icone {
+  width: calc(var(--space) * 4);
+  height: calc(var(--space) * 4);
+}
+
+.assistente__titulo {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+  font-weight: 500;
+  color: var(--color-stone-900);
+}
+
+.assistente__rolagem {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.assistente__fluxo {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--space) * 5);
+  width: 100%;
+  max-width: 48rem;
+  margin-inline: auto;
+  padding: calc(var(--space) * 6) calc(var(--space) * 4);
+}
+
+/* ──────────────────────────────────────────────
+   Fluxo de mensagens
+─────────────────────────────────────────────── */
+/* Alinha o cartão de ferramenta com o texto da resposta, não com o avatar */
+.assistente__recuo {
+  padding-left: calc(var(--space) * 10);
+}
+
+.assistente__pensando {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--space) * 3);
+  padding-left: calc(var(--space) * 10);
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  color: var(--color-stone-400);
+}
+
+.assistente__pontos {
+  display: flex;
+  gap: calc(var(--space) * 1);
+}
+
+.assistente__ponto {
+  width: calc(var(--space) * 1.5);
+  height: calc(var(--space) * 1.5);
+  border-radius: 9999px;
+  background-color: var(--color-stone-300);
+  animation: bounce 1s infinite;
+}
+
+/* O atraso negativo põe os três pontos em fases diferentes do salto */
+.assistente__ponto:nth-child(1) { animation-delay: -0.3s; }
+.assistente__ponto:nth-child(2) { animation-delay: -0.15s; }
+
+.assistente__composer {
+  flex-shrink: 0;
+  border-top: 1px solid var(--color-stone-200);
+  background-color: var(--color-white);
+}
+
+@media (hover: hover) {
+  .assistente__alternar:hover {
+    background-color: var(--color-stone-100);
+    color: var(--color-stone-700);
+  }
+}
+
+@media (width >= 40rem) {
+  .assistente__topo {
+    padding-inline: calc(var(--space) * 4);
+  }
+
+  .assistente__fluxo {
+    padding-inline: calc(var(--space) * 6);
+  }
+}
+
+/* A partir de `lg` a lista ocupa lugar no fluxo, sem gaveta nem cortina */
+@media (width >= 64rem) {
+  .assistente__cortina {
+    display: none;
+  }
+
+  .assistente__lateral {
+    display: none;
+  }
+
+  .assistente__lateral--aberta {
+    position: static;
+    display: block;
+    transform: none;
+  }
+}

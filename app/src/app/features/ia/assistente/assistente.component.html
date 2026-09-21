@@ -1,16 +1,12 @@
-<div class="flex h-full min-h-0 w-full bg-white">
+<div class="assistente">
 
   @if (sidebarAberta()) {
-    <div
-      class="fixed inset-0 bg-black/30 z-20 lg:hidden"
-      (click)="sidebarAberta.set(false)">
-    </div>
+    <div class="assistente__cortina" (click)="sidebarAberta.set(false)"></div>
   }
 
   <aside
-    class="fixed lg:static inset-y-0 left-0 z-30 w-72 shrink-0 border-r border-stone-200
-           transition-transform duration-200 lg:translate-x-0"
-    [class]="sidebarAberta() ? 'translate-x-0' : '-translate-x-full lg:hidden'">
+    class="assistente__lateral"
+    [class.assistente__lateral--aberta]="sidebarAberta()">
     <app-conversas-sidebar
       [conversas]="agente.conversas()"
       [ativaId]="conversaAtual()?.id ?? null"
@@ -21,23 +17,21 @@
       (remover)="remover($event)" />
   </aside>
 
-  <section class="flex-1 flex flex-col min-w-0 min-h-0">
+  <section class="assistente__conversa">
 
-    <header class="flex items-center gap-2 px-3 sm:px-4 py-2.5 border-b border-stone-200 shrink-0">
+    <header class="assistente__topo">
       <button
         type="button"
-        (click)="sidebarAberta.set(!sidebarAberta())"
+        class="assistente__alternar"
         aria-label="Alternar lista de conversas"
-        class="w-8 h-8 rounded-lg flex items-center justify-center text-stone-400
-               hover:text-stone-700 hover:bg-stone-100 cursor-pointer bg-transparent
-               border-none transition-colors">
-        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+        (click)="sidebarAberta.set(!sidebarAberta())">
+        <svg class="assistente__alternar-icone" viewBox="0 0 24 24" fill="none" stroke="currentColor"
              stroke-width="2" stroke-linecap="round">
           <path d="M3 12h18M3 6h18M3 18h18" />
         </svg>
       </button>
 
-      <h1 class="flex-1 min-w-0 truncate text-sm font-medium text-stone-900">
+      <h1 class="assistente__titulo">
         {{ conversaAtual()?.titulo || 'Assistente' }}
       </h1>
 
@@ -55,42 +49,15 @@
       }
     </header>
 
-    <div
-      #scroller
-      (scroll)="aoRolar($event)"
-      class="flex-1 overflow-y-auto min-h-0">
+    <div #scroller class="assistente__rolagem" (scroll)="aoRolar($event)">
 
-      <div class="mx-auto w-full max-w-3xl px-4 sm:px-6 py-6 flex flex-col gap-5">
+      <div class="assistente__fluxo">
 
         @if (vazio()) {
-          <div class="flex flex-col items-center text-center py-12 sm:py-20">
-            <div class="w-12 h-12 rounded-2xl bg-brand-100 flex items-center justify-center mb-4">
-              <svg class="w-6 h-6 text-brand-700" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                   stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 3l1.9 4.8L18.7 9.7l-4.8 1.9L12 16.4l-1.9-4.8L5.3 9.7l4.8-1.9L12 3z" />
-              </svg>
-            </div>
-            <h2 class="text-lg font-medium text-stone-900">
-              Como posso ajudar, {{ primeiroNome() }}?
-            </h2>
-            <p class="mt-1.5 text-sm text-stone-500 max-w-sm">
-              Posso consultar a agenda, pacientes e finanças — e executar alterações
-              depois da sua confirmação.
-            </p>
-
-            <div class="mt-6 grid sm:grid-cols-2 gap-2 w-full max-w-xl">
-              @for (sugestao of sugestoes(); track sugestao) {
-                <button
-                  type="button"
-                  (click)="enviar(sugestao)"
-                  class="text-left text-sm text-stone-700 border border-stone-200 rounded-xl
-                         px-3.5 py-2.5 hover:bg-stone-50 hover:border-stone-300
-                         cursor-pointer bg-transparent transition-colors">
-                  {{ sugestao }}
-                </button>
-              }
-            </div>
-          </div>
+          <app-inicio-conversa
+            [nome]="primeiroNome()"
+            [sugestoes]="sugestoes()"
+            (escolher)="enviar($event)" />
         }
 
         @for (m of mensagens(); track m.id) {
@@ -99,7 +66,7 @@
               <app-mensagem-chat [mensagem]="comoTexto(m)" />
             }
             @case ('ferramenta') {
-              <div class="pl-10">
+              <div class="assistente__recuo">
                 <app-ferramenta-card
                   [mensagem]="comoFerramenta(m)"
                   (confirmar)="confirmar(m.id, $event)"
@@ -113,11 +80,11 @@
         }
 
         @if (agente.ocupado()) {
-          <div class="flex items-center gap-3 pl-10 text-xs text-stone-400">
-            <span class="flex gap-1">
-              <span class="w-1.5 h-1.5 rounded-full bg-stone-300 animate-bounce [animation-delay:-0.3s]"></span>
-              <span class="w-1.5 h-1.5 rounded-full bg-stone-300 animate-bounce [animation-delay:-0.15s]"></span>
-              <span class="w-1.5 h-1.5 rounded-full bg-stone-300 animate-bounce"></span>
+          <div class="assistente__pensando">
+            <span class="assistente__pontos">
+              <span class="assistente__ponto"></span>
+              <span class="assistente__ponto"></span>
+              <span class="assistente__ponto"></span>
             </span>
             @if (agente.rotuloEstado(); as rotulo) {
               <span>{{ rotulo }}</span>
@@ -131,7 +98,7 @@
       </div>
     </div>
 
-    <div class="shrink-0 border-t border-stone-200 bg-white">
+    <div class="assistente__composer">
       <app-chat-composer
         [ocupado]="agente.ocupado()"
         [aguardandoConfirmacao]="agente.aguardandoConfirmacao()"

@@ -14,6 +14,7 @@ import { MarkdownComponent } from '../../../../shared/ui/markdown/markdown.compo
   standalone: true,
   imports: [MarkdownComponent],
   templateUrl: './mensagem-chat.component.html',
+  styleUrl: './mensagem-chat.component.css',
 })
 export class MensagemChatComponent {
   readonly mensagem = input.required<MensagemTexto>();

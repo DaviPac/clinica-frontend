@@ -1,0 +1,135 @@
+.conversas {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: var(--color-white);
+}
+
+.conversas__topo {
+  flex-shrink: 0;
+  padding: calc(var(--space) * 3);
+}
+
+button.conversas__nova {
+  width: 100%;
+  gap: calc(var(--space) * 2);
+}
+
+.conversas__icone {
+  width: calc(var(--space) * 4);
+  height: calc(var(--space) * 4);
+}
+
+.conversas__lista {
+  flex: 1;
+  overflow-y: auto;
+  padding-inline: calc(var(--space) * 2);
+  padding-bottom: calc(var(--space) * 3);
+}
+
+.conversas__grupo {
+  margin-top: calc(var(--space) * 3);
+  margin-bottom: calc(var(--space) * 1);
+  padding-inline: calc(var(--space) * 2);
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+  color: var(--color-stone-400);
+}
+
+.conversas__item {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--space) * 1);
+  padding: calc(var(--space) * 1.5) calc(var(--space) * 2);
+  border-radius: var(--radius-lg);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+  color: var(--color-stone-600);
+  cursor: pointer;
+  transition: color var(--duration) var(--ease), background-color var(--duration) var(--ease);
+}
+
+.conversas__item--ativa {
+  background-color: var(--color-stone-100);
+  color: var(--color-brand-700);
+}
+
+.conversas__entrada {
+  flex: 1;
+  min-width: 0;
+  padding: calc(var(--space) * 0.5) calc(var(--space) * 1.5);
+  border: 1px solid var(--color-brand-300);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-white);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+  outline: none;
+}
+
+.conversas__titulo {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Renomear e excluir só aparecem com o ponteiro sobre a conversa */
+.conversas__acao {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: calc(var(--space) * 6);
+  height: calc(var(--space) * 6);
+  border: none;
+  border-radius: var(--radius-sm);
+  background-color: transparent;
+  color: var(--color-stone-400);
+  opacity: 0;
+  cursor: pointer;
+  transition: opacity var(--duration) var(--ease);
+}
+
+.conversas__acao-icone {
+  width: calc(var(--space) * 3.5);
+  height: calc(var(--space) * 3.5);
+}
+
+.conversas__vazio {
+  padding: calc(var(--space) * 4) calc(var(--space) * 2);
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  text-align: center;
+  color: var(--color-stone-400);
+}
+
+.conversas__aviso {
+  flex-shrink: 0;
+  padding: calc(var(--space) * 2) calc(var(--space) * 3);
+  border-top: 1px solid var(--color-amber-100);
+  background-color: var(--color-amber-50);
+  font-size: 11px;
+  color: var(--color-amber-700);
+}
+
+@media (hover: hover) {
+  .conversas__item:not(.conversas__item--ativa):hover {
+    background-color: var(--color-stone-50);
+  }
+
+  .conversas__item:hover .conversas__acao {
+    opacity: 1;
+  }
+
+  .conversas__acao:hover {
+    background-color: var(--color-stone-200);
+    color: var(--color-stone-700);
+  }
+
+  .conversas__acao--excluir:hover {
+    color: var(--color-red-600);
+  }
+}

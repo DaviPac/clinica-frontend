@@ -1,0 +1,88 @@
+/*
+ * Estilos do formulário de confirmação de uma ferramenta.
+ * Compartilhado pelos dois componentes de confirmação (genérico e
+ * agendamento): mesmas classes, mesma cara — a encapsulação do Angular
+ * continua escopando o arquivo para cada um deles.
+ */
+.conf {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--space) * 3);
+}
+
+.conf__campo {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--space) * 1);
+}
+
+/* O respiro entre rótulo e controle já vem do `gap` da coluna */
+label.conf__rotulo {
+  margin-bottom: 0;
+}
+
+.conf__obrigatorio {
+  color: var(--color-red-500);
+}
+
+.conf__dupla {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: calc(var(--space) * 3);
+}
+
+.conf__marcacao {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--space) * 2);
+  cursor: pointer;
+}
+
+.conf__caixa {
+  width: calc(var(--space) * 4);
+  height: calc(var(--space) * 4);
+  accent-color: var(--color-brand-400);
+  cursor: pointer;
+}
+
+.conf__marcacao-texto {
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+  color: var(--color-stone-700);
+}
+
+.conf__nota {
+  font-size: 11px;
+  line-height: var(--leading-snug);
+  color: var(--color-stone-500);
+}
+
+.conf__nota--colada {
+  margin-top: calc(var(--space) * -1);
+}
+
+.conf__erro {
+  font-size: 11px;
+  line-height: var(--leading-snug);
+  color: var(--color-red-600);
+}
+
+.conf__alerta {
+  font-size: 11px;
+  line-height: var(--leading-snug);
+  color: var(--color-amber-700);
+}
+
+/* Bloco de recorrência, separado do resto por um filete */
+.conf__recorrencia {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--space) * 2);
+  padding-top: calc(var(--space) * 1);
+  border-top: 1px solid var(--color-stone-100);
+}
+
+/* Campo de texto longo: só esse pode ser redimensionado */
+textarea.conf__controle {
+  resize: vertical;
+}

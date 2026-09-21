@@ -1,0 +1,188 @@
+/* ──────────────────────────────────────────────
+   Escrita pendente: o card que pede confirmação
+─────────────────────────────────────────────── */
+.ferramenta {
+  overflow: hidden;
+  border: 1px solid var(--color-brand-300);
+  border-radius: var(--radius-xl);
+  background-color: var(--color-white);
+  box-shadow: var(--shadow-sm);
+}
+
+.ferramenta__aviso {
+  padding: calc(var(--space) * 3) calc(var(--space) * 4) calc(var(--space) * 2.5);
+  border-bottom: 1px solid var(--color-brand-200);
+  background-color: var(--color-brand-50);
+}
+
+.ferramenta__aviso-linha {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--space) * 2);
+  margin-bottom: calc(var(--space) * 1);
+}
+
+.ferramenta__aviso-icone {
+  width: calc(var(--space) * 4);
+  height: calc(var(--space) * 4);
+  flex-shrink: 0;
+  color: var(--color-brand-700);
+}
+
+.ferramenta__aviso-texto {
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--color-brand-800);
+}
+
+.ferramenta__descricao {
+  font-size: var(--text-sm);
+  line-height: var(--leading-snug);
+  color: var(--color-stone-900);
+}
+
+.ferramenta__corpo {
+  padding: calc(var(--space) * 3.5) calc(var(--space) * 4);
+}
+
+.ferramenta__instrucao {
+  margin-bottom: calc(var(--space) * 3);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--color-stone-400);
+}
+
+.ferramenta__acoes {
+  display: flex;
+  gap: calc(var(--space) * 2);
+  padding: 0 calc(var(--space) * 4) calc(var(--space) * 4);
+}
+
+.ferramenta__acoes > * {
+  flex: 1;
+}
+
+.ferramenta__acao-extra {
+  margin-top: calc(var(--space) * 2);
+}
+
+/* ──────────────────────────────────────────────
+   Desfecho de uma escrita
+─────────────────────────────────────────────── */
+.desfecho {
+  display: flex;
+  align-items: flex-start;
+  gap: calc(var(--space) * 2);
+  padding: calc(var(--space) * 2) calc(var(--space) * 3);
+  border: 1px solid;
+  border-radius: var(--radius-lg);
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+}
+
+.desfecho--ok {
+  border-color: var(--color-teal-200);
+  background-color: var(--color-teal-50);
+  color: var(--color-teal-800);
+}
+
+.desfecho--erro {
+  border-color: var(--color-red-200);
+  background-color: var(--color-red-50);
+  color: var(--color-red-700);
+}
+
+.desfecho--neutro {
+  border-color: var(--color-stone-200);
+  background-color: var(--color-stone-50);
+  color: var(--color-stone-600);
+}
+
+.desfecho__icone {
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.desfecho__texto {
+  min-width: 0;
+}
+
+.desfecho__titulo {
+  font-weight: 500;
+}
+
+.desfecho__detalhe {
+  margin-top: calc(var(--space) * 0.5);
+  opacity: 0.8;
+}
+
+.desfecho__detalhe--erro {
+  opacity: 0.9;
+}
+
+/* ──────────────────────────────────────────────
+   Leitura: uma linha discreta, expansível
+─────────────────────────────────────────────── */
+.leitura {
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  color: var(--color-stone-500);
+}
+
+.leitura__executando {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--space) * 1.5);
+}
+
+.leitura__pulso {
+  width: calc(var(--space) * 1.5);
+  height: calc(var(--space) * 1.5);
+  border-radius: 9999px;
+  background-color: var(--color-brand-400);
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.leitura__titulo {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--space) * 1.5);
+  list-style: none;
+  cursor: pointer;
+}
+
+.leitura__titulo::-webkit-details-marker {
+  display: none;
+}
+
+.leitura__icone {
+  width: calc(var(--space) * 3.5);
+  height: calc(var(--space) * 3.5);
+  flex-shrink: 0;
+}
+
+.leitura__resumo {
+  color: var(--color-stone-400);
+}
+
+.leitura__resultado {
+  max-height: calc(var(--space) * 64);
+  margin-top: calc(var(--space) * 2);
+  padding: calc(var(--space) * 2.5);
+  overflow-x: auto;
+  border: 1px solid var(--color-stone-200);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-stone-50);
+  font-size: 11px;
+  line-height: var(--leading-relaxed);
+  color: var(--color-stone-600);
+}
+
+@media (hover: hover) {
+  .leitura__titulo:hover {
+    color: var(--color-stone-700);
+  }
+}

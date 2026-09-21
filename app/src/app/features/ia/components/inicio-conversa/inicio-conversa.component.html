@@ -1,0 +1,21 @@
+<div class="inicio__selo">
+  <svg class="inicio__selo-icone" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+       stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 3l1.9 4.8L18.7 9.7l-4.8 1.9L12 16.4l-1.9-4.8L5.3 9.7l4.8-1.9L12 3z" />
+  </svg>
+</div>
+
+<h2 class="inicio__convite">Como posso ajudar, {{ nome() }}?</h2>
+
+<p class="inicio__explicacao">
+  Posso consultar a agenda, pacientes e finanças — e executar alterações
+  depois da sua confirmação.
+</p>
+
+<div class="inicio__sugestoes">
+  @for (sugestao of sugestoes(); track sugestao) {
+    <button type="button" class="inicio__sugestao" (click)="escolher.emit(sugestao)">
+      {{ sugestao }}
+    </button>
+  }
+</div>

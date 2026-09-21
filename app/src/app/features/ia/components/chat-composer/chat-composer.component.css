@@ -1,0 +1,110 @@
+.composer {
+  padding: calc(var(--space) * 3) calc(var(--space) * 4);
+}
+
+.composer__coluna {
+  width: 100%;
+  max-width: 48rem;
+  margin-inline: auto;
+}
+
+.composer__caixa {
+  display: flex;
+  align-items: flex-end;
+  gap: calc(var(--space) * 2);
+  padding: calc(var(--space) * 2) calc(var(--space) * 3);
+  border: 1px solid var(--color-stone-200);
+  border-radius: var(--radius-2xl);
+  background-color: var(--color-white);
+  transition: box-shadow var(--duration) var(--ease);
+}
+
+.composer__caixa:focus-within {
+  box-shadow: 0 0 0 2px var(--color-brand-400);
+}
+
+.composer__entrada {
+  flex: 1;
+  max-height: 200px;
+  padding-block: calc(var(--space) * 1.5);
+  border: none;
+  outline: none;
+  resize: none;
+  background-color: transparent;
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+  color: var(--color-stone-900);
+}
+
+.composer__entrada::placeholder {
+  color: var(--color-stone-400);
+}
+
+.composer__entrada:disabled {
+  opacity: 0.6;
+}
+
+.composer__botao {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: calc(var(--space) * 8);
+  height: calc(var(--space) * 8);
+  border: none;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: background-color var(--duration) var(--ease);
+}
+
+.composer__botao--parar {
+  background-color: var(--color-stone-200);
+  color: var(--color-stone-700);
+}
+
+.composer__botao--enviar {
+  background-color: var(--color-brand-400);
+  color: #fff;
+}
+
+.composer__botao--enviar:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* O quadradinho de "parar", desenhado sem ícone */
+.composer__quadrado {
+  display: block;
+  width: calc(var(--space) * 2.5);
+  height: calc(var(--space) * 2.5);
+  border-radius: 2px;
+  background-color: currentColor;
+}
+
+.composer__icone {
+  width: calc(var(--space) * 4);
+  height: calc(var(--space) * 4);
+}
+
+.composer__nota {
+  margin-top: calc(var(--space) * 1.5);
+  font-size: 11px;
+  text-align: center;
+  color: var(--color-stone-400);
+}
+
+@media (hover: hover) {
+  .composer__botao--parar:hover {
+    background-color: var(--color-stone-300);
+  }
+
+  .composer__botao--enviar:hover {
+    background-color: var(--color-brand-500);
+  }
+}
+
+@media (width >= 40rem) {
+  .composer {
+    padding-inline: calc(var(--space) * 6);
+  }
+}

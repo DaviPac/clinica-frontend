@@ -1,0 +1,155 @@
+.uso {
+  position: relative;
+}
+
+.uso__gatilho {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(var(--space) * 8);
+  height: calc(var(--space) * 8);
+  border: none;
+  border-radius: var(--radius-lg);
+  background-color: transparent;
+  color: var(--color-stone-400);
+  cursor: pointer;
+  transition: color var(--duration) var(--ease), background-color var(--duration) var(--ease);
+}
+
+.uso__gatilho-icone {
+  width: calc(var(--space) * 4);
+  height: calc(var(--space) * 4);
+}
+
+/* Captura o clique fora para fechar o painel */
+.uso__fora {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+}
+
+.uso__painel {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--space) * 3.5);
+  width: 20rem;
+  margin-top: calc(var(--space) * 1);
+  padding: calc(var(--space) * 4);
+  border: 1px solid var(--color-stone-200);
+  border-radius: var(--radius-xl);
+  background-color: var(--color-white);
+  box-shadow: var(--shadow-lg);
+}
+
+.uso__secao {
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+  color: var(--color-stone-400);
+}
+
+/* ── Contexto consumido ── */
+.uso__contexto {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: calc(var(--space) * 1.5);
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+}
+
+.uso__contexto-rotulo {
+  color: var(--color-stone-600);
+}
+
+.uso__contexto-valor {
+  font-weight: 500;
+  color: var(--color-stone-900);
+}
+
+.uso__contexto-limite {
+  color: var(--color-stone-400);
+}
+
+.uso__barra {
+  height: calc(var(--space) * 1.5);
+  overflow: hidden;
+  border-radius: 9999px;
+  background-color: var(--color-stone-100);
+}
+
+.uso__barra-preenchida {
+  height: 100%;
+  border-radius: 9999px;
+  background-color: var(--color-brand-400);
+  transition: all var(--duration) var(--ease);
+}
+
+/* ── Blocos de contagem ── */
+.uso__bloco {
+  padding-top: calc(var(--space) * 3);
+  border-top: 1px solid var(--color-stone-100);
+}
+
+.uso__bloco-titulo {
+  margin-bottom: calc(var(--space) * 1.5);
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  color: var(--color-stone-600);
+}
+
+.uso__tabela {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: calc(var(--space) * 3);
+  row-gap: calc(var(--space) * 1);
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+}
+
+.uso__chave {
+  color: var(--color-stone-500);
+}
+
+.uso__valor {
+  text-align: right;
+  color: var(--color-stone-900);
+}
+
+/* ── Cota estourada ── */
+.uso__limite-titulo {
+  margin-bottom: calc(var(--space) * 1);
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  font-weight: 500;
+  color: var(--color-red-700);
+}
+
+.uso__limite-texto {
+  max-height: calc(var(--space) * 32);
+  overflow-y: auto;
+  overflow-wrap: break-word;
+  font-size: 11px;
+  line-height: var(--leading-snug);
+  color: var(--color-red-600);
+}
+
+.uso__rodape {
+  padding-top: calc(var(--space) * 3);
+  border-top: 1px solid var(--color-stone-100);
+  font-size: 11px;
+  line-height: var(--leading-snug);
+  color: var(--color-stone-400);
+}
+
+@media (hover: hover) {
+  .uso__gatilho:hover {
+    background-color: var(--color-stone-100);
+    color: var(--color-stone-700);
+  }
+}

@@ -1,0 +1,51 @@
+.acao {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--space) * 1.5);
+}
+
+/*
+ * O link tem a mesma cara do botão de contorno, mas não pode ser um
+ * <button>: navegar é papel de âncora.
+ */
+.acao__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--space) * 2);
+  width: fit-content;
+  padding: calc(var(--space) * 2) calc(var(--space) * 4);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-lg);
+  background-color: var(--btn-outline-bg);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+  font-weight: 500;
+  text-decoration: none;
+  color: var(--color-gray-700);
+  cursor: pointer;
+  transition: background-color var(--duration) var(--ease), border-color var(--duration) var(--ease);
+}
+
+button.acao__botao {
+  width: fit-content;
+  gap: calc(var(--space) * 2);
+}
+
+.acao__icone {
+  width: calc(var(--space) * 4);
+  height: calc(var(--space) * 4);
+}
+
+.acao__erro {
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  color: var(--color-red-600);
+}
+
+@media (hover: hover) {
+  .acao__link:hover {
+    border-color: var(--btn-outline-border-hover);
+    background-color: var(--btn-outline-bg-hover);
+  }
+}
