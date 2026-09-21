@@ -235,7 +235,7 @@
 }
 
 @if (reagendando()) {
-  <app-modal titulo="Reagendar sessão" maxWidth="max-w-sm" (fechar)="cancelarReagendamento()">
+  <app-modal titulo="Reagendar sessão" tamanho="pequeno" (fechar)="cancelarReagendamento()">
     <div class="flex flex-col gap-4">
       <p class="text-xs text-gray-500 -mt-3">
         Horário atual: {{ formatarDataHora(agendamento()!.dataHoraInicio) }} – {{ formatarHora(agendamento()!.dataHoraFim) }}
@@ -312,7 +312,7 @@
 }
 
 @if (editandoValor()) {
-  <app-modal titulo="Atualizar valor combinado" maxWidth="max-w-sm" (fechar)="cancelarEdicaoValor()">
+  <app-modal titulo="Atualizar valor combinado" tamanho="pequeno" (fechar)="cancelarEdicaoValor()">
     <div class="flex flex-col gap-4">
       <p class="text-xs text-gray-500 -mt-3">Valor atual: {{ formatarValor(agendamento()!.valorCombinado) }}</p>
 

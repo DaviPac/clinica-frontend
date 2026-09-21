@@ -13,6 +13,7 @@ interface OpcaoTema {
   selector: 'app-seletor-tema',
   standalone: true,
   templateUrl: './seletor-tema.component.html',
+  styleUrl: './seletor-tema.component.css',
 })
 export class SeletorTemaComponent {
   private readonly temaService = inject(TemaService);

@@ -1,0 +1,38 @@
+:host {
+  display: flex;
+  align-items: flex-start;
+  gap: calc(var(--space) * 2);
+  padding: calc(var(--space) * 3) calc(var(--space) * 4);
+  border: 1px solid;
+  border-radius: var(--radius-xl);
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+}
+
+.alerta__icone {
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.alerta__texto {
+  min-width: 0;
+  line-height: var(--leading-relaxed);
+}
+
+:host([data-variante='error']) {
+  background-color: var(--color-red-50);
+  border-color: var(--color-red-100);
+  color: var(--color-red-700);
+}
+
+:host([data-variante='success']) {
+  background-color: var(--color-teal-50);
+  border-color: var(--color-teal-100);
+  color: var(--color-teal-800);
+}
+
+:host([data-variante='info']) {
+  background-color: var(--color-brand-50);
+  border-color: var(--color-brand-200);
+  color: var(--color-brand-800);
+}

@@ -91,7 +91,7 @@
 
 <!-- Modal nova despesa -->
 @if (modalAberto()) {
-  <app-modal titulo="Nova despesa" maxWidth="max-w-sm" (fechar)="modalAberto.set(false)">
+  <app-modal titulo="Nova despesa" tamanho="pequeno" (fechar)="modalAberto.set(false)">
 
     @if (erroModal()) {
       <app-alert class="block mb-4">{{ erroModal() }}</app-alert>

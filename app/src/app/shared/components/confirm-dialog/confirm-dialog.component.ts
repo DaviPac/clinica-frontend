@@ -1,5 +1,4 @@
 import { Component, HostListener, input, output } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 export type ConfirmVariant = 'primary' | 'danger' | 'success';
 
@@ -10,8 +9,9 @@ export type ConfirmVariant = 'primary' | 'danger' | 'success';
 @Component({
   selector: 'app-confirm-dialog',
   standalone: true,
-  imports: [CommonModule],
   templateUrl: './confirm-dialog.component.html',
+  styleUrl: './confirm-dialog.component.css',
+  host: { '[attr.data-variante]': 'variant()' },
 })
 export class ConfirmDialogComponent {
   titulo = input.required<string>();

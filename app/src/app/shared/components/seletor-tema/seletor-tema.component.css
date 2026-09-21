@@ -1,0 +1,50 @@
+.tema__grupo {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--space) * 1);
+  padding: calc(var(--space) * 1);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-gray-50);
+}
+
+.tema__opcao {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--space) * 1.5);
+  padding: calc(var(--space) * 2) calc(var(--space) * 3);
+  border: none;
+  border-radius: var(--radius-md);
+  background-color: transparent;
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  font-weight: 500;
+  color: var(--color-gray-600);
+  cursor: pointer;
+  transition: color var(--duration) var(--ease), background-color var(--duration) var(--ease);
+}
+
+.tema__opcao--ativa {
+  background-color: var(--color-brand-400);
+  color: #fff;
+}
+
+.tema__icone {
+  width: calc(var(--space) * 3.5);
+  height: calc(var(--space) * 3.5);
+  flex-shrink: 0;
+}
+
+.tema__descricao {
+  margin-top: calc(var(--space) * 2);
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  color: var(--color-gray-400);
+}
+
+@media (hover: hover) {
+  .tema__opcao:not(.tema__opcao--ativa):hover {
+    background-color: var(--color-gray-100);
+    color: var(--color-gray-900);
+  }
+}

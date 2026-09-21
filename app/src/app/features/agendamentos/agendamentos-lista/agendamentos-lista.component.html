@@ -242,7 +242,7 @@
      Fica escondida enquanto a sheet de ações está aberta, para nunca
      empilhar dois bottom sheets — fechar as ações volta para cá. -->
 @if (diaSelecionado() && !agendamentoParaAcoes()) {
-  <app-modal [titulo]="labelDiaSelecionado()" maxWidth="max-w-md" (fechar)="diaSelecionado.set(null)">
+  <app-modal [titulo]="labelDiaSelecionado()" (fechar)="diaSelecionado.set(null)">
     <div class="flex flex-col gap-2.5 -mt-2">
       @for (ag of agendamentosDoDia(); track ag.id) {
         <ng-container *ngTemplateOutlet="cardTpl; context: { ag: ag }"></ng-container>
