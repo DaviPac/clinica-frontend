@@ -1,0 +1,9 @@
+<label class="marcacao">
+  <input
+    class="marcacao__caixa"
+    type="checkbox"
+    [checked]="marcada()"
+    (change)="mudou.emit($any($event.target).checked)"
+  />
+  <span class="marcacao__texto"><ng-content /></span>
+</label>

@@ -10,10 +10,15 @@ import { Component, input } from '@angular/core';
   standalone: true,
   templateUrl: './item-descricao.component.html',
   styleUrl: './item-descricao.component.css',
-  host: { '[attr.data-fonte]': 'mono() ? "mono" : null' },
+  host: {
+    '[attr.data-fonte]': 'mono() ? "mono" : null',
+    '[attr.data-peso]': 'forte() ? "forte" : null',
+  },
 })
 export class ItemDescricaoComponent {
   rotulo = input('');
   /** Valores numéricos alinham melhor em fonte monoespaçada. */
   mono = input(false);
+  /** Destaca o valor com peso médio, como nas fichas de agendamento. */
+  forte = input(false);
 }

@@ -1,172 +1,109 @@
-<div class="min-h-screen bg-gray-50 page font-sans">
-  
-  <div class="max-w-4xl mx-auto">
-    <div class="flex items-center gap-4 mb-6">
-      <button 
-        (click)="voltar()"
-        class="flex items-center justify-center w-8 h-8 rounded-full bg-white border border-gray-200 text-gray-500 hover:bg-gray-100 transition-colors"
-        title="Voltar"
-      >
+<div appPagina class="detalhes">
+
+  <div class="detalhes__coluna">
+    <div class="detalhes__topo">
+      <button type="button" class="detalhes__voltar" title="Voltar" (click)="voltar()">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
           <path d="M10 12L6 8l4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </button>
       <div>
-        <h1 class="text-xl font-semibold text-gray-900 tracking-tight">Detalhes do Agendamento</h1>
+        <h1 class="detalhes__titulo">Detalhes do Agendamento</h1>
         @if (agendamento()) {
-          <p class="text-xs text-gray-500 mt-0.5">ID: #{{ agendamento()!.id }}</p>
+          <p class="detalhes__id">ID: #{{ agendamento()!.id }}</p>
         }
       </div>
     </div>
 
     @if (erro()) {
-      <app-alert class="block mb-4">{{ erro() }}</app-alert>
+      <app-alert class="detalhes__erro">{{ erro() }}</app-alert>
     }
 
     @if (carregando()) {
-      <div class="flex flex-col items-center justify-center py-20 bg-white rounded-2xl border border-gray-200 shadow-sm">
-        <span class="w-8 h-8 border-2 border-gray-200 border-t-teal-600 rounded-full animate-spin mb-3"></span>
-        <p class="text-sm text-gray-400">Carregando detalhes...</p>
+      <div class="detalhes__carregando">
+        <span class="detalhes__roda"></span>
+        <p class="detalhes__carregando-texto">Carregando detalhes...</p>
       </div>
     }
 
     @if (!carregando() && agendamento(); as ag) {
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        
-        <div class="md:col-span-2 space-y-6">
-          
-          <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
-            <h2 class="text-sm font-semibold text-gray-900 mb-4 uppercase tracking-wider">Informações Gerais</h2>
-            
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-6">
-              <div>
-                <p class="text-xs text-gray-500 mb-1">Paciente</p>
-                <p class="text-sm font-medium text-gray-900">{{ pacientesDict()[ag.pacienteId] || 'N/A' }}</p>
-              </div>
-              
-              <div>
-                <p class="text-xs text-gray-500 mb-1">Profissional</p>
-                <p class="text-sm font-medium text-gray-900">{{ usuariosDict()[ag.profissionalId!] || 'N/A' }}</p>
-              </div>
-              
-              <div class="sm:col-span-2">
-                <p class="text-xs text-gray-500 mb-1">Serviço</p>
-                <p class="text-sm font-medium text-gray-900">{{ servicosDict()[ag.servicoId] || 'N/A' }}</p>
-              </div>
-            </div>
-          </div>
+      <div class="detalhes__grade">
 
-          <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
-            <h2 class="text-sm font-semibold text-gray-900 mb-4 uppercase tracking-wider">Data e Financeiro</h2>
-            
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-6">
-              <div>
-                <p class="text-xs text-gray-500 mb-1">Data/Hora Início</p>
-                <p class="text-sm font-medium text-gray-900">{{ formatarDataHora(ag.dataHoraInicio) }}</p>
-              </div>
-              
-              <div>
-                <p class="text-xs text-gray-500 mb-1">Data/Hora Fim</p>
-                <p class="text-sm font-medium text-gray-900">{{ formatarDataHora(ag.dataHoraFim) }}</p>
-              </div>
-              
-              <div class="pt-2 border-t border-gray-100">
-                <div class="flex items-center justify-between mb-1">
-                  <p class="text-xs text-gray-500">Valor Combinado</p>
+        <div class="detalhes__principal">
+
+          <app-cartao espaco="solto">
+            <h2 class="detalhes__secao">Informações Gerais</h2>
+
+            <div class="detalhes__campos">
+              <app-item-descricao rotulo="Paciente" [forte]="true">
+                {{ pacientesDict()[ag.pacienteId] || 'N/A' }}
+              </app-item-descricao>
+
+              <app-item-descricao rotulo="Profissional" [forte]="true">
+                {{ usuariosDict()[ag.profissionalId!] || 'N/A' }}
+              </app-item-descricao>
+
+              <app-item-descricao class="detalhes__campo--largo" rotulo="Serviço" [forte]="true">
+                {{ servicosDict()[ag.servicoId] || 'N/A' }}
+              </app-item-descricao>
+            </div>
+          </app-cartao>
+
+          <app-cartao espaco="solto">
+            <h2 class="detalhes__secao">Data e Financeiro</h2>
+
+            <div class="detalhes__campos">
+              <app-item-descricao rotulo="Data/Hora Início" [forte]="true">
+                {{ formatarDataHora(ag.dataHoraInicio) }}
+              </app-item-descricao>
+
+              <app-item-descricao rotulo="Data/Hora Fim" [forte]="true">
+                {{ formatarDataHora(ag.dataHoraFim) }}
+              </app-item-descricao>
+
+              <div class="detalhes__valor">
+                <div class="detalhes__valor-topo">
+                  <p class="detalhes__valor-rotulo">Valor Combinado</p>
                   @if (isAdmin() && ag.status !== 'CANCELADO') {
-                    <button
-                      (click)="iniciarEdicaoValor()"
-                        class="text-xs text-teal-600 hover:text-teal-800 font-medium transition-colors"
-                    >
-                      Editar
-                    </button>
+                    <button type="button" class="detalhes__editar" (click)="iniciarEdicaoValor()">Editar</button>
                   }
                 </div>
-                <p class="text-sm font-bold text-gray-900">{{ formatarValor(ag.valorCombinado) }}</p>
-                </div>
+                <p class="detalhes__valor-numero">{{ formatarValor(ag.valorCombinado) }}</p>
+              </div>
 
               @if (ag.valorPacote) {
-                <div class="pt-2 border-t border-gray-100">
-                  <p class="text-xs text-gray-500 mb-1">Valor do Pacote</p>
-                  <p class="text-sm font-bold text-teal-700">{{ formatarValor(ag.valorPacote) }}</p>
+                <div class="detalhes__valor">
+                  <p class="detalhes__valor-rotulo detalhes__valor-rotulo--pacote">Valor do Pacote</p>
+                  <p class="detalhes__valor-numero detalhes__valor-numero--pacote">
+                    {{ formatarValor(ag.valorPacote) }}
+                  </p>
                 </div>
               }
             </div>
-          </div>
+          </app-cartao>
         </div>
 
-        <div class="space-y-6">
-          <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
-            <h2 class="text-sm font-semibold text-gray-900 mb-4 uppercase tracking-wider">Status Atual</h2>
-            
-            <div class="flex flex-col gap-4">
-              <div>
-                <p class="text-xs text-gray-500 mb-2">Andamento</p>
-                <app-status-badge [status]="ag.status" />
-              </div>
+        <div class="detalhes__lateral">
+          <app-cartao espaco="solto">
+            <h2 class="detalhes__secao">Status Atual</h2>
 
-              <div>
-                <p class="text-xs text-gray-500 mb-2">Pagamento</p>
-                @if (ag.pagoPeloPaciente) {
-                  <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-green-50 text-green-700 text-xs font-semibold border border-green-200">
-                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                    Pago
-                  </span>
-                } @else {
-                  <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-amber-50 text-amber-700 text-xs font-semibold border border-amber-200">
-                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M5 2v3l2 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                    Pendente
-                  </span>
-                }
-              </div>
-            </div>
-          </div>
+            <app-detalhe-estado [status]="ag.status" [pago]="ag.pagoPeloPaciente" />
+          </app-cartao>
 
-          <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
-            <h2 class="text-sm font-semibold text-gray-900 mb-4 uppercase tracking-wider">Ações</h2>
-            
-            <div class="flex flex-col gap-2.5">
-              @if (ag.status !== 'CANCELADO') {
-                <button
-                  (click)="abrirModalStatus()"
-                  class="w-full px-4 py-2 bg-gray-50 border border-gray-200 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-100 transition-colors"
-                >
-                  Alterar Status
-                </button>
-              }
+          <app-cartao espaco="solto">
+            <h2 class="detalhes__secao">Ações</h2>
 
-              @if (ag.status === 'AGENDADO') {
-                <button
-                  (click)="iniciarReagendamento()"
-                  class="w-full px-4 py-2 bg-gray-50 border border-gray-200 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-100 transition-colors"
-                >
-                  Reagendar
-                </button>
-              }
-
-              @if (isAdmin() || ag.profissionalRecebe) {
-                <button 
-                  (click)="iniciarTogglePagamento()"
-                  [disabled]="atualizandoPagamento()"
-                  class="w-full px-4 py-2 text-sm font-medium rounded-lg transition-colors border"
-                  [ngClass]="ag.pagoPeloPaciente 
-                    ? 'bg-red-50 text-red-600 border-red-200 hover:bg-red-100' 
-                    : 'bg-brand-400 text-on-accent border-brand-400 hover:bg-brand-500'"
-                >
-                  {{ atualizandoPagamento() ? 'Atualizando...' : (ag.pagoPeloPaciente ? 'Desmarcar Pagamento' : 'Marcar como Pago') }}
-                </button>
-              }
-
-              @if (ag.status === 'AGENDADO' && ag.recorrenciaGroupId) {
-                <button 
-                  (click)="confirmarCancelamentoSerie()"
-                  class="w-full px-4 py-2 mt-2 bg-red-50 border border-red-200 text-red-600 text-sm font-medium rounded-lg hover:bg-red-100 transition-colors"
-                >
-                  Cancelar Série
-                </button>
-              }
-            </div>
-          </div>
+            <app-detalhe-acoes
+              [status]="ag.status"
+              [pago]="ag.pagoPeloPaciente"
+              [podeAlternarPagamento]="isAdmin() || ag.profissionalRecebe"
+              [temSerie]="!!ag.recorrenciaGroupId"
+              [atualizandoPagamento]="atualizandoPagamento()"
+              (alterarStatus)="abrirModalStatus()"
+              (reagendar)="iniciarReagendamento()"
+              (alternarPagamento)="iniciarTogglePagamento()"
+              (cancelarSerie)="confirmarCancelamentoSerie()" />
+          </app-cartao>
         </div>
 
       </div>
@@ -185,12 +122,10 @@
     [loading]="atualizandoPagamento()"
     (confirmar)="confirmarPagamentoPacote()"
     (cancelar)="agendamentoParaConfirmarPagamento.set(null)">
-    <div class="flex items-center justify-between px-4 py-3 bg-teal-50 border border-teal-100 rounded-xl">
-      <span class="text-[11px] text-teal-700 font-medium">Valor total do pacote</span>
-      <span class="text-base font-bold text-teal-800 tabular-nums">
-        {{ formatarValor(agendamentoParaConfirmarPagamento()!.valorPacote) }}
-      </span>
-    </div>
+    <app-destaque-valor
+      tom="teal"
+      rotulo="Valor total do pacote"
+      [valor]="formatarValor(agendamentoParaConfirmarPagamento()!.valorPacote)" />
   </app-confirm-dialog>
 }
 
@@ -204,12 +139,10 @@
     [loading]="atualizandoPagamento()"
     (confirmar)="cancelarPagamentoPacote()"
     (cancelar)="agendamentoParaCancelarPagamento.set(null)">
-    <div class="flex items-center justify-between px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl">
-      <span class="text-[11px] text-gray-600 font-medium">Valor total do pacote</span>
-      <span class="text-base font-bold text-gray-800 tabular-nums">
-        {{ formatarValor(agendamentoParaCancelarPagamento()!.valorPacote) }}
-      </span>
-    </div>
+    <app-destaque-valor
+      tom="cinza"
+      rotulo="Valor total do pacote"
+      [valor]="formatarValor(agendamentoParaCancelarPagamento()!.valorPacote)" />
   </app-confirm-dialog>
 }
 
@@ -236,74 +169,64 @@
 
 @if (reagendando()) {
   <app-modal titulo="Reagendar sessão" tamanho="pequeno" (fechar)="cancelarReagendamento()">
-    <div class="flex flex-col gap-4">
-      <p class="text-xs text-gray-500 -mt-3">
+    <div class="detalhes__form">
+      <p class="detalhes__form-nota">
         Horário atual: {{ formatarDataHora(agendamento()!.dataHoraInicio) }} – {{ formatarHora(agendamento()!.dataHoraFim) }}
       </p>
 
-      <div>
-        <label class="ui-label" for="novo-inicio">Novo início</label>
+      <app-campo-form rotulo="Novo início" para="novo-inicio">
         <input
+          appCampo
           id="novo-inicio"
           type="datetime-local"
           [value]="novoInicioReagendamento()"
           (input)="novoInicioReagendamento.set($any($event.target).value)"
-          class="ui-input"
         />
-      </div>
+      </app-campo-form>
 
-      <div>
-        <label class="ui-label" for="nova-duracao">Duração (minutos)</label>
+      <app-campo-form rotulo="Duração (minutos)" para="nova-duracao">
         <input
+          appCampo
+          [mono]="true"
           id="nova-duracao"
           type="number"
           min="1"
           step="5"
           [value]="novaDuracaoMinutos()"
           (input)="novaDuracaoMinutos.set(+$any($event.target).value)"
-          class="ui-input font-mono"
         />
-      </div>
+      </app-campo-form>
 
       @if (agendamento()!.recorrenciaGroupId) {
-        <label class="flex items-center gap-2.5 cursor-pointer select-none">
-          <input
-            type="checkbox"
-            [checked]="reagendarSerie()"
-            (change)="reagendarSerie.set($any($event.target).checked)"
-            class="w-4 h-4 rounded border-gray-300 accent-brand-400"
-          />
-          <span class="text-xs text-gray-600">Reagendar todas as sessões futuras desta série a partir do novo início</span>
-        </label>
+        <app-caixa-marcacao [marcada]="reagendarSerie()" (mudou)="reagendarSerie.set($event)">
+          Reagendar todas as sessões futuras desta série a partir do novo início
+        </app-caixa-marcacao>
 
         @if (reagendarSerie()) {
-          <div>
-            <label class="ui-label" for="intervalo-semanas">Intervalo entre sessões (semanas)</label>
+          <app-campo-form rotulo="Intervalo entre sessões (semanas)" para="intervalo-semanas">
             <input
+              appCampo
+              [mono]="true"
               id="intervalo-semanas"
               type="number"
               min="1"
               step="1"
               [value]="intervaloSemanasReagendamento()"
               (input)="intervaloSemanasReagendamento.set(+$any($event.target).value)"
-              class="ui-input font-mono"
             />
-          </div>
+          </app-campo-form>
         }
       }
 
-      <div class="flex gap-2.5">
-        <button
-          type="button"
-          (click)="cancelarReagendamento()"
-          class="btn-outline flex-1">
+      <div class="detalhes__form-acoes">
+        <button appBotao variante="contorno" type="button" (click)="cancelarReagendamento()">
           Cancelar
         </button>
         <button
+          appBotao
           type="button"
-          (click)="confirmarReagendamento()"
           [disabled]="salvandoReagendamento() || !novoInicioReagendamento() || !novaDuracaoMinutos() || novaDuracaoMinutos()! <= 0 || (reagendarSerie() && intervaloSemanasReagendamento() < 1)"
-          class="btn-primary flex-1">
+          (click)="confirmarReagendamento()">
           {{ salvandoReagendamento() ? 'Salvando...' : 'Reagendar' }}
         </button>
       </div>
@@ -313,47 +236,38 @@
 
 @if (editandoValor()) {
   <app-modal titulo="Atualizar valor combinado" tamanho="pequeno" (fechar)="cancelarEdicaoValor()">
-    <div class="flex flex-col gap-4">
-      <p class="text-xs text-gray-500 -mt-3">Valor atual: {{ formatarValor(agendamento()!.valorCombinado) }}</p>
+    <div class="detalhes__form">
+      <p class="detalhes__form-nota">Valor atual: {{ formatarValor(agendamento()!.valorCombinado) }}</p>
 
-      <div>
-        <label class="ui-label" for="novo-valor">Novo valor (R$)</label>
+      <app-campo-form rotulo="Novo valor (R$)" para="novo-valor">
         <input
+          appCampo
+          [mono]="true"
           id="novo-valor"
           type="number"
           min="0"
           step="0.01"
+          placeholder="0,00"
           [value]="novoValor()"
           (input)="novoValor.set(+$any($event.target).value)"
-          class="ui-input font-mono"
-          placeholder="0,00"
         />
-      </div>
+      </app-campo-form>
 
       @if (agendamento()!.recorrenciaGroupId && agendamento()!.status === 'AGENDADO') {
-        <label class="flex items-center gap-2.5 cursor-pointer select-none">
-          <input
-            type="checkbox"
-            [checked]="atualizarValorRecorrente()"
-            (change)="atualizarValorRecorrente.set($any($event.target).checked)"
-            class="w-4 h-4 rounded border-gray-300 accent-brand-400"
-          />
-          <span class="text-xs text-gray-600">Aplicar a todas as sessões futuras desta série</span>
-        </label>
+        <app-caixa-marcacao [marcada]="atualizarValorRecorrente()" (mudou)="atualizarValorRecorrente.set($event)">
+          Aplicar a todas as sessões futuras desta série
+        </app-caixa-marcacao>
       }
 
-      <div class="flex gap-2.5">
-        <button
-          type="button"
-          (click)="cancelarEdicaoValor()"
-          class="btn-outline flex-1">
+      <div class="detalhes__form-acoes">
+        <button appBotao variante="contorno" type="button" (click)="cancelarEdicaoValor()">
           Cancelar
         </button>
         <button
+          appBotao
           type="button"
-          (click)="confirmarAtualizacaoValor()"
           [disabled]="atualizandoValor() || novoValor() == null || novoValor()! < 0"
-          class="btn-primary flex-1">
+          (click)="confirmarAtualizacaoValor()">
           {{ atualizandoValor() ? 'Salvando...' : 'Salvar' }}
         </button>
       </div>

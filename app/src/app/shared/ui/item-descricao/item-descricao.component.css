@@ -18,3 +18,7 @@
 :host([data-fonte='mono']) .item__valor {
   font-family: var(--font-mono);
 }
+
+:host([data-peso='forte']) .item__valor {
+  font-weight: 500;
+}

@@ -1,0 +1,222 @@
+/*
+ * Como a agenda, a ficha pinta o próprio fundo: os cartões são claros e
+ * pedem um contraste constante atrás deles.
+ */
+.detalhes {
+  min-height: 100vh;
+  background-color: var(--color-gray-50);
+}
+
+.detalhes__coluna {
+  max-width: 56rem;
+  margin-inline: auto;
+}
+
+/* ──────────────────────────────────────────────
+   Topo: voltar + título
+─────────────────────────────────────────────── */
+.detalhes__topo {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--space) * 4);
+  margin-bottom: calc(var(--space) * 6);
+}
+
+.detalhes__voltar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(var(--space) * 8);
+  height: calc(var(--space) * 8);
+  border: 1px solid var(--color-gray-200);
+  border-radius: 9999px;
+  background-color: var(--color-white);
+  color: var(--color-gray-500);
+  cursor: pointer;
+  transition: background-color var(--duration) var(--ease);
+}
+
+.detalhes__titulo {
+  font-size: var(--text-xl);
+  line-height: var(--text-xl-lh);
+  font-weight: 600;
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-gray-900);
+}
+
+.detalhes__id {
+  margin-top: calc(var(--space) * 0.5);
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  color: var(--color-gray-500);
+}
+
+.detalhes__erro {
+  display: block;
+  margin-bottom: calc(var(--space) * 4);
+}
+
+/* ──────────────────────────────────────────────
+   Carregamento
+─────────────────────────────────────────────── */
+.detalhes__carregando {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-block: calc(var(--space) * 20);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-2xl);
+  background-color: var(--color-white);
+  box-shadow: var(--shadow-sm);
+}
+
+.detalhes__roda {
+  width: calc(var(--space) * 8);
+  height: calc(var(--space) * 8);
+  margin-bottom: calc(var(--space) * 3);
+  border: 2px solid var(--color-gray-200);
+  border-top-color: var(--color-teal-600);
+  border-radius: 9999px;
+  animation: spin 1s linear infinite;
+}
+
+.detalhes__carregando-texto {
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+  color: var(--color-gray-400);
+}
+
+/* ──────────────────────────────────────────────
+   Grade: ficha à esquerda, estado e ações à direita
+─────────────────────────────────────────────── */
+.detalhes__grade {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: calc(var(--space) * 6);
+}
+
+.detalhes__principal,
+.detalhes__lateral {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--space) * 6);
+}
+
+.detalhes__secao {
+  margin-bottom: calc(var(--space) * 4);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+  color: var(--color-gray-900);
+}
+
+.detalhes__campos {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  row-gap: calc(var(--space) * 4);
+  column-gap: calc(var(--space) * 6);
+}
+
+/* ── Valores, separados do resto por um filete ── */
+.detalhes__valor {
+  padding-top: calc(var(--space) * 2);
+  border-top: 1px solid var(--color-gray-100);
+}
+
+.detalhes__valor-topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: calc(var(--space) * 1);
+}
+
+.detalhes__valor-rotulo {
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  color: var(--color-gray-500);
+}
+
+.detalhes__valor-rotulo--pacote {
+  margin-bottom: calc(var(--space) * 1);
+}
+
+.detalhes__valor-numero {
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+  font-weight: 700;
+  color: var(--color-gray-900);
+}
+
+.detalhes__valor-numero--pacote {
+  color: var(--color-teal-700);
+}
+
+.detalhes__editar {
+  border: none;
+  background-color: transparent;
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  font-weight: 500;
+  color: var(--color-teal-600);
+  cursor: pointer;
+  transition: color var(--duration) var(--ease);
+}
+
+/* ──────────────────────────────────────────────
+   Formulários dos modais (reagendar e valor)
+─────────────────────────────────────────────── */
+.detalhes__form {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--space) * 4);
+}
+
+/* Sobe até o subtítulo do modal, de onde é continuação */
+.detalhes__form-nota {
+  margin-top: calc(var(--space) * -3);
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  color: var(--color-gray-500);
+}
+
+.detalhes__form-acoes {
+  display: flex;
+  gap: calc(var(--space) * 2.5);
+}
+
+.detalhes__form-acoes > * {
+  flex: 1;
+}
+
+@media (hover: hover) {
+  .detalhes__voltar:hover {
+    background-color: var(--color-gray-100);
+  }
+
+  .detalhes__editar:hover {
+    color: var(--color-teal-800);
+  }
+}
+
+@media (width >= 40rem) {
+  .detalhes__campos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .detalhes__campo--largo {
+    grid-column: span 2 / span 2;
+  }
+}
+
+@media (width >= 48rem) {
+  .detalhes__grade {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .detalhes__principal {
+    grid-column: span 2 / span 2;
+  }
+}

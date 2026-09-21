@@ -1,0 +1,26 @@
+:host {
+  display: block;
+}
+
+.marcacao {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--space) * 2.5);
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.marcacao__caixa {
+  width: calc(var(--space) * 4);
+  height: calc(var(--space) * 4);
+  border: 1px solid var(--color-gray-300);
+  border-radius: var(--radius-sm);
+  accent-color: var(--color-brand-400);
+}
+
+.marcacao__texto {
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  color: var(--color-gray-600);
+}

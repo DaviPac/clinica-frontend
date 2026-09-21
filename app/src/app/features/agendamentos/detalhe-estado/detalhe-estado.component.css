@@ -1,0 +1,36 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--space) * 4);
+}
+
+.estado__rotulo {
+  margin-bottom: calc(var(--space) * 2);
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  color: var(--color-gray-500);
+}
+
+.estado__pagamento {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--space) * 1.5);
+  padding: calc(var(--space) * 1) calc(var(--space) * 2.5);
+  border: 1px solid;
+  border-radius: var(--radius-md);
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  font-weight: 600;
+}
+
+.estado__pagamento--pago {
+  border-color: var(--color-green-200);
+  background-color: var(--color-green-50);
+  color: var(--color-green-700);
+}
+
+.estado__pagamento--pendente {
+  border-color: var(--color-amber-200);
+  background-color: var(--color-amber-50);
+  color: var(--color-amber-700);
+}
