@@ -1,23 +1,15 @@
 /*
- * Estilos globais da aplicação.
+ * Estilos globais da aplicação — e só isso.
  *
- * Sem framework de CSS: o visual vem de quatro arquivos próprios.
- * A precedência é dada por cascade layers, não por especificidade —
- * é o que garante que `px-4` no template vença o padding de `.table-wrap td`
- * mesmo o seletor do componente sendo mais específico.
+ * Cada componente é dono do próprio CSS, no arquivo ao lado do template.
+ * O que sobra aqui é o que precisa valer para o documento inteiro:
  *
- *   tokens (sem layer) → variáveis dos temas claro e escuro
- *   base               → reset e estilos de elemento
- *   components         → .page, .table-wrap, .ui-input, .btn-*, .md
- *   utilities          → as classes utilitárias usadas nos templates
+ *   tokens → as variáveis dos temas claro e escuro
+ *   base   → reset de elemento, foco, seleção, barras de rolagem e keyframes
  *
  * A troca de tema acontece pelo atributo data-theme no <html>; veja
  * `core/services/tema/tema.service.ts`.
  */
 
-@layer base, components, utilities;
-
 @import './styles/tokens.css';
 @import './styles/base.css';
-@import './styles/components.css';
-@import './styles/utilities.css';

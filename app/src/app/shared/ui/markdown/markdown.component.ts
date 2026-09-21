@@ -6,14 +6,14 @@ import { MarkdownPipe } from '../../markdown/markdown.pipe';
  *
  * Usa `ViewEncapsulation.None` porque o HTML é criado em runtime pelo `marked`
  * e injetado por `[innerHTML]` — encapsulação emulada não alcança esse DOM.
- * Em troca, TODO seletor deste arquivo fica aninhado sob `.md`, para os estilos
+ * Em troca, TODO seletor deste arquivo fica aninhado sob `.markdown`, para os estilos
  * não escaparem para o resto da aplicação.
  */
 @Component({
   selector: 'app-markdown',
   standalone: true,
   imports: [MarkdownPipe],
-  template: `<div class="md" [innerHTML]="texto() | markdown"></div>`,
+  template: `<div class="markdown" [innerHTML]="texto() | markdown"></div>`,
   styleUrl: './markdown.component.css',
   encapsulation: ViewEncapsulation.None,
 })

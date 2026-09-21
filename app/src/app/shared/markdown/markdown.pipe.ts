@@ -48,7 +48,7 @@ export class MarkdownPipe implements PipeTransform {
     // Tabelas ganham o wrapper de rolagem do <app-markdown>.
     for (const tabela of Array.from(fragmento.querySelectorAll('table'))) {
       const wrapper = document.createElement('div');
-      wrapper.className = 'md__tabela';
+      wrapper.className = 'markdown__tabela';
       tabela.replaceWith(wrapper);
       wrapper.appendChild(tabela);
     }
