@@ -10,7 +10,7 @@ import { Component, input } from '@angular/core';
   standalone: true,
   templateUrl: './estatistica.component.html',
   styleUrl: './estatistica.component.css',
-  host: { '[attr.data-superficie]': 'superficie()' },
+  host: { '[attr.data-superficie]': 'superficie()', '[attr.data-fonte]': 'mono() ? "mono" : null' },
 })
 export class EstatisticaComponent {
   rotulo = input('');
@@ -18,4 +18,6 @@ export class EstatisticaComponent {
   detalhe = input('');
   /** `cartao` desenha borda em vez do fundo cinza. */
   superficie = input<'cinza' | 'cartao'>('cinza');
+  /** Números alinham melhor em monoespaçada; textos, não. */
+  mono = input(true);
 }

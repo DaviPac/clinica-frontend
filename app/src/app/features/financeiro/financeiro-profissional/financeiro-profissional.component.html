@@ -1,162 +1,130 @@
-<div class="page max-w-2xl">
+<div appPagina class="financeiro">
 
-  <div class="page-header">
-    <div>
-      <h1 class="text-lg font-medium text-gray-900">Financeiro</h1>
-      <p class="text-sm text-gray-500 mt-0.5">Comissões e repasses</p>
-    </div>
+  <app-cabecalho-pagina titulo="Financeiro" subtitulo="Comissões e repasses">
     <input
+      appCampo
+      class="financeiro__periodo"
       type="month"
       aria-label="Período"
       [value]="periodoSelecionado()"
       (change)="onPeriodoChange($event)"
-      class="ui-input sm:w-auto"
     />
-  </div>
+  </app-cabecalho-pagina>
 
   @if (erro()) {
-    <app-alert class="block mb-4">{{ erro() }}</app-alert>
+    <app-alert class="financeiro__alerta">{{ erro() }}</app-alert>
   }
 
   <!-- Formulário de repasse: apenas admin -->
   @if (isAdmin) {
-    <div class="border border-gray-200 rounded-xl p-4 sm:p-5 mb-6 bg-white">
-      <p class="text-sm font-medium text-gray-900 mb-1">Registrar repasse</p>
-      <p class="text-xs text-gray-500 mb-4">
+    <app-cartao class="financeiro__repasse" espaco="medio">
+      <p class="financeiro__titulo">Registrar repasse</p>
+      <p class="financeiro__descricao">
         Informe o profissional e o valor repassado pela clínica.
       </p>
 
       @if (sucessoAcerto()) {
-        <app-alert variant="success" class="block mb-4">Repasse registrado com sucesso.</app-alert>
+        <app-alert variant="success" class="financeiro__alerta">Repasse registrado com sucesso.</app-alert>
       }
 
       @if (erroAcerto()) {
-        <app-alert class="block mb-4">{{ erroAcerto() }}</app-alert>
+        <app-alert class="financeiro__alerta">{{ erroAcerto() }}</app-alert>
       }
 
-      <form [formGroup]="form" (ngSubmit)="submit()" class="flex flex-col gap-3">
-        <div>
-          <label class="ui-label" for="repasse-profissional">
-            Profissional <span class="text-red-500">*</span>
-          </label>
-          <select
-            id="repasse-profissional"
-            formControlName="profissionalId"
-            class="ui-input">
+      <form class="financeiro__form" [formGroup]="form" (ngSubmit)="submit()">
+        <app-campo-form rotulo="Profissional" para="repasse-profissional" [obrigatorio]="true">
+          <select appCampo id="repasse-profissional" formControlName="profissionalId">
             <option [ngValue]="null">Selecione o profissional...</option>
             @for (prof of profissionais(); track prof.id) {
               <option [ngValue]="prof.id">{{ prof.nome }}</option>
             }
           </select>
-        </div>
+        </app-campo-form>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div>
-            <label class="ui-label" for="repasse-valor">
-              Valor (R$) <span class="text-red-500">*</span>
-            </label>
+        <div class="financeiro__dupla">
+          <app-campo-form rotulo="Valor (R$)" para="repasse-valor" [obrigatorio]="true">
             <input
+              appCampo
+              [mono]="true"
               id="repasse-valor"
               type="number"
               formControlName="valor_pago"
               min="0.01"
               step="0.01"
-              class="ui-input font-mono"
             />
-          </div>
-          <div>
-            <label class="ui-label" for="repasse-obs">Observação</label>
+          </app-campo-form>
+
+          <app-campo-form rotulo="Observação" para="repasse-obs">
             <input
+              appCampo
               id="repasse-obs"
               type="text"
               formControlName="observacao"
               placeholder="Ex: Pix em 30/06"
-              class="ui-input"
             />
-          </div>
+          </app-campo-form>
         </div>
 
         <app-toggle
-          formControlName="profissionalRecebe"
           [checked]="form.get('profissionalRecebe')?.value"
           label="Repasse para o profissional? (caso contrário, será registrado como repasse para a clínica)"
           (changed)="form.get('profissionalRecebe')?.setValue($event)"
         />
 
-        <button
-          type="submit"
-          [disabled]="form.invalid || salvandoAcerto()"
-          class="btn-primary w-full">
+        <button appBotao [larguraTotal]="true" type="submit" [disabled]="form.invalid || salvandoAcerto()">
           {{ salvandoAcerto() ? 'Registrando...' : 'Registrar repasse' }}
         </button>
       </form>
-    </div>
+    </app-cartao>
   }
 
   @if (isAdmin && !form.get('profissionalId')?.value) {
-    <div class="text-center px-4 py-8 text-sm text-gray-500 border border-dashed border-gray-300 rounded-xl">
+    <div class="financeiro__sem-selecao">
       Selecione um profissional acima para visualizar o saldo e o histórico de repasses.
     </div>
   } @else {
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
-      <div class="bg-gray-50 rounded-lg p-4">
-        <p class="text-xs text-gray-500 mb-1.5">{{ (saldo()?.saldo_a_receber ?? 0) >= 0 ? "A repassar" : "A receber" }}</p>
+    <div class="financeiro__numeros">
+      <app-estatistica
+        [rotulo]="(saldo()?.saldo_a_receber ?? 0) >= 0 ? 'A repassar' : 'A receber'">
         @if (carregandoSaldo()) {
-          <p class="text-xl font-medium text-gray-300">—</p>
+          <span class="financeiro__vazio">—</span>
         } @else {
-          <p
-            class="text-xl font-medium font-mono"
-            [class]="(saldo()?.saldo_a_receber ?? 0) > 0 ? 'text-teal-700' : (saldo()?.saldo_a_receber ?? 0) === 0 ? 'text-gray-400' : 'text-red-700'">
-            {{ formatarValor(saldo()?.saldo_a_receber ?? 0) }}
-          </p>
+          <span [class]="classeSaldo()">{{ formatarValor(saldo()?.saldo_a_receber ?? 0) }}</span>
         }
-      </div>
+      </app-estatistica>
 
-      <div class="bg-gray-50 rounded-lg p-4">
-        <p class="text-xs text-gray-500 mb-1.5">Repassado no mês</p>
-        <p class="text-xl font-medium font-mono text-teal-700">
-          {{ formatarValor(totalRepassadoPeriodo()) }}
-        </p>
-      </div>
+      <app-estatistica rotulo="Repassado no mês">
+        <span class="financeiro__positivo">{{ formatarValor(totalRepassadoPeriodo()) }}</span>
+      </app-estatistica>
 
-      <div class="bg-gray-50 rounded-lg p-4">
-        <p class="text-xs text-gray-500 mb-1.5">Período</p>
-        <p class="text-xl font-medium text-gray-900">
-          {{ formatarMes(periodoSelecionado()) }}
-        </p>
-      </div>
+      <app-estatistica rotulo="Período" [mono]="false">
+        <span class="financeiro__texto">{{ formatarMes(periodoSelecionado()) }}</span>
+      </app-estatistica>
     </div>
 
     <div>
-      <h2 class="text-sm font-medium text-gray-900 mb-3">Histórico de repasses</h2>
+      <h2 class="financeiro__secao">Histórico de repasses</h2>
 
       @if (carregandoAcertos()) {
-        <p class="text-sm text-gray-400 text-center py-6">Carregando...</p>
+        <app-carregando texto="Carregando..." espaco="apertado" class="financeiro__carregando" />
       }
 
-      <div class="flex flex-col gap-2">
+      <div class="financeiro__lista">
         @for (a of acertos(); track a.id) {
-          <div class="border border-gray-200 rounded-xl px-4 py-3
-                      flex items-center justify-between gap-3 hover:bg-gray-50 transition-colors">
-            <div class="min-w-0">
-              <p class="text-sm font-medium text-gray-900">
-                {{ formatarValor(a.valorPago) }}
-              </p>
-              <p class="text-xs text-gray-500 mt-0.5">
+          <div class="financeiro__item">
+            <div class="financeiro__item-texto">
+              <p class="financeiro__valor">{{ formatarValor(a.valorPago) }}</p>
+              <p class="financeiro__detalhe">
                 {{ formatarMes(a.periodoReferencia) }}
                 @if (a.observacao) { · {{ a.observacao }} }
                 · {{ formatarData(a.dataPagamento) }}
               </p>
             </div>
-            <span class="bg-teal-50 text-teal-800 text-xs font-medium px-2 py-0.5 rounded shrink-0">
-              Repassado
-            </span>
+            <app-selo tom="teal" class="financeiro__selo">Repassado</app-selo>
           </div>
         } @empty {
           @if (!carregandoAcertos()) {
-            <div class="text-center py-8 text-sm text-gray-400">
-              Nenhum repasse registrado ainda.
-            </div>
+            <app-vazio mensagem="Nenhum repasse registrado ainda." espaco="apertado" />
           }
         }
       </div>
@@ -175,14 +143,11 @@
     [loading]="salvandoAcerto()"
     (confirmar)="confirmarRepasse()"
     (cancelar)="fecharModal()">
-    <div class="flex flex-col gap-3">
-      <div class="flex items-center justify-between px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl">
-        <span class="text-[11px] text-gray-600 font-medium">Valor do repasse</span>
-        <span class="text-base font-bold text-gray-900 tabular-nums font-mono">
-          {{ formatarValor(form.get('valor_pago')?.value) }}
-        </span>
-      </div>
-      <p class="text-xs text-red-600">
+    <div class="financeiro__confirma">
+      <app-destaque-valor
+        rotulo="Valor do repasse"
+        [valor]="formatarValor(form.get('valor_pago')?.value)" />
+      <p class="financeiro__aviso">
         <strong>Atenção:</strong> esta ação é definitiva e não poderá ser desfeita no sistema.
       </p>
     </div>

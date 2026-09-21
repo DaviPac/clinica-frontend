@@ -9,6 +9,10 @@
   color: var(--color-gray-400);
 }
 
+:host([data-espaco='apertado']) {
+  padding-block: calc(var(--space) * 6);
+}
+
 :host([data-espaco='nenhum']) {
   padding-block: 0;
   justify-content: flex-start;

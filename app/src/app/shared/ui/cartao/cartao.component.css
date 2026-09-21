@@ -46,4 +46,8 @@
   :host([data-espaco='padrao']) {
     padding: calc(var(--space) * 6);
   }
+
+  :host([data-espaco='medio']) {
+    padding: calc(var(--space) * 5);
+  }
 }

@@ -8,12 +8,24 @@ import { UsuarioService } from '../../../core/services/usuario/usuario.service';
 import { ToggleComponent } from '../../../shared/components/toggle/toggle.component';
 import { AlertComponent } from '../../../shared/components/alert/alert.component';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
+import { PaginaComponent } from '../../../shared/ui/pagina/pagina.component';
+import { CabecalhoPaginaComponent } from '../../../shared/ui/cabecalho-pagina/cabecalho-pagina.component';
+import { CampoComponent } from '../../../shared/ui/campo/campo.component';
+import { CampoFormComponent } from '../../../shared/ui/campo-form/campo-form.component';
+import { CartaoComponent } from '../../../shared/ui/cartao/cartao.component';
+import { BotaoComponent } from '../../../shared/ui/botao/botao.component';
+import { EstatisticaComponent } from '../../../shared/ui/estatistica/estatistica.component';
+import { CarregandoComponent } from '../../../shared/ui/carregando/carregando.component';
+import { VazioComponent } from '../../../shared/ui/vazio/vazio.component';
+import { SeloComponent } from '../../../shared/ui/selo/selo.component';
+import { DestaqueValorComponent } from '../../../shared/ui/destaque-valor/destaque-valor.component';
 
 @Component({
   selector: 'app-financeiro-profissional',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ToggleComponent, AlertComponent, ConfirmDialogComponent],
+  imports: [CommonModule, ReactiveFormsModule, ToggleComponent, AlertComponent, ConfirmDialogComponent, PaginaComponent, CabecalhoPaginaComponent, CampoComponent, CampoFormComponent, CartaoComponent, BotaoComponent, EstatisticaComponent, CarregandoComponent, VazioComponent, SeloComponent, DestaqueValorComponent],
   templateUrl: './financeiro-profissional.component.html',
+  styleUrl: './financeiro-profissional.component.css',
 })
 export class FinanceiroProfissionalComponent implements OnInit {
   private authService = inject(AuthService);
@@ -180,6 +192,13 @@ export class FinanceiroProfissionalComponent implements OnInit {
       },
     });
   }
+  /** Verde quando há saldo, vermelho quando está negativo. */
+  classeSaldo(): string {
+    const saldo = this.saldo()?.saldo_a_receber ?? 0;
+    if (saldo > 0) return 'financeiro__positivo';
+    return saldo === 0 ? 'financeiro__neutro' : 'financeiro__negativo';
+  }
+
 
   formatarValor(v: number): string {
     return Math.abs(v).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });

@@ -15,5 +15,5 @@ import { Component, input } from '@angular/core';
 export class CarregandoComponent {
   texto = input('Carregando...');
   roda = input(false);
-  espaco = input<'padrao' | 'nenhum'>('padrao');
+  espaco = input<'padrao' | 'apertado' | 'nenhum'>('padrao');
 }

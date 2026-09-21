@@ -1,6 +1,6 @@
 import { Component, input } from '@angular/core';
 
-export type EspacoCartao = 'padrao' | 'compacto' | 'solto';
+export type EspacoCartao = 'compacto' | 'medio' | 'padrao' | 'solto';
 export type EspacoTitulo = 'compacto' | 'padrao' | 'solto';
 
 /**

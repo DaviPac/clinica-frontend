@@ -1,0 +1,155 @@
+.financeiro {
+  max-width: var(--container-2xl);
+}
+
+.financeiro__periodo {
+  width: 100%;
+}
+
+.financeiro__alerta {
+  display: block;
+  margin-bottom: calc(var(--space) * 4);
+}
+
+.financeiro__repasse {
+  display: block;
+  margin-bottom: calc(var(--space) * 6);
+}
+
+/* cabeçalho próprio: menor que o padrão do app-cartao */
+.financeiro__titulo {
+  margin-bottom: calc(var(--space) * 1);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+  font-weight: 500;
+  color: var(--color-gray-900);
+}
+
+.financeiro__descricao {
+  margin-bottom: calc(var(--space) * 4);
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  color: var(--color-gray-500);
+}
+
+.financeiro__form {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--space) * 3);
+}
+
+.financeiro__dupla {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: calc(var(--space) * 3);
+}
+
+/* ── Estado sem profissional escolhido ── */
+.financeiro__sem-selecao {
+  padding: calc(var(--space) * 8) calc(var(--space) * 4);
+  border: 1px dashed var(--color-gray-300);
+  border-radius: var(--radius-xl);
+  text-align: center;
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+  color: var(--color-gray-500);
+}
+
+/* ── Números do período ── */
+.financeiro__numeros {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: calc(var(--space) * 3);
+  margin-bottom: calc(var(--space) * 6);
+}
+
+.financeiro__positivo { color: var(--color-teal-700); }
+.financeiro__neutro   { color: var(--color-gray-400); }
+.financeiro__negativo { color: var(--color-red-700); }
+.financeiro__vazio    { color: var(--color-gray-300); }
+.financeiro__texto    { color: var(--color-gray-900); }
+
+/* ── Histórico ── */
+.financeiro__secao {
+  margin-bottom: calc(var(--space) * 3);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+  font-weight: 500;
+  color: var(--color-gray-900);
+}
+
+.financeiro__carregando {
+  display: block;
+}
+
+.financeiro__lista {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--space) * 2);
+}
+
+.financeiro__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(var(--space) * 3);
+  padding: calc(var(--space) * 3) calc(var(--space) * 4);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-xl);
+  transition: background-color var(--duration) var(--ease);
+}
+
+.financeiro__item-texto {
+  min-width: 0;
+}
+
+.financeiro__valor {
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+  font-weight: 500;
+  color: var(--color-gray-900);
+}
+
+.financeiro__detalhe {
+  margin-top: calc(var(--space) * 0.5);
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  color: var(--color-gray-500);
+}
+
+.financeiro__selo {
+  flex-shrink: 0;
+}
+
+/* ── Confirmação ── */
+.financeiro__confirma {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--space) * 3);
+}
+
+.financeiro__aviso {
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  color: var(--color-red-600);
+}
+
+@media (hover: hover) {
+  .financeiro__item:hover {
+    background-color: var(--color-gray-50);
+  }
+}
+
+@media (width >= 40rem) {
+  .financeiro__periodo {
+    width: auto;
+  }
+
+  .financeiro__dupla {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .financeiro__numeros {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

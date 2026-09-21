@@ -18,11 +18,14 @@
 }
 
 .estatistica__valor {
-  font-family: var(--font-mono);
   font-size: var(--text-xl);
   line-height: var(--text-xl-lh);
   font-weight: 500;
   color: var(--color-gray-900);
+}
+
+:host([data-fonte='mono']) .estatistica__valor {
+  font-family: var(--font-mono);
 }
 
 .estatistica__detalhe {
