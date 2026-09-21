@@ -1,0 +1,184 @@
+.relatorio__periodo {
+  width: 100%;
+}
+
+.relatorio__alerta {
+  display: block;
+  margin-bottom: calc(var(--space) * 4);
+}
+
+/* ── Blocos de totais ── */
+.relatorio__totais {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: calc(var(--space) * 3);
+  margin-bottom: calc(var(--space) * 3);
+}
+
+.relatorio__saldos {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: calc(var(--space) * 3);
+  margin-bottom: calc(var(--space) * 6);
+}
+
+.relatorio__negativo { color: var(--color-red-700); }
+.relatorio__devendo  { color: var(--color-red-600); }
+.relatorio__a-receber { color: var(--color-amber-600); }
+.relatorio__zerado   { color: var(--color-gray-400); }
+
+/* o saldo é menor que o valor padrão do app-estatistica */
+.relatorio__saldo {
+  font-size: var(--text-lg);
+  line-height: var(--text-lg-lh);
+}
+
+/* ── Lucro líquido: bloco com tom próprio ── */
+.relatorio__lucro {
+  padding: calc(var(--space) * 4);
+  border: 1px solid var(--color-teal-100);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-teal-50);
+}
+
+.relatorio__lucro-rotulo {
+  margin-bottom: calc(var(--space) * 1.5);
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  color: var(--color-teal-800);
+}
+
+.relatorio__lucro-valor {
+  font-family: var(--font-mono);
+  font-size: var(--text-xl);
+  line-height: var(--text-xl-lh);
+  font-weight: 500;
+  color: var(--color-teal-700);
+}
+
+.relatorio__lucro--negativo {
+  border-color: var(--color-red-100);
+  background-color: var(--color-red-50);
+}
+
+.relatorio__lucro--negativo .relatorio__lucro-rotulo { color: var(--color-red-800); }
+.relatorio__lucro--negativo .relatorio__lucro-valor  { color: var(--color-red-700); }
+
+/* ── Tabela ── */
+.relatorio__secao {
+  margin-bottom: calc(var(--space) * 3);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+  font-weight: 500;
+  color: var(--color-gray-900);
+}
+
+.relatorio__col-numero {
+  text-align: right;
+}
+
+.relatorio__linha {
+  border-bottom: 1px solid var(--color-gray-100);
+  vertical-align: top;
+  transition: background-color var(--duration) var(--ease);
+}
+
+.relatorio__linha:last-child {
+  border-bottom-width: 0;
+}
+
+.relatorio__profissional {
+  font-weight: 500;
+  color: var(--color-gray-900);
+}
+
+.relatorio__fluxo {
+  display: inline-block;
+  padding: calc(var(--space) * 0.5) calc(var(--space) * 2);
+  border-radius: var(--radius-md);
+  font-size: 11px;
+  /* sem line-height próprio: herda o da tabela, como antes */
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.relatorio__fluxo--clinica {
+  background-color: var(--color-teal-50);
+  box-shadow: 0 0 0 1px var(--color-teal-100);
+  color: var(--color-teal-700);
+}
+
+.relatorio__fluxo--profissional {
+  background-color: var(--color-amber-50);
+  box-shadow: 0 0 0 1px var(--color-amber-100);
+  color: var(--color-amber-700);
+}
+
+.relatorio__fluxo--misto {
+  background-color: var(--color-purple-50);
+  box-shadow: 0 0 0 1px var(--color-purple-100);
+  color: var(--color-purple-700);
+}
+
+.relatorio__fluxo--nenhum {
+  background-color: var(--color-gray-50);
+  box-shadow: 0 0 0 1px var(--color-gray-100);
+  color: var(--color-gray-400);
+}
+
+.relatorio__numero {
+  text-align: right;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+}
+
+.relatorio__numero--neutro    { color: var(--color-gray-600); }
+.relatorio__numero--comissao  { color: var(--color-teal-700); font-weight: 500; }
+.relatorio__numero--devido    { color: var(--color-gray-700); }
+.relatorio__numero--repassado { color: var(--color-blue-600); }
+
+.relatorio__par {
+  white-space: nowrap;
+}
+
+.relatorio__destino {
+  margin-right: calc(var(--space) * 1);
+  color: var(--color-gray-400);
+}
+
+.relatorio__destino--leve {
+  font-weight: 400;
+}
+
+.relatorio__pendente--prof    { color: var(--color-red-600); font-weight: 700; }
+.relatorio__pendente--clinica { color: var(--color-amber-600); font-weight: 700; }
+.relatorio__pendente--zero    { color: var(--color-gray-400); }
+
+.relatorio__nulo {
+  color: var(--color-gray-300);
+}
+
+.relatorio__celula-vazia {
+  padding: 0;
+}
+
+@media (hover: hover) {
+  .relatorio__linha:hover {
+    background-color: var(--color-gray-50);
+  }
+}
+
+@media (width >= 40rem) {
+  .relatorio__periodo {
+    width: auto;
+  }
+
+  .relatorio__totais {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .relatorio__saldos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

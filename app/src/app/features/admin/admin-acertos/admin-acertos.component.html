@@ -1,9 +1,9 @@
-<div class="page relative">
+<div appPagina class="acertos">
 
-  <div class="page-header">
-    <div class="min-w-0">
-      <h1 class="text-lg font-medium text-gray-900">Repasses a Profissionais</h1>
-      <p class="text-sm text-gray-500 mt-0.5">
+  <div class="acertos__cabecalho">
+    <div class="acertos__titulos">
+      <h1 class="acertos__titulo">Repasses a Profissionais</h1>
+      <p class="acertos__resumo">
         @if (!mostrarHistorico()) {
           {{ profissionaisPendentes().length }} pendente(s) · total a repassar aos profissionais: {{ formatarValor(totalPendenteAoProfissional()) }} · total a ser passado para a clínica: {{ formatarValor(totalPendenteAClinica()) }}
         } @else {
@@ -12,14 +12,15 @@
       </p>
     </div>
 
-    <div class="flex flex-wrap items-center gap-3 shrink-0">
+    <div class="acertos__controles">
       @if (!mostrarHistorico()) {
         <input
+          appCampo
+          class="acertos__periodo"
           type="month"
           aria-label="Período"
           [value]="periodoSelecionado()"
           (change)="onPeriodoChange($event)"
-          class="ui-input w-auto"
         />
       }
 
@@ -31,58 +32,56 @@
   </div>
 
   @if (erro()) {
-    <app-alert class="block mb-4">{{ erro() }}</app-alert>
+    <app-alert class="acertos__alerta">{{ erro() }}</app-alert>
   }
 
   @if (carregando()) {
-    <p class="text-sm text-gray-400 text-center py-10">Carregando...</p>
+    <app-carregando texto="Carregando..." />
   }
 
   @if (!carregando()) {
-    <div class="flex flex-col gap-3">
+    <div class="acertos__lista">
 
       @if (!mostrarHistorico()) {
         @for (p of profissionaisPendentes(); track p.profissionalId) {
-          <div class="border border-amber-200 bg-amber-50 rounded-xl p-4 transition-colors">
+          <div class="acertos__pendente">
 
-            <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-4">
-              <div class="min-w-0">
-                <p class="text-sm font-medium text-gray-900">{{ p.nomeProfissional }}</p>
-                <p class="text-xs text-gray-500 mt-0.5">
+            <div class="acertos__topo">
+              <div class="acertos__quem">
+                <p class="acertos__nome">{{ p.nomeProfissional }}</p>
+                <p class="acertos__referencia">
                   Referência: {{ formatarMes(periodoSelecionado()) }}
                 </p>
-                <div class="mt-2 text-xs text-gray-600 flex flex-wrap gap-x-4 gap-y-1">
+                <div class="acertos__numeros">
                   <span>Recebido: {{ formatarValor(p.totalFaturado) }}</span>
                   <span>Retido pela Clínica: {{ formatarValor(p.comissaoClinica) }}</span>
                 </div>
               </div>
 
-              <div class="sm:text-right shrink-0">
-                <p class="text-xs text-gray-500 mb-0.5">Valor do repasse</p>
-                <p class="text-lg font-medium font-mono text-amber-700">
+              <div class="acertos__montante">
+                <p class="acertos__montante-rotulo">Valor do repasse</p>
+                <p class="acertos__montante-valor">
                   {{ formatarValor(p.pendenteAoProfissional > 0 && p.pendenteAClinica > 0 ? 0 : p.pendenteAoProfissional || p.pendenteAClinica) }}
                 </p>
               </div>
             </div>
 
-            <div class="flex flex-col gap-2">
+            <div class="acertos__acoes">
               @if (p.pendenteAoProfissional > 0) {
                 <button
-                  (click)="iniciarRepasse(p.profissionalId, p.pendenteAoProfissional, p.nomeProfissional, 'paraProfissional')"
+                  type="button"
+                  class="acertos__registrar"
                   [disabled]="processando() === p.profissionalId"
-                  class="w-full bg-teal-600 hover:bg-teal-700 disabled:opacity-50
-                        text-on-accent text-sm font-medium rounded-lg py-2
-                        transition-colors cursor-pointer disabled:cursor-not-allowed">
+                  (click)="iniciarRepasse(p.profissionalId, p.pendenteAoProfissional, p.nomeProfissional, 'paraProfissional')">
                   {{ processando() === p.profissionalId ? 'Registrando pagamento...' : 'Registrar repasse ao profissional' }}
                 </button>
               }
               @if (p.pendenteAClinica > 0) {
                 <button
-                  (click)="iniciarRepasse(p.profissionalId, p.pendenteAClinica, p.nomeProfissional, 'paraClinica')"
+                  type="button"
+                  class="acertos__registrar"
                   [disabled]="processando() === p.profissionalId"
-                  class="w-full bg-teal-600 hover:bg-teal-700 disabled:opacity-50
-                        text-on-accent text-sm font-medium rounded-lg py-2
-                        transition-colors cursor-pointer disabled:cursor-not-allowed">
+                  (click)="iniciarRepasse(p.profissionalId, p.pendenteAClinica, p.nomeProfissional, 'paraClinica')">
                   {{ processando() === p.profissionalId ? 'Registrando pagamento...' : 'Registrar repasse do profissional à clínica' }}
                 </button>
               }
@@ -90,40 +89,34 @@
 
           </div>
         } @empty {
-          <div class="text-center py-10 text-sm text-gray-400">
-            Nenhum repasse pendente para {{ formatarMes(periodoSelecionado()) }}.
-          </div>
+          <app-vazio [mensagem]="'Nenhum repasse pendente para ' + formatarMes(periodoSelecionado()) + '.'" />
         }
       }
 
       @if (mostrarHistorico()) {
         @for (a of historicoAcertos(); track a.id) {
-          <div class="border border-gray-200 bg-white rounded-xl p-4 transition-colors">
-            <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
-              <div class="min-w-0">
-                <p class="text-sm font-medium text-gray-900">{{ a.nome_profissional }}</p>
-                <p class="text-xs text-gray-500 mt-0.5">
+          <div class="acertos__historico">
+            <div class="acertos__topo">
+              <div class="acertos__quem">
+                <p class="acertos__nome">{{ a.nome_profissional }}</p>
+                <p class="acertos__referencia">
                   Referência: {{ formatarMes(a.periodoReferencia) }}
                   · Pago em {{ formatarData(a.dataPagamento) }}
                 </p>
                 @if (a.observacao) {
-                  <p class="text-xs text-gray-500 mt-0.5">{{ a.observacao }}</p>
+                  <p class="acertos__referencia">{{ a.observacao }}</p>
                 }
               </div>
-              <div class="sm:text-right shrink-0">
-                <p class="text-lg font-medium font-mono text-gray-900">
-                  {{ formatarValor(a.valorPago) }}
-                </p>
-                <span class="bg-teal-50 text-teal-800 text-xs font-medium px-2 py-0.5 rounded inline-block mt-1">
+              <div class="acertos__montante">
+                <p class="acertos__pago">{{ formatarValor(a.valorPago) }}</p>
+                <app-selo tom="teal" class="acertos__selo">
                   {{ a.profissionalRecebe ? 'Repassado ao profissional': 'Repassado à clínica' }}
-                </span>
+                </app-selo>
               </div>
             </div>
           </div>
         } @empty {
-          <div class="text-center py-10 text-sm text-gray-400">
-            Nenhum histórico de repasse encontrado.
-          </div>
+          <app-vazio mensagem="Nenhum histórico de repasse encontrado." />
         }
       }
 
@@ -140,14 +133,14 @@
       [loading]="processando() !== null"
       (confirmar)="confirmarRepasse()"
       (cancelar)="cancelarRepasse()">
-      <div class="flex flex-col gap-3">
-        <div class="flex flex-col items-center justify-center bg-gray-50 rounded-xl p-4 border border-gray-100">
-          <span class="text-xs text-gray-500 uppercase tracking-wide font-medium mb-1">Valor a ser repassado</span>
-          <span class="text-2xl font-mono font-medium text-amber-700">
+      <div class="acertos__confirma">
+        <div class="acertos__destaque">
+          <span class="acertos__destaque-rotulo">Valor a ser repassado</span>
+          <span class="acertos__destaque-valor">
             {{ formatarValor(repasseSelecionado()!.valor) }}
           </span>
         </div>
-        <p class="text-xs text-red-600">
+        <p class="acertos__aviso">
           <strong>Atenção:</strong> esta ação não pode ser desfeita. O sistema registrará este valor como pago definitivamente.
         </p>
       </div>

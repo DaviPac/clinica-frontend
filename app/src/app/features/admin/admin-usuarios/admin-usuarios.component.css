@@ -1,0 +1,113 @@
+.usuarios__novo {
+  width: 100%;
+}
+
+.usuarios__alerta {
+  display: block;
+  margin-bottom: calc(var(--space) * 4);
+}
+
+/* ── Tabela ── */
+.usuarios__col-acoes {
+  text-align: right;
+}
+
+.usuarios__linha {
+  border-bottom: 1px solid var(--color-gray-100);
+  transition: background-color var(--duration) var(--ease);
+}
+
+.usuarios__linha:last-child {
+  border-bottom-width: 0;
+}
+
+.usuarios__nome {
+  font-weight: 500;
+  color: var(--color-gray-900);
+}
+
+.usuarios__dado {
+  color: var(--color-gray-500);
+}
+
+.usuarios__dado--miudo {
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+}
+
+.usuarios__dado--mono {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+}
+
+.usuarios__dado--linha-unica {
+  white-space: nowrap;
+}
+
+.usuarios__acoes {
+  text-align: right;
+}
+
+.usuarios__celula-vazia {
+  padding: 0;
+}
+
+.usuarios__ver {
+  /* inline: como inline-block o padding vertical entraria na altura da linha */
+  padding: calc(var(--space) * 1) calc(var(--space) * 2.5);
+  border: 1px solid color-mix(in srgb, var(--color-brand-400) 40%, transparent);
+  border-radius: var(--radius-md);
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  color: var(--color-brand-500);
+  text-decoration: none;
+  transition: background-color var(--duration) var(--ease);
+}
+
+/* ── Modal ── */
+.usuarios__form {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--space) * 4);
+}
+
+.usuarios__grade {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: calc(var(--space) * 3);
+}
+
+.usuarios__acoes-modal {
+  display: flex;
+  gap: calc(var(--space) * 2.5);
+  margin-top: calc(var(--space) * 2);
+}
+
+.usuarios__acoes-modal > * {
+  flex: 1;
+}
+
+@media (hover: hover) {
+  .usuarios__linha:hover {
+    background-color: var(--color-gray-50);
+  }
+
+  .usuarios__ver:hover {
+    background-color: color-mix(in srgb, var(--color-brand-400) 10%, transparent);
+  }
+}
+
+@media (width >= 40rem) {
+  .usuarios__novo {
+    width: auto;
+  }
+
+  .usuarios__grade {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .usuarios__grade--largo {
+    grid-column: span 2 / span 2;
+  }
+}

@@ -1,241 +1,160 @@
-<div class="page max-w-2xl">
+<div appPagina class="usuario">
 
-  <!-- Voltar -->
-  <a
-    routerLink="/admin/usuarios"
-    class="inline-flex items-center gap-1.5 text-sm text-gray-500
-           hover:text-gray-900 transition-colors mb-6">
-    ← Voltar para usuários
-  </a>
+  <app-link-voltar rota="/admin/usuarios" texto="Voltar para usuários" />
 
   @if (carregando()) {
-    <p class="text-sm text-gray-400">Carregando...</p>
+    <app-carregando texto="Carregando..." espaco="nenhum" />
   }
 
   @if (erro()) {
-    <app-alert class="block">{{ erro() }}</app-alert>
+    <app-alert class="usuario__alerta">{{ erro() }}</app-alert>
   }
 
   @if (usuario(); as u) {
-    <!-- Card de dados -->
-    <div class="bg-white border border-gray-200 rounded-xl p-4 sm:p-6">
-      <!-- Avatar + nome + acao -->
-      <div class="flex items-center gap-4 mb-6 pb-6 border-b border-gray-100">
-        <div class="w-12 h-12 rounded-full bg-brand-400 flex items-center
-                    justify-center text-brand-800 font-medium text-sm shrink-0">
-          {{ u.nome.charAt(0).toUpperCase() }}
-        </div>
-        <div class="flex-1 min-w-0">
-          <div class="flex items-center gap-2 flex-wrap">
-            <h1 class="text-lg font-medium text-gray-900">{{ u.nome }}</h1>
+    <app-cartao>
+
+      <div class="usuario__topo">
+        <app-avatar [nome]="u.nome" [letras]="1" tamanho="g" />
+
+        <div class="usuario__nomes">
+          <div class="usuario__linha-nome">
+            <h1 class="usuario__nome">{{ u.nome }}</h1>
 
             @if (u.role === 'ADMIN') {
-              <span class="inline-flex items-center text-xs font-medium
-                          text-brand-800 bg-brand-100 border border-brand-300
-                          px-2 py-0.5 rounded-full">
-                Administrador
-              </span>
+              <span class="usuario__papel usuario__papel--admin">Administrador</span>
             } @else {
-              <span class="inline-flex items-center text-xs font-medium
-                          text-gray-600 bg-gray-100 border border-gray-200
-                          px-2 py-0.5 rounded-full">
-                Profissional
-              </span>
+              <span class="usuario__papel">Profissional</span>
             }
           </div>
-          <p class="text-sm text-gray-500">Usuário #{{ u.id }}</p>
+          <p class="usuario__id">Usuário #{{ u.id }}</p>
         </div>
 
-        <!-- Acao -->
-        <div class="shrink-0">
-          <button
-            type="button"
-            (click)="abrirModal()"
-            class="text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-100
-                  px-3 py-1.5 rounded-lg transition-colors">
+        <div class="usuario__acoes">
+          <button type="button" class="usuario__editar" (click)="abrirModal()">
             Editar
           </button>
         </div>
       </div>
 
-      <!-- Acesso -->
-      <dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-5 text-sm">
-        <div class="sm:col-span-2">
-          <dt class="text-xs text-gray-500 mb-1">E-mail</dt>
-          <dd class="text-gray-900 break-all">{{ u.email }}</dd>
-        </div>
-        <div>
-          <dt class="text-xs text-gray-500 mb-1">Perfil de acesso</dt>
-          <dd class="text-gray-900">{{ rotuloRole(u.role) }}</dd>
-        </div>
-        <div>
-          <dt class="text-xs text-gray-500 mb-1">Cadastrado em</dt>
-          <dd class="text-gray-900">{{ formatarData(u.criadoEm) }}</dd>
-        </div>
+      <dl class="usuario__dados">
+        <app-item-descricao class="usuario__dados--largo" rotulo="E-mail">
+          <span class="usuario__email">{{ u.email }}</span>
+        </app-item-descricao>
+        <app-item-descricao rotulo="Perfil de acesso">{{ rotuloRole(u.role) }}</app-item-descricao>
+        <app-item-descricao rotulo="Cadastrado em">{{ formatarData(u.criadoEm) }}</app-item-descricao>
       </dl>
 
-      <!-- Atendimento -->
-      <div class="mt-6 pt-6 border-t border-gray-100">
-        <h2 class="text-sm font-medium text-gray-900 mb-4">Atendimento</h2>
+      <div class="usuario__secao">
+        <h2 class="usuario__secao-titulo">Atendimento</h2>
 
-        <dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-5 text-sm">
-          <div>
-            <dt class="text-xs text-gray-500 mb-1">Profissão</dt>
-            <dd class="text-gray-900">{{ u.profissao ?? '—' }}</dd>
-          </div>
-          <div>
-            <dt class="text-xs text-gray-500 mb-1">Comissão padrão da clínica</dt>
-            <dd class="font-mono text-gray-900">{{ formatarComissao(u.taxaComissaoPadrao) }}</dd>
-          </div>
-          <div class="sm:col-span-2">
-            <dt class="text-xs text-gray-500 mb-1">Fluxo de pagamento</dt>
-            <dd class="text-gray-900">
-              @if (u.profissionalRecebe) {
-                O paciente paga direto ao profissional, que repassa a comissão à clínica.
-              } @else {
-                A clínica recebe o pagamento e repassa ao profissional, descontando a comissão.
-              }
-            </dd>
-          </div>
+        <dl class="usuario__dados">
+          <app-item-descricao rotulo="Profissão">{{ u.profissao ?? '—' }}</app-item-descricao>
+          <app-item-descricao rotulo="Comissão padrão da clínica" [mono]="true">
+            {{ formatarComissao(u.taxaComissaoPadrao) }}
+          </app-item-descricao>
+          <app-item-descricao class="usuario__dados--largo" rotulo="Fluxo de pagamento">
+            @if (u.profissionalRecebe) {
+              O paciente paga direto ao profissional, que repassa a comissão à clínica.
+            } @else {
+              A clínica recebe o pagamento e repassa ao profissional, descontando a comissão.
+            }
+          </app-item-descricao>
         </dl>
       </div>
-    </div>
+    </app-cartao>
 
-    <!-- Modal de edicao -->
+    <!-- Modal de edição -->
     @if (modalAberto()) {
-      <div
-        class="fixed inset-0 z-50 flex items-center justify-center p-4
-              bg-black/40 backdrop-blur-sm"
-        (click)="fecharModal()">
-        <form
-          [formGroup]="form"
-          (ngSubmit)="salvar()"
-          class="bg-white rounded-xl shadow-xl max-w-md w-full p-6
-                max-h-[90vh] overflow-y-auto"
-          (click)="$event.stopPropagation()">
+      <app-modal titulo="Editar usuário" (fechar)="fecharModal()">
+        <form class="usuario__form" [formGroup]="form" (ngSubmit)="salvar()">
 
-          <h2 class="text-base font-medium text-gray-900 mb-1">Editar usuário</h2>
-          <p class="text-sm text-gray-500 mb-5">
+          <p class="usuario__form-nota">
             Alterações passam a valer para novos agendamentos.
           </p>
 
-          <div class="space-y-4">
-            <!-- Nome -->
-            <div>
-              <label for="nome" class="block text-xs text-gray-500 mb-1">Nome <span class="text-red-500">*</span></label>
-              <input
-                id="nome"
-                type="text"
-                formControlName="nome"
-                class="w-full text-sm text-gray-900 border border-gray-200 rounded-lg
-                      px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-400/40
-                      focus:border-brand-400 transition-colors">
-              @if (form.controls.nome.touched && form.controls.nome.invalid) {
-                <p class="text-xs text-red-600 mt-1">Informe o nome do usuário.</p>
-              }
-            </div>
+          <app-campo-form
+            rotulo="Nome"
+            para="usuario-edit-nome"
+            [obrigatorio]="true"
+            [erro]="form.controls.nome.touched && form.controls.nome.invalid
+              ? 'Informe o nome do usuário.' : null">
+            <input appCampo id="usuario-edit-nome" type="text" formControlName="nome" />
+          </app-campo-form>
 
-            <!-- Email -->
-            <div>
-              <label for="email" class="block text-xs text-gray-500 mb-1">E-mail <span class="text-red-500">*</span></label>
-              <input
-                id="email"
-                type="email"
-                formControlName="email"
-                class="w-full text-sm text-gray-900 border border-gray-200 rounded-lg
-                      px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-400/40
-                      focus:border-brand-400 transition-colors">
-              @if (form.controls.email.touched && form.controls.email.invalid) {
-                <p class="text-xs text-red-600 mt-1">Informe um e-mail válido.</p>
-              }
-            </div>
+          <app-campo-form
+            rotulo="E-mail"
+            para="usuario-edit-email"
+            [obrigatorio]="true"
+            [erro]="form.controls.email.touched && form.controls.email.invalid
+              ? 'Informe um e-mail válido.' : null">
+            <input appCampo id="usuario-edit-email" type="email" formControlName="email" />
+          </app-campo-form>
 
-            <!-- Perfil -->
-            <div>
-              <label for="role" class="block text-xs text-gray-500 mb-1">Perfil de acesso <span class="text-red-500">*</span></label>
-              <select
-                id="role"
-                formControlName="role"
-                class="w-full text-sm text-gray-900 border border-gray-200 rounded-lg
-                      px-3 py-2 bg-white focus:outline-none focus:ring-2
-                      focus:ring-brand-400/40 focus:border-brand-400 transition-colors">
-                <option value="PROFISSIONAL">Profissional</option>
-                <option value="ADMIN">Administrador</option>
-              </select>
-            </div>
-          </div>
+          <app-campo-form rotulo="Perfil de acesso" para="usuario-edit-role" [obrigatorio]="true">
+            <select appCampo id="usuario-edit-role" formControlName="role">
+              <option value="PROFISSIONAL">Profissional</option>
+              <option value="ADMIN">Administrador</option>
+            </select>
+          </app-campo-form>
 
-          <!-- Atendimento -->
-          <div class="mt-5 pt-5 border-t border-gray-100">
-            <h3 class="text-sm font-medium text-gray-900 mb-4">Atendimento</h3>
+          <div class="usuario__form-secao">
+            <h3 class="usuario__secao-titulo">Atendimento</h3>
 
-            <div class="space-y-4">
-              <!-- Profissao -->
-              <div>
-                <label for="profissao" class="block text-xs text-gray-500 mb-1">Profissão</label>
+            <div class="usuario__form-campos">
+              <app-campo-form rotulo="Profissão" para="usuario-edit-profissao">
                 <input
-                  id="profissao"
+                  appCampo
+                  id="usuario-edit-profissao"
                   type="text"
                   formControlName="profissao"
                   placeholder="Fisioterapeuta, psicólogo..."
-                  class="w-full text-sm text-gray-900 border border-gray-200 rounded-lg
-                        px-3 py-2 placeholder:text-gray-400 focus:outline-none
-                        focus:ring-2 focus:ring-brand-400/40 focus:border-brand-400
-                        transition-colors">
-              </div>
+                />
+              </app-campo-form>
 
-              <!-- Comissao -->
-              <div>
-                <label for="taxa" class="block text-xs text-gray-500 mb-1">
-                  Comissão padrão da clínica (%) <span class="text-red-500">*</span>
-                </label>
+              <app-campo-form
+                rotulo="Comissão padrão da clínica (%)"
+                para="usuario-edit-taxa"
+                [obrigatorio]="true"
+                [erro]="form.controls.taxaComissaoPadrao.touched && form.controls.taxaComissaoPadrao.invalid
+                  ? 'Use um valor entre 0 e 100.' : null">
                 <input
-                  id="taxa"
+                  appCampo
+                  [mono]="true"
+                  id="usuario-edit-taxa"
                   type="number"
                   min="0"
                   max="100"
                   step="0.5"
                   formControlName="taxaComissaoPadrao"
-                  class="w-full text-sm text-gray-900 font-mono border border-gray-200
-                        rounded-lg px-3 py-2 focus:outline-none focus:ring-2
-                        focus:ring-brand-400/40 focus:border-brand-400 transition-colors">
-                @if (form.controls.taxaComissaoPadrao.touched
-                      && form.controls.taxaComissaoPadrao.invalid) {
-                  <p class="text-xs text-red-600 mt-1">Use um valor entre 0 e 100.</p>
-                }
-              </div>
+                />
+              </app-campo-form>
 
-              <!-- Fluxo de pagamento -->
               <div>
-                <span class="block text-xs text-gray-500 mb-2">Fluxo de pagamento</span>
-                <div class="space-y-2">
-                  <label
-                    class="flex gap-3 border border-gray-200 rounded-lg px-3 py-2.5
-                          cursor-pointer hover:bg-gray-50 transition-colors">
+                <span class="usuario__grupo-rotulo">Fluxo de pagamento</span>
+                <div class="usuario__opcoes">
+                  <label class="usuario__opcao">
                     <input
+                      class="usuario__radio"
                       type="radio"
                       [value]="true"
-                      formControlName="profissionalRecebe"
-                      class="mt-0.5 accent-brand-400">
-                    <span class="text-sm">
-                      <span class="block text-gray-900">Profissional recebe</span>
-                      <span class="block text-xs text-gray-500">
+                      formControlName="profissionalRecebe">
+                    <span class="usuario__opcao-texto">
+                      <span class="usuario__opcao-titulo">Profissional recebe</span>
+                      <span class="usuario__opcao-detalhe">
                         O paciente paga direto ao profissional, que repassa a comissão à clínica.
                       </span>
                     </span>
                   </label>
 
-                  <label
-                    class="flex gap-3 border border-gray-200 rounded-lg px-3 py-2.5
-                          cursor-pointer hover:bg-gray-50 transition-colors">
+                  <label class="usuario__opcao">
                     <input
+                      class="usuario__radio"
                       type="radio"
                       [value]="false"
-                      formControlName="profissionalRecebe"
-                      class="mt-0.5 accent-brand-400">
-                    <span class="text-sm">
-                      <span class="block text-gray-900">Clínica recebe</span>
-                      <span class="block text-xs text-gray-500">
+                      formControlName="profissionalRecebe">
+                    <span class="usuario__opcao-texto">
+                      <span class="usuario__opcao-titulo">Clínica recebe</span>
+                      <span class="usuario__opcao-detalhe">
                         A clínica recebe o pagamento e repassa ao profissional, descontando a comissão.
                       </span>
                     </span>
@@ -246,33 +165,19 @@
           </div>
 
           @if (erroSalvar()) {
-            <app-alert class="block mt-4">{{ erroSalvar() }}</app-alert>
+            <app-alert class="usuario__alerta">{{ erroSalvar() }}</app-alert>
           }
 
-          <div class="flex justify-end gap-2 mt-6">
-            <button
-              type="button"
-              (click)="fecharModal()"
-              [disabled]="salvando()"
-              class="text-sm px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-100
-                    transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+          <div class="usuario__form-acoes">
+            <button appBotao variante="contorno" type="button" [disabled]="salvando()" (click)="fecharModal()">
               Cancelar
             </button>
-            <button
-              type="submit"
-              [disabled]="salvando()"
-              class="text-sm px-4 py-2 rounded-lg text-on-accent bg-brand-400
-                    hover:bg-brand-500 transition-colors
-                    disabled:opacity-50 disabled:cursor-not-allowed">
-              @if (salvando()) {
-                Salvando...
-              } @else {
-                Salvar alterações
-              }
+            <button appBotao type="submit" [disabled]="salvando()">
+              {{ salvando() ? 'Salvando...' : 'Salvar alterações' }}
             </button>
           </div>
         </form>
-      </div>
+      </app-modal>
     }
   }
 

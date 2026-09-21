@@ -1,11 +1,19 @@
 :host {
-  display: inline-block;
+  /* inline, e não inline-block: dentro de uma célula de tabela o padding
+     vertical de um inline-block entraria na altura da linha. */
+  display: inline;
   padding: calc(var(--space) * 0.5) calc(var(--space) * 2);
   border-radius: var(--radius-sm);
   font-size: var(--text-xs);
   line-height: var(--text-xs-lh);
   font-weight: 500;
   white-space: nowrap;
+}
+
+:host([data-tamanho='miudo']) {
+  border-radius: var(--radius-md);
+  font-size: 11px;
+  line-height: var(--text-xs-lh);
 }
 
 :host([data-formato='pilula']) {

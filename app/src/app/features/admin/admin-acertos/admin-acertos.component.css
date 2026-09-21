@@ -1,0 +1,226 @@
+.acertos {
+  position: relative;
+}
+
+/* ── Cabeçalho próprio: o resumo é condicional e mora dentro dele ── */
+.acertos__cabecalho {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--space) * 3);
+  margin-bottom: calc(var(--space) * 6);
+}
+
+.acertos__titulos {
+  min-width: 0;
+}
+
+.acertos__titulo {
+  font-size: var(--text-lg);
+  line-height: var(--text-lg-lh);
+  font-weight: 500;
+  color: var(--color-gray-900);
+}
+
+.acertos__resumo {
+  margin-top: calc(var(--space) * 0.5);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+  color: var(--color-gray-500);
+}
+
+.acertos__controles {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+  gap: calc(var(--space) * 3);
+}
+
+.acertos__periodo {
+  width: auto;
+}
+
+.acertos__alerta {
+  display: block;
+  margin-bottom: calc(var(--space) * 4);
+}
+
+.acertos__lista {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--space) * 3);
+}
+
+/* ── Cartões de pendência e de histórico ── */
+.acertos__pendente {
+  padding: calc(var(--space) * 4);
+  border: 1px solid var(--color-amber-200);
+  border-radius: var(--radius-xl);
+  background-color: var(--color-amber-50);
+  transition: background-color var(--duration) var(--ease);
+}
+
+.acertos__historico {
+  padding: calc(var(--space) * 4);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-xl);
+  background-color: var(--color-white);
+  transition: background-color var(--duration) var(--ease);
+}
+
+.acertos__topo {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--space) * 3);
+}
+
+.acertos__pendente .acertos__topo {
+  margin-bottom: calc(var(--space) * 4);
+}
+
+.acertos__quem {
+  min-width: 0;
+}
+
+.acertos__nome {
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+  font-weight: 500;
+  color: var(--color-gray-900);
+}
+
+.acertos__referencia {
+  margin-top: calc(var(--space) * 0.5);
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  color: var(--color-gray-500);
+}
+
+.acertos__numeros {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: calc(var(--space) * 4);
+  row-gap: calc(var(--space) * 1);
+  margin-top: calc(var(--space) * 2);
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  color: var(--color-gray-600);
+}
+
+.acertos__montante {
+  flex-shrink: 0;
+}
+
+.acertos__montante-rotulo {
+  margin-bottom: calc(var(--space) * 0.5);
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  color: var(--color-gray-500);
+}
+
+.acertos__montante-valor {
+  font-family: var(--font-mono);
+  font-size: var(--text-lg);
+  line-height: var(--text-lg-lh);
+  font-weight: 500;
+  color: var(--color-amber-700);
+}
+
+.acertos__pago {
+  font-family: var(--font-mono);
+  font-size: var(--text-lg);
+  line-height: var(--text-lg-lh);
+  font-weight: 500;
+  color: var(--color-gray-900);
+}
+
+.acertos__selo {
+  display: inline-block;
+  margin-top: calc(var(--space) * 1);
+}
+
+/* ── Botões de registrar repasse ── */
+.acertos__acoes {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--space) * 2);
+}
+
+.acertos__registrar {
+  width: 100%;
+  padding-block: calc(var(--space) * 2);
+  border: none;
+  border-radius: var(--radius-lg);
+  background-color: var(--color-teal-600);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+  font-weight: 500;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color var(--duration) var(--ease);
+}
+
+.acertos__registrar:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ── Confirmação ── */
+.acertos__confirma {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--space) * 3);
+}
+
+.acertos__destaque {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: calc(var(--space) * 4);
+  border: 1px solid var(--color-gray-100);
+  border-radius: var(--radius-xl);
+  background-color: var(--color-gray-50);
+}
+
+.acertos__destaque-rotulo {
+  margin-bottom: calc(var(--space) * 1);
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--color-gray-500);
+}
+
+.acertos__destaque-valor {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xl);
+  line-height: var(--text-2xl-lh);
+  font-weight: 500;
+  color: var(--color-amber-700);
+}
+
+.acertos__aviso {
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  color: var(--color-red-600);
+}
+
+@media (width >= 40rem) {
+  .acertos__cabecalho {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .acertos__topo {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+
+  .acertos__montante {
+    text-align: right;
+  }
+}

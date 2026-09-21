@@ -1,0 +1,119 @@
+.despesas__nova {
+  width: 100%;
+}
+
+.despesas__filtro,
+.despesas__alerta {
+  margin-bottom: calc(var(--space) * 4);
+}
+
+.despesas__alerta {
+  display: block;
+}
+
+/* ── Tabela ── */
+.despesas__linha {
+  border-bottom: 1px solid var(--color-gray-100);
+  transition: background-color var(--duration) var(--ease);
+}
+
+.despesas__linha:last-child {
+  border-bottom-width: 0;
+}
+
+.despesas__linha--paga {
+  opacity: 0.5;
+}
+
+.despesas__descricao {
+  font-weight: 500;
+  color: var(--color-gray-900);
+}
+
+.despesas__valor {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  white-space: nowrap;
+  color: var(--color-gray-900);
+}
+
+.despesas__vencimento {
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  white-space: nowrap;
+}
+
+/* estados devolvidos por vencimentoClass() */
+.despesas__vencimento--pago     { color: var(--color-gray-400); }
+.despesas__vencimento--atrasado { color: var(--color-red-700); font-weight: 500; }
+.despesas__vencimento--normal   { color: var(--color-gray-600); }
+
+.despesas__acoes {
+  text-align: right;
+}
+
+.despesas__celula-vazia {
+  padding: 0;
+}
+
+.despesas__pagar {
+  padding: calc(var(--space) * 1) calc(var(--space) * 2.5);
+  border: none;
+  border-radius: var(--radius-md);
+  background-color: var(--color-teal-600);
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  white-space: nowrap;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color var(--duration) var(--ease);
+}
+
+.despesas__pagar:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ── Modal ── */
+.despesas__form {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--space) * 4);
+}
+
+.despesas__dupla {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: calc(var(--space) * 3);
+}
+
+.despesas__acoes-modal {
+  display: flex;
+  gap: calc(var(--space) * 2.5);
+  margin-top: calc(var(--space) * 2);
+}
+
+.despesas__acoes-modal > * {
+  flex: 1;
+}
+
+@media (hover: hover) {
+  .despesas__linha:hover {
+    background-color: var(--color-gray-50);
+  }
+
+  .despesas__pagar:hover:not(:disabled) {
+    background-color: var(--color-teal-700);
+  }
+}
+
+@media (width >= 40rem) {
+  .despesas__nova {
+    width: auto;
+  }
+
+  .despesas__dupla {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

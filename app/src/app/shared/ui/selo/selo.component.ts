@@ -3,6 +3,7 @@ import { Component, input } from '@angular/core';
 export type TomSelo =
   | 'azul' | 'teal' | 'ambar' | 'vermelho' | 'violeta' | 'roxo' | 'verde' | 'cinza' | 'marca';
 export type FormatoSelo = 'retangular' | 'pilula';
+export type TamanhoSelo = 'padrao' | 'miudo';
 
 /**
  * Etiqueta curta de estado ou categoria.
@@ -17,12 +18,15 @@ export type FormatoSelo = 'retangular' | 'pilula';
   host: {
     '[attr.data-tom]': 'tom()',
     '[attr.data-formato]': 'formato()',
+    '[attr.data-tamanho]': 'tamanho()',
     '[attr.data-anel]': 'anel() ? "sim" : null',
   },
 })
 export class SeloComponent {
   tom = input<TomSelo>('cinza');
   formato = input<FormatoSelo>('retangular');
+  /** `miudo` é o selo das tabelas densas do relatório. */
+  tamanho = input<TamanhoSelo>('padrao');
   /** Contorno interno suave, usado nas tabelas do relatório. */
   anel = input(false);
 }

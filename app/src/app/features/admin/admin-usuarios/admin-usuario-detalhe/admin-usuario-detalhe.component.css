@@ -1,0 +1,204 @@
+.usuario {
+  max-width: var(--container-2xl);
+}
+
+.usuario__alerta {
+  display: block;
+}
+
+/* ── Topo do cartão ── */
+.usuario__topo {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--space) * 4);
+  margin-bottom: calc(var(--space) * 6);
+  padding-bottom: calc(var(--space) * 6);
+  border-bottom: 1px solid var(--color-gray-100);
+}
+
+.usuario__nomes {
+  flex: 1;
+  min-width: 0;
+}
+
+.usuario__linha-nome {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: calc(var(--space) * 2);
+}
+
+.usuario__nome {
+  font-size: var(--text-lg);
+  line-height: var(--text-lg-lh);
+  font-weight: 500;
+  color: var(--color-gray-900);
+}
+
+.usuario__papel {
+  display: inline-flex;
+  align-items: center;
+  padding: calc(var(--space) * 0.5) calc(var(--space) * 2);
+  border: 1px solid var(--color-gray-200);
+  border-radius: 9999px;
+  background-color: var(--color-gray-100);
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  font-weight: 500;
+  color: var(--color-gray-600);
+}
+
+.usuario__papel--admin {
+  border-color: var(--color-brand-300);
+  background-color: var(--color-brand-100);
+  color: var(--color-brand-800);
+}
+
+.usuario__id {
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+  color: var(--color-gray-500);
+}
+
+.usuario__acoes {
+  flex-shrink: 0;
+}
+
+.usuario__editar {
+  padding: calc(var(--space) * 1.5) calc(var(--space) * 3);
+  border: none;
+  border-radius: var(--radius-lg);
+  background-color: transparent;
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+  color: var(--color-gray-700);
+  cursor: pointer;
+  transition: color var(--duration) var(--ease), background-color var(--duration) var(--ease);
+}
+
+/* ── Blocos de dados ── */
+.usuario__dados {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  column-gap: calc(var(--space) * 8);
+  row-gap: calc(var(--space) * 5);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+}
+
+.usuario__email {
+  word-break: break-all;
+}
+
+.usuario__secao {
+  margin-top: calc(var(--space) * 6);
+  padding-top: calc(var(--space) * 6);
+  border-top: 1px solid var(--color-gray-100);
+}
+
+.usuario__secao-titulo {
+  margin-bottom: calc(var(--space) * 4);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+  font-weight: 500;
+  color: var(--color-gray-900);
+}
+
+/* ── Formulário de edição ── */
+.usuario__form {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--space) * 4);
+}
+
+.usuario__form-nota {
+  margin-top: calc(var(--space) * -2);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+  color: var(--color-gray-500);
+}
+
+.usuario__form-secao {
+  padding-top: calc(var(--space) * 5);
+  border-top: 1px solid var(--color-gray-100);
+}
+
+.usuario__form-campos {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--space) * 4);
+}
+
+.usuario__grupo-rotulo {
+  display: block;
+  margin-bottom: calc(var(--space) * 2);
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  color: var(--color-gray-500);
+}
+
+.usuario__opcoes {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--space) * 2);
+}
+
+.usuario__opcao {
+  display: flex;
+  gap: calc(var(--space) * 3);
+  padding: calc(var(--space) * 2.5) calc(var(--space) * 3);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: background-color var(--duration) var(--ease);
+}
+
+.usuario__radio {
+  margin-top: calc(var(--space) * 0.5);
+  accent-color: var(--color-brand-400);
+}
+
+.usuario__opcao-texto {
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+}
+
+.usuario__opcao-titulo {
+  display: block;
+  color: var(--color-gray-900);
+}
+
+.usuario__opcao-detalhe {
+  display: block;
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  color: var(--color-gray-500);
+}
+
+.usuario__form-acoes {
+  display: flex;
+  justify-content: flex-end;
+  gap: calc(var(--space) * 2);
+  margin-top: calc(var(--space) * 2);
+}
+
+@media (hover: hover) {
+  .usuario__editar:hover {
+    background-color: var(--color-gray-100);
+    color: var(--color-gray-900);
+  }
+
+  .usuario__opcao:hover {
+    background-color: var(--color-gray-50);
+  }
+}
+
+@media (width >= 40rem) {
+  .usuario__dados {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .usuario__dados--largo {
+    grid-column: span 2 / span 2;
+  }
+}
