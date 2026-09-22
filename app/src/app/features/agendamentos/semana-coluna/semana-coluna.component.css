@@ -12,7 +12,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: calc(var(--space) * 3);
+  padding: 0.75rem;
   border-bottom: 1px solid var(--color-gray-100);
   background-color: var(--color-white);
 }
@@ -20,14 +20,14 @@
 .coluna__dia {
   display: flex;
   align-items: center;
-  gap: calc(var(--space) * 2);
+  gap: 0.5rem;
 }
 
 .coluna__nome {
   font-size: 10px;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: var(--tracking-widest);
+  letter-spacing: 0.1em;
   color: var(--color-gray-400);
   user-select: none;
   -webkit-user-select: none;
@@ -37,14 +37,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: calc(var(--space) * 8);
-  height: calc(var(--space) * 8);
+  width: 2rem;
+  height: 2rem;
   border-radius: 9999px;
-  font-size: var(--text-base);
-  line-height: var(--text-base-lh);
+  font-size: 1rem;
+  line-height: 1.5rem;
   font-weight: 500;
   color: var(--color-gray-700);
-  transition: background-color var(--duration) var(--ease), color var(--duration) var(--ease);
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
 
 .coluna__numero--hoje {
@@ -55,13 +55,13 @@
 
 /* A data por extenso só existe no mobile, onde a coluna ocupa a largura toda */
 .coluna__data {
-  font-size: var(--text-xs);
-  line-height: var(--text-xs-lh);
+  font-size: 0.75rem;
+  line-height: 1rem;
   color: var(--color-gray-400);
 }
 
 .coluna__contador {
-  padding-inline: calc(var(--space) * 1.5);
+  padding-inline: 0.375rem;
   padding-block: 1px;
   border-radius: 9999px;
   background-color: var(--color-brand-100);
@@ -75,14 +75,14 @@
   display: flex;
   flex: 1;
   flex-direction: column;
-  gap: calc(var(--space) * 2);
+  gap: 0.5rem;
   min-height: 0;
   overflow-y: auto;
-  padding: calc(var(--space) * 3);
+  padding: 0.75rem;
 }
 
 .coluna__vazio {
-  padding-block: calc(var(--space) * 3);
+  padding-block: 0.75rem;
   font-size: 10px;
   text-align: center;
   color: var(--color-gray-300);
@@ -92,14 +92,14 @@
 
 @media (width >= 40rem) {
   .coluna__cabecalho {
-    padding-block: calc(var(--space) * 2.5);
+    padding-block: 0.625rem;
   }
 
   .coluna__numero {
-    width: calc(var(--space) * 7);
-    height: calc(var(--space) * 7);
-    font-size: var(--text-sm);
-    line-height: var(--text-sm-lh);
+    width: 1.75rem;
+    height: 1.75rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
   }
 
   .coluna__data {
@@ -107,12 +107,12 @@
   }
 
   .coluna__sessoes {
-    gap: calc(var(--space) * 1.5);
-    padding: calc(var(--space) * 2);
+    gap: 0.375rem;
+    padding: 0.5rem;
   }
 
   .coluna__vazio {
-    padding-block: calc(var(--space) * 6);
+    padding-block: 1.5rem;
   }
 }
 

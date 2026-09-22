@@ -10,29 +10,29 @@
 }
 
 :host([data-tamanho='p']) {
-  width: calc(var(--space) * 7);
-  height: calc(var(--space) * 7);
-  font-size: var(--text-xs);
-  line-height: var(--text-xs-lh);
+  width: 1.75rem;
+  height: 1.75rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
 }
 
 :host([data-tamanho='m']) {
-  width: calc(var(--space) * 8);
-  height: calc(var(--space) * 8);
-  font-size: var(--text-xs);
-  line-height: var(--text-xs-lh);
+  width: 2rem;
+  height: 2rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
 }
 
 :host([data-tamanho='g']) {
-  width: calc(var(--space) * 12);
-  height: calc(var(--space) * 12);
-  font-size: var(--text-sm);
-  line-height: var(--text-sm-lh);
+  width: 3rem;
+  height: 3rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
 }
 
 :host([data-tamanho='gg']) {
-  width: calc(var(--space) * 16);
-  height: calc(var(--space) * 16);
-  font-size: var(--text-lg);
-  line-height: var(--text-lg-lh);
+  width: 4rem;
+  height: 4rem;
+  font-size: 1.125rem;
+  line-height: 1.75rem;
 }

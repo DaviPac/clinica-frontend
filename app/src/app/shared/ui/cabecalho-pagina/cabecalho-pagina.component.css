@@ -1,21 +1,21 @@
 :host {
   display: flex;
   flex-direction: column;
-  gap: calc(var(--space) * 3);
-  margin-bottom: calc(var(--space) * 6);
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
 }
 
 .cabecalho__titulo {
-  font-size: var(--text-lg);
-  line-height: var(--text-lg-lh);
+  font-size: 1.125rem;
+  line-height: 1.75rem;
   font-weight: 500;
   color: var(--color-gray-900);
 }
 
 .cabecalho__subtitulo {
-  margin-top: calc(var(--space) * 0.5);
-  font-size: var(--text-sm);
-  line-height: var(--text-sm-lh);
+  margin-top: 0.125rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
   color: var(--color-gray-500);
 }
 

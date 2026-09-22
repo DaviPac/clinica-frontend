@@ -4,20 +4,20 @@
 
 /* Os itens de administração ficam um pouco mais espaçados entre si */
 :host([data-admin]) {
-  margin-top: calc(var(--space) * 0.5);
+  margin-top: 0.125rem;
 }
 
 .item-nav__link {
   display: flex;
   align-items: center;
-  gap: calc(var(--space) * 2.5);
-  padding: calc(var(--space) * 2) calc(var(--space) * 2.5);
-  border-radius: var(--radius-lg);
-  font-size: var(--text-sm);
-  line-height: var(--text-sm-lh);
+  gap: 0.625rem;
+  padding: 0.5rem 0.625rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
   color: var(--color-stone-600);
   text-decoration: none;
-  transition: color var(--duration) var(--ease), background-color var(--duration) var(--ease);
+  transition: color 0.15s ease, background-color 0.15s ease;
 }
 
 /*
@@ -30,8 +30,8 @@
 }
 
 .item-nav__icone {
-  width: calc(var(--space) * 4);
-  height: calc(var(--space) * 4);
+  width: 1rem;
+  height: 1rem;
   flex-shrink: 0;
 }
 

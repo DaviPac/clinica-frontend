@@ -5,22 +5,22 @@
 .marcacao {
   display: flex;
   align-items: center;
-  gap: calc(var(--space) * 2.5);
+  gap: 0.625rem;
   cursor: pointer;
   user-select: none;
   -webkit-user-select: none;
 }
 
 .marcacao__caixa {
-  width: calc(var(--space) * 4);
-  height: calc(var(--space) * 4);
+  width: 1rem;
+  height: 1rem;
   border: 1px solid var(--color-gray-300);
-  border-radius: var(--radius-sm);
+  border-radius: 0.25rem;
   accent-color: var(--color-brand-400);
 }
 
 .marcacao__texto {
-  font-size: var(--text-xs);
-  line-height: var(--text-xs-lh);
+  font-size: 0.75rem;
+  line-height: 1rem;
   color: var(--color-gray-600);
 }

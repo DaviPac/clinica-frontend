@@ -4,7 +4,7 @@
 
 .senha__input {
   /* espaço à direita para o botão do olho */
-  padding-right: calc(var(--space) * 10);
+  padding-right: 2.5rem;
 }
 
 .senha__olho {
@@ -13,17 +13,17 @@
   right: 0;
   display: flex;
   align-items: center;
-  padding-inline: calc(var(--space) * 3);
+  padding-inline: 0.75rem;
   border: none;
   background-color: transparent;
   color: var(--color-gray-400);
   cursor: pointer;
-  transition: color var(--duration) var(--ease);
+  transition: color 0.15s ease;
 }
 
 .senha__icone {
-  width: calc(var(--space) * 4);
-  height: calc(var(--space) * 4);
+  width: 1rem;
+  height: 1rem;
 }
 
 @media (hover: hover) {

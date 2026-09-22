@@ -2,16 +2,16 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: calc(var(--space) * 1.5);
-  border-radius: var(--radius-lg);
-  padding: calc(var(--space) * 2) calc(var(--space) * 4);
-  font-size: var(--text-sm);
-  line-height: var(--text-sm-lh);
+  gap: 0.375rem;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
   font-weight: 500;
   cursor: pointer;
-  transition: color var(--duration) var(--ease),
-    background-color var(--duration) var(--ease), border-color var(--duration) var(--ease),
-    box-shadow var(--duration) var(--ease);
+  transition: color 0.15s ease,
+    background-color 0.15s ease, border-color 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
 :host(:disabled) {
@@ -24,14 +24,14 @@
 }
 
 :host([data-tamanho='grande']) {
-  padding: calc(var(--space) * 2.5) calc(var(--space) * 5);
+  padding: 0.625rem 1.25rem;
 }
 
 :host([data-tamanho='pequeno']) {
-  padding: calc(var(--space) * 1) calc(var(--space) * 2.5);
-  border-radius: var(--radius-md);
-  font-size: var(--text-xs);
-  line-height: var(--text-xs-lh);
+  padding: 0.25rem 0.625rem;
+  border-radius: 0.375rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
 }
 
 /* ── Primário: ação principal da tela ── */

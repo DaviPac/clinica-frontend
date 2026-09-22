@@ -5,58 +5,58 @@
  * documento inteiro — por isso cada uma delas começa em `.markdown`.
  */
 .markdown {
-  font-size: var(--text-sm);
-  line-height: var(--leading-relaxed);
+  font-size: 0.875rem;
+  line-height: 1.625;
   color: var(--md-fg);
 }
 
 .markdown > * + * {
-  margin-top: calc(var(--space) * 3);
+  margin-top: 0.75rem;
 }
 
 .markdown h1 {
-  margin-top: calc(var(--space) * 5);
-  font-size: var(--text-base);
-  line-height: var(--text-base-lh);
+  margin-top: 1.25rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
   font-weight: 600;
   color: var(--color-stone-900);
 }
 
 .markdown h2 {
-  margin-top: calc(var(--space) * 5);
-  font-size: var(--text-sm);
-  line-height: var(--text-sm-lh);
+  margin-top: 1.25rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
   font-weight: 600;
   color: var(--color-stone-900);
 }
 
 .markdown h3,
 .markdown h4 {
-  margin-top: calc(var(--space) * 4);
-  font-size: var(--text-sm);
-  line-height: var(--text-sm-lh);
+  margin-top: 1rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
   font-weight: 500;
   color: var(--color-stone-900);
 }
 
 .markdown ul {
   list-style-type: disc;
-  padding-left: calc(var(--space) * 5);
+  padding-left: 1.25rem;
 }
 
 .markdown ol {
   list-style-type: decimal;
-  padding-left: calc(var(--space) * 5);
+  padding-left: 1.25rem;
 }
 
 .markdown ul > * + *,
 .markdown ol > * + * {
-  margin-top: calc(var(--space) * 1);
+  margin-top: 0.25rem;
 }
 
 .markdown li > ul,
 .markdown li > ol {
-  margin-top: calc(var(--space) * 1);
+  margin-top: 0.25rem;
 }
 
 .markdown a {
@@ -71,9 +71,9 @@
 }
 
 .markdown code {
-  border-radius: var(--radius-sm);
+  border-radius: 0.25rem;
   background-color: var(--color-stone-100);
-  padding: calc(var(--space) * 0.5) calc(var(--space) * 1);
+  padding: 0.125rem 0.25rem;
   font-family: var(--font-mono);
   font-size: 0.85em;
   color: var(--code-inline-fg);
@@ -82,10 +82,10 @@
 .markdown pre {
   overflow-x: auto;
   border: 1px solid var(--code-border);
-  border-radius: var(--radius-lg);
-  padding: calc(var(--space) * 3);
-  font-size: var(--text-xs);
-  line-height: var(--text-xs-lh);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
   background: var(--code-bg);
   color: var(--code-fg);
 }
@@ -98,13 +98,13 @@
 
 .markdown blockquote {
   border-left: 2px solid var(--color-brand-300);
-  padding-left: calc(var(--space) * 3);
+  padding-left: 0.75rem;
   color: var(--md-muted);
   font-style: italic;
 }
 
 .markdown hr {
-  margin-block: calc(var(--space) * 4);
+  margin-block: 1rem;
   border-color: var(--color-stone-200);
 }
 
@@ -114,7 +114,7 @@
  */
 .markdown .markdown__tabela {
   overflow-x: auto;
-  border-radius: var(--radius-xl);
+  border-radius: 0.75rem;
   border: 1px solid var(--color-gray-200);
   background-color: var(--color-white);
   box-shadow: var(--surface-shadow);
@@ -124,8 +124,8 @@
 .markdown table {
   width: 100%;
   border-collapse: collapse;
-  font-size: var(--text-sm);
-  line-height: var(--text-sm-lh);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
 }
 
 .markdown thead {
@@ -133,7 +133,7 @@
 }
 
 .markdown th {
-  padding: calc(var(--space) * 2) calc(var(--space) * 3);
+  padding: 0.5rem 0.75rem;
   border-bottom: 1px solid var(--color-stone-200);
   text-align: left;
   font-weight: 500;
@@ -142,7 +142,7 @@
 }
 
 .markdown td {
-  padding: calc(var(--space) * 2) calc(var(--space) * 3);
+  padding: 0.5rem 0.75rem;
   border-bottom: 1px solid var(--color-stone-100);
   vertical-align: top;
 }

@@ -1,13 +1,13 @@
 :host {
   display: flex;
   align-items: center;
-  gap: calc(var(--space) * 2);
+  gap: 0.5rem;
 }
 
 .filtro__rotulo {
   flex-shrink: 0;
-  font-size: var(--text-xs);
-  line-height: var(--text-xs-lh);
+  font-size: 0.75rem;
+  line-height: 1rem;
   color: var(--color-stone-500);
 }
 

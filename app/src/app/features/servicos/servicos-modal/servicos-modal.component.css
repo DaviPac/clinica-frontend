@@ -1,42 +1,42 @@
 .servico-modal__erro {
   display: block;
-  margin-bottom: calc(var(--space) * 4);
+  margin-bottom: 1rem;
 }
 
 .servico-modal__form {
   display: flex;
   flex-direction: column;
-  gap: calc(var(--space) * 4);
+  gap: 1rem;
 }
 
 /* Linha de opção: interruptor + explicação */
 .servico-modal__opcao {
   display: flex;
   align-items: center;
-  gap: calc(var(--space) * 3);
-  padding: calc(var(--space) * 3);
+  gap: 0.75rem;
+  padding: 0.75rem;
   border: 1px solid var(--color-gray-200);
-  border-radius: var(--radius-lg);
+  border-radius: 0.5rem;
   background-color: var(--color-gray-50);
 }
 
 .servico-modal__opcao-titulo {
-  font-size: var(--text-sm);
-  line-height: var(--text-sm-lh);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
   font-weight: 500;
   color: var(--color-gray-800);
 }
 
 .servico-modal__opcao-texto {
-  font-size: var(--text-xs);
-  line-height: var(--text-xs-lh);
+  font-size: 0.75rem;
+  line-height: 1rem;
   color: var(--color-gray-500);
 }
 
 .servico-modal__acoes {
   display: flex;
-  gap: calc(var(--space) * 2.5);
-  margin-top: calc(var(--space) * 2);
+  gap: 0.625rem;
+  margin-top: 0.5rem;
 }
 
 .servico-modal__acoes > * {

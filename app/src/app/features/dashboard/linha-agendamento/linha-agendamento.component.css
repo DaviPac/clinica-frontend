@@ -37,7 +37,7 @@
   font-size: 9px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: var(--tracking-widest);
+  letter-spacing: 0.1em;
   color: var(--color-brand-400);
 }
 
@@ -49,14 +49,14 @@
 
 .linha__dia {
   font-size: 10px;
-  line-height: var(--leading-tight);
+  line-height: 1.25;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
   color: var(--color-gray-700);
 }
 
 .linha__hora {
-  margin-top: calc(var(--space) * 0.5);
+  margin-top: 0.125rem;
   font-size: 11px;
   font-weight: 900;
   font-variant-numeric: tabular-nums;
@@ -66,8 +66,8 @@
 .linha__filete {
   flex-shrink: 0;
   width: 1px;
-  height: calc(var(--space) * 8);
-  margin-inline: calc(var(--space) * 1);
+  height: 2rem;
+  margin-inline: 0.25rem;
   background-color: var(--color-gray-100);
 }
 
@@ -80,14 +80,14 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: var(--text-xs);
-  line-height: var(--text-xs-lh);
+  font-size: 0.75rem;
+  line-height: 1rem;
   font-weight: 600;
   color: var(--color-gray-900);
 }
 
 .linha__secundario {
-  margin-top: calc(var(--space) * 0.5);
+  margin-top: 0.125rem;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -98,7 +98,7 @@
 .linha__estado {
   display: flex;
   align-items: center;
-  gap: calc(var(--space) * 1.5);
+  gap: 0.375rem;
   flex-shrink: 0;
 }
 
@@ -106,14 +106,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: calc(var(--space) * 6);
-  height: calc(var(--space) * 6);
+  width: 1.5rem;
+  height: 1.5rem;
   border: none;
-  border-radius: var(--radius-md);
+  border-radius: 0.375rem;
   background-color: transparent;
   color: var(--color-gray-300);
   cursor: pointer;
-  transition: color var(--duration) var(--ease), background-color var(--duration) var(--ease);
+  transition: color 0.15s ease, background-color 0.15s ease;
 }
 
 @media (hover: hover) {

@@ -1,15 +1,15 @@
 :host {
   width: 100%;
   border: 1px solid var(--color-gray-200);
-  border-radius: var(--radius-lg);
+  border-radius: 0.5rem;
   background-color: var(--input-bg);
-  padding: calc(var(--space) * 2) calc(var(--space) * 3);
-  font-size: var(--text-sm);
-  line-height: var(--text-sm-lh);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
   color: var(--color-gray-800);
-  transition: color var(--duration) var(--ease),
-    background-color var(--duration) var(--ease), border-color var(--duration) var(--ease),
-    box-shadow var(--duration) var(--ease);
+  transition: color 0.15s ease,
+    background-color 0.15s ease, border-color 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
 :host(:focus) {

@@ -32,22 +32,22 @@
 }
 
 .kpi__rotulo {
-  margin-bottom: calc(var(--space) * 1);
+  margin-bottom: 0.25rem;
   font-size: 10px;
   font-weight: 500;
   line-height: 1;
   text-transform: uppercase;
-  letter-spacing: var(--tracking-wider);
+  letter-spacing: 0.05em;
 }
 
 .kpi__valor {
-  font-size: var(--text-2xl);
+  font-size: 1.5rem;
   line-height: 1;
   font-weight: 700;
 }
 
 :host([data-tamanho='medio']) .kpi__valor {
-  font-size: var(--text-lg);
+  font-size: 1.125rem;
 }
 
 .kpi__valor--tabular {
@@ -55,7 +55,7 @@
 }
 
 .kpi__detalhe {
-  margin-top: calc(var(--space) * 0.5);
+  margin-top: 0.125rem;
   font-size: 10px;
 }
 

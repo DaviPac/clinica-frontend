@@ -1,5 +1,5 @@
 .composer {
-  padding: calc(var(--space) * 3) calc(var(--space) * 4);
+  padding: 0.75rem 1rem;
 }
 
 .composer__coluna {
@@ -11,12 +11,12 @@
 .composer__caixa {
   display: flex;
   align-items: flex-end;
-  gap: calc(var(--space) * 2);
-  padding: calc(var(--space) * 2) calc(var(--space) * 3);
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
   border: 1px solid var(--color-stone-200);
-  border-radius: var(--radius-2xl);
+  border-radius: 1rem;
   background-color: var(--color-white);
-  transition: box-shadow var(--duration) var(--ease);
+  transition: box-shadow 0.15s ease;
 }
 
 .composer__caixa:focus-within {
@@ -26,13 +26,13 @@
 .composer__entrada {
   flex: 1;
   max-height: 200px;
-  padding-block: calc(var(--space) * 1.5);
+  padding-block: 0.375rem;
   border: none;
   outline: none;
   resize: none;
   background-color: transparent;
-  font-size: var(--text-sm);
-  line-height: var(--text-sm-lh);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
   color: var(--color-stone-900);
 }
 
@@ -49,12 +49,12 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  width: calc(var(--space) * 8);
-  height: calc(var(--space) * 8);
+  width: 2rem;
+  height: 2rem;
   border: none;
-  border-radius: var(--radius-lg);
+  border-radius: 0.5rem;
   cursor: pointer;
-  transition: background-color var(--duration) var(--ease);
+  transition: background-color 0.15s ease;
 }
 
 .composer__botao--parar {
@@ -75,19 +75,19 @@
 /* O quadradinho de "parar", desenhado sem ícone */
 .composer__quadrado {
   display: block;
-  width: calc(var(--space) * 2.5);
-  height: calc(var(--space) * 2.5);
+  width: 0.625rem;
+  height: 0.625rem;
   border-radius: 2px;
   background-color: currentColor;
 }
 
 .composer__icone {
-  width: calc(var(--space) * 4);
-  height: calc(var(--space) * 4);
+  width: 1rem;
+  height: 1rem;
 }
 
 .composer__nota {
-  margin-top: calc(var(--space) * 1.5);
+  margin-top: 0.375rem;
   font-size: 11px;
   text-align: center;
   color: var(--color-stone-400);
@@ -105,6 +105,6 @@
 
 @media (width >= 40rem) {
   .composer {
-    padding-inline: calc(var(--space) * 6);
+    padding-inline: 1.5rem;
   }
 }

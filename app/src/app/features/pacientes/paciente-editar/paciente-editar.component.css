@@ -1,5 +1,5 @@
 .editar {
-  max-width: var(--container-2xl);
+  max-width: 42rem;
 }
 
 .editar__alerta {
@@ -7,45 +7,45 @@
 }
 
 .editar__alerta--espacado {
-  margin-bottom: calc(var(--space) * 4);
+  margin-bottom: 1rem;
 }
 
 .editar__cabecalho {
-  margin-bottom: calc(var(--space) * 6);
-  padding-bottom: calc(var(--space) * 6);
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
   border-bottom: 1px solid var(--color-gray-100);
 }
 
 .editar__titulo {
-  font-size: var(--text-lg);
-  line-height: var(--text-lg-lh);
+  font-size: 1.125rem;
+  line-height: 1.75rem;
   font-weight: 500;
   color: var(--color-gray-900);
 }
 
 .editar__subtitulo {
-  font-size: var(--text-sm);
-  line-height: var(--text-sm-lh);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
   color: var(--color-gray-500);
 }
 
 .editar__form {
   display: flex;
   flex-direction: column;
-  gap: calc(var(--space) * 4);
+  gap: 1rem;
 }
 
 .editar__dupla {
   display: grid;
   grid-template-columns: repeat(1, minmax(0, 1fr));
-  gap: calc(var(--space) * 3);
+  gap: 0.75rem;
 }
 
 .editar__acoes {
   display: flex;
-  gap: calc(var(--space) * 2.5);
-  margin-top: calc(var(--space) * 2);
-  padding-top: calc(var(--space) * 4);
+  gap: 0.625rem;
+  margin-top: 0.5rem;
+  padding-top: 1rem;
   border-top: 1px solid var(--color-gray-100);
 }
 

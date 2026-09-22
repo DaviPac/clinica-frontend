@@ -6,24 +6,24 @@
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  column-gap: calc(var(--space) * 4);
-  row-gap: calc(var(--space) * 2);
-  margin-bottom: calc(var(--space) * 4);
+  column-gap: 1rem;
+  row-gap: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 .servicos__erro {
   display: block;
-  margin-bottom: calc(var(--space) * 4);
+  margin-bottom: 1rem;
 }
 
 .servicos__carregando {
-  padding-block: calc(var(--space) * 12);
+  padding-block: 3rem;
 }
 
 /* ── Linhas ── */
 .servicos__linha {
   border-bottom: 1px solid var(--color-gray-100);
-  transition: background-color var(--duration) var(--ease);
+  transition: background-color 0.15s ease;
 }
 
 .servicos__linha:last-child {
@@ -41,8 +41,8 @@
 
 .servicos__valor {
   font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  line-height: var(--text-xs-lh);
+  font-size: 0.75rem;
+  line-height: 1rem;
   white-space: nowrap;
   color: var(--color-gray-900);
 }
@@ -55,7 +55,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: calc(var(--space) * 2);
+  gap: 0.5rem;
 }
 
 .servicos__celula-vazia {
@@ -66,25 +66,25 @@
 .servicos__nota {
   display: flex;
   align-items: center;
-  gap: calc(var(--space) * 2);
-  margin-top: calc(var(--space) * 3);
-  padding: calc(var(--space) * 2.5) calc(var(--space) * 3);
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  padding: 0.625rem 0.75rem;
   border: 1px solid var(--color-gray-200);
-  border-radius: var(--radius-lg);
+  border-radius: 0.5rem;
   background-color: var(--color-gray-50);
 }
 
 .servicos__ponto {
   flex-shrink: 0;
-  width: calc(var(--space) * 2);
-  height: calc(var(--space) * 2);
+  width: 0.5rem;
+  height: 0.5rem;
   border-radius: 50%;
   background-color: var(--color-amber-500);
 }
 
 .servicos__nota-texto {
-  font-size: var(--text-xs);
-  line-height: var(--text-xs-lh);
+  font-size: 0.75rem;
+  line-height: 1rem;
   color: var(--color-gray-500);
 }
 

@@ -1,53 +1,53 @@
 :host {
   display: block;
   border: 1px solid var(--color-gray-200);
-  border-radius: var(--radius-xl);
+  border-radius: 0.75rem;
   background-color: var(--color-white);
-  padding: calc(var(--space) * 4);
+  padding: 1rem;
 }
 
 :host([data-espaco='compacto']) {
-  border-radius: var(--radius-lg);
+  border-radius: 0.5rem;
 }
 
 :host([data-espaco='solto']) {
-  border-radius: var(--radius-2xl);
-  padding: calc(var(--space) * 6);
+  border-radius: 1rem;
+  padding: 1.5rem;
   box-shadow: var(--surface-shadow);
 }
 
 .cartao__cabecalho {
-  margin-bottom: calc(var(--space) * 5);
+  margin-bottom: 1.25rem;
 }
 
 :host([data-espaco-titulo='compacto']) .cartao__cabecalho {
-  margin-bottom: calc(var(--space) * 4);
+  margin-bottom: 1rem;
 }
 
 :host([data-espaco-titulo='solto']) .cartao__cabecalho {
-  margin-bottom: calc(var(--space) * 6);
+  margin-bottom: 1.5rem;
 }
 
 .cartao__titulo {
-  font-size: var(--text-base);
-  line-height: var(--text-base-lh);
+  font-size: 1rem;
+  line-height: 1.5rem;
   font-weight: 500;
   color: var(--color-gray-900);
 }
 
 .cartao__subtitulo {
-  margin-top: calc(var(--space) * 0.5);
-  font-size: var(--text-xs);
-  line-height: var(--text-xs-lh);
+  margin-top: 0.125rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
   color: var(--color-gray-500);
 }
 
 @media (width >= 40rem) {
   :host([data-espaco='padrao']) {
-    padding: calc(var(--space) * 6);
+    padding: 1.5rem;
   }
 
   :host([data-espaco='medio']) {
-    padding: calc(var(--space) * 5);
+    padding: 1.25rem;
   }
 }

@@ -7,13 +7,13 @@
 .conf {
   display: flex;
   flex-direction: column;
-  gap: calc(var(--space) * 3);
+  gap: 0.75rem;
 }
 
 .conf__campo {
   display: flex;
   flex-direction: column;
-  gap: calc(var(--space) * 1);
+  gap: 0.25rem;
 }
 
 /* O respiro entre rótulo e controle já vem do `gap` da coluna */
@@ -28,48 +28,48 @@ label.conf__rotulo {
 .conf__dupla {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: calc(var(--space) * 3);
+  gap: 0.75rem;
 }
 
 .conf__marcacao {
   display: flex;
   align-items: center;
-  gap: calc(var(--space) * 2);
+  gap: 0.5rem;
   cursor: pointer;
 }
 
 .conf__caixa {
-  width: calc(var(--space) * 4);
-  height: calc(var(--space) * 4);
+  width: 1rem;
+  height: 1rem;
   accent-color: var(--color-brand-400);
   cursor: pointer;
 }
 
 .conf__marcacao-texto {
-  font-size: var(--text-sm);
-  line-height: var(--text-sm-lh);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
   color: var(--color-stone-700);
 }
 
 .conf__nota {
   font-size: 11px;
-  line-height: var(--leading-snug);
+  line-height: 1.375;
   color: var(--color-stone-500);
 }
 
 .conf__nota--colada {
-  margin-top: calc(var(--space) * -1);
+  margin-top: -0.25rem;
 }
 
 .conf__erro {
   font-size: 11px;
-  line-height: var(--leading-snug);
+  line-height: 1.375;
   color: var(--color-red-600);
 }
 
 .conf__alerta {
   font-size: 11px;
-  line-height: var(--leading-snug);
+  line-height: 1.375;
   color: var(--color-amber-700);
 }
 
@@ -77,8 +77,8 @@ label.conf__rotulo {
 .conf__recorrencia {
   display: flex;
   flex-direction: column;
-  gap: calc(var(--space) * 2);
-  padding-top: calc(var(--space) * 1);
+  gap: 0.5rem;
+  padding-top: 0.25rem;
   border-top: 1px solid var(--color-stone-100);
 }
 

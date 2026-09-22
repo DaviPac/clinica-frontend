@@ -13,29 +13,29 @@
 .agenda__cabecalho {
   display: flex;
   flex-direction: column;
-  gap: calc(var(--space) * 3);
-  margin-bottom: calc(var(--space) * 6);
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
 }
 
 /* O recuo reserva espaço para o hambúrguer fixo do shell */
 .agenda__titulos {
   min-width: 0;
-  padding-left: calc(var(--space) * 12);
+  padding-left: 3rem;
 }
 
 .agenda__titulo {
-  font-size: var(--text-lg);
-  line-height: var(--text-lg-lh);
+  font-size: 1.125rem;
+  line-height: 1.75rem;
   font-weight: 600;
-  letter-spacing: var(--tracking-tight);
+  letter-spacing: -0.025em;
   text-transform: capitalize;
   color: var(--color-gray-900);
 }
 
 .agenda__subtitulo {
-  margin-top: calc(var(--space) * 0.5);
-  font-size: var(--text-xs);
-  line-height: var(--text-xs-lh);
+  margin-top: 0.125rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
   color: var(--color-gray-400);
 }
 
@@ -43,8 +43,8 @@
 button.agenda__novo {
   width: 100%;
   flex-shrink: 0;
-  font-size: var(--text-xs);
-  line-height: var(--text-xs-lh);
+  font-size: 0.75rem;
+  line-height: 1rem;
   white-space: nowrap;
 }
 
@@ -55,20 +55,20 @@ button.agenda__novo {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: calc(var(--space) * 3);
-  margin-bottom: calc(var(--space) * 4);
+  gap: 0.75rem;
+  margin-bottom: 1rem;
 }
 
 .agenda__erro {
   display: block;
-  margin-bottom: calc(var(--space) * 4);
+  margin-bottom: 1rem;
 }
 
 /* Esta tela carrega o calendário inteiro: o respiro é maior que o padrão */
 app-carregando.agenda__carregando {
-  padding-block: calc(var(--space) * 16);
-  font-size: var(--text-xs);
-  line-height: var(--text-xs-lh);
+  padding-block: 4rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
 }
 
 /* ──────────────────────────────────────────────
@@ -77,7 +77,7 @@ app-carregando.agenda__carregando {
 .agenda__mes {
   overflow: hidden;
   border: 1px solid var(--color-gray-200);
-  border-radius: var(--radius-2xl);
+  border-radius: 1rem;
   background-color: var(--color-white);
   box-shadow: var(--shadow-sm);
 }
@@ -90,12 +90,12 @@ app-carregando.agenda__carregando {
 }
 
 .agenda__semana-nome {
-  padding-block: calc(var(--space) * 2);
+  padding-block: 0.5rem;
   font-size: 10px;
   font-weight: 600;
   text-align: center;
   text-transform: uppercase;
-  letter-spacing: var(--tracking-widest);
+  letter-spacing: 0.1em;
   color: var(--color-gray-400);
   user-select: none;
   -webkit-user-select: none;
@@ -118,7 +118,7 @@ app-carregando.agenda__carregando {
   gap: 1px;
   overflow: hidden;
   border: 1px solid var(--color-gray-200);
-  border-radius: var(--radius-2xl);
+  border-radius: 1rem;
   background-color: var(--color-gray-200);
   box-shadow: var(--shadow-sm);
 }
@@ -129,14 +129,14 @@ app-carregando.agenda__carregando {
 .agenda__dia-sessoes {
   display: flex;
   flex-direction: column;
-  gap: calc(var(--space) * 2.5);
-  margin-top: calc(var(--space) * -2);
+  gap: 0.625rem;
+  margin-top: -0.5rem;
 }
 
 .agenda__dia-vazio {
-  padding-block: calc(var(--space) * 6);
-  font-size: var(--text-sm);
-  line-height: var(--text-sm-lh);
+  padding-block: 1.5rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
   text-align: center;
   color: var(--color-gray-400);
 }
@@ -150,13 +150,13 @@ app-carregando.agenda__carregando {
 
   button.agenda__novo {
     width: auto;
-    font-size: var(--text-sm);
-    line-height: var(--text-sm-lh);
+    font-size: 0.875rem;
+    line-height: 1.25rem;
   }
 
   .agenda__titulo {
-    font-size: var(--text-xl);
-    line-height: var(--text-xl-lh);
+    font-size: 1.25rem;
+    line-height: 1.75rem;
   }
 
 
@@ -165,7 +165,7 @@ app-carregando.agenda__carregando {
   }
 
   .agenda__semana-nome {
-    padding-block: calc(var(--space) * 2.5);
+    padding-block: 0.625rem;
   }
 }
 

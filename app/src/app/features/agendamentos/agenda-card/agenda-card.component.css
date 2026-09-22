@@ -166,12 +166,12 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: calc(var(--space) * 1.5);
+  gap: 0.375rem;
 }
 
 .agenda-card__hora {
   padding-top: 1px;
-  font-size: var(--text-xs);
+  font-size: 0.75rem;
   font-weight: 700;
   line-height: 1;
   font-variant-numeric: tabular-nums;
@@ -183,7 +183,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   font-size: 13px;
-  line-height: var(--leading-tight);
+  line-height: 1.25;
   font-weight: 700;
   color: var(--color-gray-900);
 }
@@ -191,12 +191,12 @@
 .agenda-card__linha {
   display: flex;
   align-items: center;
-  gap: calc(var(--space) * 1.5);
+  gap: 0.375rem;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: var(--text-xs);
-  line-height: var(--text-xs-lh);
+  font-size: 0.75rem;
+  line-height: 1rem;
 }
 
 .agenda-card__linha--profissional {
@@ -208,8 +208,8 @@
 }
 
 .agenda-card__icone {
-  width: calc(var(--space) * 3);
-  height: calc(var(--space) * 3);
+  width: 0.75rem;
+  height: 0.75rem;
   flex-shrink: 0;
   opacity: 0.5;
 }
@@ -228,8 +228,10 @@
   }
 
   .agenda-card__linha {
-    gap: calc(var(--space) * 1);
+    gap: 0.25rem;
     font-size: 10px;
+    /* a mesma proporção do mobile (0.75rem sobre 1rem) */
+    line-height: calc(4 / 3);
   }
 
   .agenda-card__icone {

@@ -3,15 +3,15 @@
 }
 
 .item__rotulo {
-  margin-bottom: calc(var(--space) * 1);
-  font-size: var(--text-xs);
-  line-height: var(--text-xs-lh);
+  margin-bottom: 0.25rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
   color: var(--color-gray-500);
 }
 
 .item__valor {
-  font-size: var(--text-sm);
-  line-height: var(--text-sm-lh);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
   color: var(--color-gray-900);
 }
 

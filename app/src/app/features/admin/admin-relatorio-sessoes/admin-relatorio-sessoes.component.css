@@ -3,23 +3,23 @@
   display: flex;
   align-items: flex-end;
   flex-wrap: wrap;
-  gap: calc(var(--space) * 3);
-  margin-bottom: calc(var(--space) * 4);
-  padding: calc(var(--space) * 4);
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  padding: 1rem;
   border: 1px solid var(--color-gray-200);
-  border-radius: var(--radius-lg);
+  border-radius: 0.5rem;
   background-color: var(--color-white);
 }
 
 .sessoes__campo {
   display: flex;
   flex-direction: column;
-  gap: calc(var(--space) * 1);
+  gap: 0.25rem;
 }
 
 .sessoes__rotulo {
-  font-size: var(--text-xs);
-  line-height: var(--text-xs-lh);
+  font-size: 0.75rem;
+  line-height: 1rem;
   color: var(--color-stone-500);
 }
 
@@ -29,7 +29,7 @@
 
 .sessoes__alerta {
   display: block;
-  margin-bottom: calc(var(--space) * 4);
+  margin-bottom: 1rem;
 }
 
 /* ── Resumo do período ── */
@@ -38,13 +38,13 @@
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: calc(var(--space) * 3);
-  margin-bottom: calc(var(--space) * 3);
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
 }
 
 .sessoes__quem {
-  font-size: var(--text-sm);
-  line-height: var(--text-sm-lh);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
   color: var(--color-gray-500);
 }
 
@@ -57,8 +57,8 @@
 .sessoes__totais {
   display: grid;
   grid-template-columns: repeat(1, minmax(0, 1fr));
-  gap: calc(var(--space) * 3);
-  margin-bottom: calc(var(--space) * 6);
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
 }
 
 .sessoes__clinica     { color: var(--color-teal-700); }
@@ -68,15 +68,15 @@
 .sessoes__zerado      { color: var(--color-gray-400); }
 
 .sessoes__saldo {
-  font-size: var(--text-lg);
-  line-height: var(--text-lg-lh);
+  font-size: 1.125rem;
+  line-height: 1.75rem;
 }
 
 /* ── Tabela ── */
 .sessoes__secao {
-  margin-bottom: calc(var(--space) * 3);
-  font-size: var(--text-sm);
-  line-height: var(--text-sm-lh);
+  margin-bottom: 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
   font-weight: 500;
   color: var(--color-gray-900);
 }
@@ -88,7 +88,7 @@
 .sessoes__linha {
   border-bottom: 1px solid var(--color-gray-100);
   vertical-align: top;
-  transition: background-color var(--duration) var(--ease);
+  transition: background-color 0.15s ease;
 }
 
 .sessoes__linha:last-child {
@@ -97,8 +97,8 @@
 
 .sessoes__quando {
   white-space: nowrap;
-  font-size: var(--text-xs);
-  line-height: var(--text-xs-lh);
+  font-size: 0.75rem;
+  line-height: 1rem;
   color: var(--color-gray-600);
 }
 
@@ -108,16 +108,16 @@
 }
 
 .sessoes__servico {
-  font-size: var(--text-xs);
-  line-height: var(--text-xs-lh);
+  font-size: 0.75rem;
+  line-height: 1rem;
   color: var(--color-gray-600);
 }
 
 .sessoes__numero {
   text-align: right;
   font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  line-height: var(--text-xs-lh);
+  font-size: 0.75rem;
+  line-height: 1rem;
 }
 
 .sessoes__numero--valor      { color: var(--color-gray-700); }
@@ -128,14 +128,14 @@
 }
 
 .sessoes__destino {
-  margin-right: calc(var(--space) * 1);
+  margin-right: 0.25rem;
   color: var(--color-gray-400);
 }
 
 .sessoes__nao-pago {
   display: inline-block;
-  padding: calc(var(--space) * 0.5) calc(var(--space) * 2);
-  border-radius: var(--radius-md);
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.375rem;
   background-color: var(--color-gray-50);
   box-shadow: 0 0 0 1px var(--color-gray-100);
   font-size: 11px;

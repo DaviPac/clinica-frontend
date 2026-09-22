@@ -1,27 +1,27 @@
 .tema__grupo {
   display: inline-flex;
   align-items: center;
-  gap: calc(var(--space) * 1);
-  padding: calc(var(--space) * 1);
+  gap: 0.25rem;
+  padding: 0.25rem;
   border: 1px solid var(--color-gray-200);
-  border-radius: var(--radius-lg);
+  border-radius: 0.5rem;
   background-color: var(--color-gray-50);
 }
 
 .tema__opcao {
   display: flex;
   align-items: center;
-  gap: calc(var(--space) * 1.5);
-  padding: calc(var(--space) * 2) calc(var(--space) * 3);
+  gap: 0.375rem;
+  padding: 0.5rem 0.75rem;
   border: none;
-  border-radius: var(--radius-md);
+  border-radius: 0.375rem;
   background-color: transparent;
-  font-size: var(--text-xs);
-  line-height: var(--text-xs-lh);
+  font-size: 0.75rem;
+  line-height: 1rem;
   font-weight: 500;
   color: var(--color-gray-600);
   cursor: pointer;
-  transition: color var(--duration) var(--ease), background-color var(--duration) var(--ease);
+  transition: color 0.15s ease, background-color 0.15s ease;
 }
 
 .tema__opcao--ativa {
@@ -30,15 +30,15 @@
 }
 
 .tema__icone {
-  width: calc(var(--space) * 3.5);
-  height: calc(var(--space) * 3.5);
+  width: 0.875rem;
+  height: 0.875rem;
   flex-shrink: 0;
 }
 
 .tema__descricao {
-  margin-top: calc(var(--space) * 2);
-  font-size: var(--text-xs);
-  line-height: var(--text-xs-lh);
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
   color: var(--color-gray-400);
 }
 

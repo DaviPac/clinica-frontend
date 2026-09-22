@@ -1,34 +1,34 @@
 .perfil {
-  max-width: var(--container-3xl);
+  max-width: 48rem;
 }
 
 .perfil__cabecalho {
-  margin-bottom: calc(var(--space) * 6);
+  margin-bottom: 1.5rem;
 }
 
 .perfil__titulo {
-  font-size: var(--text-lg);
-  line-height: var(--text-lg-lh);
+  font-size: 1.125rem;
+  line-height: 1.75rem;
   font-weight: 500;
   color: var(--color-gray-900);
 }
 
 .perfil__subtitulo {
-  margin-top: calc(var(--space) * 0.5);
-  font-size: var(--text-sm);
-  line-height: var(--text-sm-lh);
+  margin-top: 0.125rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
   color: var(--color-gray-500);
 }
 
 .perfil__cartao {
-  margin-bottom: calc(var(--space) * 5);
+  margin-bottom: 1.25rem;
 }
 
 /* ── Identidade ── */
 .perfil__identidade {
   display: flex;
   align-items: flex-start;
-  gap: calc(var(--space) * 5);
+  gap: 1.25rem;
 }
 
 .perfil__nomes {
@@ -40,56 +40,56 @@
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: calc(var(--space) * 2);
+  gap: 0.5rem;
 }
 
 .perfil__nome {
-  font-size: var(--text-base);
-  line-height: var(--text-base-lh);
+  font-size: 1rem;
+  line-height: 1.5rem;
   font-weight: 500;
   color: var(--color-gray-900);
 }
 
 .perfil__email {
-  margin-top: calc(var(--space) * 0.5);
-  font-size: var(--text-sm);
-  line-height: var(--text-sm-lh);
+  margin-top: 0.125rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
   color: var(--color-gray-500);
 }
 
 .perfil__dados {
   display: grid;
   grid-template-columns: repeat(1, minmax(0, 1fr));
-  column-gap: calc(var(--space) * 6);
-  row-gap: calc(var(--space) * 4);
-  margin-top: calc(var(--space) * 6);
-  padding-top: calc(var(--space) * 6);
+  column-gap: 1.5rem;
+  row-gap: 1rem;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
   border-top: 1px solid var(--color-gray-100);
 }
 
 /* ── Formulário de senha ── */
 .perfil__alerta {
   display: block;
-  margin-bottom: calc(var(--space) * 4);
+  margin-bottom: 1rem;
 }
 
 .perfil__form {
   display: flex;
   flex-direction: column;
-  gap: calc(var(--space) * 4);
-  max-width: var(--container-md);
+  gap: 1rem;
+  max-width: 28rem;
 }
 
 .perfil__acoes {
   display: flex;
   justify-content: flex-end;
-  padding-top: calc(var(--space) * 2);
+  padding-top: 0.5rem;
 }
 
 .perfil__sair {
   display: flex;
   justify-content: flex-end;
-  margin-top: calc(var(--space) * 5);
+  margin-top: 1.25rem;
 }
 
 @media (width >= 40rem) {

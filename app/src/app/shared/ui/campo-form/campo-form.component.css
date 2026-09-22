@@ -7,9 +7,9 @@
 }
 
 .campo__erro {
-  margin-top: calc(var(--space) * 1);
-  font-size: var(--text-xs);
-  line-height: var(--text-xs-lh);
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
   color: var(--color-red-600);
 }
 
@@ -18,8 +18,8 @@
 }
 
 .campo__ajuda {
-  margin-top: calc(var(--space) * 1);
-  font-size: var(--text-xs);
-  line-height: var(--text-xs-lh);
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
   color: var(--color-gray-400);
 }
