@@ -8,9 +8,9 @@
 .barra__grupo {
   display: flex;
   overflow: hidden;
-  border: 1px solid var(--color-gray-200);
+  border: 1px solid var(--cor-borda);
   border-radius: 0.5rem;
-  background-color: var(--color-white);
+  background-color: var(--cor-superficie);
 }
 
 .barra__modos {
@@ -31,7 +31,7 @@
   font-size: 0.75rem;
   line-height: 1rem;
   font-weight: 500;
-  color: var(--color-gray-600);
+  color: var(--cor-texto-secundario);
   cursor: pointer;
   transition: color 0.15s ease, background-color 0.15s ease;
 }
@@ -42,11 +42,11 @@
 
 /* A divisória entre botões do mesmo grupo */
 .barra__botao + .barra__botao {
-  border-left: 1px solid var(--color-gray-200);
+  border-left: 1px solid var(--cor-borda);
 }
 
 .barra__botao--ativo {
-  background-color: var(--color-brand-400);
+  background-color: var(--cor-marca);
   color: #fff;
 }
 
@@ -62,25 +62,25 @@
   flex-shrink: 0;
   width: 2.5rem;
   height: 2.5rem;
-  border: 1px solid var(--color-gray-200);
+  border: 1px solid var(--cor-borda);
   border-radius: 0.5rem;
-  background-color: var(--color-white);
-  color: var(--color-gray-600);
+  background-color: var(--cor-superficie);
+  color: var(--cor-texto-secundario);
   cursor: pointer;
   transition: color 0.15s ease, background-color 0.15s ease,
     border-color 0.15s ease;
 }
 
 .barra__filtros--ativo {
-  border-color: var(--color-brand-200);
-  background-color: var(--color-brand-100);
-  color: var(--color-brand-700);
+  border-color: var(--cor-marca-borda);
+  background-color: var(--cor-marca-fundo);
+  color: var(--cor-marca-texto);
 }
 
 @media (hover: hover) {
   .barra__botao:not(.barra__botao--ativo):hover {
-    background-color: var(--color-gray-50);
-    color: var(--color-gray-900);
+    background-color: var(--cor-superficie-suave);
+    color: var(--cor-texto);
   }
 }
 

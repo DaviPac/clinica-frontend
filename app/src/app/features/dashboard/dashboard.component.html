@@ -32,7 +32,7 @@
         rotulo="Pendentes"
         [valor]="totalPendentes()"
         detalhe="sem confirmar status"
-        [tom]="totalPendentes() > 0 ? 'ambar' : 'neutro'"
+        [tom]="totalPendentes() > 0 ? 'aviso' : 'neutro'"
         [alerta]="totalPendentes() > 0">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
           <path d="M8 1.5l6.5 11.5H1.5L8 1.5z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
@@ -44,7 +44,7 @@
         rotulo="A receber"
         [valor]="totalPagamentos()"
         detalhe="pagamentos em aberto"
-        [tom]="totalPagamentos() > 0 ? 'vermelho' : 'neutro'"
+        [tom]="totalPagamentos() > 0 ? 'perigo' : 'neutro'"
         [alerta]="totalPagamentos() > 0">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
           <rect x="1" y="4" width="14" height="9" rx="1.5" stroke="currentColor" stroke-width="1.4"/>
@@ -59,7 +59,7 @@
           [valor]="formatarValor(totalSaldo())"
           [detalhe]="'da clínica · ' + periodoAtual()"
           tamanho="medio"
-          [tom]="totalSaldo() > 0 ? 'violeta' : 'neutro'"
+          [tom]="totalSaldo() > 0 ? 'destaque' : 'neutro'"
           [alerta]="totalSaldo() > 0">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
             <circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.4"/>
@@ -73,7 +73,7 @@
           rotulo="Admin"
           valor="Visão geral"
           detalhe="todos os profissionais"
-          tom="esmeralda"
+          tom="sucesso"
           tamanho="medio"
           [tabular]="false">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -119,7 +119,7 @@
 
         @if (agendamentosPendentes().length > 0) {
           <app-secao-dashboard
-            tom="ambar"
+            tom="aviso"
             titulo="Confirmar status"
             [contador]="agendamentosPendentes().length"
             nota="Sessões que já passaram sem status definido">
@@ -136,7 +136,7 @@
 
         @if (pagamentosPendentes().length > 0) {
           <app-secao-dashboard
-            tom="vermelho"
+            tom="perigo"
             titulo="Pagamentos em aberto"
             [contador]="pagamentosPendentes().length"
             nota="Sessões realizadas aguardando pagamento">
@@ -157,7 +157,7 @@
 
         @if (!isAdmin() && totalSaldo() > 0) {
           <app-secao-dashboard
-            tom="violeta"
+            tom="destaque"
             titulo="Seu repasse a receber"
             [nota]="'Repasse devido pela clínica em ' + periodoAtual()">
             <div class="dashboard__repasse">
@@ -199,7 +199,7 @@
     (confirmar)="confirmarPagamentoPacote()"
     (cancelar)="agendamentoParaConfirmarPagamento.set(null)">
     <app-destaque-valor
-      tom="violeta"
+      tom="destaque"
       rotulo="Valor total do pacote"
       [valor]="formatarValor(agendamentoParaConfirmarPagamento()!.valorPacote!)" />
   </app-confirm-dialog>

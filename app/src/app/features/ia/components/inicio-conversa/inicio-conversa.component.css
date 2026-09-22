@@ -14,20 +14,20 @@
   height: 3rem;
   margin-bottom: 1rem;
   border-radius: 1rem;
-  background-color: var(--color-brand-100);
+  background-color: var(--cor-marca-fundo);
 }
 
 .inicio__selo-icone {
   width: 1.5rem;
   height: 1.5rem;
-  color: var(--color-brand-700);
+  color: var(--cor-marca-texto);
 }
 
 .inicio__convite {
   font-size: 1.125rem;
   line-height: 1.75rem;
   font-weight: 500;
-  color: var(--color-stone-900);
+  color: var(--cor-texto);
 }
 
 .inicio__explicacao {
@@ -35,7 +35,7 @@
   max-width: 24rem;
   font-size: 0.875rem;
   line-height: 1.25rem;
-  color: var(--color-stone-500);
+  color: var(--cor-texto-suave);
 }
 
 .inicio__sugestoes {
@@ -48,21 +48,21 @@
 
 .inicio__sugestao {
   padding: 0.625rem 0.875rem;
-  border: 1px solid var(--color-stone-200);
+  border: 1px solid var(--cor-borda);
   border-radius: 0.75rem;
   background-color: transparent;
   font-size: 0.875rem;
   line-height: 1.25rem;
   text-align: left;
-  color: var(--color-stone-700);
+  color: var(--cor-texto-secundario);
   cursor: pointer;
   transition: background-color 0.15s ease, border-color 0.15s ease;
 }
 
 @media (hover: hover) {
   .inicio__sugestao:hover {
-    border-color: var(--color-stone-300);
-    background-color: var(--color-stone-50);
+    border-color: var(--cor-borda-forte);
+    background-color: var(--cor-superficie-suave);
   }
 }
 

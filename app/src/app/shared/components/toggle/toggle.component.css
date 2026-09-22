@@ -13,14 +13,14 @@
   height: 1.25rem;
   border: none;
   border-radius: 9999px;
-  background-color: var(--color-gray-200);
+  background-color: var(--cor-superficie-forte);
   cursor: pointer;
   transition: background-color 0.15s ease;
 }
 
 .switch__trilho:focus {
   outline: none;
-  box-shadow: 0 0 0 1px var(--app-bg), 0 0 0 3px var(--color-brand-400);
+  box-shadow: 0 0 0 1px var(--cor-fundo), 0 0 0 3px var(--cor-marca);
 }
 
 .switch__trilho:disabled {
@@ -29,7 +29,7 @@
 }
 
 .switch__trilho[aria-checked='true'] {
-  background-color: var(--color-brand-400);
+  background-color: var(--cor-marca);
 }
 
 .switch__pino {
@@ -40,8 +40,8 @@
   width: 1rem;
   height: 1rem;
   border-radius: 50%;
-  background-color: var(--knob-bg);
-  box-shadow: var(--shadow-sm);
+  background-color: var(--cor-pino);
+  box-shadow: var(--sombra-elemento);
   transition: translate 0.2s ease;
 }
 
@@ -52,5 +52,5 @@
 .switch__rotulo {
   font-size: 0.875rem;
   line-height: 1.25rem;
-  color: var(--color-gray-600);
+  color: var(--cor-texto-secundario);
 }

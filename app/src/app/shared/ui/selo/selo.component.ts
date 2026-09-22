@@ -1,7 +1,7 @@
 import { Component, input } from '@angular/core';
 
 export type TomSelo =
-  | 'azul' | 'teal' | 'ambar' | 'vermelho' | 'violeta' | 'roxo' | 'verde' | 'cinza' | 'marca';
+  'neutro' | 'marca' | 'info' | 'sucesso' | 'aviso' | 'perigo' | 'destaque';
 export type FormatoSelo = 'retangular' | 'pilula';
 export type TamanhoSelo = 'padrao' | 'miudo';
 
@@ -23,7 +23,7 @@ export type TamanhoSelo = 'padrao' | 'miudo';
   },
 })
 export class SeloComponent {
-  tom = input<TomSelo>('cinza');
+  tom = input<TomSelo>('neutro');
   formato = input<FormatoSelo>('retangular');
   /** `miudo` é o selo das tabelas densas do relatório. */
   tamanho = input<TamanhoSelo>('padrao');

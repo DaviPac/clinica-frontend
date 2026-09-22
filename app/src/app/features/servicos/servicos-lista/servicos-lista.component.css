@@ -22,7 +22,7 @@
 
 /* ── Linhas ── */
 .servicos__linha {
-  border-bottom: 1px solid var(--color-gray-100);
+  border-bottom: 1px solid var(--cor-divisor);
   transition: background-color 0.15s ease;
 }
 
@@ -36,19 +36,19 @@
 
 .servicos__nome {
   font-weight: 500;
-  color: var(--color-gray-900);
+  color: var(--cor-texto);
 }
 
 .servicos__valor {
-  font-family: var(--font-mono);
+  font-family: var(--fonte-mono);
   font-size: 0.75rem;
   line-height: 1rem;
   white-space: nowrap;
-  color: var(--color-gray-900);
+  color: var(--cor-texto);
 }
 
 .servicos__apagado {
-  color: var(--color-gray-500);
+  color: var(--cor-texto-suave);
 }
 
 .servicos__acoes {
@@ -69,9 +69,9 @@
   gap: 0.5rem;
   margin-top: 0.75rem;
   padding: 0.625rem 0.75rem;
-  border: 1px solid var(--color-gray-200);
+  border: 1px solid var(--cor-borda);
   border-radius: 0.5rem;
-  background-color: var(--color-gray-50);
+  background-color: var(--cor-superficie-suave);
 }
 
 .servicos__ponto {
@@ -79,18 +79,18 @@
   width: 0.5rem;
   height: 0.5rem;
   border-radius: 50%;
-  background-color: var(--color-amber-500);
+  background-color: var(--cor-aviso-solido);
 }
 
 .servicos__nota-texto {
   font-size: 0.75rem;
   line-height: 1rem;
-  color: var(--color-gray-500);
+  color: var(--cor-texto-suave);
 }
 
 @media (hover: hover) {
   .servicos__linha:hover {
-    background-color: var(--color-gray-50);
+    background-color: var(--cor-superficie-suave);
   }
 }
 

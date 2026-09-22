@@ -7,28 +7,28 @@
 .acao {
   width: 100%;
   padding: 0.5rem 1rem;
-  border: 1px solid var(--color-gray-200);
+  border: 1px solid var(--cor-borda);
   border-radius: 0.5rem;
-  background-color: var(--color-gray-50);
+  background-color: var(--cor-superficie-suave);
   font-size: 0.875rem;
   line-height: 1.25rem;
   font-weight: 500;
-  color: var(--color-gray-700);
+  color: var(--cor-texto-secundario);
   cursor: pointer;
   transition: color 0.15s ease, background-color 0.15s ease,
     border-color 0.15s ease;
 }
 
 .acao--pagar {
-  border-color: var(--color-brand-400);
-  background-color: var(--color-brand-400);
+  border-color: var(--cor-marca);
+  background-color: var(--cor-marca);
   color: #fff;
 }
 
 .acao--desmarcar {
-  border-color: var(--color-red-200);
-  background-color: var(--color-red-50);
-  color: var(--color-red-600);
+  border-color: var(--cor-perigo-borda);
+  background-color: var(--cor-perigo-fundo);
+  color: var(--cor-perigo-solido);
 }
 
 /* Destrutiva da série: um respiro a mais para não ser clicada sem querer */
@@ -38,14 +38,14 @@
 
 @media (hover: hover) {
   .acao:hover:not(:disabled) {
-    background-color: var(--color-gray-100);
+    background-color: var(--cor-superficie-realce);
   }
 
   .acao--pagar:hover:not(:disabled) {
-    background-color: var(--color-brand-500);
+    background-color: var(--cor-marca-forte);
   }
 
   .acao--desmarcar:hover:not(:disabled) {
-    background-color: var(--color-red-100);
+    background-color: var(--cor-perigo-realce);
   }
 }

@@ -22,14 +22,14 @@
   font-size: 0.875rem;
   line-height: 1.25rem;
   font-weight: 500;
-  color: var(--color-gray-900);
+  color: var(--cor-texto);
 }
 
 .financeiro__descricao {
   margin-bottom: 1rem;
   font-size: 0.75rem;
   line-height: 1rem;
-  color: var(--color-gray-500);
+  color: var(--cor-texto-suave);
 }
 
 .financeiro__form {
@@ -47,12 +47,12 @@
 /* ── Estado sem profissional escolhido ── */
 .financeiro__sem-selecao {
   padding: 2rem 1rem;
-  border: 1px dashed var(--color-gray-300);
+  border: 1px dashed var(--cor-borda-forte);
   border-radius: 0.75rem;
   text-align: center;
   font-size: 0.875rem;
   line-height: 1.25rem;
-  color: var(--color-gray-500);
+  color: var(--cor-texto-suave);
 }
 
 /* ── Números do período ── */
@@ -63,11 +63,11 @@
   margin-bottom: 1.5rem;
 }
 
-.financeiro__positivo { color: var(--color-teal-700); }
-.financeiro__neutro   { color: var(--color-gray-400); }
-.financeiro__negativo { color: var(--color-red-700); }
-.financeiro__vazio    { color: var(--color-gray-300); }
-.financeiro__texto    { color: var(--color-gray-900); }
+.financeiro__positivo { color: var(--cor-sucesso-texto); }
+.financeiro__neutro   { color: var(--cor-texto-apagado); }
+.financeiro__negativo { color: var(--cor-perigo-texto); }
+.financeiro__vazio    { color: var(--cor-texto-desabilitado); }
+.financeiro__texto    { color: var(--cor-texto); }
 
 /* ── Histórico ── */
 .financeiro__secao {
@@ -75,7 +75,7 @@
   font-size: 0.875rem;
   line-height: 1.25rem;
   font-weight: 500;
-  color: var(--color-gray-900);
+  color: var(--cor-texto);
 }
 
 .financeiro__carregando {
@@ -94,7 +94,7 @@
   justify-content: space-between;
   gap: 0.75rem;
   padding: 0.75rem 1rem;
-  border: 1px solid var(--color-gray-200);
+  border: 1px solid var(--cor-borda);
   border-radius: 0.75rem;
   transition: background-color 0.15s ease;
 }
@@ -107,14 +107,14 @@
   font-size: 0.875rem;
   line-height: 1.25rem;
   font-weight: 500;
-  color: var(--color-gray-900);
+  color: var(--cor-texto);
 }
 
 .financeiro__detalhe {
   margin-top: 0.125rem;
   font-size: 0.75rem;
   line-height: 1rem;
-  color: var(--color-gray-500);
+  color: var(--cor-texto-suave);
 }
 
 .financeiro__selo {
@@ -131,12 +131,12 @@
 .financeiro__aviso {
   font-size: 0.75rem;
   line-height: 1rem;
-  color: var(--color-red-600);
+  color: var(--cor-perigo-solido);
 }
 
 @media (hover: hover) {
   .financeiro__item:hover {
-    background-color: var(--color-gray-50);
+    background-color: var(--cor-superficie-suave);
   }
 }
 

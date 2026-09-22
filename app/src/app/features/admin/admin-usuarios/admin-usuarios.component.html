@@ -40,9 +40,9 @@
               <td class="usuarios__dado">{{ u.profissao ?? '—' }}</td>
               <td>
                 @if (u.role === 'ADMIN') {
-                  <app-selo tom="roxo">Admin</app-selo>
+                  <app-selo tom="destaque">Admin</app-selo>
                 } @else {
-                  <app-selo tom="cinza">Profissional</app-selo>
+                  <app-selo tom="neutro">Profissional</app-selo>
                 }
               </td>
               <td class="usuarios__dado usuarios__dado--mono">{{ u.taxaComissaoPadrao }}%</td>

@@ -1,13 +1,13 @@
 import { Component, input } from '@angular/core';
 
-export type TomKpi = 'neutro' | 'ambar' | 'vermelho' | 'violeta' | 'esmeralda';
+export type TomKpi = 'neutro' | 'aviso' | 'perigo' | 'destaque' | 'sucesso';
 
 /**
  * Cartão de indicador do dashboard: ícone à esquerda, rótulo, número e
  * um detalhe abaixo. O ícone é projetado porque cada indicador tem o seu.
  *
  *   <app-kpi rotulo="Pendentes" [valor]="5" detalhe="sem confirmar status"
- *            tom="ambar" [alerta]="true"><svg …/></app-kpi>
+ *            tom="aviso" [alerta]="true"><svg …/></app-kpi>
  */
 @Component({
   selector: 'app-kpi',

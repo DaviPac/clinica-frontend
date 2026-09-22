@@ -21,13 +21,13 @@
   font-size: 0.75rem;
   line-height: 1rem;
   font-weight: 500;
-  color: var(--color-brand-500);
+  color: var(--cor-marca-forte);
 }
 
 /* ── Bloco de recorrência ── */
 .modal-agendamento__recorrencia {
   padding: 0.75rem;
-  border: 1px solid var(--color-gray-200);
+  border: 1px solid var(--cor-borda);
   border-radius: 0.5rem;
 }
 
@@ -54,7 +54,7 @@
   font-size: 0.875rem;
   line-height: 1.25rem;
   font-weight: 500;
-  color: var(--color-gray-800);
+  color: var(--cor-texto);
 }
 
 .modal-agendamento__recorrencia-nota {
@@ -62,7 +62,7 @@
   font-size: 0.75rem;
   line-height: 1rem;
   font-weight: 500;
-  color: var(--color-brand-500);
+  color: var(--cor-marca-forte);
 }
 
 .modal-agendamento__dupla--recorrencia {
@@ -73,7 +73,7 @@
   margin-top: 0.5rem;
   font-size: 0.75rem;
   line-height: 1rem;
-  color: var(--color-gray-500);
+  color: var(--cor-texto-suave);
 }
 
 .modal-agendamento__acoes {

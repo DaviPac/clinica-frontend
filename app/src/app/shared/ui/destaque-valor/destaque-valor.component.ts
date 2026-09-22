@@ -15,5 +15,5 @@ import { Component, input } from '@angular/core';
 export class DestaqueValorComponent {
   rotulo = input('');
   valor = input<string | number>('');
-  tom = input<'teal' | 'violeta' | 'cinza'>('cinza');
+  tom = input<'sucesso' | 'destaque' | 'neutro'>('neutro');
 }

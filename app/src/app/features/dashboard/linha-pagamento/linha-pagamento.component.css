@@ -3,9 +3,9 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 0.75rem;
-  border: 1px solid var(--color-red-100);
+  border: 1px solid var(--cor-perigo-realce);
   border-radius: 0.5rem;
-  background-color: var(--color-red-50);
+  background-color: var(--cor-perigo-fundo);
 }
 
 .pagamento__quem {
@@ -26,7 +26,7 @@
   white-space: nowrap;
   font-size: 11px;
   font-weight: 600;
-  color: var(--color-red-900);
+  color: var(--cor-perigo-texto);
 }
 
 .pagamento__pacote {
@@ -36,16 +36,16 @@
   flex-shrink: 0;
   padding: 0.125rem 0.375rem;
   border-radius: 9999px;
-  background-color: var(--color-violet-100);
+  background-color: var(--cor-destaque-realce);
   font-size: 9px;
   font-weight: 700;
-  color: var(--color-violet-700);
+  color: var(--cor-destaque-texto);
 }
 
 .pagamento__quando {
   font-size: 10px;
   font-variant-numeric: tabular-nums;
-  color: var(--color-red-400);
+  color: var(--cor-perigo-solido);
 }
 
 .pagamento__valor {
@@ -56,11 +56,11 @@
 
 .pagamento__valor--avulso {
   font-weight: 700;
-  color: var(--color-red-600);
+  color: var(--cor-perigo-solido);
 }
 
 .pagamento__valor--pacote {
-  color: var(--color-violet-600);
+  color: var(--cor-destaque-solido);
 }
 
 .pagamento__valor-forte {
@@ -69,7 +69,7 @@
 
 .pagamento__valor-nota {
   font-size: 9px;
-  color: var(--color-violet-400);
+  color: var(--cor-destaque-solido);
 }
 
 .pagamento__acao {
@@ -80,11 +80,11 @@
   padding: 0.25rem 0.625rem;
   border: none;
   border-radius: 0.375rem;
-  background-color: var(--color-red-100);
+  background-color: var(--cor-perigo-realce);
   font-size: 10px;
   font-weight: 600;
   white-space: nowrap;
-  color: var(--color-red-700);
+  color: var(--cor-perigo-texto);
   cursor: pointer;
   transition: color 0.15s ease, background-color 0.15s ease;
 }
@@ -109,16 +109,16 @@
   flex-shrink: 0;
   padding: 0.25rem 0.5rem;
   border-radius: 0.375rem;
-  background-color: var(--color-red-100);
+  background-color: var(--cor-perigo-realce);
   font-size: 10px;
   font-weight: 600;
-  color: var(--color-red-700);
+  color: var(--cor-perigo-texto);
   cursor: default;
 }
 
 @media (hover: hover) {
   .pagamento__acao:hover {
-    background-color: var(--color-emerald-100);
-    color: var(--color-emerald-700);
+    background-color: var(--cor-sucesso-realce);
+    color: var(--cor-sucesso-texto);
   }
 }

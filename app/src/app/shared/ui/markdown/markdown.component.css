@@ -7,7 +7,7 @@
 .markdown {
   font-size: 0.875rem;
   line-height: 1.625;
-  color: var(--md-fg);
+  color: var(--cor-leitura);
 }
 
 .markdown > * + * {
@@ -19,7 +19,7 @@
   font-size: 1rem;
   line-height: 1.5rem;
   font-weight: 600;
-  color: var(--color-stone-900);
+  color: var(--cor-texto);
 }
 
 .markdown h2 {
@@ -27,7 +27,7 @@
   font-size: 0.875rem;
   line-height: 1.25rem;
   font-weight: 600;
-  color: var(--color-stone-900);
+  color: var(--cor-texto);
 }
 
 .markdown h3,
@@ -36,7 +36,7 @@
   font-size: 0.875rem;
   line-height: 1.25rem;
   font-weight: 500;
-  color: var(--color-stone-900);
+  color: var(--cor-texto);
 }
 
 .markdown ul {
@@ -60,34 +60,34 @@
 }
 
 .markdown a {
-  color: var(--color-brand-700);
+  color: var(--cor-marca-texto);
   text-decoration-line: underline;
   text-underline-offset: 2px;
 }
 
 .markdown strong {
   font-weight: 600;
-  color: var(--color-stone-900);
+  color: var(--cor-texto);
 }
 
 .markdown code {
   border-radius: 0.25rem;
-  background-color: var(--color-stone-100);
+  background-color: var(--cor-superficie-realce);
   padding: 0.125rem 0.25rem;
-  font-family: var(--font-mono);
+  font-family: var(--fonte-mono);
   font-size: 0.85em;
-  color: var(--code-inline-fg);
+  color: var(--cor-codigo-inline);
 }
 
 .markdown pre {
   overflow-x: auto;
-  border: 1px solid var(--code-border);
+  border: 1px solid var(--cor-codigo-borda);
   border-radius: 0.5rem;
   padding: 0.75rem;
   font-size: 0.75rem;
   line-height: 1rem;
-  background: var(--code-bg);
-  color: var(--code-fg);
+  background: var(--cor-codigo-fundo);
+  color: var(--cor-codigo-texto);
 }
 
 .markdown pre code {
@@ -97,15 +97,15 @@
 }
 
 .markdown blockquote {
-  border-left: 2px solid var(--color-brand-300);
+  border-left: 2px solid var(--cor-marca-borda);
   padding-left: 0.75rem;
-  color: var(--md-muted);
+  color: var(--cor-leitura-suave);
   font-style: italic;
 }
 
 .markdown hr {
   margin-block: 1rem;
-  border-color: var(--color-stone-200);
+  border-color: var(--cor-borda);
 }
 
 /*
@@ -115,9 +115,9 @@
 .markdown .markdown__tabela {
   overflow-x: auto;
   border-radius: 0.75rem;
-  border: 1px solid var(--color-gray-200);
-  background-color: var(--color-white);
-  box-shadow: var(--surface-shadow);
+  border: 1px solid var(--cor-borda);
+  background-color: var(--cor-superficie);
+  box-shadow: var(--sombra-cartao);
   -webkit-overflow-scrolling: touch;
 }
 
@@ -129,21 +129,21 @@
 }
 
 .markdown thead {
-  background-color: var(--color-stone-50);
+  background-color: var(--cor-superficie-suave);
 }
 
 .markdown th {
   padding: 0.5rem 0.75rem;
-  border-bottom: 1px solid var(--color-stone-200);
+  border-bottom: 1px solid var(--cor-borda);
   text-align: left;
   font-weight: 500;
   white-space: nowrap;
-  color: var(--color-stone-500);
+  color: var(--cor-texto-suave);
 }
 
 .markdown td {
   padding: 0.5rem 0.75rem;
-  border-bottom: 1px solid var(--color-stone-100);
+  border-bottom: 1px solid var(--cor-divisor);
   vertical-align: top;
 }
 
@@ -153,6 +153,6 @@
 
 @media (hover: hover) {
   .markdown a:hover {
-    color: var(--color-brand-800);
+    color: var(--cor-marca-texto);
   }
 }

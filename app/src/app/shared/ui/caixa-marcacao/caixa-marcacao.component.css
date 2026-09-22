@@ -14,13 +14,13 @@
 .marcacao__caixa {
   width: 1rem;
   height: 1rem;
-  border: 1px solid var(--color-gray-300);
+  border: 1px solid var(--cor-borda-forte);
   border-radius: 0.25rem;
-  accent-color: var(--color-brand-400);
+  accent-color: var(--cor-marca);
 }
 
 .marcacao__texto {
   font-size: 0.75rem;
   line-height: 1rem;
-  color: var(--color-gray-600);
+  color: var(--cor-texto-secundario);
 }

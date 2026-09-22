@@ -8,12 +8,12 @@
   flex-shrink: 0;
   font-size: 0.75rem;
   line-height: 1rem;
-  color: var(--color-stone-500);
+  color: var(--cor-texto-suave);
 }
 
 .filtro__select {
   width: auto;
-  border-color: var(--color-stone-200);
+  border-color: var(--cor-borda);
   background-color: transparent;
   color: inherit;
 }

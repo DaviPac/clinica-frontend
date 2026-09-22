@@ -16,8 +16,8 @@ export class EstatisticaComponent {
   rotulo = input('');
   valor = input<string | number>('');
   detalhe = input('');
-  /** `cartao` desenha borda em vez do fundo cinza. */
-  superficie = input<'cinza' | 'cartao'>('cinza');
+  /** `cartao` desenha borda em vez do fundo suave. */
+  superficie = input<'suave' | 'cartao'>('suave');
   /** Números alinham melhor em monoespaçada; textos, não. */
   mono = input(true);
 }

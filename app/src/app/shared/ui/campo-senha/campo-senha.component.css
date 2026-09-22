@@ -16,7 +16,7 @@
   padding-inline: 0.75rem;
   border: none;
   background-color: transparent;
-  color: var(--color-gray-400);
+  color: var(--cor-texto-apagado);
   cursor: pointer;
   transition: color 0.15s ease;
 }
@@ -28,6 +28,6 @@
 
 @media (hover: hover) {
   .senha__olho:hover {
-    color: var(--color-gray-600);
+    color: var(--cor-texto-secundario);
   }
 }

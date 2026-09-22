@@ -26,8 +26,8 @@
   flex-direction: column;
   flex-shrink: 0;
   width: 14rem;
-  border-right: 1px solid var(--color-stone-200);
-  background-color: var(--color-white);
+  border-right: 1px solid var(--cor-borda);
+  background-color: var(--cor-superficie);
   transition: all 0.2s ease;
 }
 
@@ -43,7 +43,7 @@
   gap: 0.625rem;
   flex-shrink: 0;
   padding: 1.25rem 1rem;
-  border-bottom: 1px solid var(--color-stone-200);
+  border-bottom: 1px solid var(--cor-borda);
 }
 
 .shell__logo {
@@ -58,7 +58,7 @@
   line-height: 1.25rem;
   font-weight: 500;
   white-space: nowrap;
-  color: var(--color-stone-900);
+  color: var(--cor-texto);
 }
 
 /* ── Navegação ── */
@@ -85,7 +85,7 @@
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: var(--color-stone-400);
+  color: var(--cor-texto-apagado);
 }
 
 .shell__grupo--admin {
@@ -98,7 +98,7 @@
 
 .shell__divisor {
   margin-block: 0.25rem;
-  border-top: 1px solid var(--color-stone-100);
+  border-top: 1px solid var(--cor-divisor);
 }
 
 /* Os links em si são o <app-item-nav>, dono do próprio CSS */
@@ -107,7 +107,7 @@
 .shell__rodape {
   flex-shrink: 0;
   padding: 0.75rem;
-  border-top: 1px solid var(--color-stone-200);
+  border-top: 1px solid var(--cor-borda);
 }
 
 .shell__usuario {
@@ -141,13 +141,13 @@
   font-size: 0.75rem;
   line-height: 1rem;
   font-weight: 500;
-  color: var(--color-stone-900);
+  color: var(--cor-texto);
 }
 
 .shell__perfil-papel {
   font-size: 0.75rem;
   line-height: 1rem;
-  color: var(--color-stone-500);
+  color: var(--cor-texto-suave);
 }
 
 .shell__recolher {
@@ -163,7 +163,7 @@
   background-color: transparent;
   font-size: 0.75rem;
   line-height: 1rem;
-  color: var(--color-stone-400);
+  color: var(--cor-texto-apagado);
   cursor: pointer;
   transition: color 0.15s ease, background-color 0.15s ease;
 }
@@ -184,11 +184,11 @@
   justify-content: center;
   width: 2.25rem;
   height: 2.25rem;
-  border: 1px solid var(--color-stone-200);
+  border: 1px solid var(--cor-borda);
   border-radius: 0.5rem;
-  background-color: var(--color-white);
-  box-shadow: var(--shadow-sm);
-  color: var(--color-stone-600);
+  background-color: var(--cor-superficie);
+  box-shadow: var(--sombra-elemento);
+  color: var(--cor-texto-secundario);
   cursor: pointer;
 }
 
@@ -204,16 +204,16 @@
 
 @media (hover: hover) {
   .shell__perfil:hover {
-    background-color: var(--color-stone-50);
+    background-color: var(--cor-superficie-suave);
   }
 
   .shell__recolher:hover {
-    background-color: var(--color-stone-50);
-    color: var(--color-stone-600);
+    background-color: var(--cor-superficie-suave);
+    color: var(--cor-texto-secundario);
   }
 
   .shell__abrir:hover {
-    color: var(--color-stone-900);
+    color: var(--cor-texto);
   }
 }
 

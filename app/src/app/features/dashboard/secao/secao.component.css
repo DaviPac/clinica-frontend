@@ -1,15 +1,15 @@
 :host {
   display: block;
   padding: 1rem;
-  border: 1px solid var(--color-gray-100);
+  border: 1px solid var(--cor-divisor);
   border-radius: 1rem;
-  background: var(--color-white);
-  box-shadow: var(--shadow-sm);
+  background: var(--cor-superficie);
+  box-shadow: var(--sombra-elemento);
 }
 
-:host([data-tom='ambar'])    { border-color: var(--color-amber-200); }
-:host([data-tom='vermelho']) { border-color: var(--color-red-200); }
-:host([data-tom='violeta'])  { border-color: var(--color-violet-200); }
+:host([data-tom='aviso'])    { border-color: var(--cor-aviso-borda); }
+:host([data-tom='perigo']) { border-color: var(--cor-perigo-borda); }
+:host([data-tom='destaque'])  { border-color: var(--cor-destaque-borda); }
 
 .secao__cabecalho {
   display: flex;
@@ -29,23 +29,23 @@
   width: 0.375rem;
   height: 1rem;
   border-radius: 9999px;
-  background-color: var(--color-brand-400);
+  background-color: var(--cor-marca);
 }
 
-:host([data-tom='ambar'])    .secao__marca { background-color: var(--color-amber-400); }
-:host([data-tom='vermelho']) .secao__marca { background-color: var(--color-red-400); }
-:host([data-tom='violeta'])  .secao__marca { background-color: var(--color-violet-400); }
+:host([data-tom='aviso'])    .secao__marca { background-color: var(--cor-aviso-solido); }
+:host([data-tom='perigo']) .secao__marca { background-color: var(--cor-perigo-solido); }
+:host([data-tom='destaque'])  .secao__marca { background-color: var(--cor-destaque-solido); }
 
 .secao__titulo {
   font-size: 0.875rem;
   line-height: 1.25rem;
   font-weight: 600;
-  color: var(--color-gray-800);
+  color: var(--cor-texto);
 }
 
-:host([data-tom='ambar'])    .secao__titulo { color: var(--color-amber-800); }
-:host([data-tom='vermelho']) .secao__titulo { color: var(--color-red-800); }
-:host([data-tom='violeta'])  .secao__titulo { color: var(--color-violet-800); }
+:host([data-tom='aviso'])    .secao__titulo { color: var(--cor-aviso-texto); }
+:host([data-tom='perigo']) .secao__titulo { color: var(--cor-perigo-texto); }
+:host([data-tom='destaque'])  .secao__titulo { color: var(--cor-destaque-texto); }
 
 .secao__contador {
   padding: 0.125rem 0.5rem;
@@ -54,14 +54,14 @@
   font-weight: 700;
 }
 
-:host([data-tom='ambar']) .secao__contador {
-  background-color: var(--color-amber-100);
-  color: var(--color-amber-600);
+:host([data-tom='aviso']) .secao__contador {
+  background-color: var(--cor-aviso-realce);
+  color: var(--cor-aviso-solido);
 }
 
-:host([data-tom='vermelho']) .secao__contador {
-  background-color: var(--color-red-100);
-  color: var(--color-red-600);
+:host([data-tom='perigo']) .secao__contador {
+  background-color: var(--cor-perigo-realce);
+  color: var(--cor-perigo-solido);
 }
 
 /* Sobe até encostar no cabeçalho, de onde é continuação */
@@ -71,6 +71,6 @@
   font-size: 10px;
 }
 
-:host([data-tom='ambar'])    .secao__nota { color: var(--color-amber-600); }
-:host([data-tom='vermelho']) .secao__nota { color: var(--color-red-500); }
-:host([data-tom='violeta'])  .secao__nota { color: var(--color-violet-500); }
+:host([data-tom='aviso'])    .secao__nota { color: var(--cor-aviso-solido); }
+:host([data-tom='perigo']) .secao__nota { color: var(--cor-perigo-solido); }
+:host([data-tom='destaque'])  .secao__nota { color: var(--cor-destaque-solido); }

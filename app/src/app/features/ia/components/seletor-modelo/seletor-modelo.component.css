@@ -12,7 +12,7 @@
   background-color: transparent;
   font-size: 0.75rem;
   line-height: 1rem;
-  color: var(--color-stone-600);
+  color: var(--cor-texto-secundario);
   cursor: pointer;
   transition: background-color 0.15s ease;
 }
@@ -22,13 +22,13 @@
 }
 
 .seletor__nivel {
-  color: var(--color-brand-600);
+  color: var(--cor-marca-forte);
 }
 
 .seletor__seta {
   width: 0.75rem;
   height: 0.75rem;
-  color: var(--color-stone-400);
+  color: var(--cor-texto-apagado);
 }
 
 /* Captura o clique fora para fechar o painel */
@@ -46,10 +46,10 @@
   width: 18rem;
   margin-top: 0.25rem;
   overflow: hidden;
-  border: 1px solid var(--color-stone-200);
+  border: 1px solid var(--cor-borda);
   border-radius: 0.75rem;
-  background-color: var(--color-white);
-  box-shadow: var(--shadow-lg);
+  background-color: var(--cor-superficie);
+  box-shadow: var(--sombra-flutuante);
 }
 
 .seletor__secao {
@@ -58,7 +58,7 @@
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: var(--color-stone-400);
+  color: var(--cor-texto-apagado);
 }
 
 .seletor__opcao {
@@ -92,7 +92,7 @@
 }
 
 .seletor__marca--ativa {
-  background-color: var(--color-brand-500);
+  background-color: var(--cor-marca-forte);
 }
 
 .seletor__texto {
@@ -103,40 +103,40 @@
   display: block;
   font-size: 0.875rem;
   line-height: 1.25rem;
-  color: var(--color-stone-900);
+  color: var(--cor-texto);
 }
 
 .seletor__descricao {
   display: block;
   font-size: 11px;
   line-height: 1.375;
-  color: var(--color-stone-500);
+  color: var(--cor-texto-suave);
 }
 
 .seletor__nome-nivel {
   font-size: 0.875rem;
   line-height: 1.25rem;
-  color: var(--color-stone-700);
+  color: var(--cor-texto-secundario);
 }
 
 .seletor__raciocinio {
   margin-top: 0.25rem;
-  border-top: 1px solid var(--color-stone-100);
+  border-top: 1px solid var(--cor-divisor);
 }
 
 .seletor__nota {
   padding: 0.25rem 0.75rem 0.75rem;
   font-size: 11px;
   line-height: 1.375;
-  color: var(--color-stone-400);
+  color: var(--cor-texto-apagado);
 }
 
 @media (hover: hover) {
   .seletor__gatilho:hover {
-    background-color: var(--color-stone-100);
+    background-color: var(--cor-superficie-realce);
   }
 
   .seletor__opcao:hover {
-    background-color: var(--color-stone-50);
+    background-color: var(--cor-superficie-suave);
   }
 }

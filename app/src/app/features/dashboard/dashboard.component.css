@@ -18,7 +18,7 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: var(--color-brand-400);
+  color: var(--cor-marca);
 }
 
 .dashboard__titulo {
@@ -26,14 +26,14 @@
   line-height: 2rem;
   font-weight: 700;
   letter-spacing: -0.025em;
-  color: var(--color-gray-900);
+  color: var(--cor-texto);
 }
 
 .dashboard__periodo {
   margin-top: 0.125rem;
   font-size: 0.75rem;
   line-height: 1rem;
-  color: var(--color-gray-400);
+  color: var(--cor-texto-apagado);
 }
 
 .dashboard__erro {
@@ -75,7 +75,7 @@ app-carregando.dashboard__carregando {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--color-brand-400);
+  color: var(--cor-marca);
   transition: color 0.15s ease;
 }
 
@@ -86,7 +86,7 @@ app-carregando.dashboard__carregando {
 
 /* O filete que separa uma sessão da seguinte */
 .dashboard__lista > * + * {
-  border-top: 1px solid var(--color-gray-50);
+  border-top: 1px solid var(--cor-divisor);
 }
 
 .dashboard__vazio {
@@ -99,14 +99,14 @@ app-carregando.dashboard__carregando {
 }
 
 .dashboard__vazio-icone {
-  color: var(--color-gray-200);
+  color: var(--cor-texto-desabilitado);
 }
 
 .dashboard__vazio-texto {
   margin-top: 0.5rem;
   font-size: 0.75rem;
   line-height: 1rem;
-  color: var(--color-gray-400);
+  color: var(--cor-texto-apagado);
 }
 
 /* ── Pendências ── */
@@ -122,15 +122,15 @@ app-carregando.dashboard__carregando {
   align-items: flex-end;
   justify-content: space-between;
   padding: 0.75rem 1rem;
-  border: 1px solid var(--color-violet-100);
+  border: 1px solid var(--cor-destaque-realce);
   border-radius: 0.75rem;
-  background-color: var(--color-violet-50);
+  background-color: var(--cor-destaque-fundo);
 }
 
 .dashboard__repasse-rotulo {
   font-size: 10px;
   font-weight: 500;
-  color: var(--color-violet-500);
+  color: var(--cor-destaque-solido);
 }
 
 .dashboard__repasse-valor {
@@ -138,13 +138,13 @@ app-carregando.dashboard__carregando {
   line-height: 1.75rem;
   font-weight: 900;
   font-variant-numeric: tabular-nums;
-  color: var(--color-violet-800);
+  color: var(--cor-destaque-texto);
 }
 
 .dashboard__repasse-link {
   font-size: 10px;
   font-weight: 600;
-  color: var(--color-violet-600);
+  color: var(--cor-destaque-solido);
   transition: color 0.15s ease;
 }
 
@@ -165,32 +165,32 @@ app-secao-dashboard.dashboard__tudo-ok {
   width: 3rem;
   height: 3rem;
   margin-bottom: 0.75rem;
-  border: 1px solid var(--color-emerald-100);
+  border: 1px solid var(--cor-sucesso-realce);
   border-radius: 9999px;
-  background-color: var(--color-emerald-50);
-  color: var(--color-emerald-600);
+  background-color: var(--cor-sucesso-fundo);
+  color: var(--cor-sucesso-solido);
 }
 
 .dashboard__tudo-ok-titulo {
   font-size: 0.75rem;
   line-height: 1rem;
   font-weight: 600;
-  color: var(--color-emerald-700);
+  color: var(--cor-sucesso-texto);
 }
 
 .dashboard__tudo-ok-nota {
   margin-top: 0.25rem;
   font-size: 10px;
-  color: var(--color-gray-400);
+  color: var(--cor-texto-apagado);
 }
 
 @media (hover: hover) {
   .dashboard__ver-agenda:hover {
-    color: var(--color-brand-500);
+    color: var(--cor-marca-forte);
   }
 
   .dashboard__repasse-link:hover {
-    color: var(--color-violet-800);
+    color: var(--cor-destaque-texto);
   }
 }
 

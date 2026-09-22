@@ -10,14 +10,14 @@
   font-size: 1.125rem;
   line-height: 1.75rem;
   font-weight: 500;
-  color: var(--color-gray-900);
+  color: var(--cor-texto);
 }
 
 .perfil__subtitulo {
   margin-top: 0.125rem;
   font-size: 0.875rem;
   line-height: 1.25rem;
-  color: var(--color-gray-500);
+  color: var(--cor-texto-suave);
 }
 
 .perfil__cartao {
@@ -47,14 +47,14 @@
   font-size: 1rem;
   line-height: 1.5rem;
   font-weight: 500;
-  color: var(--color-gray-900);
+  color: var(--cor-texto);
 }
 
 .perfil__email {
   margin-top: 0.125rem;
   font-size: 0.875rem;
   line-height: 1.25rem;
-  color: var(--color-gray-500);
+  color: var(--cor-texto-suave);
 }
 
 .perfil__dados {
@@ -64,7 +64,7 @@
   row-gap: 1rem;
   margin-top: 1.5rem;
   padding-top: 1.5rem;
-  border-top: 1px solid var(--color-gray-100);
+  border-top: 1px solid var(--cor-divisor);
 }
 
 /* ── Formulário de senha ── */

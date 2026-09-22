@@ -1,6 +1,6 @@
 import { Component, input } from '@angular/core';
 
-export type TomSecao = 'marca' | 'ambar' | 'vermelho' | 'violeta';
+export type TomSecao = 'marca' | 'aviso' | 'perigo' | 'destaque';
 
 /**
  * Bloco do dashboard: superfície com um cabeçalho marcado por uma barrinha

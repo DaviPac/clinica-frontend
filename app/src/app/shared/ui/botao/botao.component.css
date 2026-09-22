@@ -36,51 +36,51 @@
 
 /* ── Primário: ação principal da tela ── */
 :host([data-variante='primario']) {
-  background-color: var(--color-brand-400);
+  background-color: var(--cor-marca);
   color: #fff;
-  box-shadow: 0 6px 18px -8px var(--accent-glow);
+  box-shadow: 0 6px 18px -8px var(--brilho-marca);
 }
 
 :host([data-variante='primario']:active) {
-  background-color: var(--color-brand-600);
+  background-color: var(--cor-marca-forte);
 }
 
 /* ── Contorno: ação secundária ── */
 :host([data-variante='contorno']) {
-  border: 1px solid var(--color-gray-200);
-  background-color: var(--btn-outline-bg);
-  color: var(--color-gray-700);
+  border: 1px solid var(--cor-borda);
+  background-color: var(--cor-controle);
+  color: var(--cor-texto-secundario);
 }
 
 /* ── Contorno perigo: ação destrutiva discreta, em linha de tabela ── */
 :host([data-variante='contorno-perigo']) {
-  border: 1px solid var(--color-red-200);
+  border: 1px solid var(--cor-perigo-borda);
   background-color: transparent;
-  color: var(--color-red-700);
+  color: var(--cor-perigo-texto);
 }
 
 /* ── Perigo: ação destrutiva ── */
 :host([data-variante='perigo']) {
-  background-color: var(--danger-bg);
+  background-color: var(--cor-perigo-solido);
   color: #fff;
 }
 
 @media (hover: hover) {
   :host([data-variante='primario']:hover:not(:disabled)) {
-    background-color: var(--color-brand-500);
-    box-shadow: 0 8px 22px -8px var(--accent-glow);
+    background-color: var(--cor-marca-forte);
+    box-shadow: 0 8px 22px -8px var(--brilho-marca);
   }
 
   :host([data-variante='contorno']:hover:not(:disabled)) {
-    background-color: var(--btn-outline-bg-hover);
-    border-color: var(--btn-outline-border-hover);
+    background-color: var(--cor-controle-hover);
+    border-color: var(--cor-controle-borda-hover);
   }
 
   :host([data-variante='contorno-perigo']:hover:not(:disabled)) {
-    background-color: var(--color-red-50);
+    background-color: var(--cor-perigo-fundo);
   }
 
   :host([data-variante='perigo']:hover:not(:disabled)) {
-    background-color: var(--danger-bg-hover);
+    background-color: var(--cor-perigo-forte);
   }
 }

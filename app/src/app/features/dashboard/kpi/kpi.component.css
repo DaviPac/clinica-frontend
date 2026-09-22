@@ -3,22 +3,22 @@
   align-items: flex-start;
   gap: 0.75rem;
   padding: 1rem;
-  border: 1px solid var(--color-gray-100);
+  border: 1px solid var(--cor-divisor);
   border-radius: 1rem;
-  background: var(--color-white);
-  box-shadow: var(--shadow-sm);
+  background: var(--cor-superficie);
+  box-shadow: var(--sombra-elemento);
   transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
 }
 
 :host(:hover) {
-  border-color: var(--color-gray-300);
-  box-shadow: var(--shadow-lg);
+  border-color: var(--cor-borda-forte);
+  box-shadow: var(--sombra-flutuante);
   transform: translateY(-1px);
 }
 
 /* Há algo a resolver neste indicador */
 :host([data-alerta]) {
-  border-color: var(--color-amber-200);
+  border-color: var(--cor-aviso-borda);
 }
 
 .kpi__icone {
@@ -63,41 +63,41 @@
    Tons — o neutro é o indicador sem pendência
 ─────────────────────────────────────────────── */
 :host([data-tom='neutro']) .kpi__icone {
-  background-color: var(--color-brand-200);
-  color: var(--color-brand-400);
+  background-color: var(--cor-marca-fundo);
+  color: var(--cor-marca);
 }
 :host([data-tom='neutro']) .kpi__rotulo,
-:host([data-tom='neutro']) .kpi__detalhe { color: var(--color-gray-400); }
-:host([data-tom='neutro']) .kpi__valor { color: var(--color-gray-900); }
+:host([data-tom='neutro']) .kpi__detalhe { color: var(--cor-texto-apagado); }
+:host([data-tom='neutro']) .kpi__valor { color: var(--cor-texto); }
 
-:host([data-tom='ambar']) .kpi__icone {
-  background-color: var(--color-amber-50);
-  color: var(--color-amber-600);
+:host([data-tom='aviso']) .kpi__icone {
+  background-color: var(--cor-aviso-fundo);
+  color: var(--cor-aviso-solido);
 }
-:host([data-tom='ambar']) .kpi__rotulo  { color: var(--color-amber-600); }
-:host([data-tom='ambar']) .kpi__valor   { color: var(--color-amber-700); }
-:host([data-tom='ambar']) .kpi__detalhe { color: var(--color-amber-500); }
+:host([data-tom='aviso']) .kpi__rotulo  { color: var(--cor-aviso-solido); }
+:host([data-tom='aviso']) .kpi__valor   { color: var(--cor-aviso-texto); }
+:host([data-tom='aviso']) .kpi__detalhe { color: var(--cor-aviso-solido); }
 
-:host([data-tom='vermelho']) .kpi__icone {
-  background-color: var(--color-red-50);
-  color: var(--color-red-600);
+:host([data-tom='perigo']) .kpi__icone {
+  background-color: var(--cor-perigo-fundo);
+  color: var(--cor-perigo-solido);
 }
-:host([data-tom='vermelho']) .kpi__rotulo  { color: var(--color-red-500); }
-:host([data-tom='vermelho']) .kpi__valor   { color: var(--color-red-600); }
-:host([data-tom='vermelho']) .kpi__detalhe { color: var(--color-red-400); }
+:host([data-tom='perigo']) .kpi__rotulo  { color: var(--cor-perigo-solido); }
+:host([data-tom='perigo']) .kpi__valor   { color: var(--cor-perigo-solido); }
+:host([data-tom='perigo']) .kpi__detalhe { color: var(--cor-perigo-solido); }
 
-:host([data-tom='violeta']) .kpi__icone {
-  background-color: var(--color-violet-50);
-  color: var(--color-violet-500);
+:host([data-tom='destaque']) .kpi__icone {
+  background-color: var(--cor-destaque-fundo);
+  color: var(--cor-destaque-solido);
 }
-:host([data-tom='violeta']) .kpi__rotulo  { color: var(--color-violet-500); }
-:host([data-tom='violeta']) .kpi__valor   { color: var(--color-violet-700); }
-:host([data-tom='violeta']) .kpi__detalhe { color: var(--color-violet-400); }
+:host([data-tom='destaque']) .kpi__rotulo  { color: var(--cor-destaque-solido); }
+:host([data-tom='destaque']) .kpi__valor   { color: var(--cor-destaque-texto); }
+:host([data-tom='destaque']) .kpi__detalhe { color: var(--cor-destaque-solido); }
 
-:host([data-tom='esmeralda']) .kpi__icone {
-  background-color: var(--color-emerald-50);
-  color: var(--color-emerald-600);
+:host([data-tom='sucesso']) .kpi__icone {
+  background-color: var(--cor-sucesso-fundo);
+  color: var(--cor-sucesso-solido);
 }
-:host([data-tom='esmeralda']) .kpi__rotulo  { color: var(--color-emerald-600); }
-:host([data-tom='esmeralda']) .kpi__valor   { color: var(--color-emerald-700); }
-:host([data-tom='esmeralda']) .kpi__detalhe { color: var(--color-emerald-500); }
+:host([data-tom='sucesso']) .kpi__rotulo  { color: var(--cor-sucesso-solido); }
+:host([data-tom='sucesso']) .kpi__valor   { color: var(--cor-sucesso-texto); }
+:host([data-tom='sucesso']) .kpi__detalhe { color: var(--cor-sucesso-solido); }

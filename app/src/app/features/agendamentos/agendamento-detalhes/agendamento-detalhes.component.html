@@ -123,7 +123,7 @@
     (confirmar)="confirmarPagamentoPacote()"
     (cancelar)="agendamentoParaConfirmarPagamento.set(null)">
     <app-destaque-valor
-      tom="teal"
+      tom="sucesso"
       rotulo="Valor total do pacote"
       [valor]="formatarValor(agendamentoParaConfirmarPagamento()!.valorPacote)" />
   </app-confirm-dialog>
@@ -140,7 +140,7 @@
     (confirmar)="cancelarPagamentoPacote()"
     (cancelar)="agendamentoParaCancelarPagamento.set(null)">
     <app-destaque-valor
-      tom="cinza"
+      tom="neutro"
       rotulo="Valor total do pacote"
       [valor]="formatarValor(agendamentoParaCancelarPagamento()!.valorPacote)" />
   </app-confirm-dialog>

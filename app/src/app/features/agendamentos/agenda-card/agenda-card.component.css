@@ -13,18 +13,18 @@
   border-radius: 10px;
   padding: 10px 12px;
   gap: 4px;
-  border-left: 4px solid var(--color-gray-300);
-  background: var(--color-gray-50);
-  border-top: 1px solid var(--color-gray-100);
-  border-right: 1px solid var(--color-gray-100);
-  border-bottom: 1px solid var(--color-gray-100);
+  border-left: 4px solid var(--cor-borda-forte);
+  background: var(--cor-superficie-suave);
+  border-top: 1px solid var(--cor-divisor);
+  border-right: 1px solid var(--cor-divisor);
+  border-bottom: 1px solid var(--cor-divisor);
   transition: box-shadow 0.2s ease, transform 0.2s ease, filter 0.2s ease;
 }
 
 .agenda-card:hover {
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--sombra-elemento);
   transform: translateY(-1px);
-  filter: brightness(var(--card-hover-brightness));
+  filter: brightness(var(--brilho-hover-cartao));
 }
 
 /* Região de informação (link no desktop, botão no mobile) */
@@ -54,25 +54,25 @@
   gap: 4px;
   margin-top: 6px;
   padding-top: 6px;
-  border-top: 1px solid var(--hairline);
+  border-top: 1px solid var(--cor-filete);
 }
 
 /* Variantes por status — alinhadas às cores do <app-status-badge> */
 .agenda-card--agendado {
-  border-left-color: var(--color-blue-500);
-  background: var(--color-blue-50);
+  border-left-color: var(--cor-info-solido);
+  background: var(--cor-info-fundo);
 }
 .agenda-card--realizado {
-  border-left-color: var(--color-teal-500);
-  background: var(--color-teal-50);
+  border-left-color: var(--cor-sucesso-solido);
+  background: var(--cor-sucesso-fundo);
 }
 .agenda-card--falta {
-  border-left-color: var(--color-amber-500);
-  background: var(--color-amber-50);
+  border-left-color: var(--cor-aviso-solido);
+  background: var(--cor-aviso-fundo);
 }
 .agenda-card--cancelado {
-  border-left-color: var(--color-red-500);
-  background: var(--color-red-50);
+  border-left-color: var(--cor-perigo-solido);
+  background: var(--cor-perigo-fundo);
   opacity: 0.6;
 }
 
@@ -88,40 +88,40 @@
   letter-spacing: 0.02em;
   padding: 2px 6px;
   border-radius: 4px;
-  border: 1px solid var(--color-gray-300);
-  background: var(--color-gray-100);
-  color: var(--color-gray-700);
+  border: 1px solid var(--cor-borda-forte);
+  background: var(--cor-superficie-realce);
+  color: var(--cor-texto-secundario);
   cursor: pointer;
   transition: background 0.12s, border-color 0.12s, color 0.12s;
   line-height: 1.4;
 }
 .agenda-action-btn:hover:not(:disabled) {
-  background: var(--color-gray-200);
-  border-color: var(--color-gray-400);
-  color: var(--color-gray-900);
+  background: var(--cor-superficie-forte);
+  border-color: var(--cor-borda-forte);
+  color: var(--cor-texto);
 }
 .agenda-action-btn:disabled {
   opacity: 0.45;
   cursor: not-allowed;
 }
 .agenda-action-btn--paid {
-  background: var(--color-green-100);
-  border-color: var(--color-green-300);
-  color: var(--color-green-700);
+  background: var(--cor-sucesso-realce);
+  border-color: var(--cor-sucesso-borda);
+  color: var(--cor-sucesso-texto);
 }
 .agenda-action-btn--unpaid {
-  background: var(--color-gray-50);
-  color: var(--color-gray-400);
+  background: var(--cor-superficie-suave);
+  color: var(--cor-texto-apagado);
 }
 .agenda-action-btn--danger {
-  background: var(--color-red-100);
-  border-color: var(--color-red-300);
-  color: var(--color-red-700);
+  background: var(--cor-perigo-realce);
+  border-color: var(--cor-perigo-borda);
+  color: var(--cor-perigo-texto);
 }
 .agenda-action-btn--danger:hover:not(:disabled) {
-  background: var(--color-red-200);
-  border-color: var(--color-red-500);
-  color: var(--color-red-800);
+  background: var(--cor-perigo-borda);
+  border-color: var(--cor-perigo-solido);
+  color: var(--cor-perigo-texto);
 }
 
 /* O badge é um componente filho: só dá para encolher por transform */
@@ -159,7 +159,7 @@
 }
 
 .agenda-card__link:focus-visible {
-  box-shadow: 0 0 0 2px var(--color-brand-400);
+  box-shadow: 0 0 0 2px var(--cor-marca);
 }
 
 .agenda-card__cabecalho {
@@ -175,7 +175,7 @@
   font-weight: 700;
   line-height: 1;
   font-variant-numeric: tabular-nums;
-  color: var(--color-gray-800);
+  color: var(--cor-texto);
 }
 
 .agenda-card__paciente {
@@ -185,7 +185,7 @@
   font-size: 13px;
   line-height: 1.25;
   font-weight: 700;
-  color: var(--color-gray-900);
+  color: var(--cor-texto);
 }
 
 .agenda-card__linha {
@@ -200,11 +200,11 @@
 }
 
 .agenda-card__linha--profissional {
-  color: var(--color-gray-500);
+  color: var(--cor-texto-suave);
 }
 
 .agenda-card__linha--servico {
-  color: var(--color-gray-400);
+  color: var(--cor-texto-apagado);
 }
 
 .agenda-card__icone {

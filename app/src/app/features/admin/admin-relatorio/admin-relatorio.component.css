@@ -22,10 +22,10 @@
   margin-bottom: 1.5rem;
 }
 
-.relatorio__negativo { color: var(--color-red-700); }
-.relatorio__devendo  { color: var(--color-red-600); }
-.relatorio__a-receber { color: var(--color-amber-600); }
-.relatorio__zerado   { color: var(--color-gray-400); }
+.relatorio__negativo { color: var(--cor-perigo-texto); }
+.relatorio__devendo  { color: var(--cor-perigo-solido); }
+.relatorio__a-receber { color: var(--cor-aviso-solido); }
+.relatorio__zerado   { color: var(--cor-texto-apagado); }
 
 /* o saldo é menor que o valor padrão do app-estatistica */
 .relatorio__saldo {
@@ -36,33 +36,33 @@
 /* ── Lucro líquido: bloco com tom próprio ── */
 .relatorio__lucro {
   padding: 1rem;
-  border: 1px solid var(--color-teal-100);
+  border: 1px solid var(--cor-sucesso-realce);
   border-radius: 0.5rem;
-  background-color: var(--color-teal-50);
+  background-color: var(--cor-sucesso-fundo);
 }
 
 .relatorio__lucro-rotulo {
   margin-bottom: 0.375rem;
   font-size: 0.75rem;
   line-height: 1rem;
-  color: var(--color-teal-800);
+  color: var(--cor-sucesso-texto);
 }
 
 .relatorio__lucro-valor {
-  font-family: var(--font-mono);
+  font-family: var(--fonte-mono);
   font-size: 1.25rem;
   line-height: 1.75rem;
   font-weight: 500;
-  color: var(--color-teal-700);
+  color: var(--cor-sucesso-texto);
 }
 
 .relatorio__lucro--negativo {
-  border-color: var(--color-red-100);
-  background-color: var(--color-red-50);
+  border-color: var(--cor-perigo-realce);
+  background-color: var(--cor-perigo-fundo);
 }
 
-.relatorio__lucro--negativo .relatorio__lucro-rotulo { color: var(--color-red-800); }
-.relatorio__lucro--negativo .relatorio__lucro-valor  { color: var(--color-red-700); }
+.relatorio__lucro--negativo .relatorio__lucro-rotulo { color: var(--cor-perigo-texto); }
+.relatorio__lucro--negativo .relatorio__lucro-valor  { color: var(--cor-perigo-texto); }
 
 /* ── Tabela ── */
 .relatorio__secao {
@@ -70,7 +70,7 @@
   font-size: 0.875rem;
   line-height: 1.25rem;
   font-weight: 500;
-  color: var(--color-gray-900);
+  color: var(--cor-texto);
 }
 
 .relatorio__col-numero {
@@ -78,7 +78,7 @@
 }
 
 .relatorio__linha {
-  border-bottom: 1px solid var(--color-gray-100);
+  border-bottom: 1px solid var(--cor-divisor);
   vertical-align: top;
   transition: background-color 0.15s ease;
 }
@@ -89,7 +89,7 @@
 
 .relatorio__profissional {
   font-weight: 500;
-  color: var(--color-gray-900);
+  color: var(--cor-texto);
 }
 
 .relatorio__fluxo {
@@ -104,40 +104,40 @@
 }
 
 .relatorio__fluxo--clinica {
-  background-color: var(--color-teal-50);
-  box-shadow: 0 0 0 1px var(--color-teal-100);
-  color: var(--color-teal-700);
+  background-color: var(--cor-sucesso-fundo);
+  box-shadow: 0 0 0 1px var(--cor-sucesso-realce);
+  color: var(--cor-sucesso-texto);
 }
 
 .relatorio__fluxo--profissional {
-  background-color: var(--color-amber-50);
-  box-shadow: 0 0 0 1px var(--color-amber-100);
-  color: var(--color-amber-700);
+  background-color: var(--cor-aviso-fundo);
+  box-shadow: 0 0 0 1px var(--cor-aviso-realce);
+  color: var(--cor-aviso-texto);
 }
 
 .relatorio__fluxo--misto {
-  background-color: var(--color-purple-50);
-  box-shadow: 0 0 0 1px var(--color-purple-100);
-  color: var(--color-purple-700);
+  background-color: var(--cor-destaque-fundo);
+  box-shadow: 0 0 0 1px var(--cor-destaque-realce);
+  color: var(--cor-destaque-texto);
 }
 
 .relatorio__fluxo--nenhum {
-  background-color: var(--color-gray-50);
-  box-shadow: 0 0 0 1px var(--color-gray-100);
-  color: var(--color-gray-400);
+  background-color: var(--cor-superficie-suave);
+  box-shadow: 0 0 0 1px var(--cor-divisor);
+  color: var(--cor-texto-apagado);
 }
 
 .relatorio__numero {
   text-align: right;
-  font-family: var(--font-mono);
+  font-family: var(--fonte-mono);
   font-size: 0.75rem;
   line-height: 1rem;
 }
 
-.relatorio__numero--neutro    { color: var(--color-gray-600); }
-.relatorio__numero--comissao  { color: var(--color-teal-700); font-weight: 500; }
-.relatorio__numero--devido    { color: var(--color-gray-700); }
-.relatorio__numero--repassado { color: var(--color-blue-600); }
+.relatorio__numero--neutro    { color: var(--cor-texto-secundario); }
+.relatorio__numero--comissao  { color: var(--cor-sucesso-texto); font-weight: 500; }
+.relatorio__numero--devido    { color: var(--cor-texto-secundario); }
+.relatorio__numero--repassado { color: var(--cor-info-solido); }
 
 .relatorio__par {
   white-space: nowrap;
@@ -145,19 +145,19 @@
 
 .relatorio__destino {
   margin-right: 0.25rem;
-  color: var(--color-gray-400);
+  color: var(--cor-texto-apagado);
 }
 
 .relatorio__destino--leve {
   font-weight: 400;
 }
 
-.relatorio__pendente--prof    { color: var(--color-red-600); font-weight: 700; }
-.relatorio__pendente--clinica { color: var(--color-amber-600); font-weight: 700; }
-.relatorio__pendente--zero    { color: var(--color-gray-400); }
+.relatorio__pendente--prof    { color: var(--cor-perigo-solido); font-weight: 700; }
+.relatorio__pendente--clinica { color: var(--cor-aviso-solido); font-weight: 700; }
+.relatorio__pendente--zero    { color: var(--cor-texto-apagado); }
 
 .relatorio__nulo {
-  color: var(--color-gray-300);
+  color: var(--cor-texto-desabilitado);
 }
 
 .relatorio__celula-vazia {
@@ -166,7 +166,7 @@
 
 @media (hover: hover) {
   .relatorio__linha:hover {
-    background-color: var(--color-gray-50);
+    background-color: var(--cor-superficie-suave);
   }
 }
 

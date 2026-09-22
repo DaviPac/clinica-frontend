@@ -11,7 +11,7 @@
   flex-direction: column;
   gap: 0.375rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid var(--color-gray-100);
+  border-bottom: 1px solid var(--cor-divisor);
 }
 
 .sheet__cabecalho {
@@ -26,26 +26,26 @@
   line-height: 1.25rem;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
-  color: var(--color-gray-900);
+  color: var(--cor-texto);
 }
 
 .sheet__paciente {
   font-size: 0.875rem;
   line-height: 1.25rem;
   font-weight: 600;
-  color: var(--color-gray-900);
+  color: var(--cor-texto);
 }
 
 .sheet__profissional {
   font-size: 0.75rem;
   line-height: 1rem;
-  color: var(--color-gray-500);
+  color: var(--cor-texto-suave);
 }
 
 .sheet__servico {
   font-size: 0.75rem;
   line-height: 1rem;
-  color: var(--color-gray-400);
+  color: var(--cor-texto-apagado);
 }
 
 /* ── Ações: alvos grandes, pensados para o toque ── */
@@ -63,13 +63,13 @@
   width: 100%;
   min-height: 2.75rem;
   padding: 0.5rem 1rem;
-  border: 1px solid var(--color-gray-200);
+  border: 1px solid var(--cor-borda);
   border-radius: 0.5rem;
-  background-color: var(--btn-outline-bg);
+  background-color: var(--cor-controle);
   font-size: 0.875rem;
   line-height: 1.25rem;
   font-weight: 500;
-  color: var(--color-gray-700);
+  color: var(--cor-texto-secundario);
   text-decoration: none;
   cursor: pointer;
   transition: color 0.15s ease,
@@ -82,30 +82,30 @@
 }
 
 .sheet__botao--pago {
-  border-color: var(--color-teal-200);
-  background-color: var(--color-teal-50);
-  color: var(--color-teal-800);
+  border-color: var(--cor-sucesso-borda);
+  background-color: var(--cor-sucesso-fundo);
+  color: var(--cor-sucesso-texto);
 }
 
 .sheet__botao--perigo {
-  border-color: var(--color-red-200);
-  background-color: var(--color-red-50);
-  color: var(--color-red-700);
+  border-color: var(--cor-perigo-borda);
+  background-color: var(--cor-perigo-fundo);
+  color: var(--cor-perigo-texto);
 }
 
 @media (hover: hover) {
   .sheet__botao:hover:not(:disabled) {
-    background-color: var(--btn-outline-bg-hover);
-    border-color: var(--btn-outline-border-hover);
+    background-color: var(--cor-controle-hover);
+    border-color: var(--cor-controle-borda-hover);
   }
 
   .sheet__botao--pago:hover:not(:disabled) {
-    background-color: var(--color-teal-100);
-    border-color: var(--color-teal-200);
+    background-color: var(--cor-sucesso-realce);
+    border-color: var(--cor-sucesso-borda);
   }
 
   .sheet__botao--perigo:hover:not(:disabled) {
-    background-color: var(--color-red-100);
-    border-color: var(--color-red-200);
+    background-color: var(--cor-perigo-realce);
+    border-color: var(--cor-perigo-borda);
   }
 }

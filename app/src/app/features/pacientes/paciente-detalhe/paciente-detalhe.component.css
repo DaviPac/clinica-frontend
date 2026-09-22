@@ -13,7 +13,7 @@
   gap: 1rem;
   margin-bottom: 1.5rem;
   padding-bottom: 1.5rem;
-  border-bottom: 1px solid var(--color-gray-100);
+  border-bottom: 1px solid var(--cor-divisor);
 }
 
 .detalhe__identidade {
@@ -44,7 +44,7 @@
   font-size: 1.125rem;
   line-height: 1.75rem;
   font-weight: 500;
-  color: var(--color-gray-900);
+  color: var(--cor-texto);
 }
 
 .detalhe__inativo {
@@ -52,26 +52,26 @@
   align-items: center;
   gap: 0.25rem;
   padding: 0.125rem 0.5rem;
-  border: 1px solid var(--color-stone-200);
+  border: 1px solid var(--cor-borda);
   border-radius: 9999px;
-  background-color: var(--color-stone-100);
+  background-color: var(--cor-superficie-realce);
   font-size: 0.75rem;
   line-height: 1rem;
   font-weight: 500;
-  color: var(--color-stone-600);
+  color: var(--cor-texto-secundario);
 }
 
 .detalhe__ponto {
   width: 0.375rem;
   height: 0.375rem;
   border-radius: 50%;
-  background-color: var(--color-stone-400);
+  background-color: var(--cor-texto-apagado);
 }
 
 .detalhe__id {
   font-size: 0.875rem;
   line-height: 1.25rem;
-  color: var(--color-gray-500);
+  color: var(--cor-texto-suave);
 }
 
 /* ── Ações do cabeçalho ── */
@@ -89,18 +89,18 @@
   background-color: transparent;
   font-size: 0.875rem;
   line-height: 1.25rem;
-  color: var(--color-gray-700);
+  color: var(--cor-texto-secundario);
   cursor: pointer;
   transition: color 0.15s ease, background-color 0.15s ease;
 }
 
 .detalhe__acao--perigo {
-  color: var(--color-red-600);
+  color: var(--cor-perigo-solido);
 }
 
 .detalhe__acao--reativar {
-  border: 1px solid var(--color-emerald-200);
-  color: var(--color-emerald-700);
+  border: 1px solid var(--cor-sucesso-borda);
+  color: var(--cor-sucesso-texto);
 }
 
 /* ── Lista de dados ── */
@@ -117,7 +117,7 @@
 .detalhe__futuro {
   margin-top: 1rem;
   padding: 2rem 1.5rem;
-  border: 1px dashed var(--color-gray-200);
+  border: 1px dashed var(--cor-borda);
   border-radius: 0.75rem;
   text-align: center;
 }
@@ -125,23 +125,23 @@
 .detalhe__futuro-texto {
   font-size: 0.875rem;
   line-height: 1.25rem;
-  color: var(--color-gray-400);
+  color: var(--cor-texto-apagado);
 }
 
 @media (hover: hover) {
   .detalhe__acao:hover {
-    background-color: var(--color-gray-100);
-    color: var(--color-gray-900);
+    background-color: var(--cor-superficie-realce);
+    color: var(--cor-texto);
   }
 
   .detalhe__acao--perigo:hover {
-    background-color: var(--color-red-50);
-    color: var(--color-red-700);
+    background-color: var(--cor-perigo-fundo);
+    color: var(--cor-perigo-texto);
   }
 
   .detalhe__acao--reativar:hover {
-    background-color: var(--color-emerald-50);
-    color: var(--color-emerald-800);
+    background-color: var(--cor-sucesso-fundo);
+    color: var(--cor-sucesso-texto);
   }
 }
 

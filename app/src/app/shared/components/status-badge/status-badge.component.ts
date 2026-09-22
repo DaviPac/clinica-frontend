@@ -3,10 +3,10 @@ import { StatusAgendamento } from '../../../core/models/agendamento.model';
 import { SeloComponent, TomSelo } from '../../ui/selo/selo.component';
 
 const CONFIG: Record<StatusAgendamento, { label: string; tom: TomSelo }> = {
-  AGENDADO:  { label: 'Agendado',  tom: 'azul' },
-  REALIZADO: { label: 'Realizado', tom: 'teal' },
-  FALTA:     { label: 'Falta',     tom: 'ambar' },
-  CANCELADO: { label: 'Cancelado', tom: 'vermelho' },
+  AGENDADO:  { label: 'Agendado',  tom: 'info' },
+  REALIZADO: { label: 'Realizado', tom: 'sucesso' },
+  FALTA:     { label: 'Falta',     tom: 'aviso' },
+  CANCELADO: { label: 'Cancelado', tom: 'perigo' },
 };
 
 /** Selo de status de agendamento — mapeia o status para o tom do <app-selo>. */

@@ -1,12 +1,12 @@
 :host {
   width: 100%;
-  border: 1px solid var(--color-gray-200);
+  border: 1px solid var(--cor-borda);
   border-radius: 0.5rem;
-  background-color: var(--input-bg);
+  background-color: var(--cor-controle);
   padding: 0.5rem 0.75rem;
   font-size: 0.875rem;
   line-height: 1.25rem;
-  color: var(--color-gray-800);
+  color: var(--cor-texto);
   transition: color 0.15s ease,
     background-color 0.15s ease, border-color 0.15s ease,
     box-shadow 0.15s ease;
@@ -14,8 +14,8 @@
 
 :host(:focus) {
   outline: none;
-  border-color: var(--color-brand-400);
-  box-shadow: 0 0 0 2px var(--color-brand-400);
+  border-color: var(--cor-marca);
+  box-shadow: 0 0 0 2px var(--cor-marca);
 }
 
 :host(:disabled) {
@@ -23,15 +23,15 @@
 }
 
 :host([data-estado='invalido']) {
-  border-color: var(--color-red-300);
+  border-color: var(--cor-perigo-borda);
 }
 
 :host([data-estado='aviso']) {
-  border-color: var(--color-amber-400);
+  border-color: var(--cor-aviso-solido);
 }
 
 :host([data-fonte='mono']) {
-  font-family: var(--font-mono);
+  font-family: var(--fonte-mono);
 }
 
 :host(textarea) {

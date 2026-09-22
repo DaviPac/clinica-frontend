@@ -3,9 +3,9 @@
   align-items: center;
   gap: 0.25rem;
   padding: 0.25rem;
-  border: 1px solid var(--color-gray-200);
+  border: 1px solid var(--cor-borda);
   border-radius: 0.5rem;
-  background-color: var(--color-gray-50);
+  background-color: var(--cor-superficie-suave);
 }
 
 .tema__opcao {
@@ -19,13 +19,13 @@
   font-size: 0.75rem;
   line-height: 1rem;
   font-weight: 500;
-  color: var(--color-gray-600);
+  color: var(--cor-texto-secundario);
   cursor: pointer;
   transition: color 0.15s ease, background-color 0.15s ease;
 }
 
 .tema__opcao--ativa {
-  background-color: var(--color-brand-400);
+  background-color: var(--cor-marca);
   color: #fff;
 }
 
@@ -39,12 +39,12 @@
   margin-top: 0.5rem;
   font-size: 0.75rem;
   line-height: 1rem;
-  color: var(--color-gray-400);
+  color: var(--cor-texto-apagado);
 }
 
 @media (hover: hover) {
   .tema__opcao:not(.tema__opcao--ativa):hover {
-    background-color: var(--color-gray-100);
-    color: var(--color-gray-900);
+    background-color: var(--cor-superficie-realce);
+    color: var(--cor-texto);
   }
 }

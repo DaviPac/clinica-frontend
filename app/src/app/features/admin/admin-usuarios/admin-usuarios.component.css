@@ -13,7 +13,7 @@
 }
 
 .usuarios__linha {
-  border-bottom: 1px solid var(--color-gray-100);
+  border-bottom: 1px solid var(--cor-divisor);
   transition: background-color 0.15s ease;
 }
 
@@ -23,11 +23,11 @@
 
 .usuarios__nome {
   font-weight: 500;
-  color: var(--color-gray-900);
+  color: var(--cor-texto);
 }
 
 .usuarios__dado {
-  color: var(--color-gray-500);
+  color: var(--cor-texto-suave);
 }
 
 .usuarios__dado--miudo {
@@ -36,7 +36,7 @@
 }
 
 .usuarios__dado--mono {
-  font-family: var(--font-mono);
+  font-family: var(--fonte-mono);
   font-size: 0.75rem;
   line-height: 1rem;
 }
@@ -56,11 +56,11 @@
 .usuarios__ver {
   /* inline: como inline-block o padding vertical entraria na altura da linha */
   padding: 0.25rem 0.625rem;
-  border: 1px solid color-mix(in srgb, var(--color-brand-400) 40%, transparent);
+  border: 1px solid color-mix(in srgb, var(--cor-marca) 40%, transparent);
   border-radius: 0.375rem;
   font-size: 0.75rem;
   line-height: 1rem;
-  color: var(--color-brand-500);
+  color: var(--cor-marca-forte);
   text-decoration: none;
   transition: background-color 0.15s ease;
 }
@@ -90,11 +90,11 @@
 
 @media (hover: hover) {
   .usuarios__linha:hover {
-    background-color: var(--color-gray-50);
+    background-color: var(--cor-superficie-suave);
   }
 
   .usuarios__ver:hover {
-    background-color: color-mix(in srgb, var(--color-brand-400) 10%, transparent);
+    background-color: color-mix(in srgb, var(--cor-marca) 10%, transparent);
   }
 }
 

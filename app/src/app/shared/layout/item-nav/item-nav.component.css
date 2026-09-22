@@ -15,18 +15,14 @@
   border-radius: 0.5rem;
   font-size: 0.875rem;
   line-height: 1.25rem;
-  color: var(--color-stone-600);
+  color: var(--cor-texto-secundario);
   text-decoration: none;
   transition: color 0.15s ease, background-color 0.15s ease;
 }
 
-/*
- * O item ativo recebe só o realce de fundo. A cor do texto continua a do
- * item normal: era assim antes da saída do CSS utilitário e manter igual
- * evita mudar o visual numa refatoração que não é de design.
- */
+/* O item ativo recebe só o realce de fundo; o texto mantém a cor do item normal */
 .item-nav__link--ativo {
-  background-color: var(--color-stone-100);
+  background-color: var(--cor-superficie-realce);
 }
 
 .item-nav__icone {
@@ -41,7 +37,7 @@
 
 @media (hover: hover) {
   .item-nav__link:hover {
-    background-color: var(--color-stone-50);
-    color: var(--color-stone-900);
+    background-color: var(--cor-superficie-suave);
+    color: var(--cor-texto);
   }
 }

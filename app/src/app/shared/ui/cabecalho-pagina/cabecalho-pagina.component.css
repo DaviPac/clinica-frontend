@@ -9,14 +9,14 @@
   font-size: 1.125rem;
   line-height: 1.75rem;
   font-weight: 500;
-  color: var(--color-gray-900);
+  color: var(--cor-texto);
 }
 
 .cabecalho__subtitulo {
   margin-top: 0.125rem;
   font-size: 0.875rem;
   line-height: 1.25rem;
-  color: var(--color-gray-500);
+  color: var(--cor-texto-suave);
 }
 
 @media (width >= 40rem) {

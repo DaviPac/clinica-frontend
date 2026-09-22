@@ -11,9 +11,9 @@
   width: 100%;
   max-width: 24rem;
   padding: 1.5rem;
-  border: 1px solid var(--color-gray-200);
+  border: 1px solid var(--cor-borda);
   border-radius: 0.75rem;
-  background-color: var(--color-white);
+  background-color: var(--cor-superficie);
 }
 
 .login__cabecalho {
@@ -36,13 +36,13 @@
 
 .login__nome {
   font-weight: 500;
-  color: var(--color-gray-900);
+  color: var(--cor-texto);
 }
 
 .login__chamada {
   font-size: 0.875rem;
   line-height: 1.25rem;
-  color: var(--color-gray-500);
+  color: var(--cor-texto-suave);
 }
 
 .login__form {

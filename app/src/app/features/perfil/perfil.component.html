@@ -14,9 +14,9 @@
         <div class="perfil__linha-nome">
           <h2 class="perfil__nome">{{ usuario()?.nome }}</h2>
           @if (isAdmin()) {
-            <app-selo tom="roxo">Admin</app-selo>
+            <app-selo tom="destaque">Admin</app-selo>
           } @else {
-            <app-selo tom="cinza">Profissional</app-selo>
+            <app-selo tom="neutro">Profissional</app-selo>
           }
         </div>
         <p class="perfil__email">{{ usuario()?.email }}</p>

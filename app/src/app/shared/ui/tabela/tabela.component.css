@@ -9,10 +9,10 @@
 .tabela {
   display: block;
   overflow-x: auto;
-  border: 1px solid var(--color-gray-200);
+  border: 1px solid var(--cor-borda);
   border-radius: 0.75rem;
-  background-color: var(--color-white);
-  box-shadow: var(--surface-shadow);
+  background-color: var(--cor-superficie);
+  box-shadow: var(--sombra-cartao);
   -webkit-overflow-scrolling: touch;
 }
 
@@ -25,16 +25,16 @@
 }
 
 .tabela :where(thead) {
-  background-color: var(--color-gray-50);
+  background-color: var(--cor-superficie-suave);
 }
 
 .tabela :where(th) {
   padding: 0.625rem 1rem;
-  border-bottom: 1px solid var(--color-gray-200);
+  border-bottom: 1px solid var(--cor-borda);
   text-align: left;
   font-weight: 500;
   white-space: nowrap;
-  color: var(--color-gray-500);
+  color: var(--cor-texto-suave);
 }
 
 .tabela :where(td) {

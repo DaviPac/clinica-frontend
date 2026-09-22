@@ -20,19 +20,19 @@
 }
 
 :host([data-variante='error']) {
-  background-color: var(--color-red-50);
-  border-color: var(--color-red-100);
-  color: var(--color-red-700);
+  background-color: var(--cor-perigo-fundo);
+  border-color: var(--cor-perigo-realce);
+  color: var(--cor-perigo-texto);
 }
 
 :host([data-variante='success']) {
-  background-color: var(--color-teal-50);
-  border-color: var(--color-teal-100);
-  color: var(--color-teal-800);
+  background-color: var(--cor-sucesso-fundo);
+  border-color: var(--cor-sucesso-realce);
+  color: var(--cor-sucesso-texto);
 }
 
 :host([data-variante='info']) {
-  background-color: var(--color-brand-50);
-  border-color: var(--color-brand-200);
-  color: var(--color-brand-800);
+  background-color: var(--cor-marca-fundo);
+  border-color: var(--cor-marca-borda);
+  color: var(--cor-marca-texto);
 }

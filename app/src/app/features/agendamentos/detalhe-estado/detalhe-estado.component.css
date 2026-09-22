@@ -8,7 +8,7 @@
   margin-bottom: 0.5rem;
   font-size: 0.75rem;
   line-height: 1rem;
-  color: var(--color-gray-500);
+  color: var(--cor-texto-suave);
 }
 
 .estado__pagamento {
@@ -24,13 +24,13 @@
 }
 
 .estado__pagamento--pago {
-  border-color: var(--color-green-200);
-  background-color: var(--color-green-50);
-  color: var(--color-green-700);
+  border-color: var(--cor-sucesso-borda);
+  background-color: var(--cor-sucesso-fundo);
+  color: var(--cor-sucesso-texto);
 }
 
 .estado__pagamento--pendente {
-  border-color: var(--color-amber-200);
-  background-color: var(--color-amber-50);
-  color: var(--color-amber-700);
+  border-color: var(--cor-aviso-borda);
+  background-color: var(--cor-aviso-fundo);
+  color: var(--cor-aviso-texto);
 }

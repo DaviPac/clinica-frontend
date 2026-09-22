@@ -1,7 +1,7 @@
 :host {
   display: flex;
   flex-direction: column;
-  background-color: var(--color-white);
+  background-color: var(--cor-superficie);
 }
 
 /* Fica grudado no topo ao rolar a lista de sessões da coluna */
@@ -13,8 +13,8 @@
   align-items: center;
   justify-content: space-between;
   padding: 0.75rem;
-  border-bottom: 1px solid var(--color-gray-100);
-  background-color: var(--color-white);
+  border-bottom: 1px solid var(--cor-divisor);
+  background-color: var(--cor-superficie);
 }
 
 .coluna__dia {
@@ -28,7 +28,7 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: var(--color-gray-400);
+  color: var(--cor-texto-apagado);
   user-select: none;
   -webkit-user-select: none;
 }
@@ -43,12 +43,12 @@
   font-size: 1rem;
   line-height: 1.5rem;
   font-weight: 500;
-  color: var(--color-gray-700);
+  color: var(--cor-texto-secundario);
   transition: background-color 0.15s ease, color 0.15s ease;
 }
 
 .coluna__numero--hoje {
-  background-color: var(--color-brand-400);
+  background-color: var(--cor-marca);
   font-weight: 700;
   color: #fff;
 }
@@ -57,18 +57,18 @@
 .coluna__data {
   font-size: 0.75rem;
   line-height: 1rem;
-  color: var(--color-gray-400);
+  color: var(--cor-texto-apagado);
 }
 
 .coluna__contador {
   padding-inline: 0.375rem;
   padding-block: 1px;
   border-radius: 9999px;
-  background-color: var(--color-brand-100);
+  background-color: var(--cor-marca-fundo);
   font-size: 9px;
   font-weight: 700;
   line-height: 1;
-  color: var(--color-brand-700);
+  color: var(--cor-marca-texto);
 }
 
 .coluna__sessoes {
@@ -85,7 +85,7 @@
   padding-block: 0.75rem;
   font-size: 10px;
   text-align: center;
-  color: var(--color-gray-300);
+  color: var(--cor-texto-desabilitado);
   user-select: none;
   -webkit-user-select: none;
 }

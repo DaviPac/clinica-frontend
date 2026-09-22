@@ -3,15 +3,15 @@
   align-items: center;
   justify-content: space-between;
   padding: 0.75rem 1rem;
-  border: 1px solid var(--color-gray-200);
+  border: 1px solid var(--cor-borda);
   border-radius: 0.75rem;
-  background-color: var(--color-gray-50);
+  background-color: var(--cor-superficie-suave);
 }
 
 .destaque__rotulo {
   font-size: 11px;
   font-weight: 500;
-  color: var(--color-gray-600);
+  color: var(--cor-texto-secundario);
 }
 
 .destaque__valor {
@@ -19,19 +19,19 @@
   line-height: 1.5rem;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
-  color: var(--color-gray-900);
+  color: var(--cor-texto);
 }
 
-:host([data-tom='teal']) {
-  background-color: var(--color-teal-50);
-  border-color: var(--color-teal-100);
+:host([data-tom='sucesso']) {
+  background-color: var(--cor-sucesso-fundo);
+  border-color: var(--cor-sucesso-realce);
 }
-:host([data-tom='teal']) .destaque__rotulo { color: var(--color-teal-700); }
-:host([data-tom='teal']) .destaque__valor  { color: var(--color-teal-800); }
+:host([data-tom='sucesso']) .destaque__rotulo { color: var(--cor-sucesso-texto); }
+:host([data-tom='sucesso']) .destaque__valor  { color: var(--cor-sucesso-texto); }
 
-:host([data-tom='violeta']) {
-  background-color: var(--color-violet-50);
-  border-color: var(--color-violet-100);
+:host([data-tom='destaque']) {
+  background-color: var(--cor-destaque-fundo);
+  border-color: var(--cor-destaque-realce);
 }
-:host([data-tom='violeta']) .destaque__rotulo { color: var(--color-violet-700); }
-:host([data-tom='violeta']) .destaque__valor  { color: var(--color-violet-800); }
+:host([data-tom='destaque']) .destaque__rotulo { color: var(--cor-destaque-texto); }
+:host([data-tom='destaque']) .destaque__valor  { color: var(--cor-destaque-texto); }

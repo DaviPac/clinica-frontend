@@ -4,7 +4,7 @@
  */
 .detalhes {
   min-height: 100vh;
-  background-color: var(--color-gray-50);
+  background-color: var(--cor-superficie-suave);
 }
 
 .detalhes__coluna {
@@ -28,10 +28,10 @@
   justify-content: center;
   width: 2rem;
   height: 2rem;
-  border: 1px solid var(--color-gray-200);
+  border: 1px solid var(--cor-borda);
   border-radius: 9999px;
-  background-color: var(--color-white);
-  color: var(--color-gray-500);
+  background-color: var(--cor-superficie);
+  color: var(--cor-texto-suave);
   cursor: pointer;
   transition: background-color 0.15s ease;
 }
@@ -41,14 +41,14 @@
   line-height: 1.75rem;
   font-weight: 600;
   letter-spacing: -0.025em;
-  color: var(--color-gray-900);
+  color: var(--cor-texto);
 }
 
 .detalhes__id {
   margin-top: 0.125rem;
   font-size: 0.75rem;
   line-height: 1rem;
-  color: var(--color-gray-500);
+  color: var(--cor-texto-suave);
 }
 
 .detalhes__erro {
@@ -65,18 +65,18 @@
   align-items: center;
   justify-content: center;
   padding-block: 5rem;
-  border: 1px solid var(--color-gray-200);
+  border: 1px solid var(--cor-borda);
   border-radius: 1rem;
-  background-color: var(--color-white);
-  box-shadow: var(--shadow-sm);
+  background-color: var(--cor-superficie);
+  box-shadow: var(--sombra-elemento);
 }
 
 .detalhes__roda {
   width: 2rem;
   height: 2rem;
   margin-bottom: 0.75rem;
-  border: 2px solid var(--color-gray-200);
-  border-top-color: var(--color-teal-600);
+  border: 2px solid var(--cor-borda);
+  border-top-color: var(--cor-sucesso-solido);
   border-radius: 9999px;
   animation: spin 1s linear infinite;
 }
@@ -84,7 +84,7 @@
 .detalhes__carregando-texto {
   font-size: 0.875rem;
   line-height: 1.25rem;
-  color: var(--color-gray-400);
+  color: var(--cor-texto-apagado);
 }
 
 /* ──────────────────────────────────────────────
@@ -110,7 +110,7 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--color-gray-900);
+  color: var(--cor-texto);
 }
 
 .detalhes__campos {
@@ -123,7 +123,7 @@
 /* ── Valores, separados do resto por um filete ── */
 .detalhes__valor {
   padding-top: 0.5rem;
-  border-top: 1px solid var(--color-gray-100);
+  border-top: 1px solid var(--cor-divisor);
 }
 
 .detalhes__valor-topo {
@@ -136,7 +136,7 @@
 .detalhes__valor-rotulo {
   font-size: 0.75rem;
   line-height: 1rem;
-  color: var(--color-gray-500);
+  color: var(--cor-texto-suave);
 }
 
 .detalhes__valor-rotulo--pacote {
@@ -147,11 +147,11 @@
   font-size: 0.875rem;
   line-height: 1.25rem;
   font-weight: 700;
-  color: var(--color-gray-900);
+  color: var(--cor-texto);
 }
 
 .detalhes__valor-numero--pacote {
-  color: var(--color-teal-700);
+  color: var(--cor-sucesso-texto);
 }
 
 .detalhes__editar {
@@ -160,7 +160,7 @@
   font-size: 0.75rem;
   line-height: 1rem;
   font-weight: 500;
-  color: var(--color-teal-600);
+  color: var(--cor-sucesso-solido);
   cursor: pointer;
   transition: color 0.15s ease;
 }
@@ -179,7 +179,7 @@
   margin-top: -0.75rem;
   font-size: 0.75rem;
   line-height: 1rem;
-  color: var(--color-gray-500);
+  color: var(--cor-texto-suave);
 }
 
 .detalhes__form-acoes {
@@ -193,11 +193,11 @@
 
 @media (hover: hover) {
   .detalhes__voltar:hover {
-    background-color: var(--color-gray-100);
+    background-color: var(--cor-superficie-realce);
   }
 
   .detalhes__editar:hover {
-    color: var(--color-teal-800);
+    color: var(--cor-sucesso-texto);
   }
 }
 

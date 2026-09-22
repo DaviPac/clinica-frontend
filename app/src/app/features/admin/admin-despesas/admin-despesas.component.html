@@ -43,9 +43,9 @@
               </td>
               <td>
                 @if (d.categoria === 'FIXA') {
-                  <app-selo tom="azul">Fixa</app-selo>
+                  <app-selo tom="info">Fixa</app-selo>
                 } @else {
-                  <app-selo tom="ambar">Variável</app-selo>
+                  <app-selo tom="aviso">Variável</app-selo>
                 }
               </td>
               <td class="despesas__acoes">
@@ -58,7 +58,7 @@
                     {{ pagando() === d.id ? '...' : 'Marcar pago' }}
                   </button>
                 } @else {
-                  <app-selo tom="teal">Paga</app-selo>
+                  <app-selo tom="sucesso">Paga</app-selo>
                 }
               </td>
             </tr>
