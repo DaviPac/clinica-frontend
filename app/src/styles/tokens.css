@@ -1,0 +1,223 @@
+/* ════════════════════════════════════════════════════════════════════
+   TOKENS DE DESIGN
+   ────────────────────────────────────────────────────────────────────
+   Só o que muda de um tema para o outro — cores, sombras e brilhos —,
+   mais as famílias de fonte. Espaçamento, tamanho de fonte e raio são
+   valores literais no CSS de cada componente.
+
+   O tema ativo é escolhido pelo atributo `data-theme` no <html>:
+
+     <html data-theme="claro">   → tema claro
+     <html data-theme="escuro">  → tema escuro
+
+   Quem define o atributo é o `TemaService` (e o script inline do
+   index.html, que roda antes da aplicação para evitar flash).
+
+   Os nomes dizem o papel, não a cor:
+
+     --cor-fundo, --cor-superficie…   onde as coisas assentam
+     --cor-borda, --cor-divisor…      linhas
+     --cor-texto…                      do título ao texto desabilitado
+     --cor-marca…                      a identidade da clínica
+     --cor-<tom>-<papel>               estados: info, sucesso, aviso,
+                                       perigo e destaque, cada um com
+                                       fundo · realce · borda · solido
+                                       · texto (e forte, nos que pintam
+                                       botões: marca, sucesso e perigo)
+   ══════════════════════════════════════════════════════════════════ */
+
+:root {
+  --fonte-texto: ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  --fonte-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    'Liberation Mono', 'Courier New', monospace;
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   TEMA CLARO — rosé sobre neutros quentes
+   ══════════════════════════════════════════════════════════════════ */
+:root,
+[data-theme='claro'] {
+  color-scheme: light;
+
+  /* ── Superfícies ── */
+  --cor-fundo: #fafaf9;
+  --cor-superficie: #fff;
+  --cor-superficie-suave: #fafaf9;
+  --cor-superficie-realce: #f5f5f4;
+  --cor-superficie-forte: #e7e5e4; /* trilho de switch, botão neutro preenchido */
+
+  /* ── Linhas ── */
+  --cor-divisor: #f5f5f4;
+  --cor-borda: #e7e5e4;
+  --cor-borda-forte: #d6d3d1;
+  --cor-filete: rgb(0 0 0 / 0.06);
+
+  /* ── Texto ── */
+  --cor-texto-pagina: #000; /* o tema claro nunca definiu cor no body: herda o preto */
+  --cor-texto: #1c1917;
+  --cor-texto-secundario: #57534d;
+  --cor-texto-suave: #79716b;
+  --cor-texto-apagado: #a6a09b;
+  --cor-texto-desabilitado: #d6d3d1;
+
+  /* ── Marca ── */
+  --cor-marca-fundo: #f2eeed;
+  --cor-marca-borda: #e4d6d4;
+  --cor-marca: #bca8a5;
+  --cor-marca-forte: #a99390;
+  --cor-marca-texto: #675350; /* o tom mais escuro: legível sobre o fundo rosé */
+
+  /* ── Estados ── */
+  --cor-info-fundo: #eff6ff;
+  --cor-info-realce: #dbeafe;
+  --cor-info-borda: #bedbff;
+  --cor-info-solido: #155dfc;
+  --cor-info-texto: #1447e6;
+
+  --cor-sucesso-fundo: #f0fdfa;
+  --cor-sucesso-realce: #cbfbf1;
+  --cor-sucesso-borda: #96f7e4;
+  --cor-sucesso-solido: #009689;
+  --cor-sucesso-forte: #00786f;
+  --cor-sucesso-texto: #00786f;
+
+  --cor-aviso-fundo: #fffbeb;
+  --cor-aviso-realce: #fef3c6;
+  --cor-aviso-borda: #fee685;
+  --cor-aviso-solido: #e17100;
+  --cor-aviso-texto: #bb4d00;
+
+  --cor-perigo-fundo: #fef2f2;
+  --cor-perigo-realce: #ffe2e2;
+  --cor-perigo-borda: #ffc9c9;
+  --cor-perigo-solido: #e7000b;
+  --cor-perigo-forte: #c10007;
+  --cor-perigo-texto: #c10007;
+
+  --cor-destaque-fundo: #f5f3ff;
+  --cor-destaque-realce: #ede9fe;
+  --cor-destaque-borda: #ddd6ff;
+  --cor-destaque-solido: #7f22fe;
+  --cor-destaque-texto: #7008e7;
+
+  /* ── Controles: campos e botão de contorno ── */
+  --cor-controle: #fff;
+  --cor-controle-hover: #fafaf9;
+  --cor-controle-borda-hover: #e7e5e4;
+  --cor-pino: #fff;
+
+  /* ── Leitura longa: o markdown do assistente ── */
+  --cor-leitura: #292524;
+  --cor-leitura-suave: #57534d;
+  --cor-codigo-inline: #292524;
+  --cor-codigo-fundo: #1c1917;
+  --cor-codigo-texto: #f5f5f4;
+  --cor-codigo-borda: transparent;
+
+  /* ── Sombras e brilhos ── */
+  --sombra-elemento: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --sombra-cartao: none;
+  --sombra-flutuante: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --sombra-modal: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --brilho-fundo: none;
+  --brilho-marca: transparent;
+  --brilho-hover-cartao: 0.97;
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   TEMA ESCURO "NEBULA" — slate quase preto + acento índigo elétrico
+   ══════════════════════════════════════════════════════════════════ */
+[data-theme='escuro'] {
+  color-scheme: dark;
+
+  /* ── Superfícies ── */
+  --cor-fundo: #0a0e16;
+  --cor-superficie: #121926;
+  --cor-superficie-suave: #1a2231;
+  --cor-superficie-realce: #212b3b;
+  --cor-superficie-forte: #2b3648;
+
+  /* ── Linhas ── */
+  --cor-divisor: #212b3b;
+  --cor-borda: #2b3648;
+  --cor-borda-forte: #4a5870;
+  --cor-filete: rgb(255 255 255 / 0.07);
+
+  /* ── Texto ── */
+  --cor-texto-pagina: #b2bdcd;
+  --cor-texto: #f0f4fa;
+  --cor-texto-secundario: #b2bdcd;
+  --cor-texto-suave: #97a4b8;
+  --cor-texto-apagado: #7c8aa0;
+  --cor-texto-desabilitado: #4a5870;
+
+  /* ── Marca ── */
+  --cor-marca-fundo: #1a1f4d;
+  --cor-marca-borda: #2f3a8f;
+  --cor-marca: #4b5bf5;
+  --cor-marca-forte: #6470ff;
+  --cor-marca-texto: #a5abff;
+
+  /* ── Estados ── */
+  --cor-info-fundo: #101f3d;
+  --cor-info-realce: #162b52;
+  --cor-info-borda: #1f3f77;
+  --cor-info-solido: #3b82f6;
+  --cor-info-texto: #93c5fd;
+
+  --cor-sucesso-fundo: #0b2a2a;
+  --cor-sucesso-realce: #123b39;
+  --cor-sucesso-borda: #1c5450;
+  --cor-sucesso-solido: #0d9488;
+  --cor-sucesso-forte: #14b8a6;
+  --cor-sucesso-texto: #2dd4bf;
+
+  --cor-aviso-fundo: #2b2008;
+  --cor-aviso-realce: #3b2c0a;
+  --cor-aviso-borda: #56410f;
+  --cor-aviso-solido: #f59e0b;
+  --cor-aviso-texto: #fcd34d;
+
+  --cor-perigo-fundo: #2a1218;
+  --cor-perigo-realce: #3a171e;
+  --cor-perigo-borda: #522029;
+  --cor-perigo-solido: #e5484d;
+  --cor-perigo-forte: #f05a5f;
+  --cor-perigo-texto: #ff8085;
+
+  --cor-destaque-fundo: #1d1638;
+  --cor-destaque-realce: #281f4f;
+  --cor-destaque-borda: #392c73;
+  --cor-destaque-solido: #a78bfa;
+  --cor-destaque-texto: #c9b8ff;
+
+  /*
+   * No escuro os campos e o botão de contorno precisam de superfície
+   * própria: transparente sobre cartão escuro não se distingue da borda.
+   */
+  --cor-controle: #1a2231;
+  --cor-controle-hover: #212b3b;
+  --cor-controle-borda-hover: #4a5870;
+  --cor-pino: #e2e8f2;
+
+  /* ── Leitura longa ── */
+  --cor-leitura: #b2bdcd;
+  --cor-leitura-suave: #97a4b8;
+  --cor-codigo-inline: #67e8f9;
+  --cor-codigo-fundo: #080c14;
+  --cor-codigo-texto: #c9d3e0;
+  --cor-codigo-borda: #2b3648;
+
+  /* ── Sombras e brilhos: mais profundas, porque o fundo é escuro ── */
+  --sombra-elemento: 0 1px 3px 0 rgb(0 0 0 / 0.5), 0 1px 2px -1px rgb(0 0 0 / 0.4);
+  --sombra-cartao: var(--sombra-elemento);
+  --sombra-flutuante: 0 12px 28px -8px rgb(0 0 0 / 0.65), 0 4px 10px -4px rgb(0 0 0 / 0.45);
+  --sombra-modal: 0 24px 48px -12px rgb(0 0 0 / 0.7);
+  --brilho-fundo:
+    radial-gradient(60rem 38rem at 10% -8%, rgb(75 91 245 / 0.2), transparent 60%),
+    radial-gradient(48rem 32rem at 100% -5%, rgb(34 211 238 / 0.12), transparent 58%),
+    radial-gradient(44rem 44rem at 75% 115%, rgb(139 92 246 / 0.12), transparent 60%);
+  --brilho-marca: rgb(75 91 245 / 0.35);
+  --brilho-hover-cartao: 1.18;
+}

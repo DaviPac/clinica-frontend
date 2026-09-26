@@ -1,0 +1,123 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--cor-superficie);
+}
+
+/* Fica grudado no topo ao rolar a lista de sessões da coluna */
+.coluna__cabecalho {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--cor-divisor);
+  background-color: var(--cor-superficie);
+}
+
+.coluna__dia {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.coluna__nome {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--cor-texto-apagado);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.coluna__numero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9999px;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: 500;
+  color: var(--cor-texto-secundario);
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.coluna__numero--hoje {
+  background-color: var(--cor-marca);
+  font-weight: 700;
+  color: #fff;
+}
+
+/* A data por extenso só existe no mobile, onde a coluna ocupa a largura toda */
+.coluna__data {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: var(--cor-texto-apagado);
+}
+
+.coluna__contador {
+  padding-inline: 0.375rem;
+  padding-block: 1px;
+  border-radius: 9999px;
+  background-color: var(--cor-marca-fundo);
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--cor-marca-texto);
+}
+
+.coluna__sessoes {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0.75rem;
+}
+
+.coluna__vazio {
+  padding-block: 0.75rem;
+  font-size: 10px;
+  text-align: center;
+  color: var(--cor-texto-desabilitado);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+@media (width >= 40rem) {
+  .coluna__cabecalho {
+    padding-block: 0.625rem;
+  }
+
+  .coluna__numero {
+    width: 1.75rem;
+    height: 1.75rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+
+  .coluna__data {
+    display: none;
+  }
+
+  .coluna__sessoes {
+    gap: 0.375rem;
+    padding: 0.5rem;
+  }
+
+  .coluna__vazio {
+    padding-block: 1.5rem;
+  }
+}
+
+@media (width >= 64rem) {
+  :host {
+    max-height: calc(100vh - 220px);
+  }
+}

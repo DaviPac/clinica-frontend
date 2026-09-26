@@ -4,12 +4,20 @@ import { AlertComponent } from '../../../shared/components/alert/alert.component
 import { StatusBadgeComponent } from '../../../shared/components/status-badge/status-badge.component';
 import { FiltroProfissionalComponent } from '../../../shared/components/filtro-profissional/filtro-profissional.component';
 import { FinanceiroService, RelatorioSessoes } from '../../../core/services/financeiro/financeiro.service';
+import { PaginaComponent } from '../../../shared/ui/pagina/pagina.component';
+import { CabecalhoPaginaComponent } from '../../../shared/ui/cabecalho-pagina/cabecalho-pagina.component';
+import { CampoComponent } from '../../../shared/ui/campo/campo.component';
+import { BotaoComponent } from '../../../shared/ui/botao/botao.component';
+import { EstatisticaComponent } from '../../../shared/ui/estatistica/estatistica.component';
+import { TabelaComponent } from '../../../shared/ui/tabela/tabela.component';
+import { VazioComponent } from '../../../shared/ui/vazio/vazio.component';
 
 @Component({
   selector: 'app-admin-relatorio-sessoes',
   standalone: true,
-  imports: [CommonModule, AlertComponent, StatusBadgeComponent, FiltroProfissionalComponent],
+  imports: [CommonModule, AlertComponent, StatusBadgeComponent, FiltroProfissionalComponent, PaginaComponent, CabecalhoPaginaComponent, CampoComponent, BotaoComponent, EstatisticaComponent, TabelaComponent, VazioComponent],
   templateUrl: './admin-relatorio-sessoes.component.html',
+  styleUrl: './admin-relatorio-sessoes.component.css',
 })
 export class AdminRelatorioSessoesComponent {
   relatorio = signal<RelatorioSessoes | null>(null);

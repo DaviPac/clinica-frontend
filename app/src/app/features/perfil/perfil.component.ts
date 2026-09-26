@@ -2,12 +2,22 @@ import { Component, computed, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators, FormGroup, AbstractControl, ValidationErrors } from '@angular/forms';
 import { AuthService } from '../../core/services/auth/auth.service';
+import { SeletorTemaComponent } from '../../shared/components/seletor-tema/seletor-tema.component';
+import { PaginaComponent } from '../../shared/ui/pagina/pagina.component';
+import { CartaoComponent } from '../../shared/ui/cartao/cartao.component';
+import { AvatarComponent } from '../../shared/ui/avatar/avatar.component';
+import { SeloComponent } from '../../shared/ui/selo/selo.component';
+import { ItemDescricaoComponent } from '../../shared/ui/item-descricao/item-descricao.component';
+import { BotaoComponent } from '../../shared/ui/botao/botao.component';
+import { AlertComponent } from '../../shared/components/alert/alert.component';
+import { CampoSenhaComponent } from '../../shared/ui/campo-senha/campo-senha.component';
 
 @Component({
   selector: 'app-perfil',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, SeletorTemaComponent, PaginaComponent, CartaoComponent, AvatarComponent, SeloComponent, ItemDescricaoComponent, BotaoComponent, AlertComponent, CampoSenhaComponent],
   templateUrl: './perfil.component.html',
+  styleUrl: './perfil.component.css',
 })
 export class PerfilComponent {
   salvando = signal(false);

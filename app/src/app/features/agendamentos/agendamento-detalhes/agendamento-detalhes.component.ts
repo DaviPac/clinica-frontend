@@ -10,24 +10,30 @@ import { PacienteService } from '../../../core/services/paciente/paciente.servic
 import { UsuarioService } from '../../../core/services/usuario/usuario.service';
 import { ServicoService } from '../../../core/services/servico/servico.service';
 
-import { StatusBadgeComponent } from '../../../shared/components/status-badge/status-badge.component';
 import { AgendamentosStatusModalComponent } from '../agendamentos-status-modal/agendamentos-status-modal.component';
 import { formatarDataHora, formatarHora, toRFC3339Brasilia } from '../../../core/utils/data.utils';
 import { AlertComponent } from '../../../shared/components/alert/alert.component';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
+import { DetalheAcoesComponent } from '../detalhe-acoes/detalhe-acoes.component';
+import { DetalheEstadoComponent } from '../detalhe-estado/detalhe-estado.component';
 import { ModalComponent } from '../../../shared/components/modal/modal.component';
+import { PaginaComponent } from '../../../shared/ui/pagina/pagina.component';
+import { CartaoComponent } from '../../../shared/ui/cartao/cartao.component';
+import { ItemDescricaoComponent } from '../../../shared/ui/item-descricao/item-descricao.component';
+import { BotaoComponent } from '../../../shared/ui/botao/botao.component';
+import { CampoComponent } from '../../../shared/ui/campo/campo.component';
+import { CampoFormComponent } from '../../../shared/ui/campo-form/campo-form.component';
+import { DestaqueValorComponent } from '../../../shared/ui/destaque-valor/destaque-valor.component';
+import { CaixaMarcacaoComponent } from '../../../shared/ui/caixa-marcacao/caixa-marcacao.component';
 
 @Component({
   selector: 'app-agendamento-detalhes',
   standalone: true,
-  imports: [
-    CommonModule,
-    StatusBadgeComponent,
+  imports: [CommonModule,
     AgendamentosStatusModalComponent,
     AlertComponent,
     ConfirmDialogComponent,
-    ModalComponent,
-  ],
+    ModalComponent, DetalheAcoesComponent, DetalheEstadoComponent, PaginaComponent, CartaoComponent, ItemDescricaoComponent, BotaoComponent, CampoComponent, CampoFormComponent, DestaqueValorComponent, CaixaMarcacaoComponent],
   templateUrl: './agendamento-detalhes.component.html',
   styleUrl: './agendamento-detalhes.component.css' // Opcional, pode usar o mesmo CSS da lista se desejar global
 })

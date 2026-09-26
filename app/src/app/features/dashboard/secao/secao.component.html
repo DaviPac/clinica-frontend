@@ -1,0 +1,19 @@
+@if (titulo()) {
+  <div class="secao__cabecalho">
+    <div class="secao__identidade">
+      <div class="secao__marca"></div>
+      <h2 class="secao__titulo">{{ titulo() }}</h2>
+    </div>
+
+    @if (contador() !== null) {
+      <span class="secao__contador">{{ contador() }}</span>
+    }
+    <ng-content select="[acao]" />
+  </div>
+
+  @if (nota()) {
+    <p class="secao__nota">{{ nota() }}</p>
+  }
+}
+
+<ng-content />

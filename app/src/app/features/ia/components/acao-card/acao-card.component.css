@@ -1,0 +1,51 @@
+.acao {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+/*
+ * O link tem a mesma cara do botão de contorno, mas não pode ser um
+ * <button>: navegar é papel de âncora.
+ */
+.acao__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: fit-content;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--cor-borda);
+  border-radius: 0.5rem;
+  background-color: var(--cor-controle);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  text-decoration: none;
+  color: var(--cor-texto-secundario);
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+button.acao__botao {
+  width: fit-content;
+  gap: 0.5rem;
+}
+
+.acao__icone {
+  width: 1rem;
+  height: 1rem;
+}
+
+.acao__erro {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: var(--cor-perigo-solido);
+}
+
+@media (hover: hover) {
+  .acao__link:hover {
+    border-color: var(--cor-controle-borda-hover);
+    background-color: var(--cor-controle-hover);
+  }
+}

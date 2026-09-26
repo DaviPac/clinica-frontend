@@ -4,6 +4,7 @@ import { Component, ElementRef, input, output, signal, viewChild } from '@angula
   selector: 'app-chat-composer',
   standalone: true,
   templateUrl: './chat-composer.component.html',
+  styleUrl: './chat-composer.component.css',
 })
 export class ChatComposerComponent {
   readonly ocupado = input(false);

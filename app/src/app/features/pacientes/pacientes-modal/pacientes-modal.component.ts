@@ -6,12 +6,16 @@ import { AuthService } from '../../../core/services/auth/auth.service';
 import { UsuarioService } from '../../../core/services/usuario/usuario.service';
 import { ModalComponent } from '../../../shared/components/modal/modal.component';
 import { AlertComponent } from '../../../shared/components/alert/alert.component';
+import { BotaoComponent } from '../../../shared/ui/botao/botao.component';
+import { CampoComponent } from '../../../shared/ui/campo/campo.component';
+import { CampoFormComponent } from '../../../shared/ui/campo-form/campo-form.component';
 
 @Component({
   selector: 'app-pacientes-modal',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ModalComponent, AlertComponent],
+  imports: [CommonModule, ReactiveFormsModule, ModalComponent, AlertComponent, BotaoComponent, CampoComponent, CampoFormComponent],
   templateUrl: './pacientes-modal.component.html',
+  styleUrl: './pacientes-modal.component.css',
 })
 export class PacientesModalComponent implements OnInit {
   private authService = inject(AuthService);

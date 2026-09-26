@@ -1,0 +1,24 @@
+:host {
+  display: block;
+}
+
+.item__rotulo {
+  margin-bottom: 0.25rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: var(--cor-texto-suave);
+}
+
+.item__valor {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--cor-texto);
+}
+
+:host([data-fonte='mono']) .item__valor {
+  font-family: var(--fonte-mono);
+}
+
+:host([data-peso='forte']) .item__valor {
+  font-weight: 500;
+}

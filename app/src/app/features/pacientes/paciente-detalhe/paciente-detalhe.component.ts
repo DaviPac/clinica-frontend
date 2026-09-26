@@ -6,12 +6,19 @@ import { AuthService } from '../../../core/services/auth/auth.service';
 import { Paciente } from '../../../core/models/paciente.model';
 import { AlertComponent } from '../../../shared/components/alert/alert.component';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
+import { PaginaComponent } from '../../../shared/ui/pagina/pagina.component';
+import { LinkVoltarComponent } from '../../../shared/ui/link-voltar/link-voltar.component';
+import { CarregandoComponent } from '../../../shared/ui/carregando/carregando.component';
+import { CartaoComponent } from '../../../shared/ui/cartao/cartao.component';
+import { AvatarComponent } from '../../../shared/ui/avatar/avatar.component';
+import { ItemDescricaoComponent } from '../../../shared/ui/item-descricao/item-descricao.component';
 
 @Component({
   selector: 'app-paciente-detalhe',
   standalone: true,
-  imports: [CommonModule, RouterModule, AlertComponent, ConfirmDialogComponent],
+  imports: [CommonModule, RouterModule, AlertComponent, ConfirmDialogComponent, PaginaComponent, LinkVoltarComponent, CarregandoComponent, CartaoComponent, AvatarComponent, ItemDescricaoComponent],
   templateUrl: './paciente-detalhe.component.html',
+  styleUrl: './paciente-detalhe.component.css',
 })
 export class PacienteDetalheComponent implements OnInit {
   private route = inject(ActivatedRoute);

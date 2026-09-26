@@ -1,0 +1,36 @@
+:host {
+  /* inline, e não inline-block: dentro de uma célula de tabela o padding
+     vertical de um inline-block entraria na altura da linha. */
+  display: inline;
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+:host([data-tamanho='miudo']) {
+  border-radius: 0.375rem;
+  font-size: 11px;
+  /* a mesma proporção do selo padrão (0.75rem sobre 1rem) */
+  line-height: calc(4 / 3);
+}
+
+:host([data-formato='pilula']) {
+  border-radius: 9999px;
+}
+
+:host([data-tom='neutro'])   { background-color: var(--cor-superficie-realce); color: var(--cor-texto-secundario); }
+:host([data-tom='marca'])    { background-color: var(--cor-marca-fundo);       color: var(--cor-marca-texto); }
+:host([data-tom='info'])     { background-color: var(--cor-info-fundo);        color: var(--cor-info-texto); }
+:host([data-tom='sucesso'])  { background-color: var(--cor-sucesso-fundo);     color: var(--cor-sucesso-texto); }
+:host([data-tom='aviso'])    { background-color: var(--cor-aviso-fundo);       color: var(--cor-aviso-texto); }
+:host([data-tom='perigo'])   { background-color: var(--cor-perigo-fundo);      color: var(--cor-perigo-texto); }
+:host([data-tom='destaque']) { background-color: var(--cor-destaque-fundo);    color: var(--cor-destaque-texto); }
+
+/* O anel usa box-shadow para não alterar a caixa do selo. */
+:host([data-anel='sim'][data-tom='neutro'])   { box-shadow: 0 0 0 1px var(--cor-divisor); }
+:host([data-anel='sim'][data-tom='sucesso'])  { box-shadow: 0 0 0 1px var(--cor-sucesso-realce); }
+:host([data-anel='sim'][data-tom='aviso'])    { box-shadow: 0 0 0 1px var(--cor-aviso-realce); }
+:host([data-anel='sim'][data-tom='destaque']) { box-shadow: 0 0 0 1px var(--cor-destaque-realce); }

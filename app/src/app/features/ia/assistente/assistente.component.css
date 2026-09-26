@@ -1,0 +1,186 @@
+/*
+ * A página é dona do próprio scroll: o <main> do shell já rola, então sem
+ * height/min-height aqui o composer flutuaria no meio do documento.
+ */
+:host {
+  display: flex;
+  height: 100%;
+  min-height: 0;
+}
+
+.assistente {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  background-color: var(--cor-superficie);
+}
+
+/* Escurece a conversa enquanto a lista está aberta no mobile */
+.assistente__cortina {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  background-color: rgb(0 0 0 / 0.3);
+}
+
+/* ──────────────────────────────────────────────
+   Lista de conversas — gaveta no mobile
+─────────────────────────────────────────────── */
+.assistente__lateral {
+  position: fixed;
+  inset-block: 0;
+  left: 0;
+  z-index: 30;
+  flex-shrink: 0;
+  width: 18rem;
+  border-right: 1px solid var(--cor-borda);
+  transform: translateX(-100%);
+  transition: transform 0.2s ease;
+}
+
+.assistente__lateral--aberta {
+  transform: translateX(0);
+}
+
+/* ──────────────────────────────────────────────
+   Coluna da conversa
+─────────────────────────────────────────────── */
+.assistente__conversa {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+.assistente__topo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+  padding: 0.625rem 0.75rem;
+  border-bottom: 1px solid var(--cor-borda);
+}
+
+.assistente__alternar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border: none;
+  border-radius: 0.5rem;
+  background-color: transparent;
+  color: var(--cor-texto-apagado);
+  cursor: pointer;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.assistente__alternar-icone {
+  width: 1rem;
+  height: 1rem;
+}
+
+.assistente__titulo {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  color: var(--cor-texto);
+}
+
+.assistente__rolagem {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.assistente__fluxo {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 100%;
+  max-width: 48rem;
+  margin-inline: auto;
+  padding: 1.5rem 1rem;
+}
+
+/* ──────────────────────────────────────────────
+   Fluxo de mensagens
+─────────────────────────────────────────────── */
+/* Alinha o cartão de ferramenta com o texto da resposta, não com o avatar */
+.assistente__recuo {
+  padding-left: 2.5rem;
+}
+
+.assistente__pensando {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding-left: 2.5rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: var(--cor-texto-apagado);
+}
+
+.assistente__pontos {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.assistente__ponto {
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: 9999px;
+  background-color: var(--cor-borda-forte);
+  animation: bounce 1s infinite;
+}
+
+/* O atraso negativo põe os três pontos em fases diferentes do salto */
+.assistente__ponto:nth-child(1) { animation-delay: -0.3s; }
+.assistente__ponto:nth-child(2) { animation-delay: -0.15s; }
+
+.assistente__composer {
+  flex-shrink: 0;
+  border-top: 1px solid var(--cor-borda);
+  background-color: var(--cor-superficie);
+}
+
+@media (hover: hover) {
+  .assistente__alternar:hover {
+    background-color: var(--cor-superficie-realce);
+    color: var(--cor-texto-secundario);
+  }
+}
+
+@media (width >= 40rem) {
+  .assistente__topo {
+    padding-inline: 1rem;
+  }
+
+  .assistente__fluxo {
+    padding-inline: 1.5rem;
+  }
+}
+
+/* A partir de `lg` a lista ocupa lugar no fluxo, sem gaveta nem cortina */
+@media (width >= 64rem) {
+  .assistente__cortina {
+    display: none;
+  }
+
+  .assistente__lateral {
+    display: none;
+  }
+
+  .assistente__lateral--aberta {
+    position: static;
+    display: block;
+    transform: none;
+  }
+}

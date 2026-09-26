@@ -2,6 +2,13 @@ import { Component, OnInit, computed, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AlertComponent } from '../../../shared/components/alert/alert.component';
 import { FinanceiroService, RelatorioFinanceiro } from '../../../core/services/financeiro/financeiro.service';
+import { PaginaComponent } from '../../../shared/ui/pagina/pagina.component';
+import { CabecalhoPaginaComponent } from '../../../shared/ui/cabecalho-pagina/cabecalho-pagina.component';
+import { CampoComponent } from '../../../shared/ui/campo/campo.component';
+import { CarregandoComponent } from '../../../shared/ui/carregando/carregando.component';
+import { EstatisticaComponent } from '../../../shared/ui/estatistica/estatistica.component';
+import { TabelaComponent } from '../../../shared/ui/tabela/tabela.component';
+import { VazioComponent } from '../../../shared/ui/vazio/vazio.component';
 
 type Direcao = 'CLINICA_PAGA' | 'PROFISSIONAL_PAGA' | 'MISTO' | 'NENHUM';
 
@@ -11,8 +18,9 @@ type LinhaRelatorio = ProfissionalRelatorio & { direcao: Direcao };
 @Component({
   selector: 'app-admin-relatorio',
   standalone: true,
-  imports: [CommonModule, AlertComponent],
+  imports: [CommonModule, AlertComponent, PaginaComponent, CabecalhoPaginaComponent, CampoComponent, CarregandoComponent, EstatisticaComponent, TabelaComponent, VazioComponent],
   templateUrl: './admin-relatorio.component.html',
+  styleUrl: './admin-relatorio.component.css',
 })
 export class AdminRelatorioComponent implements OnInit {
   relatorio = signal<RelatorioFinanceiro | null>(null);
@@ -67,14 +75,15 @@ export class AdminRelatorioComponent implements OnInit {
       NENHUM: '—',
     }[d];
   }
-
-  classeDirecao(d: Direcao) {
-    return {
-      CLINICA_PAGA: 'bg-teal-50 text-teal-700 ring-1 ring-teal-100',
-      PROFISSIONAL_PAGA: 'bg-amber-50 text-amber-700 ring-1 ring-amber-100',
-      MISTO: 'bg-purple-50 text-purple-700 ring-1 ring-purple-100',
-      NENHUM: 'bg-gray-50 text-gray-400 ring-1 ring-gray-100',
-    }[d];
+  /** Modificador visual do selo de fluxo. */
+  classeDirecao(d: Direcao): string {
+    const classes = {
+      CLINICA_PAGA: 'relatorio__fluxo--clinica',
+      PROFISSIONAL_PAGA: 'relatorio__fluxo--profissional',
+      MISTO: 'relatorio__fluxo--misto',
+      NENHUM: 'relatorio__fluxo--nenhum',
+    } as const;
+    return classes[d];
   }
 
   formatarValor(v: number) {

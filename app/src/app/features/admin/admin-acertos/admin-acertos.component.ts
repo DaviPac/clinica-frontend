@@ -8,6 +8,11 @@ import { Usuario } from '../../../core/models/usuario.model';
 import { ToggleComponent } from '../../../shared/components/toggle/toggle.component';
 import { AlertComponent } from '../../../shared/components/alert/alert.component';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
+import { PaginaComponent } from '../../../shared/ui/pagina/pagina.component';
+import { CampoComponent } from '../../../shared/ui/campo/campo.component';
+import { CarregandoComponent } from '../../../shared/ui/carregando/carregando.component';
+import { VazioComponent } from '../../../shared/ui/vazio/vazio.component';
+import { SeloComponent } from '../../../shared/ui/selo/selo.component';
 
 interface AcertoEnriquecido extends AcertoComissao {
   nome_profissional: string;
@@ -24,8 +29,9 @@ interface RepasseSelecionado {
 @Component({
   selector: 'app-admin-acertos',
   standalone: true,
-  imports: [CommonModule, ToggleComponent, AlertComponent, ConfirmDialogComponent],
+  imports: [CommonModule, ToggleComponent, AlertComponent, ConfirmDialogComponent, PaginaComponent, CampoComponent, CarregandoComponent, VazioComponent, SeloComponent],
   templateUrl: './admin-acertos.component.html',
+  styleUrl: './admin-acertos.component.css',
 })
 export class AdminAcertosComponent implements OnInit {
   private usuarios = signal<Usuario[]>([]);

@@ -1,0 +1,32 @@
+@if (status() !== 'CANCELADO') {
+  <button type="button" class="acao" (click)="alterarStatus.emit()">
+    Alterar Status
+  </button>
+}
+
+@if (status() === 'AGENDADO') {
+  <button type="button" class="acao" (click)="reagendar.emit()">
+    Reagendar
+  </button>
+}
+
+@if (podeAlternarPagamento()) {
+  <button
+    type="button"
+    class="acao"
+    [class.acao--desmarcar]="pago()"
+    [class.acao--pagar]="!pago()"
+    [disabled]="atualizandoPagamento()"
+    (click)="alternarPagamento.emit()">
+    {{ atualizandoPagamento() ? 'Atualizando...' : (pago() ? 'Desmarcar Pagamento' : 'Marcar como Pago') }}
+  </button>
+}
+
+@if (status() === 'AGENDADO' && temSerie()) {
+  <button
+    type="button"
+    class="acao acao--desmarcar acao--serie"
+    (click)="cancelarSerie.emit()">
+    Cancelar Série
+  </button>
+}

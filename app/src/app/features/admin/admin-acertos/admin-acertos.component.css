@@ -1,0 +1,226 @@
+.acertos {
+  position: relative;
+}
+
+/* ── Cabeçalho próprio: o resumo é condicional e mora dentro dele ── */
+.acertos__cabecalho {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.acertos__titulos {
+  min-width: 0;
+}
+
+.acertos__titulo {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  font-weight: 500;
+  color: var(--cor-texto);
+}
+
+.acertos__resumo {
+  margin-top: 0.125rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--cor-texto-suave);
+}
+
+.acertos__controles {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+  gap: 0.75rem;
+}
+
+.acertos__periodo {
+  width: auto;
+}
+
+.acertos__alerta {
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.acertos__lista {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* ── Cartões de pendência e de histórico ── */
+.acertos__pendente {
+  padding: 1rem;
+  border: 1px solid var(--cor-aviso-borda);
+  border-radius: 0.75rem;
+  background-color: var(--cor-aviso-fundo);
+  transition: background-color 0.15s ease;
+}
+
+.acertos__historico {
+  padding: 1rem;
+  border: 1px solid var(--cor-borda);
+  border-radius: 0.75rem;
+  background-color: var(--cor-superficie);
+  transition: background-color 0.15s ease;
+}
+
+.acertos__topo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.acertos__pendente .acertos__topo {
+  margin-bottom: 1rem;
+}
+
+.acertos__quem {
+  min-width: 0;
+}
+
+.acertos__nome {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  color: var(--cor-texto);
+}
+
+.acertos__referencia {
+  margin-top: 0.125rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: var(--cor-texto-suave);
+}
+
+.acertos__numeros {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 1rem;
+  row-gap: 0.25rem;
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: var(--cor-texto-secundario);
+}
+
+.acertos__montante {
+  flex-shrink: 0;
+}
+
+.acertos__montante-rotulo {
+  margin-bottom: 0.125rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: var(--cor-texto-suave);
+}
+
+.acertos__montante-valor {
+  font-family: var(--fonte-mono);
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  font-weight: 500;
+  color: var(--cor-aviso-texto);
+}
+
+.acertos__pago {
+  font-family: var(--fonte-mono);
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  font-weight: 500;
+  color: var(--cor-texto);
+}
+
+.acertos__selo {
+  display: inline-block;
+  margin-top: 0.25rem;
+}
+
+/* ── Botões de registrar repasse ── */
+.acertos__acoes {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.acertos__registrar {
+  width: 100%;
+  padding-block: 0.5rem;
+  border: none;
+  border-radius: 0.5rem;
+  background-color: var(--cor-sucesso-solido);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.acertos__registrar:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ── Confirmação ── */
+.acertos__confirma {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.acertos__destaque {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  border: 1px solid var(--cor-divisor);
+  border-radius: 0.75rem;
+  background-color: var(--cor-superficie-suave);
+}
+
+.acertos__destaque-rotulo {
+  margin-bottom: 0.25rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  color: var(--cor-texto-suave);
+}
+
+.acertos__destaque-valor {
+  font-family: var(--fonte-mono);
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 500;
+  color: var(--cor-aviso-texto);
+}
+
+.acertos__aviso {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: var(--cor-perigo-solido);
+}
+
+@media (width >= 40rem) {
+  .acertos__cabecalho {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .acertos__topo {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+
+  .acertos__montante {
+    text-align: right;
+  }
+}

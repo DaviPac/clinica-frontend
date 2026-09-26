@@ -1,0 +1,152 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 4rem;
+  padding: 0.125rem;
+  background-color: var(--cor-superficie);
+}
+
+/* Preenchimento dos meses vizinhos */
+:host(.celula--fora) {
+  background-color: var(--cor-superficie-suave);
+}
+
+/* ──────────────────────────────────────────────
+   Mobile — a célula inteira é o alvo de toque
+─────────────────────────────────────────────── */
+.celula__toque {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  width: 100%;
+  padding-top: 0.25rem;
+  border: none;
+  border-radius: 0.5rem;
+  background-color: transparent;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.celula__toque:active {
+  background-color: var(--cor-marca-fundo);
+}
+
+.celula__toque:disabled {
+  cursor: default;
+}
+
+.celula__toque:disabled:active {
+  background-color: transparent;
+}
+
+/* ── Número do dia ── */
+.celula__numero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: var(--cor-texto-secundario);
+}
+
+.celula__numero--desktop {
+  width: 1.5rem;
+  height: 1.5rem;
+  font-weight: 500;
+  color: var(--cor-texto-suave);
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+/* Depois do modificador de desktop de propósito: hoje vence os dois tamanhos */
+.celula__numero--hoje {
+  background-color: var(--cor-marca);
+  font-weight: 700;
+  color: #fff;
+}
+
+/* ── Bolinhas de densidade (só no mobile) ── */
+.celula__pontos {
+  display: flex;
+  gap: 0.125rem;
+}
+
+.celula__ponto {
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: 9999px;
+}
+
+.celula__ponto--agendado  { background-color: var(--cor-info-solido); }
+.celula__ponto--realizado { background-color: var(--cor-sucesso-solido); }
+.celula__ponto--falta     { background-color: var(--cor-aviso-solido); }
+.celula__ponto--cancelado { background-color: var(--cor-texto-apagado); }
+
+.celula__extras {
+  font-size: 9px;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--cor-texto-apagado);
+}
+
+/* ──────────────────────────────────────────────
+   Desktop — cabeçalho e lista de sessões
+─────────────────────────────────────────────── */
+.celula__cabecalho {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.25rem;
+  padding-inline: 0.125rem;
+}
+
+.celula__contador {
+  padding-inline: 0.375rem;
+  padding-block: 1px;
+  border-radius: 9999px;
+  background-color: var(--cor-marca-fundo);
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--cor-marca-texto);
+}
+
+/*
+ * Rolagem própria: uma semana cheia não pode esticar a linha inteira
+ * da grade. A barra é fina porque a célula é estreita.
+ */
+.celula__eventos {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.25rem;
+  overflow-y: auto;
+  max-height: 260px;
+}
+
+.celula__eventos::-webkit-scrollbar       { width: 3px; }
+.celula__eventos::-webkit-scrollbar-track { background: transparent; }
+.celula__eventos::-webkit-scrollbar-thumb { background: var(--cor-borda-forte); border-radius: 2px; }
+
+@media (hover: hover) {
+  .celula__numero--desktop:not(.celula__numero--hoje):hover {
+    background-color: var(--cor-superficie-realce);
+  }
+}
+
+@media (width >= 40rem) {
+  :host {
+    min-height: 8.75rem;
+    padding: 0.375rem;
+  }
+}
+
+@media (width >= 64rem) {
+  :host {
+    min-height: 10rem;
+  }
+}

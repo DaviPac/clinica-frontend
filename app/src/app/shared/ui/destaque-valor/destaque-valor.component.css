@@ -1,0 +1,37 @@
+:host {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--cor-borda);
+  border-radius: 0.75rem;
+  background-color: var(--cor-superficie-suave);
+}
+
+.destaque__rotulo {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--cor-texto-secundario);
+}
+
+.destaque__valor {
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--cor-texto);
+}
+
+:host([data-tom='sucesso']) {
+  background-color: var(--cor-sucesso-fundo);
+  border-color: var(--cor-sucesso-realce);
+}
+:host([data-tom='sucesso']) .destaque__rotulo { color: var(--cor-sucesso-texto); }
+:host([data-tom='sucesso']) .destaque__valor  { color: var(--cor-sucesso-texto); }
+
+:host([data-tom='destaque']) {
+  background-color: var(--cor-destaque-fundo);
+  border-color: var(--cor-destaque-realce);
+}
+:host([data-tom='destaque']) .destaque__rotulo { color: var(--cor-destaque-texto); }
+:host([data-tom='destaque']) .destaque__valor  { color: var(--cor-destaque-texto); }

@@ -2,6 +2,7 @@ import { Component, inject, input, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AcaoChat } from '../../../../core/ia/models/ferramenta-ia.model';
 import { FinanceiroService } from '../../../../core/services/financeiro/financeiro.service';
+import { BotaoComponent } from '../../../../shared/ui/botao/botao.component';
 
 /**
  * Card de ação proposta pelo assistente.
@@ -12,8 +13,9 @@ import { FinanceiroService } from '../../../../core/services/financeiro/financei
 @Component({
   selector: 'app-acao-card',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, BotaoComponent],
   templateUrl: './acao-card.component.html',
+  styleUrl: './acao-card.component.css',
 })
 export class AcaoCardComponent {
   private readonly financeiro = inject(FinanceiroService);

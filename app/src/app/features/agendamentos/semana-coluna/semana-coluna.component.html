@@ -1,0 +1,19 @@
+<div class="coluna__cabecalho">
+  <div class="coluna__dia">
+    <span class="coluna__nome">{{ dia().nomeDia }}</span>
+    <span class="coluna__numero" [class.coluna__numero--hoje]="dia().isToday">{{ dia().diaNumero }}</span>
+    <span class="coluna__data">{{ dia().data | date:'dd/MM' }}</span>
+  </div>
+
+  @if (dia().agendamentos.length > 0) {
+    <span class="coluna__contador">{{ dia().agendamentos.length }}</span>
+  }
+</div>
+
+<div class="coluna__sessoes">
+  @for (ag of dia().agendamentos; track ag.id) {
+    <ng-container *ngTemplateOutlet="cardTpl(); context: { ag: ag }"></ng-container>
+  } @empty {
+    <p class="coluna__vazio">Sem sessões</p>
+  }
+</div>

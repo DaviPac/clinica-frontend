@@ -6,12 +6,22 @@ import { DespesaClinica } from '../../../core/models/financeiro.model';
 import { ToggleComponent } from '../../../shared/components/toggle/toggle.component';
 import { AlertComponent } from '../../../shared/components/alert/alert.component';
 import { ModalComponent } from '../../../shared/components/modal/modal.component';
+import { PaginaComponent } from '../../../shared/ui/pagina/pagina.component';
+import { CabecalhoPaginaComponent } from '../../../shared/ui/cabecalho-pagina/cabecalho-pagina.component';
+import { BotaoComponent } from '../../../shared/ui/botao/botao.component';
+import { CarregandoComponent } from '../../../shared/ui/carregando/carregando.component';
+import { TabelaComponent } from '../../../shared/ui/tabela/tabela.component';
+import { VazioComponent } from '../../../shared/ui/vazio/vazio.component';
+import { SeloComponent } from '../../../shared/ui/selo/selo.component';
+import { CampoFormComponent } from '../../../shared/ui/campo-form/campo-form.component';
+import { CampoComponent } from '../../../shared/ui/campo/campo.component';
 
 @Component({
   selector: 'app-admin-despesas',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ToggleComponent, AlertComponent, ModalComponent],
+  imports: [CommonModule, ReactiveFormsModule, ToggleComponent, AlertComponent, ModalComponent, PaginaComponent, CabecalhoPaginaComponent, BotaoComponent, CarregandoComponent, TabelaComponent, VazioComponent, SeloComponent, CampoFormComponent, CampoComponent],
   templateUrl: './admin-despesas.component.html',
+  styleUrl: './admin-despesas.component.css',
 })
 export class AdminDespesasComponent implements OnInit {
   private todas = signal<DespesaClinica[]>([]);
@@ -110,11 +120,11 @@ export class AdminDespesasComponent implements OnInit {
   }
 
   vencimentoClass(iso: string, paga: boolean): string {
-    if (paga) return 'text-gray-400';
+    if (paga) return 'despesas__vencimento--pago';
     const hoje = new Date();
     const venc = new Date(iso);
     hoje.setHours(0, 0, 0, 0);
-    return venc < hoje ? 'text-red-700 font-medium' : 'text-gray-600';
+    return venc < hoje ? 'despesas__vencimento--atrasado' : 'despesas__vencimento--normal';
   }
 
   formatarValor(v: number) {

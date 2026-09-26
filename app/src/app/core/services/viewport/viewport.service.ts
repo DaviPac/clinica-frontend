@@ -12,7 +12,7 @@ import { Injectable, Signal, signal } from '@angular/core';
  */
 @Injectable({ providedIn: 'root' })
 export class ViewportService {
-  /** `true` abaixo de 640px — o breakpoint `sm` do Tailwind. */
+  /** `true` abaixo de 640px (40rem), o mesmo corte que o CSS usa para o layout de mesa. */
   readonly isMobile = this.media('(max-width: 639.98px)');
 
   private media(query: string): Signal<boolean> {

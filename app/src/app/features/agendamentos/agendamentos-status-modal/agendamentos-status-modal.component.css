@@ -1,0 +1,62 @@
+.status__atual {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: -0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.status__rotulo {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: var(--cor-texto-suave);
+}
+
+.status__alerta {
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.status__sem-opcoes {
+  padding-block: 1rem;
+  text-align: center;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--cor-texto-apagado);
+}
+
+.status__opcoes {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.status__opcao {
+  width: 100%;
+  padding-block: 0.625rem;
+  border: 1px solid;
+  border-radius: 0.5rem;
+  background-color: transparent;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.status__opcao:disabled {
+  opacity: 0.5;
+}
+
+/* Um tom por destino, espelhando o selo de status */
+.status__opcao--agendado  { border-color: var(--cor-info-borda);  color: var(--cor-info-texto); }
+.status__opcao--realizado { border-color: var(--cor-sucesso-borda);  color: var(--cor-sucesso-texto); }
+.status__opcao--falta     { border-color: var(--cor-aviso-borda); color: var(--cor-aviso-texto); }
+.status__opcao--cancelado { border-color: var(--cor-perigo-borda);   color: var(--cor-perigo-texto); }
+
+@media (hover: hover) {
+  .status__opcao--agendado:hover  { background-color: var(--cor-info-fundo); }
+  .status__opcao--realizado:hover { background-color: var(--cor-sucesso-fundo); }
+  .status__opcao--falta:hover     { background-color: var(--cor-aviso-fundo); }
+  .status__opcao--cancelado:hover { background-color: var(--cor-perigo-fundo); }
+}

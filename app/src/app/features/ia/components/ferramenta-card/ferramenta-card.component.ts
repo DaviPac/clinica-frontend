@@ -4,6 +4,7 @@ import { MensagemFerramenta } from '../../../../core/ia/models/chat.model';
 import { AcaoCardComponent } from '../acao-card/acao-card.component';
 import { ConfAgendamentoCriarComponent } from '../confirmacoes/conf-agendamento-criar.component';
 import { ConfGenericoComponent } from '../confirmacoes/conf-generico.component';
+import { BotaoComponent } from '../../../../shared/ui/botao/botao.component';
 
 /**
  * Card de uma chamada de ferramenta.
@@ -14,8 +15,9 @@ import { ConfGenericoComponent } from '../confirmacoes/conf-generico.component';
 @Component({
   selector: 'app-ferramenta-card',
   standalone: true,
-  imports: [JsonPipe, AcaoCardComponent, ConfGenericoComponent, ConfAgendamentoCriarComponent],
+  imports: [JsonPipe, AcaoCardComponent, ConfGenericoComponent, ConfAgendamentoCriarComponent, BotaoComponent],
   templateUrl: './ferramenta-card.component.html',
+  styleUrl: './ferramenta-card.component.css',
 })
 export class FerramentaCardComponent {
   readonly mensagem = input.required<MensagemFerramenta>();
@@ -39,14 +41,14 @@ export class FerramentaCardComponent {
     }
   });
 
-  readonly classesDesfecho = computed(() => {
+  readonly classeDesfecho = computed(() => {
     switch (this.mensagem().estado) {
       case 'confirmada':
-        return 'bg-teal-50 border-teal-200 text-teal-800';
+        return 'desfecho--ok';
       case 'erro':
-        return 'bg-red-50 border-red-200 text-red-700';
+        return 'desfecho--erro';
       default:
-        return 'bg-stone-50 border-stone-200 text-stone-600';
+        return 'desfecho--neutro';
     }
   });
 }

@@ -8,12 +8,23 @@ import {
 } from '../../../../core/services/usuario/usuario.service';
 import { Role, Usuario } from '../../../../core/models/usuario.model';
 import { AlertComponent } from '../../../../shared/components/alert/alert.component';
+import { PaginaComponent } from '../../../../shared/ui/pagina/pagina.component';
+import { LinkVoltarComponent } from '../../../../shared/ui/link-voltar/link-voltar.component';
+import { CarregandoComponent } from '../../../../shared/ui/carregando/carregando.component';
+import { CartaoComponent } from '../../../../shared/ui/cartao/cartao.component';
+import { AvatarComponent } from '../../../../shared/ui/avatar/avatar.component';
+import { ItemDescricaoComponent } from '../../../../shared/ui/item-descricao/item-descricao.component';
+import { ModalComponent } from '../../../../shared/components/modal/modal.component';
+import { CampoFormComponent } from '../../../../shared/ui/campo-form/campo-form.component';
+import { CampoComponent } from '../../../../shared/ui/campo/campo.component';
+import { BotaoComponent } from '../../../../shared/ui/botao/botao.component';
 
 @Component({
   selector: 'app-usuario-detalhe',
   standalone: true,
-  imports: [CommonModule, RouterModule, ReactiveFormsModule, AlertComponent],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, AlertComponent, PaginaComponent, LinkVoltarComponent, CarregandoComponent, CartaoComponent, AvatarComponent, ItemDescricaoComponent, ModalComponent, CampoFormComponent, CampoComponent, BotaoComponent],
   templateUrl: './admin-usuario-detalhe.component.html',
+  styleUrl: './admin-usuario-detalhe.component.css',
 })
 export class AdminUsuarioDetalheComponent implements OnInit {
   private route = inject(ActivatedRoute);

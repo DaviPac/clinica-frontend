@@ -6,18 +6,26 @@ import { Usuario } from '../../../core/models/usuario.model';
 import { RouterLink } from '@angular/router';
 import { AlertComponent } from '../../../shared/components/alert/alert.component';
 import { ModalComponent } from '../../../shared/components/modal/modal.component';
+import { PaginaComponent } from '../../../shared/ui/pagina/pagina.component';
+import { CabecalhoPaginaComponent } from '../../../shared/ui/cabecalho-pagina/cabecalho-pagina.component';
+import { BotaoComponent } from '../../../shared/ui/botao/botao.component';
+import { CarregandoComponent } from '../../../shared/ui/carregando/carregando.component';
+import { TabelaComponent } from '../../../shared/ui/tabela/tabela.component';
+import { VazioComponent } from '../../../shared/ui/vazio/vazio.component';
+import { SeloComponent } from '../../../shared/ui/selo/selo.component';
+import { CampoFormComponent } from '../../../shared/ui/campo-form/campo-form.component';
+import { CampoComponent } from '../../../shared/ui/campo/campo.component';
 
 @Component({
   selector: 'app-admin-usuarios',
   standalone: true,
-  imports: [
-    CommonModule,
+  imports: [CommonModule,
     ReactiveFormsModule,
     RouterLink,
     AlertComponent,
-    ModalComponent
-  ],
+    ModalComponent, PaginaComponent, CabecalhoPaginaComponent, BotaoComponent, CarregandoComponent, TabelaComponent, VazioComponent, SeloComponent, CampoFormComponent, CampoComponent],
   templateUrl: './admin-usuarios.component.html',
+  styleUrl: './admin-usuarios.component.css',
 })
 export class AdminUsuariosComponent implements OnInit {
   usuarios = signal<Usuario[]>([]);

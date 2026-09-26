@@ -8,6 +8,7 @@ const NIVEIS: NivelRaciocinio[] = ['desligado', 'equilibrado', 'profundo'];
   selector: 'app-seletor-modelo',
   standalone: true,
   templateUrl: './seletor-modelo.component.html',
+  styleUrl: './seletor-modelo.component.css',
 })
 export class SeletorModeloComponent {
   readonly modelos = inject(ModelosService);

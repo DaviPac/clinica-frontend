@@ -1,11 +1,11 @@
 import { Component, inject, input, OnInit, output, signal } from '@angular/core';
 import { UsuarioService } from '../../../core/services/usuario/usuario.service';
 import { Usuario } from '../../../core/models/usuario.model';
-import { CommonModule } from '@angular/common';
+import { CampoComponent } from '../../ui/campo/campo.component';
 
 @Component({
   selector: 'app-filtro-profissional',
-  imports: [CommonModule],
+  imports: [CampoComponent],
   templateUrl: './filtro-profissional.component.html',
   styleUrl: './filtro-profissional.component.css',
 })

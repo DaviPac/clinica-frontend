@@ -1,0 +1,135 @@
+.conversas {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: var(--cor-superficie);
+}
+
+.conversas__topo {
+  flex-shrink: 0;
+  padding: 0.75rem;
+}
+
+button.conversas__nova {
+  width: 100%;
+  gap: 0.5rem;
+}
+
+.conversas__icone {
+  width: 1rem;
+  height: 1rem;
+}
+
+.conversas__lista {
+  flex: 1;
+  overflow-y: auto;
+  padding-inline: 0.5rem;
+  padding-bottom: 0.75rem;
+}
+
+.conversas__grupo {
+  margin-top: 0.75rem;
+  margin-bottom: 0.25rem;
+  padding-inline: 0.5rem;
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--cor-texto-apagado);
+}
+
+.conversas__item {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.375rem 0.5rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--cor-texto-secundario);
+  cursor: pointer;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.conversas__item--ativa {
+  background-color: var(--cor-superficie-realce);
+  color: var(--cor-marca-texto);
+}
+
+.conversas__entrada {
+  flex: 1;
+  min-width: 0;
+  padding: 0.125rem 0.375rem;
+  border: 1px solid var(--cor-marca-borda);
+  border-radius: 0.25rem;
+  background-color: var(--cor-superficie);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  outline: none;
+}
+
+.conversas__titulo {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Renomear e excluir só aparecem com o ponteiro sobre a conversa */
+.conversas__acao {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: none;
+  border-radius: 0.25rem;
+  background-color: transparent;
+  color: var(--cor-texto-apagado);
+  opacity: 0;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.conversas__acao-icone {
+  width: 0.875rem;
+  height: 0.875rem;
+}
+
+.conversas__vazio {
+  padding: 1rem 0.5rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  text-align: center;
+  color: var(--cor-texto-apagado);
+}
+
+.conversas__aviso {
+  flex-shrink: 0;
+  padding: 0.5rem 0.75rem;
+  border-top: 1px solid var(--cor-aviso-realce);
+  background-color: var(--cor-aviso-fundo);
+  font-size: 11px;
+  color: var(--cor-aviso-texto);
+}
+
+@media (hover: hover) {
+  .conversas__item:not(.conversas__item--ativa):hover {
+    background-color: var(--cor-superficie-suave);
+  }
+
+  .conversas__item:hover .conversas__acao {
+    opacity: 1;
+  }
+
+  .conversas__acao:hover {
+    background-color: var(--cor-superficie-forte);
+    color: var(--cor-texto-secundario);
+  }
+
+  .conversas__acao--excluir:hover {
+    color: var(--cor-perigo-solido);
+  }
+}

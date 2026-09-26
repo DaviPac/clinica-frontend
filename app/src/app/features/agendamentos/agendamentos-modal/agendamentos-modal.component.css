@@ -1,0 +1,93 @@
+.modal-agendamento__aviso {
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.modal-agendamento__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.modal-agendamento__dupla {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+/* Valor por sessão calculado a partir do total do pacote */
+.modal-agendamento__derivado {
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 500;
+  color: var(--cor-marca-forte);
+}
+
+/* ── Bloco de recorrência ── */
+.modal-agendamento__recorrencia {
+  padding: 0.75rem;
+  border: 1px solid var(--cor-borda);
+  border-radius: 0.5rem;
+}
+
+/* Pacote força a recorrência: o bloco fica visivelmente travado */
+.modal-agendamento__recorrencia--travada {
+  opacity: 0.6;
+}
+
+.modal-agendamento__recorrencia-topo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/*
+ * O <app-toggle> é inline por padrão; como item de flex isso o deixaria
+ * numa caixa de linha, com o descendente da fonte somando altura à faixa.
+ */
+.modal-agendamento__recorrencia-topo app-toggle {
+  display: flex;
+}
+
+.modal-agendamento__recorrencia-rotulo {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  color: var(--cor-texto);
+}
+
+.modal-agendamento__recorrencia-nota {
+  margin-left: 0.375rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 500;
+  color: var(--cor-marca-forte);
+}
+
+.modal-agendamento__dupla--recorrencia {
+  margin-top: 0.75rem;
+}
+
+.modal-agendamento__previa {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: var(--cor-texto-suave);
+}
+
+.modal-agendamento__acoes {
+  display: flex;
+  gap: 0.625rem;
+  margin-top: 0.5rem;
+}
+
+.modal-agendamento__acoes > * {
+  flex: 1;
+}
+
+@media (width >= 40rem) {
+  .modal-agendamento__dupla {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

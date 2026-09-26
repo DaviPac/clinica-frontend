@@ -1,0 +1,174 @@
+/* ── Barra de filtros ── */
+.sessoes__controles {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--cor-borda);
+  border-radius: 0.5rem;
+  background-color: var(--cor-superficie);
+}
+
+.sessoes__campo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.sessoes__rotulo {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: var(--cor-texto-suave);
+}
+
+.sessoes__data {
+  width: 100%;
+}
+
+.sessoes__alerta {
+  display: block;
+  margin-bottom: 1rem;
+}
+
+/* ── Resumo do período ── */
+.sessoes__resumo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.sessoes__quem {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--cor-texto-suave);
+}
+
+.sessoes__nome {
+  font-weight: 500;
+  color: var(--cor-texto);
+}
+
+/* ── Totais ── */
+.sessoes__totais {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.sessoes__clinica     { color: var(--cor-sucesso-texto); }
+.sessoes__profissional { color: var(--cor-aviso-texto); }
+.sessoes__devendo     { color: var(--cor-perigo-solido); }
+.sessoes__a-receber   { color: var(--cor-aviso-solido); }
+.sessoes__zerado      { color: var(--cor-texto-apagado); }
+
+.sessoes__saldo {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+
+/* ── Tabela ── */
+.sessoes__secao {
+  margin-bottom: 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  color: var(--cor-texto);
+}
+
+.sessoes__col-numero {
+  text-align: right;
+}
+
+.sessoes__linha {
+  border-bottom: 1px solid var(--cor-divisor);
+  vertical-align: top;
+  transition: background-color 0.15s ease;
+}
+
+.sessoes__linha:last-child {
+  border-bottom-width: 0;
+}
+
+.sessoes__quando {
+  white-space: nowrap;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: var(--cor-texto-secundario);
+}
+
+.sessoes__paciente {
+  font-weight: 500;
+  color: var(--cor-texto);
+}
+
+.sessoes__servico {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: var(--cor-texto-secundario);
+}
+
+.sessoes__numero {
+  text-align: right;
+  font-family: var(--fonte-mono);
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+.sessoes__numero--valor      { color: var(--cor-texto-secundario); }
+.sessoes__numero--percentual { color: var(--cor-texto-suave); }
+
+.sessoes__par {
+  white-space: nowrap;
+}
+
+.sessoes__destino {
+  margin-right: 0.25rem;
+  color: var(--cor-texto-apagado);
+}
+
+.sessoes__nao-pago {
+  display: inline-block;
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.375rem;
+  background-color: var(--cor-superficie-suave);
+  box-shadow: 0 0 0 1px var(--cor-divisor);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--cor-texto-apagado);
+}
+
+.sessoes__nulo {
+  color: var(--cor-texto-desabilitado);
+}
+
+.sessoes__celula-vazia {
+  padding: 0;
+}
+
+@media (hover: hover) {
+  .sessoes__linha:hover {
+    background-color: var(--cor-superficie-suave);
+  }
+}
+
+@media (width >= 40rem) {
+  .sessoes__data {
+    width: auto;
+  }
+
+  .sessoes__totais {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (width >= 64rem) {
+  .sessoes__totais {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}

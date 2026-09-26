@@ -1,0 +1,33 @@
+.senha__caixa {
+  position: relative;
+}
+
+.senha__input {
+  /* espaço à direita para o botão do olho */
+  padding-right: 2.5rem;
+}
+
+.senha__olho {
+  position: absolute;
+  inset-block: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  padding-inline: 0.75rem;
+  border: none;
+  background-color: transparent;
+  color: var(--cor-texto-apagado);
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.senha__icone {
+  width: 1rem;
+  height: 1rem;
+}
+
+@media (hover: hover) {
+  .senha__olho:hover {
+    color: var(--cor-texto-secundario);
+  }
+}
