@@ -1,0 +1,29 @@
+:host {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  padding-block: 2.5rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--cor-texto-apagado);
+}
+
+:host([data-espaco='apertado']) {
+  padding-block: 1.5rem;
+}
+
+:host([data-espaco='nenhum']) {
+  padding-block: 0;
+  justify-content: flex-start;
+}
+
+.carregando__roda {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid var(--cor-borda);
+  border-top-color: var(--cor-marca);
+  border-radius: 50%;
+  animation: spin 0.65s linear infinite;
+  flex-shrink: 0;
+}

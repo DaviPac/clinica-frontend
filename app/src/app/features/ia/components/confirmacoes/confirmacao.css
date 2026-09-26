@@ -1,0 +1,88 @@
+/*
+ * Estilos do formulário de confirmação de uma ferramenta.
+ * Compartilhado pelos dois componentes de confirmação (genérico e
+ * agendamento): mesmas classes, mesma cara — a encapsulação do Angular
+ * continua escopando o arquivo para cada um deles.
+ */
+.conf {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.conf__campo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+/* O respiro entre rótulo e controle já vem do `gap` da coluna */
+label.conf__rotulo {
+  margin-bottom: 0;
+}
+
+.conf__obrigatorio {
+  color: var(--cor-perigo-solido);
+}
+
+.conf__dupla {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.conf__marcacao {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.conf__caixa {
+  width: 1rem;
+  height: 1rem;
+  accent-color: var(--cor-marca);
+  cursor: pointer;
+}
+
+.conf__marcacao-texto {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--cor-texto-secundario);
+}
+
+.conf__nota {
+  font-size: 11px;
+  line-height: 1.375;
+  color: var(--cor-texto-suave);
+}
+
+.conf__nota--colada {
+  margin-top: -0.25rem;
+}
+
+.conf__erro {
+  font-size: 11px;
+  line-height: 1.375;
+  color: var(--cor-perigo-solido);
+}
+
+.conf__alerta {
+  font-size: 11px;
+  line-height: 1.375;
+  color: var(--cor-aviso-texto);
+}
+
+/* Bloco de recorrência, separado do resto por um filete */
+.conf__recorrencia {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-top: 0.25rem;
+  border-top: 1px solid var(--cor-divisor);
+}
+
+/* Campo de texto longo: só esse pode ser redimensionado */
+textarea.conf__controle {
+  resize: vertical;
+}

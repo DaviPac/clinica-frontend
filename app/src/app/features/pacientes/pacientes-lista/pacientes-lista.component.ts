@@ -11,6 +11,13 @@ import { AuthService } from '../../../core/services/auth/auth.service';
 import { Usuario } from '../../../core/models/usuario.model';
 import { FiltroProfissionalComponent } from '../../../shared/components/filtro-profissional/filtro-profissional.component';
 import { AlertComponent } from '../../../shared/components/alert/alert.component';
+import { BotaoComponent } from '../../../shared/ui/botao/botao.component';
+import { CabecalhoPaginaComponent } from '../../../shared/ui/cabecalho-pagina/cabecalho-pagina.component';
+import { CampoComponent } from '../../../shared/ui/campo/campo.component';
+import { CarregandoComponent } from '../../../shared/ui/carregando/carregando.component';
+import { PaginaComponent } from '../../../shared/ui/pagina/pagina.component';
+import { TabelaComponent } from '../../../shared/ui/tabela/tabela.component';
+import { VazioComponent } from '../../../shared/ui/vazio/vazio.component';
 
 @Component({
   selector: 'app-pacientes-lista',
@@ -22,9 +29,17 @@ import { AlertComponent } from '../../../shared/components/alert/alert.component
     PacientesModalComponent,
     ToggleComponent,
     FiltroProfissionalComponent,
-    AlertComponent
+    AlertComponent,
+    PaginaComponent,
+    CabecalhoPaginaComponent,
+    BotaoComponent,
+    CampoComponent,
+    CarregandoComponent,
+    TabelaComponent,
+    VazioComponent
   ],
   templateUrl: './pacientes-lista.component.html',
+  styleUrl: './pacientes-lista.component.css',
 })
 export class PacientesListaComponent implements OnInit {
   private authService = inject(AuthService)

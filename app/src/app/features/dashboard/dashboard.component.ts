@@ -13,16 +13,25 @@ import { UsuarioService } from '../../core/services/usuario/usuario.service';
 import { Agendamento, StatusAgendamento } from '../../core/models/agendamento.model';
 import { SaldoAReceber } from '../../core/models/financeiro.model'; // Mantido o caminho original
 
-import { StatusBadgeComponent } from '../../shared/components/status-badge/status-badge.component';
 import { AgendamentosStatusModalComponent } from '../agendamentos/agendamentos-status-modal/agendamentos-status-modal.component';
 import { formatarHora } from '../../core/utils/data.utils';
 import { AlertComponent } from '../../shared/components/alert/alert.component';
 import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component';
+import { KpiComponent } from './kpi/kpi.component';
+import { SecaoDashboardComponent } from './secao/secao.component';
+import { LinhaAgendamentoComponent } from './linha-agendamento/linha-agendamento.component';
+import { LinhaStatusComponent } from './linha-status/linha-status.component';
+import { LinhaPagamentoComponent } from './linha-pagamento/linha-pagamento.component';
+import { PaginaComponent } from '../../shared/ui/pagina/pagina.component';
+import { CarregandoComponent } from '../../shared/ui/carregando/carregando.component';
+import { DestaqueValorComponent } from '../../shared/ui/destaque-valor/destaque-valor.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterModule, StatusBadgeComponent, AgendamentosStatusModalComponent, AlertComponent, ConfirmDialogComponent],
+  imports: [CommonModule, RouterModule, AgendamentosStatusModalComponent, AlertComponent, ConfirmDialogComponent,
+    KpiComponent, SecaoDashboardComponent, LinhaAgendamentoComponent,
+    LinhaStatusComponent, LinhaPagamentoComponent, PaginaComponent, CarregandoComponent, DestaqueValorComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
 })

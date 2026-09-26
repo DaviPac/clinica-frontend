@@ -1,7 +1,9 @@
 import { Component, signal, computed, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, RouterLinkActive } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { AuthService } from '../../../core/services/auth/auth.service';
+import { AvatarComponent } from '../../ui/avatar/avatar.component';
+import { ItemNavComponent } from '../item-nav/item-nav.component';
 
 interface NavItem {
   label: string;
@@ -12,8 +14,9 @@ interface NavItem {
 @Component({
   selector: 'app-shell',
   standalone: true,
-  imports: [CommonModule, RouterModule, RouterLinkActive],
+  imports: [CommonModule, RouterModule, AvatarComponent, ItemNavComponent],
   templateUrl: './shell.component.html',
+  styleUrl: './shell.component.css',
 })
 export class ShellComponent {
   sidebarAberta = signal(true);

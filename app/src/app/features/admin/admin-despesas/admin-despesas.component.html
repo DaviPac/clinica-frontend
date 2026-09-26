@@ -1,20 +1,12 @@
-<div class="page">
+<div appPagina>
 
-  <div class="page-header">
-    <div>
-      <h1 class="text-lg font-medium text-gray-900">Despesas</h1>
-      <p class="text-sm text-gray-500 mt-0.5">
-        {{ formatarValor(totalEmAberto()) }} em aberto
-      </p>
-    </div>
-    <button
-      (click)="modalAberto.set(true)"
-      class="btn-primary w-full sm:w-auto">
+  <app-cabecalho-pagina titulo="Despesas" [subtitulo]="formatarValor(totalEmAberto()) + ' em aberto'">
+    <button appBotao class="despesas__nova" (click)="modalAberto.set(true)">
       + Nova despesa
     </button>
-  </div>
+  </app-cabecalho-pagina>
 
-  <div class="mb-4">
+  <div class="despesas__filtro">
     <app-toggle
       [checked]="apenasEmAberto()"
       label="Apenas em aberto"
@@ -22,16 +14,16 @@
   </div>
 
   @if (erro()) {
-    <app-alert class="block mb-4">{{ erro() }}</app-alert>
+    <app-alert class="despesas__alerta">{{ erro() }}</app-alert>
   }
 
   @if (carregando()) {
-    <p class="text-sm text-gray-400 text-center py-10">Carregando...</p>
+    <app-carregando texto="Carregando..." />
   }
 
   @if (!carregando()) {
-    <div class="table-wrap">
-      <table class="min-w-[640px]">
+    <app-tabela [larguraMinima]="640">
+      <table>
         <thead>
           <tr>
             <th>Descrição</th>
@@ -43,123 +35,83 @@
         </thead>
         <tbody>
           @for (d of despesas(); track d.id) {
-            <tr
-              class="border-b border-gray-100 last:border-0 transition-colors hover:bg-gray-50"
-              [class.opacity-50]="d.status_pagamento">
-              <td class="font-medium text-gray-900">{{ d.descricao }}</td>
-              <td class="font-mono text-xs text-gray-900 whitespace-nowrap">{{ formatarValor(d.valor) }}</td>
-              <td class="text-xs whitespace-nowrap {{ vencimentoClass(d.data_vencimento, d.status_pagamento) }}">
+            <tr class="despesas__linha" [class.despesas__linha--paga]="d.status_pagamento">
+              <td class="despesas__descricao">{{ d.descricao }}</td>
+              <td class="despesas__valor">{{ formatarValor(d.valor) }}</td>
+              <td class="despesas__vencimento {{ vencimentoClass(d.data_vencimento, d.status_pagamento) }}">
                 {{ formatarData(d.data_vencimento) }}
               </td>
               <td>
                 @if (d.categoria === 'FIXA') {
-                  <span class="bg-blue-50 text-blue-800 text-xs font-medium px-2 py-0.5 rounded">Fixa</span>
+                  <app-selo tom="info">Fixa</app-selo>
                 } @else {
-                  <span class="bg-amber-50 text-amber-800 text-xs font-medium px-2 py-0.5 rounded">Variável</span>
+                  <app-selo tom="aviso">Variável</app-selo>
                 }
               </td>
-              <td class="text-right">
+              <td class="despesas__acoes">
                 @if (!d.status_pagamento) {
                   <button
-                    (click)="marcarPago(d)"
+                    type="button"
+                    class="despesas__pagar"
                     [disabled]="pagando() === d.id"
-                    class="text-xs bg-teal-600 hover:bg-teal-700 disabled:opacity-50
-                           text-white rounded-md px-2.5 py-1 transition-colors whitespace-nowrap
-                           cursor-pointer disabled:cursor-not-allowed">
+                    (click)="marcarPago(d)">
                     {{ pagando() === d.id ? '...' : 'Marcar pago' }}
                   </button>
                 } @else {
-                  <span class="bg-teal-50 text-teal-800 text-xs font-medium px-2 py-0.5 rounded">
-                    Paga
-                  </span>
+                  <app-selo tom="sucesso">Paga</app-selo>
                 }
               </td>
             </tr>
           } @empty {
             <tr>
-              <td colspan="5" class="py-10 text-center text-sm text-gray-400">
-                Nenhuma despesa encontrada.
+              <td class="despesas__celula-vazia" colspan="5">
+                <app-vazio mensagem="Nenhuma despesa encontrada." />
               </td>
             </tr>
           }
         </tbody>
       </table>
-    </div>
+    </app-tabela>
   }
 
 </div>
 
 <!-- Modal nova despesa -->
 @if (modalAberto()) {
-  <app-modal titulo="Nova despesa" maxWidth="max-w-sm" (fechar)="modalAberto.set(false)">
+  <app-modal titulo="Nova despesa" tamanho="pequeno" (fechar)="modalAberto.set(false)">
 
     @if (erroModal()) {
-      <app-alert class="block mb-4">{{ erroModal() }}</app-alert>
+      <app-alert class="despesas__alerta">{{ erroModal() }}</app-alert>
     }
 
-    <form [formGroup]="form" (ngSubmit)="submit()" class="flex flex-col gap-4">
+    <form class="despesas__form" [formGroup]="form" (ngSubmit)="submit()">
 
-      <div>
-        <label class="ui-label" for="despesa-descricao">
-          Descrição <span class="text-red-500">*</span>
-        </label>
-        <input
-          id="despesa-descricao"
-          type="text"
-          formControlName="descricao"
-          placeholder="Ex: Aluguel da sala"
-          class="ui-input"
-        />
+      <app-campo-form rotulo="Descrição" para="despesa-descricao" [obrigatorio]="true">
+        <input appCampo id="despesa-descricao" type="text" formControlName="descricao" placeholder="Ex: Aluguel da sala" />
+      </app-campo-form>
+
+      <div class="despesas__dupla">
+        <app-campo-form rotulo="Valor (R$)" para="despesa-valor" [obrigatorio]="true">
+          <input appCampo [mono]="true" id="despesa-valor" type="number" formControlName="valor" min="0.01" step="0.01" />
+        </app-campo-form>
+
+        <app-campo-form rotulo="Vencimento" para="despesa-vencimento" [obrigatorio]="true">
+          <input appCampo id="despesa-vencimento" type="date" formControlName="data_vencimento" />
+        </app-campo-form>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <div>
-          <label class="ui-label" for="despesa-valor">
-            Valor (R$) <span class="text-red-500">*</span>
-          </label>
-          <input
-            id="despesa-valor"
-            type="number"
-            formControlName="valor"
-            min="0.01"
-            step="0.01"
-            class="ui-input font-mono"
-          />
-        </div>
-        <div>
-          <label class="ui-label" for="despesa-vencimento">
-            Vencimento <span class="text-red-500">*</span>
-          </label>
-          <input
-            id="despesa-vencimento"
-            type="date"
-            formControlName="data_vencimento"
-            class="ui-input"
-          />
-        </div>
-      </div>
-
-      <div>
-        <label class="ui-label" for="despesa-categoria">
-          Categoria <span class="text-red-500">*</span>
-        </label>
-        <select id="despesa-categoria" formControlName="categoria" class="ui-input">
+      <app-campo-form rotulo="Categoria" para="despesa-categoria" [obrigatorio]="true">
+        <select appCampo id="despesa-categoria" formControlName="categoria">
           <option value="FIXA">Fixa</option>
           <option value="VARIAVEL">Variável</option>
         </select>
-      </div>
+      </app-campo-form>
 
-      <div class="flex gap-2.5 mt-2">
-        <button
-          type="button"
-          (click)="modalAberto.set(false)"
-          class="btn-outline flex-1">
+      <div class="despesas__acoes-modal">
+        <button appBotao variante="contorno" type="button" (click)="modalAberto.set(false)">
           Cancelar
         </button>
-        <button
-          type="submit"
-          [disabled]="form.invalid || salvando()"
-          class="btn-primary flex-1">
+        <button appBotao type="submit" [disabled]="form.invalid || salvando()">
           {{ salvando() ? 'Salvando...' : 'Criar despesa' }}
         </button>
       </div>

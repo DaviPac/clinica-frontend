@@ -1,0 +1,12 @@
+:host {
+  display: block;
+  padding-block: 2.5rem;
+  text-align: center;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--cor-texto-apagado);
+}
+
+:host([data-espaco='apertado']) {
+  padding-block: 1.5rem;
+}

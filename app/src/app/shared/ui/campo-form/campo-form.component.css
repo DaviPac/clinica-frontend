@@ -1,0 +1,25 @@
+:host {
+  display: block;
+}
+
+.campo__obrigatorio {
+  color: var(--cor-perigo-solido);
+}
+
+.campo__erro {
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: var(--cor-perigo-solido);
+}
+
+:host([data-tom-erro='aviso']) .campo__erro {
+  color: var(--cor-aviso-texto);
+}
+
+.campo__ajuda {
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: var(--cor-texto-apagado);
+}

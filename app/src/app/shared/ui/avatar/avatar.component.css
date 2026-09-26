@@ -1,0 +1,38 @@
+:host {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background-color: var(--cor-marca-fundo);
+  color: var(--cor-marca-texto);
+  font-weight: 500;
+}
+
+:host([data-tamanho='p']) {
+  width: 1.75rem;
+  height: 1.75rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+:host([data-tamanho='m']) {
+  width: 2rem;
+  height: 2rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+:host([data-tamanho='g']) {
+  width: 3rem;
+  height: 3rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+:host([data-tamanho='gg']) {
+  width: 4rem;
+  height: 4rem;
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}

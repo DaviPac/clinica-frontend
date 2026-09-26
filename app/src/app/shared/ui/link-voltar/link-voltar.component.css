@@ -1,0 +1,23 @@
+:host {
+  display: block;
+}
+
+.voltar__link {
+  /* a margem fica no link, e não no host: como caixa inline-atômica ele
+     participa da altura da linha, e mover isso desloca a tela em 2px. */
+  margin-bottom: 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--cor-texto-suave);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+@media (hover: hover) {
+  .voltar__link:hover {
+    color: var(--cor-texto);
+  }
+}

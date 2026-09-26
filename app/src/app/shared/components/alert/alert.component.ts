@@ -1,5 +1,4 @@
 import { Component, input } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 export type AlertVariant = 'error' | 'success' | 'info';
 
@@ -7,8 +6,12 @@ export type AlertVariant = 'error' | 'success' | 'info';
 @Component({
   selector: 'app-alert',
   standalone: true,
-  imports: [CommonModule],
   templateUrl: './alert.component.html',
+  styleUrl: './alert.component.css',
+  host: {
+    role: 'alert',
+    '[attr.data-variante]': 'variant()',
+  },
 })
 export class AlertComponent {
   variant = input<AlertVariant>('error');

@@ -1,0 +1,43 @@
+:host {
+  display: block;
+}
+
+/* Os itens de administração ficam um pouco mais espaçados entre si */
+:host([data-admin]) {
+  margin-top: 0.125rem;
+}
+
+.item-nav__link {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.5rem 0.625rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--cor-texto-secundario);
+  text-decoration: none;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+/* O item ativo recebe só o realce de fundo; o texto mantém a cor do item normal */
+.item-nav__link--ativo {
+  background-color: var(--cor-superficie-realce);
+}
+
+.item-nav__icone {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+}
+
+.item-nav__texto {
+  white-space: nowrap;
+}
+
+@media (hover: hover) {
+  .item-nav__link:hover {
+    background-color: var(--cor-superficie-suave);
+    color: var(--cor-texto);
+  }
+}

@@ -1,0 +1,11 @@
+<div class="pendente__quem">
+  <p class="pendente__paciente">{{ paciente() }}</p>
+  <p class="pendente__quando">{{ quando() }}</p>
+</div>
+
+<button type="button" class="pendente__acao" title="Alterar status" (click)="alterarStatus.emit()">
+  <svg width="9" height="9" viewBox="0 0 13 13" fill="none">
+    <path d="M9 1.5l2.5 2.5L4 11.5H1.5V9L9 1.5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+  </svg>
+  Status
+</button>

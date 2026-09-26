@@ -1,0 +1,233 @@
+/* ──────────────────────────────────────────────
+   Moldura da aplicação: barra lateral + conteúdo.
+   No mobile a barra vira gaveta sobre o conteúdo;
+   a partir de `md` (768px) ela ocupa lugar no fluxo.
+─────────────────────────────────────────────── */
+.shell {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Escurece o conteúdo enquanto a gaveta está aberta no mobile */
+.shell__cortina {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  background-color: rgb(0 0 0 / 0.3);
+}
+
+.shell__barra {
+  position: fixed;
+  inset-block: 0;
+  left: 0;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  width: 14rem;
+  border-right: 1px solid var(--cor-borda);
+  background-color: var(--cor-superficie);
+  transition: all 0.2s ease;
+}
+
+.shell__barra--recolhida {
+  width: 0;
+  overflow: hidden;
+}
+
+/* ── Topo: logo e nome ── */
+.shell__marca {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  flex-shrink: 0;
+  padding: 1.25rem 1rem;
+  border-bottom: 1px solid var(--cor-borda);
+}
+
+.shell__logo {
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 0.5rem;
+  flex-shrink: 0;
+}
+
+.shell__nome {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  white-space: nowrap;
+  color: var(--cor-texto);
+}
+
+/* ── Navegação ── */
+.shell__nav {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.75rem 0.5rem;
+}
+
+/*
+ * `:where()` zera a especificidade de propósito: o respiro de 2px entre
+ * irmãos é o padrão, mas qualquer item com margem própria (os títulos de
+ * grupo, por exemplo) precisa vencer esta regra.
+ */
+.shell__nav > :where(:not(:last-child)) {
+  margin-bottom: 0.125rem;
+}
+
+.shell__grupo {
+  margin-top: 0.25rem;
+  margin-bottom: 0.375rem;
+  padding-inline: 0.5rem;
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--cor-texto-apagado);
+}
+
+.shell__grupo--admin {
+  margin-top: 0;
+}
+
+.shell__secao {
+  padding-top: 0.75rem;
+}
+
+.shell__divisor {
+  margin-block: 0.25rem;
+  border-top: 1px solid var(--cor-divisor);
+}
+
+/* Os links em si são o <app-item-nav>, dono do próprio CSS */
+
+/* ── Rodapé: usuário e botão de recolher ── */
+.shell__rodape {
+  flex-shrink: 0;
+  padding: 0.75rem;
+  border-top: 1px solid var(--cor-borda);
+}
+
+.shell__usuario {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.shell__perfil {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  flex: 1;
+  min-width: 0;
+  padding: 0.25rem;
+  margin: -0.25rem;
+  border-radius: 0.375rem;
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+}
+
+.shell__perfil-textos {
+  flex: 1;
+  min-width: 0;
+}
+
+.shell__perfil-nome {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 500;
+  color: var(--cor-texto);
+}
+
+.shell__perfil-papel {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: var(--cor-texto-suave);
+}
+
+.shell__recolher {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  width: 100%;
+  margin-top: 0.5rem;
+  padding: 0.375rem;
+  border: none;
+  border-radius: 0.375rem;
+  background-color: transparent;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: var(--cor-texto-apagado);
+  cursor: pointer;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.shell__recolher-icone {
+  width: 0.875rem;
+  height: 0.875rem;
+}
+
+/* ── Botão flutuante que reabre a gaveta no mobile ── */
+.shell__abrir {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 1px solid var(--cor-borda);
+  border-radius: 0.5rem;
+  background-color: var(--cor-superficie);
+  box-shadow: var(--sombra-elemento);
+  color: var(--cor-texto-secundario);
+  cursor: pointer;
+}
+
+.shell__abrir-icone {
+  width: 1rem;
+  height: 1rem;
+}
+
+.shell__conteudo {
+  flex: 1;
+  overflow-y: auto;
+}
+
+@media (hover: hover) {
+  .shell__perfil:hover {
+    background-color: var(--cor-superficie-suave);
+  }
+
+  .shell__recolher:hover {
+    background-color: var(--cor-superficie-suave);
+    color: var(--cor-texto-secundario);
+  }
+
+  .shell__abrir:hover {
+    color: var(--cor-texto);
+  }
+}
+
+@media (width >= 48rem) {
+  .shell__barra {
+    position: static;
+  }
+
+  .shell__barra--recolhida {
+    width: 3.5rem;
+  }
+
+  .shell__cortina,
+  .shell__abrir {
+    display: none;
+  }
+}

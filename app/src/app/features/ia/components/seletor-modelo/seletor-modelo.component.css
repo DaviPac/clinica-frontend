@@ -1,0 +1,142 @@
+.seletor {
+  position: relative;
+}
+
+.seletor__gatilho {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.625rem;
+  border: none;
+  border-radius: 0.5rem;
+  background-color: transparent;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: var(--cor-texto-secundario);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.seletor__modelo {
+  font-weight: 500;
+}
+
+.seletor__nivel {
+  color: var(--cor-marca-forte);
+}
+
+.seletor__seta {
+  width: 0.75rem;
+  height: 0.75rem;
+  color: var(--cor-texto-apagado);
+}
+
+/* Captura o clique fora para fechar o painel */
+.seletor__fora {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+}
+
+.seletor__painel {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 40;
+  width: 18rem;
+  margin-top: 0.25rem;
+  overflow: hidden;
+  border: 1px solid var(--cor-borda);
+  border-radius: 0.75rem;
+  background-color: var(--cor-superficie);
+  box-shadow: var(--sombra-flutuante);
+}
+
+.seletor__secao {
+  padding: 0.75rem 0.75rem 0.375rem;
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--cor-texto-apagado);
+}
+
+.seletor__opcao {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: none;
+  background-color: transparent;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.seletor__opcao--nivel {
+  align-items: center;
+}
+
+/* A bolinha só ganha cor na opção escolhida, mas ocupa espaço sempre */
+.seletor__marca {
+  flex-shrink: 0;
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: 9999px;
+  background-color: transparent;
+}
+
+.seletor__marca--alto {
+  margin-top: 0.25rem;
+}
+
+.seletor__marca--ativa {
+  background-color: var(--cor-marca-forte);
+}
+
+.seletor__texto {
+  min-width: 0;
+}
+
+.seletor__rotulo {
+  display: block;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--cor-texto);
+}
+
+.seletor__descricao {
+  display: block;
+  font-size: 11px;
+  line-height: 1.375;
+  color: var(--cor-texto-suave);
+}
+
+.seletor__nome-nivel {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--cor-texto-secundario);
+}
+
+.seletor__raciocinio {
+  margin-top: 0.25rem;
+  border-top: 1px solid var(--cor-divisor);
+}
+
+.seletor__nota {
+  padding: 0.25rem 0.75rem 0.75rem;
+  font-size: 11px;
+  line-height: 1.375;
+  color: var(--cor-texto-apagado);
+}
+
+@media (hover: hover) {
+  .seletor__gatilho:hover {
+    background-color: var(--cor-superficie-realce);
+  }
+
+  .seletor__opcao:hover {
+    background-color: var(--cor-superficie-suave);
+  }
+}

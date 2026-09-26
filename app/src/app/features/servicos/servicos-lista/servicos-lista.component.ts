@@ -8,19 +8,25 @@ import { FiltroProfissionalComponent } from '../../../shared/components/filtro-p
 import { AuthService } from '../../../core/services/auth/auth.service';
 import { AlertComponent } from '../../../shared/components/alert/alert.component';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
+import { PaginaComponent } from '../../../shared/ui/pagina/pagina.component';
+import { CabecalhoPaginaComponent } from '../../../shared/ui/cabecalho-pagina/cabecalho-pagina.component';
+import { BotaoComponent } from '../../../shared/ui/botao/botao.component';
+import { CarregandoComponent } from '../../../shared/ui/carregando/carregando.component';
+import { TabelaComponent } from '../../../shared/ui/tabela/tabela.component';
+import { VazioComponent } from '../../../shared/ui/vazio/vazio.component';
+import { SeloComponent } from '../../../shared/ui/selo/selo.component';
 
 @Component({
   selector: 'app-servicos-lista',
   standalone: true,
-  imports: [
-    CommonModule,
+  imports: [CommonModule,
     ServicosModalComponent,
     ToggleComponent,
     FiltroProfissionalComponent,
     AlertComponent,
-    ConfirmDialogComponent,
-  ],
+    ConfirmDialogComponent, PaginaComponent, CabecalhoPaginaComponent, BotaoComponent, CarregandoComponent, TabelaComponent, VazioComponent, SeloComponent],
   templateUrl: './servicos-lista.component.html',
+  styleUrl: './servicos-lista.component.css',
 })
 export class ServicosListaComponent implements OnInit {
   private authService = inject(AuthService);

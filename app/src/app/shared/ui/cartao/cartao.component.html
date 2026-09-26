@@ -1,0 +1,9 @@
+@if (titulo()) {
+  <div class="cartao__cabecalho">
+    <h2 class="cartao__titulo">{{ titulo() }}</h2>
+    @if (subtitulo()) {
+      <p class="cartao__subtitulo">{{ subtitulo() }}</p>
+    }
+  </div>
+}
+<ng-content />

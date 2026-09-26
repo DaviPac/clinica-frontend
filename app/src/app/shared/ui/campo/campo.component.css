@@ -1,0 +1,39 @@
+:host {
+  width: 100%;
+  border: 1px solid var(--cor-borda);
+  border-radius: 0.5rem;
+  background-color: var(--cor-controle);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--cor-texto);
+  transition: color 0.15s ease,
+    background-color 0.15s ease, border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+:host(:focus) {
+  outline: none;
+  border-color: var(--cor-marca);
+  box-shadow: 0 0 0 2px var(--cor-marca);
+}
+
+:host(:disabled) {
+  opacity: 0.5;
+}
+
+:host([data-estado='invalido']) {
+  border-color: var(--cor-perigo-borda);
+}
+
+:host([data-estado='aviso']) {
+  border-color: var(--cor-aviso-solido);
+}
+
+:host([data-fonte='mono']) {
+  font-family: var(--fonte-mono);
+}
+
+:host(textarea) {
+  resize: none;
+}

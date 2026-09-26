@@ -1,0 +1,76 @@
+:host {
+  display: block;
+  padding: 1rem;
+  border: 1px solid var(--cor-divisor);
+  border-radius: 1rem;
+  background: var(--cor-superficie);
+  box-shadow: var(--sombra-elemento);
+}
+
+:host([data-tom='aviso'])    { border-color: var(--cor-aviso-borda); }
+:host([data-tom='perigo']) { border-color: var(--cor-perigo-borda); }
+:host([data-tom='destaque'])  { border-color: var(--cor-destaque-borda); }
+
+.secao__cabecalho {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.secao__identidade {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* A barrinha vertical que identifica o assunto do bloco */
+.secao__marca {
+  width: 0.375rem;
+  height: 1rem;
+  border-radius: 9999px;
+  background-color: var(--cor-marca);
+}
+
+:host([data-tom='aviso'])    .secao__marca { background-color: var(--cor-aviso-solido); }
+:host([data-tom='perigo']) .secao__marca { background-color: var(--cor-perigo-solido); }
+:host([data-tom='destaque'])  .secao__marca { background-color: var(--cor-destaque-solido); }
+
+.secao__titulo {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 600;
+  color: var(--cor-texto);
+}
+
+:host([data-tom='aviso'])    .secao__titulo { color: var(--cor-aviso-texto); }
+:host([data-tom='perigo']) .secao__titulo { color: var(--cor-perigo-texto); }
+:host([data-tom='destaque'])  .secao__titulo { color: var(--cor-destaque-texto); }
+
+.secao__contador {
+  padding: 0.125rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+:host([data-tom='aviso']) .secao__contador {
+  background-color: var(--cor-aviso-realce);
+  color: var(--cor-aviso-solido);
+}
+
+:host([data-tom='perigo']) .secao__contador {
+  background-color: var(--cor-perigo-realce);
+  color: var(--cor-perigo-solido);
+}
+
+/* Sobe até encostar no cabeçalho, de onde é continuação */
+.secao__nota {
+  margin-top: -0.25rem;
+  margin-bottom: 0.75rem;
+  font-size: 10px;
+}
+
+:host([data-tom='aviso'])    .secao__nota { color: var(--cor-aviso-solido); }
+:host([data-tom='perigo']) .secao__nota { color: var(--cor-perigo-solido); }
+:host([data-tom='destaque'])  .secao__nota { color: var(--cor-destaque-solido); }

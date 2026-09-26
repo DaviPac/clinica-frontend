@@ -1,0 +1,104 @@
+:host {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.barra__grupo {
+  display: flex;
+  overflow: hidden;
+  border: 1px solid var(--cor-borda);
+  border-radius: 0.5rem;
+  background-color: var(--cor-superficie);
+}
+
+.barra__modos {
+  flex-shrink: 0;
+}
+
+.barra__navegacao {
+  margin-left: auto;
+}
+
+.barra__botao {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.625rem 0.75rem;
+  border: none;
+  background-color: transparent;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 500;
+  color: var(--cor-texto-secundario);
+  cursor: pointer;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.barra__botao--modo {
+  padding-inline: 1rem;
+}
+
+/* A divisória entre botões do mesmo grupo */
+.barra__botao + .barra__botao {
+  border-left: 1px solid var(--cor-borda);
+}
+
+.barra__botao--ativo {
+  background-color: var(--cor-marca);
+  color: #fff;
+}
+
+/* No mobile os botões de período ficam só com a seta */
+.barra__botao-texto {
+  display: none;
+}
+
+.barra__filtros {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 1px solid var(--cor-borda);
+  border-radius: 0.5rem;
+  background-color: var(--cor-superficie);
+  color: var(--cor-texto-secundario);
+  cursor: pointer;
+  transition: color 0.15s ease, background-color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.barra__filtros--ativo {
+  border-color: var(--cor-marca-borda);
+  background-color: var(--cor-marca-fundo);
+  color: var(--cor-marca-texto);
+}
+
+@media (hover: hover) {
+  .barra__botao:not(.barra__botao--ativo):hover {
+    background-color: var(--cor-superficie-suave);
+    color: var(--cor-texto);
+  }
+}
+
+@media (width >= 40rem) {
+  .barra__botao {
+    padding-block: 0.5rem;
+  }
+
+  .barra__botao--modo {
+    padding-inline: 0.75rem;
+  }
+
+  .barra__botao-texto {
+    display: inline;
+  }
+
+  /* No desktop os filtros vivem soltos, sem o botão que os abre */
+  .barra__filtros {
+    display: none;
+  }
+}

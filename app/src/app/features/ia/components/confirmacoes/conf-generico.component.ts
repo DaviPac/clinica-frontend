@@ -18,6 +18,8 @@ import {
   camposDerivados,
 } from './campos-confirmacao';
 import { comoBooleano, comoNumero, comoTexto, paraDatetimeLocal } from './contrato';
+import { RotuloComponent } from '../../../../shared/ui/rotulo/rotulo.component';
+import { CampoComponent } from '../../../../shared/ui/campo/campo.component';
 
 /**
  * Formulário de confirmação dirigido pelos descritores de `campos-confirmacao`.
@@ -29,8 +31,9 @@ import { comoBooleano, comoNumero, comoTexto, paraDatetimeLocal } from './contra
 @Component({
   selector: 'app-conf-generico',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RotuloComponent, CampoComponent],
   templateUrl: './conf-generico.component.html',
+  styleUrl: './confirmacao.css',
 })
 export class ConfGenericoComponent implements OnInit {
   private readonly fb = inject(FormBuilder);

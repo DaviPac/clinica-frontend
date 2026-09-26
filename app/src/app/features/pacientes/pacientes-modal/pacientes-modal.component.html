@@ -1,122 +1,110 @@
 <app-modal titulo="Novo paciente" (fechar)="fechar.emit()">
 
   @if (avisoVinculacao()) {
-    <app-alert variant="success" class="block mb-4">
+    <app-alert variant="success" class="modal-paciente__aviso">
       Paciente já cadastrado no sistema — vinculado ao seu perfil.
     </app-alert>
   }
 
   @if (erro()) {
-    <app-alert class="block mb-4">{{ erro() }}</app-alert>
+    <app-alert class="modal-paciente__aviso">{{ erro() }}</app-alert>
   }
 
-  <form [formGroup]="form" (ngSubmit)="submit()" class="flex flex-col gap-4">
+  <form class="modal-paciente__form" [formGroup]="form" (ngSubmit)="submit()">
 
     @if (isAdmin) {
-      <div>
-        <label class="ui-label" for="paciente-profissional">
-          Profissional <span class="text-red-500">*</span>
-        </label>
+      <app-campo-form
+        rotulo="Profissional"
+        para="paciente-profissional"
+        [obrigatorio]="true"
+        [erro]="campoInvalido('usuario_id') ? 'Selecione um profissional.' : null">
         <select
+          appCampo
           id="paciente-profissional"
           formControlName="usuario_id"
-          [class.border-red-300]="campoInvalido('usuario_id')"
-          class="ui-input">
+          [estado]="campoInvalido('usuario_id') ? 'invalido' : 'normal'">
           <option [value]="0" disabled>Selecione um profissional</option>
           @for (u of usuarios(); track u.id) {
             <option [value]="u.id">{{ u.nome || u.email }}</option>
           }
         </select>
-        @if (campoInvalido('usuario_id')) {
-          <p class="text-xs text-red-600 mt-1">Selecione um profissional.</p>
-        }
-      </div>
+      </app-campo-form>
     }
 
-    <div>
-      <label class="ui-label" for="paciente-nome">
-        Nome completo <span class="text-red-500">*</span>
-      </label>
+    <app-campo-form
+      rotulo="Nome completo"
+      para="paciente-nome"
+      [obrigatorio]="true"
+      [erro]="campoInvalido('nome') ? 'Informe o nome completo (mínimo 3 caracteres).' : null">
       <input
+        appCampo
         id="paciente-nome"
         type="text"
         formControlName="nome"
         placeholder="Maria Oliveira"
-        [class.border-red-300]="campoInvalido('nome')"
-        class="ui-input"
+        [estado]="campoInvalido('nome') ? 'invalido' : 'normal'"
       />
-      @if (campoInvalido('nome')) {
-        <p class="text-xs text-red-600 mt-1">Informe o nome completo (mínimo 3 caracteres).</p>
-      }
-    </div>
+    </app-campo-form>
 
-    <div>
-      <label class="ui-label" for="paciente-cpf">CPF</label>
+    <app-campo-form rotulo="CPF" para="paciente-cpf">
       <input
+        appCampo
+        [mono]="true"
         id="paciente-cpf"
         type="text"
         inputmode="numeric"
         formControlName="cpf"
         placeholder="123.456.789-00"
-        class="ui-input font-mono"
       />
-    </div>
+    </app-campo-form>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-      <div>
-        <label class="ui-label" for="paciente-telefone">Telefone</label>
+    <div class="modal-paciente__dupla">
+      <app-campo-form rotulo="Telefone" para="paciente-telefone">
         <input
+          appCampo
           id="paciente-telefone"
           type="tel"
           formControlName="telefone"
           placeholder="(81) 99999-0000"
-          class="ui-input"
         />
-      </div>
-      <div>
-        <label class="ui-label" for="paciente-nascimento">Nascimento</label>
+      </app-campo-form>
+
+      <app-campo-form rotulo="Nascimento" para="paciente-nascimento">
         <input
+          appCampo
           id="paciente-nascimento"
           type="date"
           formControlName="dataNascimento"
-          class="ui-input"
         />
-      </div>
+      </app-campo-form>
     </div>
 
-    <div>
-      <label class="ui-label" for="paciente-rg">RG</label>
+    <app-campo-form rotulo="RG" para="paciente-rg">
       <input
+        appCampo
+        [mono]="true"
         id="paciente-rg"
         type="text"
         formControlName="rg"
         placeholder="00.000.000-0"
-        class="ui-input font-mono"
       />
-    </div>
+    </app-campo-form>
 
-    <div>
-      <label class="ui-label" for="paciente-endereco">Endereço completo</label>
+    <app-campo-form rotulo="Endereço completo" para="paciente-endereco">
       <textarea
+        appCampo
         id="paciente-endereco"
         formControlName="enderecoCompleto"
         rows="2"
-        placeholder="Rua, número, bairro, cidade"
-        class="ui-input resize-none">
+        placeholder="Rua, número, bairro, cidade">
       </textarea>
-    </div>
+    </app-campo-form>
 
-    <div class="flex gap-2.5 mt-2">
-      <button
-        type="button"
-        (click)="fechar.emit()"
-        class="btn-outline flex-1">
+    <div class="modal-paciente__acoes">
+      <button appBotao variante="contorno" type="button" (click)="fechar.emit()">
         Cancelar
       </button>
-      <button
-        type="submit"
-        [disabled]="loading() || avisoVinculacao()"
-        class="btn-primary flex-1">
+      <button appBotao type="submit" [disabled]="loading() || avisoVinculacao()">
         {{ loading() ? 'Salvando...' : 'Cadastrar' }}
       </button>
     </div>

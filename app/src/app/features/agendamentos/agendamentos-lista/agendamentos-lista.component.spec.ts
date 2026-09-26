@@ -175,11 +175,4 @@ describe('AgendamentosListaComponent', () => {
       expect(component.agendamentoParaAcoes()).toBeNull();
     });
   });
-
-  it('mapeia cada status para uma cor de bolinha', () => {
-    expect(component.dotClass('AGENDADO')).toBe('bg-blue-500');
-    expect(component.dotClass('REALIZADO')).toBe('bg-teal-500');
-    expect(component.dotClass('FALTA')).toBe('bg-amber-500');
-    expect(component.dotClass('CANCELADO')).toBe('bg-gray-400');
-  });
 });

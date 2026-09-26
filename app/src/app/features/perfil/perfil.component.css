@@ -1,0 +1,99 @@
+.perfil {
+  max-width: 48rem;
+}
+
+.perfil__cabecalho {
+  margin-bottom: 1.5rem;
+}
+
+.perfil__titulo {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  font-weight: 500;
+  color: var(--cor-texto);
+}
+
+.perfil__subtitulo {
+  margin-top: 0.125rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--cor-texto-suave);
+}
+
+.perfil__cartao {
+  margin-bottom: 1.25rem;
+}
+
+/* ── Identidade ── */
+.perfil__identidade {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+}
+
+.perfil__nomes {
+  flex: 1;
+  min-width: 0;
+}
+
+.perfil__linha-nome {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.perfil__nome {
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: 500;
+  color: var(--cor-texto);
+}
+
+.perfil__email {
+  margin-top: 0.125rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--cor-texto-suave);
+}
+
+.perfil__dados {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  column-gap: 1.5rem;
+  row-gap: 1rem;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--cor-divisor);
+}
+
+/* ── Formulário de senha ── */
+.perfil__alerta {
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.perfil__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 28rem;
+}
+
+.perfil__acoes {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 0.5rem;
+}
+
+.perfil__sair {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1.25rem;
+}
+
+@media (width >= 40rem) {
+  .perfil__dados {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

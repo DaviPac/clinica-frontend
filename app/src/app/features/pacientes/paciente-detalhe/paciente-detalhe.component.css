@@ -1,0 +1,161 @@
+.detalhe {
+  max-width: 42rem;
+}
+
+.detalhe__alerta {
+  display: block;
+}
+
+/* ── Topo: avatar, nome e ações ── */
+.detalhe__topo {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--cor-divisor);
+}
+
+.detalhe__identidade {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.detalhe__avatar--inativo {
+  opacity: 0.5;
+}
+
+.detalhe__nomes {
+  flex: 1;
+  min-width: 0;
+}
+
+.detalhe__linha-nome {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.detalhe__nome {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  font-weight: 500;
+  color: var(--cor-texto);
+}
+
+.detalhe__inativo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.125rem 0.5rem;
+  border: 1px solid var(--cor-borda);
+  border-radius: 9999px;
+  background-color: var(--cor-superficie-realce);
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 500;
+  color: var(--cor-texto-secundario);
+}
+
+.detalhe__ponto {
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: 50%;
+  background-color: var(--cor-texto-apagado);
+}
+
+.detalhe__id {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--cor-texto-suave);
+}
+
+/* ── Ações do cabeçalho ── */
+.detalhe__acoes {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.detalhe__acao {
+  padding: 0.375rem 0.75rem;
+  border: none;
+  border-radius: 0.5rem;
+  background-color: transparent;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--cor-texto-secundario);
+  cursor: pointer;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.detalhe__acao--perigo {
+  color: var(--cor-perigo-solido);
+}
+
+.detalhe__acao--reativar {
+  border: 1px solid var(--cor-sucesso-borda);
+  color: var(--cor-sucesso-texto);
+}
+
+/* ── Lista de dados ── */
+.detalhe__dados {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  column-gap: 2rem;
+  row-gap: 1.25rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+/* ── Espaço reservado para os agendamentos do paciente ── */
+.detalhe__futuro {
+  margin-top: 1rem;
+  padding: 2rem 1.5rem;
+  border: 1px dashed var(--cor-borda);
+  border-radius: 0.75rem;
+  text-align: center;
+}
+
+.detalhe__futuro-texto {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--cor-texto-apagado);
+}
+
+@media (hover: hover) {
+  .detalhe__acao:hover {
+    background-color: var(--cor-superficie-realce);
+    color: var(--cor-texto);
+  }
+
+  .detalhe__acao--perigo:hover {
+    background-color: var(--cor-perigo-fundo);
+    color: var(--cor-perigo-texto);
+  }
+
+  .detalhe__acao--reativar:hover {
+    background-color: var(--cor-sucesso-fundo);
+    color: var(--cor-sucesso-texto);
+  }
+}
+
+@media (width >= 40rem) {
+  .detalhe__topo {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .detalhe__dados {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .detalhe__dados--largo {
+    grid-column: span 2 / span 2;
+  }
+}

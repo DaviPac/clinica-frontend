@@ -11,6 +11,8 @@ import {
   valorPorSessao,
 } from '../../../agendamentos/agendamento.regras';
 import { comoBooleano, comoNumero, paraDatetimeLocal } from './contrato';
+import { RotuloComponent } from '../../../../shared/ui/rotulo/rotulo.component';
+import { CampoComponent } from '../../../../shared/ui/campo/campo.component';
 
 /**
  * Formulário de confirmação de `criar_agendamento`.
@@ -23,8 +25,9 @@ import { comoBooleano, comoNumero, paraDatetimeLocal } from './contrato';
 @Component({
   selector: 'app-conf-agendamento-criar',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RotuloComponent, CampoComponent],
   templateUrl: './conf-agendamento-criar.component.html',
+  styleUrl: './confirmacao.css',
 })
 export class ConfAgendamentoCriarComponent implements OnInit {
   private readonly fb = inject(FormBuilder);

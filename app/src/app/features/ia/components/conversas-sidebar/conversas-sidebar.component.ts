@@ -2,6 +2,7 @@ import { Component, computed, input, output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ResumoConversa } from '../../../../core/ia/models/chat.model';
 import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog/confirm-dialog.component';
+import { BotaoComponent } from '../../../../shared/ui/botao/botao.component';
 
 interface Grupo {
   rotulo: string;
@@ -11,8 +12,9 @@ interface Grupo {
 @Component({
   selector: 'app-conversas-sidebar',
   standalone: true,
-  imports: [FormsModule, ConfirmDialogComponent],
+  imports: [FormsModule, ConfirmDialogComponent, BotaoComponent],
   templateUrl: './conversas-sidebar.component.html',
+  styleUrl: './conversas-sidebar.component.css',
 })
 export class ConversasSidebarComponent {
   readonly conversas = input.required<ResumoConversa[]>();

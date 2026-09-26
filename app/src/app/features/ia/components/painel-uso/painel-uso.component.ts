@@ -18,6 +18,7 @@ import { ConversaStore } from '../../../../core/ia/persistencia/conversa-store';
   selector: 'app-painel-uso',
   standalone: true,
   templateUrl: './painel-uso.component.html',
+  styleUrl: './painel-uso.component.css',
 })
 export class PainelUsoComponent {
   private readonly store = inject(ConversaStore);

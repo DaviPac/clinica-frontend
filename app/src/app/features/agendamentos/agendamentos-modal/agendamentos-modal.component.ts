@@ -12,6 +12,10 @@ import { UsuarioService } from '../../../core/services/usuario/usuario.service';
 import { ModalComponent } from '../../../shared/components/modal/modal.component';
 import { AlertComponent } from '../../../shared/components/alert/alert.component';
 import { MIN_SESSOES_RECORRENCIA } from '../agendamento.regras';
+import { CampoFormComponent } from '../../../shared/ui/campo-form/campo-form.component';
+import { CampoComponent } from '../../../shared/ui/campo/campo.component';
+import { BotaoComponent } from '../../../shared/ui/botao/botao.component';
+import { ToggleComponent } from '../../../shared/components/toggle/toggle.component';
 
 interface Usuario {
   id: number;
@@ -35,8 +39,9 @@ interface FormRawValue {
 @Component({
   selector: 'app-agendamentos-modal',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ModalComponent, AlertComponent],
+  imports: [CommonModule, ReactiveFormsModule, ModalComponent, AlertComponent, CampoFormComponent, CampoComponent, BotaoComponent, ToggleComponent],
   templateUrl: './agendamentos-modal.component.html',
+  styleUrl: './agendamentos-modal.component.css',
 })
 export class AgendamentosModalComponent implements OnInit {
   private readonly authService = inject(AuthService);

@@ -1,0 +1,24 @@
+<div class="tema__grupo" role="radiogroup" aria-label="Tema da interface">
+  @for (op of opcoes; track op.valor) {
+    <button
+      type="button"
+      role="radio"
+      class="tema__opcao"
+      [class.tema__opcao--ativa]="preferencia() === op.valor"
+      [attr.aria-checked]="preferencia() === op.valor"
+      (click)="selecionar(op.valor)">
+      <svg class="tema__icone" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        @if (op.valor === 'claro') {
+          <circle cx="12" cy="12" r="4" />
+        }
+        <path [attr.d]="op.icone" />
+      </svg>
+      {{ op.rotulo }}
+    </button>
+  }
+</div>
+
+@if (descricao()) {
+  <p class="tema__descricao">{{ descricao() }}</p>
+}

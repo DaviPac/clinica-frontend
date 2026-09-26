@@ -1,42 +1,33 @@
 <app-modal titulo="Novo agendamento" (fechar)="fechar.emit()">
 
   @if (erro()) {
-    <app-alert class="block mb-4">{{ erro() }}</app-alert>
+    <app-alert class="modal-agendamento__aviso">{{ erro() }}</app-alert>
   }
 
-  <form [formGroup]="form" (ngSubmit)="submit()" class="flex flex-col gap-4">
+  <form class="modal-agendamento__form" [formGroup]="form" (ngSubmit)="submit()">
 
     @if (isAdmin) {
-      <div>
-        <label class="ui-label" for="ag-profissional">
-          Profissional <span class="text-red-500">*</span>
-        </label>
-        <select id="ag-profissional" formControlName="usuario_id" class="ui-input">
+      <app-campo-form rotulo="Profissional" para="ag-profissional" [obrigatorio]="true">
+        <select appCampo id="ag-profissional" formControlName="usuario_id">
           <option [value]="0" disabled>Selecione um profissional</option>
           @for (u of usuarios(); track u.id) {
             <option [value]="u.id">{{ u.nome || u.email }}</option>
           }
         </select>
-      </div>
+      </app-campo-form>
     }
 
-    <div>
-      <label class="ui-label" for="ag-paciente">
-        Paciente <span class="text-red-500">*</span>
-      </label>
-      <select id="ag-paciente" formControlName="paciente_id" class="ui-input">
+    <app-campo-form rotulo="Paciente" para="ag-paciente" [obrigatorio]="true">
+      <select appCampo id="ag-paciente" formControlName="paciente_id">
         <option [value]="0" disabled>Selecione um paciente</option>
         @for (p of pacientes(); track p.id) {
           <option [value]="p.id">{{ p.nome }}</option>
         }
       </select>
-    </div>
+    </app-campo-form>
 
-    <div>
-      <label class="ui-label" for="ag-servico">
-        Serviço <span class="text-red-500">*</span>
-      </label>
-      <select id="ag-servico" formControlName="servico_id" class="ui-input">
+    <app-campo-form rotulo="Serviço" para="ag-servico" [obrigatorio]="true">
+      <select appCampo id="ag-servico" formControlName="servico_id">
         <option [value]="0" disabled>Selecione um serviço</option>
         @for (s of servicos(); track s.id) {
           <option [value]="s.id">
@@ -46,119 +37,71 @@
           </option>
         }
       </select>
-    </div>
+    </app-campo-form>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-      <div>
-        <label class="ui-label" for="ag-inicio">
-          Início <span class="text-red-500">*</span>
-        </label>
-        <input
-          id="ag-inicio"
-          type="datetime-local"
-          formControlName="data_hora_inicio"
-          class="ui-input"
-        />
-      </div>
-      <div>
-        <label class="ui-label" for="ag-duracao">
-          Duração (min) <span class="text-red-500">*</span>
-        </label>
-        <input
-          id="ag-duracao"
-          type="number"
-          formControlName="duracao_minutos"
-          min="1"
-          class="ui-input"
-        />
-      </div>
+    <div class="modal-agendamento__dupla">
+      <app-campo-form rotulo="Início" para="ag-inicio" [obrigatorio]="true">
+        <input appCampo id="ag-inicio" type="datetime-local" formControlName="data_hora_inicio" />
+      </app-campo-form>
+
+      <app-campo-form rotulo="Duração (min)" para="ag-duracao" [obrigatorio]="true">
+        <input appCampo id="ag-duracao" type="number" min="1" formControlName="duracao_minutos" />
+      </app-campo-form>
     </div>
 
     <!-- Valor: comportamento difere se for pacote -->
-    <div>
-      <label class="ui-label" for="ag-valor">
-        @if (isPacote) {
-          Valor total do pacote (R$) <span class="text-red-500">*</span>
-        } @else {
-          Valor combinado por sessão (R$) <span class="text-red-500">*</span>
-        }
-      </label>
+    <app-campo-form
+      para="ag-valor"
+      [obrigatorio]="true"
+      [rotulo]="isPacote ? 'Valor total do pacote (R$)' : 'Valor combinado por sessão (R$)'"
+      [ajuda]="isPacote ? '' : 'Pré-preenchido com o valor do serviço. Ajuste se necessário.'">
       <input
+        appCampo
+        [mono]="true"
         id="ag-valor"
         type="number"
-        formControlName="valor_combinado"
         min="0.01"
         step="0.01"
-        class="ui-input font-mono"
+        formControlName="valor_combinado"
       />
 
       @if (isPacote && valorPorSessaoDisplay() !== null) {
         <!-- Derivado: mostra valor por sessão calculado -->
-        <p class="text-xs text-brand-500 mt-1 font-medium">
+        <p class="modal-agendamento__derivado">
           {{ valorPorSessaoDisplay() | currency:'BRL' }} por sessão
           ({{ ctrl['total_sessoes'].value }} sessões)
         </p>
-      } @else {
-        <p class="text-xs text-gray-400 mt-1">
-          Pré-preenchido com o valor do serviço. Ajuste se necessário.
-        </p>
       }
-    </div>
+    </app-campo-form>
 
-    <!-- Toggle recorrente: desabilitado e fixo quando for pacote -->
-    <div class="border border-gray-200 rounded-lg p-3"
-         [class.opacity-60]="isPacote">
-      <label class="flex items-center gap-3 select-none"
-             [class.cursor-pointer]="!isPacote"
-             [class.cursor-not-allowed]="isPacote">
-        <div
-          class="relative w-9 h-5 rounded-full transition-colors shrink-0"
-          [class]="recorrente ? 'bg-brand-400' : 'bg-gray-200'">
-          <div
-            class="absolute top-0.5 w-4 h-4 bg-white rounded-full shadow-sm
-                   transition-transform duration-200"
-            [class]="recorrente ? 'translate-x-[18px]' : 'translate-x-0.5'">
-          </div>
-          <input type="checkbox" formControlName="recorrente" class="sr-only" />
-        </div>
+    <!-- Recorrência: travada e sempre ligada quando o serviço é um pacote -->
+    <div class="modal-agendamento__recorrencia" [class.modal-agendamento__recorrencia--travada]="isPacote">
+      <div class="modal-agendamento__recorrencia-topo">
+        <app-toggle
+          [checked]="recorrente"
+          [disabled]="isPacote"
+          (changed)="ctrl['recorrente'].setValue($event)" />
         <div>
-          <span class="text-sm font-medium text-gray-800">Sessão recorrente</span>
+          <span class="modal-agendamento__recorrencia-rotulo">Sessão recorrente</span>
           @if (isPacote) {
-            <span class="ml-1.5 text-xs text-brand-500 font-medium">· obrigatório para pacotes</span>
+            <span class="modal-agendamento__recorrencia-nota">· obrigatório para pacotes</span>
           }
         </div>
-      </label>
+      </div>
 
       @if (recorrente) {
-        <div class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div>
-            <label class="ui-label" for="ag-sessoes">
-              Nº de sessões <span class="text-red-500">*</span>
-            </label>
-            <input
-              id="ag-sessoes"
-              type="number"
-              formControlName="total_sessoes"
-              min="2"
-              class="ui-input"
-            />
-          </div>
-          <div>
-            <label class="ui-label" for="ag-intervalo">
-              Intervalo (semanas)
-            </label>
-            <input
-              id="ag-intervalo"
-              type="number"
-              formControlName="intervalo_semanas"
-              min="1"
-              class="ui-input"
-            />
-          </div>
+        <div class="modal-agendamento__dupla modal-agendamento__dupla--recorrencia">
+          <app-campo-form rotulo="Nº de sessões" para="ag-sessoes" [obrigatorio]="true">
+            <input appCampo id="ag-sessoes" type="number" min="2" formControlName="total_sessoes" />
+          </app-campo-form>
+
+          <app-campo-form rotulo="Intervalo (semanas)" para="ag-intervalo">
+            <input appCampo id="ag-intervalo" type="number" min="1" formControlName="intervalo_semanas" />
+          </app-campo-form>
         </div>
 
         @if (previewUltimaSessao()) {
-          <p class="text-xs text-gray-500 mt-2">
+          <p class="modal-agendamento__previa">
             {{ ctrl['total_sessoes'].value }} sessões ·
             última em {{ previewUltimaSessao() }}
           </p>
@@ -166,17 +109,11 @@
       }
     </div>
 
-    <div class="flex gap-2.5 mt-2">
-      <button
-        type="button"
-        (click)="fechar.emit()"
-        class="btn-outline flex-1">
+    <div class="modal-agendamento__acoes">
+      <button appBotao variante="contorno" type="button" (click)="fechar.emit()">
         Cancelar
       </button>
-      <button
-        type="submit"
-        [disabled]="form.invalid || loading()"
-        class="btn-primary flex-1">
+      <button appBotao type="submit" [disabled]="form.invalid || loading()">
         {{ loading() ? 'Agendando...' : 'Agendar' }}
       </button>
     </div>

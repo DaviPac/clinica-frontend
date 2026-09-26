@@ -1,0 +1,50 @@
+.tema__grupo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  border: 1px solid var(--cor-borda);
+  border-radius: 0.5rem;
+  background-color: var(--cor-superficie-suave);
+}
+
+.tema__opcao {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 0.75rem;
+  border: none;
+  border-radius: 0.375rem;
+  background-color: transparent;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 500;
+  color: var(--cor-texto-secundario);
+  cursor: pointer;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.tema__opcao--ativa {
+  background-color: var(--cor-marca);
+  color: #fff;
+}
+
+.tema__icone {
+  width: 0.875rem;
+  height: 0.875rem;
+  flex-shrink: 0;
+}
+
+.tema__descricao {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: var(--cor-texto-apagado);
+}
+
+@media (hover: hover) {
+  .tema__opcao:not(.tema__opcao--ativa):hover {
+    background-color: var(--cor-superficie-realce);
+    color: var(--cor-texto);
+  }
+}

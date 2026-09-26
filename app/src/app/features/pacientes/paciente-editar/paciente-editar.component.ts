@@ -5,6 +5,13 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { PacienteService, AtualizarPacienteDto } from '../../../core/services/paciente/paciente.service';
 import { Paciente } from '../../../core/models/paciente.model';
+import { PaginaComponent } from '../../../shared/ui/pagina/pagina.component';
+import { LinkVoltarComponent } from '../../../shared/ui/link-voltar/link-voltar.component';
+import { CarregandoComponent } from '../../../shared/ui/carregando/carregando.component';
+import { CartaoComponent } from '../../../shared/ui/cartao/cartao.component';
+import { CampoFormComponent } from '../../../shared/ui/campo-form/campo-form.component';
+import { CampoComponent } from '../../../shared/ui/campo/campo.component';
+import { BotaoComponent } from '../../../shared/ui/botao/botao.component';
 
 // Campos opcionais que NAO podem ser limpos (backend ainda nao suporta apagar valor)
 const CAMPOS_OPCIONAIS = ['telefone', 'dataNascimento', 'rg', 'enderecoCompleto'] as const;
@@ -13,8 +20,9 @@ type CampoOpcional = typeof CAMPOS_OPCIONAIS[number];
 @Component({
   selector: 'app-paciente-editar',
   standalone: true,
-  imports: [CommonModule, RouterModule, ReactiveFormsModule, AlertComponent],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, AlertComponent, PaginaComponent, LinkVoltarComponent, CarregandoComponent, CartaoComponent, CampoFormComponent, CampoComponent, BotaoComponent],
   templateUrl: './paciente-editar.component.html',
+  styleUrl: './paciente-editar.component.css',
 })
 export class PacienteEditarComponent implements OnInit {
   private route = inject(ActivatedRoute);

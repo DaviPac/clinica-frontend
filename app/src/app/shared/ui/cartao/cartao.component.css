@@ -1,0 +1,53 @@
+:host {
+  display: block;
+  border: 1px solid var(--cor-borda);
+  border-radius: 0.75rem;
+  background-color: var(--cor-superficie);
+  padding: 1rem;
+}
+
+:host([data-espaco='compacto']) {
+  border-radius: 0.5rem;
+}
+
+:host([data-espaco='solto']) {
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: var(--sombra-cartao);
+}
+
+.cartao__cabecalho {
+  margin-bottom: 1.25rem;
+}
+
+:host([data-espaco-titulo='compacto']) .cartao__cabecalho {
+  margin-bottom: 1rem;
+}
+
+:host([data-espaco-titulo='solto']) .cartao__cabecalho {
+  margin-bottom: 1.5rem;
+}
+
+.cartao__titulo {
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: 500;
+  color: var(--cor-texto);
+}
+
+.cartao__subtitulo {
+  margin-top: 0.125rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: var(--cor-texto-suave);
+}
+
+@media (width >= 40rem) {
+  :host([data-espaco='padrao']) {
+    padding: 1.5rem;
+  }
+
+  :host([data-espaco='medio']) {
+    padding: 1.25rem;
+  }
+}

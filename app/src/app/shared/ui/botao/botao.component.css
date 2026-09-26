@@ -1,0 +1,86 @@
+:host {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.15s ease,
+    background-color 0.15s ease, border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+:host(:disabled) {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+:host([data-largura='total']) {
+  width: 100%;
+}
+
+:host([data-tamanho='grande']) {
+  padding: 0.625rem 1.25rem;
+}
+
+:host([data-tamanho='pequeno']) {
+  padding: 0.25rem 0.625rem;
+  border-radius: 0.375rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+/* ── Primário: ação principal da tela ── */
+:host([data-variante='primario']) {
+  background-color: var(--cor-marca);
+  color: #fff;
+  box-shadow: 0 6px 18px -8px var(--brilho-marca);
+}
+
+:host([data-variante='primario']:active) {
+  background-color: var(--cor-marca-forte);
+}
+
+/* ── Contorno: ação secundária ── */
+:host([data-variante='contorno']) {
+  border: 1px solid var(--cor-borda);
+  background-color: var(--cor-controle);
+  color: var(--cor-texto-secundario);
+}
+
+/* ── Contorno perigo: ação destrutiva discreta, em linha de tabela ── */
+:host([data-variante='contorno-perigo']) {
+  border: 1px solid var(--cor-perigo-borda);
+  background-color: transparent;
+  color: var(--cor-perigo-texto);
+}
+
+/* ── Perigo: ação destrutiva ── */
+:host([data-variante='perigo']) {
+  background-color: var(--cor-perigo-solido);
+  color: #fff;
+}
+
+@media (hover: hover) {
+  :host([data-variante='primario']:hover:not(:disabled)) {
+    background-color: var(--cor-marca-forte);
+    box-shadow: 0 8px 22px -8px var(--brilho-marca);
+  }
+
+  :host([data-variante='contorno']:hover:not(:disabled)) {
+    background-color: var(--cor-controle-hover);
+    border-color: var(--cor-controle-borda-hover);
+  }
+
+  :host([data-variante='contorno-perigo']:hover:not(:disabled)) {
+    background-color: var(--cor-perigo-fundo);
+  }
+
+  :host([data-variante='perigo']:hover:not(:disabled)) {
+    background-color: var(--cor-perigo-forte);
+  }
+}

@@ -1,30 +1,25 @@
-<div class="page">
+<div appPagina>
 
-  <div class="page-header">
-    <div>
-      <h1 class="text-lg font-medium text-gray-900">Usuários</h1>
-      <p class="text-sm text-gray-500 mt-0.5">
-        {{ usuarios().length }} usuário{{ usuarios().length !== 1 ? 's' : '' }} cadastrado{{ usuarios().length !== 1 ? 's' : '' }}
-      </p>
-    </div>
-    <button
-      (click)="modalAberto.set(true)"
-      class="btn-primary w-full sm:w-auto">
+  <app-cabecalho-pagina
+    titulo="Usuários"
+    [subtitulo]="usuarios().length + ' usuário' + (usuarios().length !== 1 ? 's' : '') +
+                 ' cadastrado' + (usuarios().length !== 1 ? 's' : '')">
+    <button appBotao class="usuarios__novo" (click)="modalAberto.set(true)">
       + Novo usuário
     </button>
-  </div>
+  </app-cabecalho-pagina>
 
   @if (erro()) {
-    <app-alert class="block mb-4">{{ erro() }}</app-alert>
+    <app-alert class="usuarios__alerta">{{ erro() }}</app-alert>
   }
 
   @if (carregando()) {
-    <p class="text-sm text-gray-400 text-center py-10">Carregando...</p>
+    <app-carregando texto="Carregando..." />
   }
 
   @if (!carregando()) {
-    <div class="table-wrap">
-      <table class="min-w-[900px]">
+    <app-tabela [larguraMinima]="900">
+      <table>
         <thead>
           <tr>
             <th>Nome</th>
@@ -34,54 +29,43 @@
             <th>Comissão</th>
             <th>Desde</th>
             <th>Recebimento</th>
-            <th class="text-right"></th>
+            <th class="usuarios__col-acoes"></th>
           </tr>
         </thead>
         <tbody>
           @for (u of usuarios(); track u.id) {
-            <tr class="border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors">
-              <td class="font-medium text-gray-900">{{ u.nome }}</td>
-              <td class="text-gray-500 text-xs">{{ u.email }}</td>
-              <td class="text-gray-500">{{ u.profissao ?? '—' }}</td>
+            <tr class="usuarios__linha">
+              <td class="usuarios__nome">{{ u.nome }}</td>
+              <td class="usuarios__dado usuarios__dado--miudo">{{ u.email }}</td>
+              <td class="usuarios__dado">{{ u.profissao ?? '—' }}</td>
               <td>
                 @if (u.role === 'ADMIN') {
-                  <span class="bg-purple-50 text-purple-800 text-xs font-medium px-2 py-0.5 rounded">
-                    Admin
-                  </span>
+                  <app-selo tom="destaque">Admin</app-selo>
                 } @else {
-                  <span class="bg-gray-100 text-gray-600 text-xs font-medium px-2 py-0.5 rounded">
-                    Profissional
-                  </span>
+                  <app-selo tom="neutro">Profissional</app-selo>
                 }
               </td>
-              <td class="text-gray-500 font-mono text-xs">
-                {{ u.taxaComissaoPadrao }}%
-              </td>
-              <td class="text-gray-500 text-xs whitespace-nowrap">
+              <td class="usuarios__dado usuarios__dado--mono">{{ u.taxaComissaoPadrao }}%</td>
+              <td class="usuarios__dado usuarios__dado--miudo usuarios__dado--linha-unica">
                 {{ formatarData(u.criadoEm) }}
               </td>
-              <td class="text-gray-500 text-xs whitespace-nowrap">
+              <td class="usuarios__dado usuarios__dado--miudo usuarios__dado--linha-unica">
                 {{ u.profissionalRecebe ? 'Direto' : 'Pela clínica' }}
               </td>
-              <td class="text-right">
-                <a
-                  [routerLink]="[u.id]"
-                  class="text-xs text-brand-500 border border-brand-400/40 rounded-md
-                         px-2.5 py-1 hover:bg-brand-400/10 transition-colors">
-                  Ver
-                </a>
+              <td class="usuarios__acoes">
+                <a class="usuarios__ver" [routerLink]="[u.id]">Ver</a>
               </td>
             </tr>
           } @empty {
             <tr>
-              <td colspan="8" class="py-10 text-center text-sm text-gray-400">
-                Nenhum usuário cadastrado.
+              <td class="usuarios__celula-vazia" colspan="8">
+                <app-vazio mensagem="Nenhum usuário cadastrado." />
               </td>
             </tr>
           }
         </tbody>
       </table>
-    </div>
+    </app-tabela>
   }
 
 </div>
@@ -91,91 +75,68 @@
   <app-modal titulo="Novo usuário" (fechar)="modalAberto.set(false)">
 
     @if (erroModal()) {
-      <app-alert class="block mb-4">{{ erroModal() }}</app-alert>
+      <app-alert class="usuarios__alerta">{{ erroModal() }}</app-alert>
     }
 
-    <form [formGroup]="form" (ngSubmit)="submit()" class="flex flex-col gap-4">
+    <form class="usuarios__form" [formGroup]="form" (ngSubmit)="submit()">
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <div class="sm:col-span-2">
-          <label class="ui-label" for="usuario-nome">
-            Nome completo <span class="text-red-500">*</span>
-          </label>
-          <input
-            id="usuario-nome"
-            type="text"
-            formControlName="nome"
-            placeholder="Ana Costa"
-            class="ui-input"
-          />
-        </div>
-        <div class="sm:col-span-2">
-          <label class="ui-label" for="usuario-email">
-            E-mail <span class="text-red-500">*</span>
-          </label>
-          <input
-            id="usuario-email"
-            type="email"
-            formControlName="email"
-            placeholder="ana@clinica.com"
-            class="ui-input"
-          />
-        </div>
-        <div class="sm:col-span-2">
-          <label class="ui-label" for="usuario-senha">
-            Senha <span class="text-red-500">*</span>
-          </label>
-          <input
-            id="usuario-senha"
-            type="password"
-            formControlName="senha"
-            placeholder="Mínimo 6 caracteres"
-            class="ui-input"
-          />
-        </div>
-        <div>
-          <label class="ui-label" for="usuario-role">
-            Papel <span class="text-red-500">*</span>
-          </label>
-          <select id="usuario-role" formControlName="role" class="ui-input">
+      <div class="usuarios__grade">
+        <app-campo-form
+          class="usuarios__grade--largo"
+          rotulo="Nome completo"
+          para="usuario-nome"
+          [obrigatorio]="true">
+          <input appCampo id="usuario-nome" type="text" formControlName="nome" placeholder="Ana Costa" />
+        </app-campo-form>
+
+        <app-campo-form
+          class="usuarios__grade--largo"
+          rotulo="E-mail"
+          para="usuario-email"
+          [obrigatorio]="true">
+          <input appCampo id="usuario-email" type="email" formControlName="email" placeholder="ana@clinica.com" />
+        </app-campo-form>
+
+        <app-campo-form
+          class="usuarios__grade--largo"
+          rotulo="Senha"
+          para="usuario-senha"
+          [obrigatorio]="true">
+          <input appCampo id="usuario-senha" type="password" formControlName="senha" placeholder="Mínimo 6 caracteres" />
+        </app-campo-form>
+
+        <app-campo-form rotulo="Papel" para="usuario-role" [obrigatorio]="true">
+          <select appCampo id="usuario-role" formControlName="role">
             <option value="PROFISSIONAL">Profissional</option>
             <option value="ADMIN">Admin</option>
           </select>
-        </div>
-        <div>
-          <label class="ui-label" for="usuario-comissao">Comissão da clínica (%)</label>
+        </app-campo-form>
+
+        <app-campo-form rotulo="Comissão da clínica (%)" para="usuario-comissao">
           <input
+            appCampo
+            [mono]="true"
             id="usuario-comissao"
             type="number"
             formControlName="taxaComissaoPadrao"
             min="0"
             max="100"
-            class="ui-input font-mono"
           />
-        </div>
-        <div class="sm:col-span-2">
-          <label class="ui-label" for="usuario-profissao">Profissão</label>
-          <input
-            id="usuario-profissao"
-            type="text"
-            formControlName="profissao"
-            placeholder="Ex: Psicóloga"
-            class="ui-input"
-          />
-        </div>
+        </app-campo-form>
+
+        <app-campo-form
+          class="usuarios__grade--largo"
+          rotulo="Profissão"
+          para="usuario-profissao">
+          <input appCampo id="usuario-profissao" type="text" formControlName="profissao" placeholder="Ex: Psicóloga" />
+        </app-campo-form>
       </div>
 
-      <div class="flex gap-2.5 mt-2">
-        <button
-          type="button"
-          (click)="modalAberto.set(false)"
-          class="btn-outline flex-1">
+      <div class="usuarios__acoes-modal">
+        <button appBotao variante="contorno" type="button" (click)="modalAberto.set(false)">
           Cancelar
         </button>
-        <button
-          type="submit"
-          [disabled]="form.invalid || salvando()"
-          class="btn-primary flex-1">
+        <button appBotao type="submit" [disabled]="form.invalid || salvando()">
           {{ salvando() ? 'Cadastrando...' : 'Cadastrar' }}
         </button>
       </div>

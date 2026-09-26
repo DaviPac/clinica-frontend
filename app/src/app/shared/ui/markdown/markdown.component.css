@@ -1,0 +1,158 @@
+/*
+ * Estilos do markdown do assistente.
+ *
+ * O componente usa ViewEncapsulation.None, então estas regras entram no
+ * documento inteiro — por isso cada uma delas começa em `.markdown`.
+ */
+.markdown {
+  font-size: 0.875rem;
+  line-height: 1.625;
+  color: var(--cor-leitura);
+}
+
+.markdown > * + * {
+  margin-top: 0.75rem;
+}
+
+.markdown h1 {
+  margin-top: 1.25rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: 600;
+  color: var(--cor-texto);
+}
+
+.markdown h2 {
+  margin-top: 1.25rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 600;
+  color: var(--cor-texto);
+}
+
+.markdown h3,
+.markdown h4 {
+  margin-top: 1rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  color: var(--cor-texto);
+}
+
+.markdown ul {
+  list-style-type: disc;
+  padding-left: 1.25rem;
+}
+
+.markdown ol {
+  list-style-type: decimal;
+  padding-left: 1.25rem;
+}
+
+.markdown ul > * + *,
+.markdown ol > * + * {
+  margin-top: 0.25rem;
+}
+
+.markdown li > ul,
+.markdown li > ol {
+  margin-top: 0.25rem;
+}
+
+.markdown a {
+  color: var(--cor-marca-texto);
+  text-decoration-line: underline;
+  text-underline-offset: 2px;
+}
+
+.markdown strong {
+  font-weight: 600;
+  color: var(--cor-texto);
+}
+
+.markdown code {
+  border-radius: 0.25rem;
+  background-color: var(--cor-superficie-realce);
+  padding: 0.125rem 0.25rem;
+  font-family: var(--fonte-mono);
+  font-size: 0.85em;
+  color: var(--cor-codigo-inline);
+}
+
+.markdown pre {
+  overflow-x: auto;
+  border: 1px solid var(--cor-codigo-borda);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  background: var(--cor-codigo-fundo);
+  color: var(--cor-codigo-texto);
+}
+
+.markdown pre code {
+  background-color: transparent;
+  padding: 0;
+  color: inherit;
+}
+
+.markdown blockquote {
+  border-left: 2px solid var(--cor-marca-borda);
+  padding-left: 0.75rem;
+  color: var(--cor-leitura-suave);
+  font-style: italic;
+}
+
+.markdown hr {
+  margin-block: 1rem;
+  border-color: var(--cor-borda);
+}
+
+/*
+ * Tabelas injetadas: o pipe embrulha cada <table> num .markdown__tabela para
+ * garantir a rolagem horizontal no mobile.
+ */
+.markdown .markdown__tabela {
+  overflow-x: auto;
+  border-radius: 0.75rem;
+  border: 1px solid var(--cor-borda);
+  background-color: var(--cor-superficie);
+  box-shadow: var(--sombra-cartao);
+  -webkit-overflow-scrolling: touch;
+}
+
+.markdown table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.markdown thead {
+  background-color: var(--cor-superficie-suave);
+}
+
+.markdown th {
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--cor-borda);
+  text-align: left;
+  font-weight: 500;
+  white-space: nowrap;
+  color: var(--cor-texto-suave);
+}
+
+.markdown td {
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--cor-divisor);
+  vertical-align: top;
+}
+
+.markdown tr:last-child td {
+  border-bottom-width: 0;
+}
+
+@media (hover: hover) {
+  .markdown a:hover {
+    color: var(--cor-marca-texto);
+  }
+}

@@ -8,6 +8,10 @@ import { FiltroProfissionalComponent } from '../../../shared/components/filtro-p
 import { AuthService } from '../../../core/services/auth/auth.service';
 import { ModalComponent } from '../../../shared/components/modal/modal.component';
 import { AlertComponent } from '../../../shared/components/alert/alert.component';
+import { CampoFormComponent } from '../../../shared/ui/campo-form/campo-form.component';
+import { CampoComponent } from '../../../shared/ui/campo/campo.component';
+import { BotaoComponent } from '../../../shared/ui/botao/botao.component';
+import { ToggleComponent } from '../../../shared/components/toggle/toggle.component';
 
 interface ServicoForm {
   nome: FormControl<string>;
@@ -19,14 +23,13 @@ interface ServicoForm {
 @Component({
   selector: 'app-servicos-modal',
   standalone: true,
-  imports: [
-    CommonModule,
+  imports: [CommonModule,
     ReactiveFormsModule,
     FiltroProfissionalComponent,
     ModalComponent,
-    AlertComponent,
-  ],
+    AlertComponent, CampoFormComponent, CampoComponent, BotaoComponent, ToggleComponent],
   templateUrl: './servicos-modal.component.html',
+  styleUrl: './servicos-modal.component.css',
 })
 export class ServicosModalComponent implements OnInit {
   private authService = inject(AuthService);

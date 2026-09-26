@@ -1,0 +1,19 @@
+:host {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.filtro__rotulo {
+  flex-shrink: 0;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: var(--cor-texto-suave);
+}
+
+.filtro__select {
+  width: auto;
+  border-color: var(--cor-borda);
+  background-color: transparent;
+  color: inherit;
+}
