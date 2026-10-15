@@ -33,6 +33,11 @@
           <button type="button" class="usuario__editar" (click)="abrirModal()">
             Editar
           </button>
+          @if (!mesmoUsuario) {
+            <button type="button" class="usuario__deletar" (click)="abrirDeletarModal()">
+              Deletar
+            </button>
+          }
         </div>
       </div>
 
@@ -177,6 +182,19 @@
             </button>
           </div>
         </form>
+      </app-modal>
+    }
+
+    @if (deletarModalAberto()) {
+      <app-modal titulo="Deseja deletar este usuário?" (fechar)="fecharDeletarModal()">
+        <div class="modal__deletar">
+          <button type="button" class="usuario__editar" (click)="fecharDeletarModal()">
+            Não
+          </button>
+          <button type="button" class="usuario__deletar" (click)="deletar()">
+            Sim
+          </button>
+        </div>
       </app-modal>
     }
   }
