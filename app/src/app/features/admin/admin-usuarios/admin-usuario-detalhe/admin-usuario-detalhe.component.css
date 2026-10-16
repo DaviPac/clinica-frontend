@@ -76,6 +76,17 @@
   transition: color 0.15s ease, background-color 0.15s ease;
 }
 
+.usuario__deletar {
+  padding: 0.375rem 0.75rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--cor-perigo-solido);
+  cursor: pointer;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
 /* ── Blocos de dados ── */
 .usuario__dados {
   display: grid;
@@ -182,6 +193,15 @@
   margin-top: 0.5rem;
 }
 
+.modal__deletar {
+  display: flex;
+  justify-content: center;
+
+  button {
+    margin: 0.2rem 1rem;
+  }
+}
+
 @media (hover: hover) {
   .usuario__editar:hover {
     background-color: var(--cor-superficie-realce);
@@ -190,6 +210,11 @@
 
   .usuario__opcao:hover {
     background-color: var(--cor-superficie-suave);
+  }
+
+  .usuario__deletar:hover {
+    background-color: var(--cor-perigo-fundo);
+    color: var(--cor-perigo-texto)
   }
 }
 

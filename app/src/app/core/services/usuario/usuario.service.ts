@@ -39,4 +39,8 @@ export class UsuarioService {
   atualizar(id: number, dto: AtualizarUsuarioDto) {
     return this.http.put<Usuario>(`/usuarios/${id}`, dto);
   }
+
+  deletar(id: number) {
+    return this.http.delete(`/usuarios/${id}`);
+  }
 }

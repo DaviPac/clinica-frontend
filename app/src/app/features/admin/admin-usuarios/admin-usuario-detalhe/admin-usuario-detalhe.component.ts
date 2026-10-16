@@ -1,6 +1,6 @@
 import { Component, OnInit, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
   UsuarioService,
@@ -18,6 +18,7 @@ import { ModalComponent } from '../../../../shared/components/modal/modal.compon
 import { CampoFormComponent } from '../../../../shared/ui/campo-form/campo-form.component';
 import { CampoComponent } from '../../../../shared/ui/campo/campo.component';
 import { BotaoComponent } from '../../../../shared/ui/botao/botao.component';
+import { AuthService } from '../../../../core/services/auth/auth.service';
 
 @Component({
   selector: 'app-usuario-detalhe',
@@ -30,14 +31,21 @@ export class AdminUsuarioDetalheComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private service = inject(UsuarioService);
   private fb = inject(FormBuilder);
+  private router = inject(Router);
+  private auth = inject(AuthService);
 
   usuario = signal<Usuario | null>(null);
   carregando = signal(true);
   erro = signal<string | null>(null);
 
   modalAberto = signal(false);
+  deletarModalAberto = signal(false);
   salvando = signal(false);
   erroSalvar = signal<string | null>(null);
+
+  get mesmoUsuario() {
+    return this.usuario()?.id === this.auth.usuario()?.id
+  }
 
   form = this.fb.nonNullable.group({
     nome: ['', [Validators.required, Validators.maxLength(120)]],
@@ -147,5 +155,25 @@ export class AdminUsuarioDetalheComponent implements OnInit {
         this.salvando.set(false);
       },
     });
+  }
+
+  abrirDeletarModal() {
+    this.deletarModalAberto.set(true);
+  }
+
+  fecharDeletarModal() {
+    this.deletarModalAberto.set(false);
+  }
+
+  deletar() {
+    const id = this.usuario()?.id;
+    if (!id || this.auth.usuario()?.id === id) {
+      return;
+    }
+    this.service.deletar(id).subscribe({
+      next: _ => {
+        this.router.navigate(['/admin/usuarios'])
+      }
+    })
   }
 }
