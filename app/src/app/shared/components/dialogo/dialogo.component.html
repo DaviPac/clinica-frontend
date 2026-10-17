@@ -1,0 +1,18 @@
+<div class="dialogo__cabecalho">
+  <h2 class="dialogo__titulo">{{ titulo() }}</h2>
+  @if (!ocultarFechar()) {
+    <button
+      appBotaoIcone
+      type="button"
+      class="dialogo__fechar"
+      tabindex="-1"
+      aria-label="Fechar"
+      (click)="fechar()">×</button>
+  }
+</div>
+
+<div class="dialogo__corpo">
+  <ng-content />
+</div>
+
+<div class="dialogo__rodape"><ng-content select="[rodape]" /></div>

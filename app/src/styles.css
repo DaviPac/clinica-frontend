@@ -4,12 +4,14 @@
  * Cada componente é dono do próprio CSS, no arquivo ao lado do template.
  * O que sobra aqui é o que precisa valer para o documento inteiro:
  *
- *   tokens → as variáveis dos temas claro e escuro
- *   base   → reset de elemento, foco, seleção, barras de rolagem e keyframes
+ *   overlay → estrutura do CDK (posicionamento e fundo dos diálogos)
+ *   tokens  → as variáveis dos temas claro e escuro
+ *   base    → reset de elemento, foco, seleção, barras de rolagem e keyframes
  *
  * A troca de tema acontece pelo atributo data-theme no <html>; veja
  * `core/services/tema/tema.service.ts`.
  */
 
+@import '@angular/cdk/overlay-prebuilt.css';
 @import './styles/tokens.css';
 @import './styles/base.css';

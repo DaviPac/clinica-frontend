@@ -1,0 +1,55 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  max-height: 92dvh;
+  padding: 1.25rem;
+  border: 1px solid var(--cor-borda);
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  background-color: var(--cor-superficie);
+  box-shadow: var(--sombra-modal);
+}
+
+.dialogo__cabecalho {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.dialogo__titulo {
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: 500;
+  color: var(--cor-texto);
+}
+
+.dialogo__fechar {
+  margin-right: -0.5rem;
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.dialogo__corpo {
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.dialogo__rodape {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.625rem;
+  margin-top: 1.5rem;
+}
+
+.dialogo__rodape:empty {
+  display: none;
+}
+
+@media (width >= 40rem) {
+  :host {
+    padding: 1.75rem;
+    border-radius: 0.75rem;
+  }
+}

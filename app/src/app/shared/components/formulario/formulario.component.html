@@ -1,0 +1,214 @@
+@let def = definicao();
+
+<ng-template #avisos>
+  @if (estado.aviso(); as a) {
+    <app-alert class="formulario__aviso" [variant]="a.variante">{{ a.texto }}</app-alert>
+  }
+  @if (estado.erro()) {
+    <app-alert class="formulario__aviso">{{ estado.erro() }}</app-alert>
+  }
+</ng-template>
+
+@if (def.descricao) {
+  <p class="formulario__descricao">{{ def.descricao }}</p>
+}
+
+@if (def.posicaoAvisos !== 'rodape') {
+  <ng-container [ngTemplateOutlet]="avisos" />
+}
+
+<form class="formulario__campos" [id]="id" [formGroup]="estado.form" (ngSubmit)="estado.enviar()" novalidate>
+  @for (vista of estado.vistas; track $index) {
+    @if (vista.visivel()) {
+      <div class="formulario__celula" [attr.data-largura]="vista.tipo === 'campo' ? vista.campo.largura : vista.item.largura">
+        @switch (vista.tipo) {
+
+          @case ('nota') {
+            <p class="formulario__nota">{{ vista.texto() }}</p>
+          }
+
+          @case ('secao') {
+            <h3 class="formulario__secao">{{ vista.titulo() }}</h3>
+          }
+
+          @case ('campo') {
+            @let erro = estado.erroDe(vista);
+
+            @switch (vista.campo.tipo) {
+
+              @case ('alternador') {
+                @switch (vista.campo.apresentacao) {
+                  @case ('caixa') {
+                    <app-caixa-marcacao [marcada]="!!vista.controle.value" (mudou)="alternar(vista, $event)">
+                      {{ vista.rotulo() }}
+                    </app-caixa-marcacao>
+                  }
+                  @case ('simples') {
+                    <app-toggle
+                      [checked]="!!vista.controle.value"
+                      [label]="vista.rotulo()"
+                      [disabled]="vista.controle.disabled"
+                      (changed)="alternar(vista, $event)" />
+                  }
+                  @default {
+                    <div class="formulario__opcao" [class.formulario__opcao--travada]="vista.controle.disabled">
+                      <app-toggle
+                        [checked]="!!vista.controle.value"
+                        [disabled]="vista.controle.disabled"
+                        (changed)="alternar(vista, $event)" />
+                      <div>
+                        <p class="formulario__opcao-titulo">{{ vista.rotulo() }}</p>
+                        @if (vista.descricao()) {
+                          <p class="formulario__opcao-texto">{{ vista.descricao() }}</p>
+                        }
+                      </div>
+                    </div>
+                  }
+                }
+                @if (erro) {
+                  <p class="formulario__erro-solto" [attr.data-tom]="erro.tom">{{ erro.texto }}</p>
+                }
+              }
+
+              @case ('texto') {
+                @if (vista.campo.formato === 'password' && vista.campo.alternarVisibilidade) {
+                  <app-campo-senha
+                    [rotulo]="vista.rotulo()"
+                    [obrigatorio]="vista.obrigatorio()"
+                    [controle]="vista.controle"
+                    [placeholder]="vista.placeholder()"
+                    [erro]="erro?.texto ?? null" />
+                } @else {
+                  <app-campo-form [rotulo]="vista.rotulo()" [para]="vista.id" [obrigatorio]="vista.obrigatorio()"
+                    [erro]="erro?.texto ?? null" [tomErro]="erro?.tom ?? 'erro'" [ajuda]="vista.ajuda()">
+                    <input
+                      appCampo
+                      [id]="vista.id"
+                      [type]="vista.campo.formato"
+                      [mono]="vista.campo.mono"
+                      [estado]="estadoVisual(vista)"
+                      [formControl]="vista.controle"
+                      [placeholder]="vista.placeholder()"
+                      [attr.inputmode]="vista.campo.modoEntrada ?? null"
+                      [attr.autocomplete]="vista.campo.autocompletar ?? null"
+                      [attr.maxlength]="vista.campo.maximoCaracteres ?? null" />
+                  </app-campo-form>
+                }
+              }
+
+              @case ('area-texto') {
+                <app-campo-form [rotulo]="vista.rotulo()" [para]="vista.id" [obrigatorio]="vista.obrigatorio()"
+                  [erro]="erro?.texto ?? null" [tomErro]="erro?.tom ?? 'erro'" [ajuda]="vista.ajuda()">
+                  <textarea
+                    appCampo
+                    [id]="vista.id"
+                    [rows]="vista.campo.linhas"
+                    [estado]="estadoVisual(vista)"
+                    [formControl]="vista.controle"
+                    [placeholder]="vista.placeholder()"
+                    [attr.maxlength]="vista.campo.maximoCaracteres ?? null"></textarea>
+                </app-campo-form>
+              }
+
+              @case ('numero') {
+                <app-campo-form [rotulo]="vista.rotulo()" [para]="vista.id" [obrigatorio]="vista.obrigatorio()"
+                  [erro]="erro?.texto ?? null" [tomErro]="erro?.tom ?? 'erro'" [ajuda]="vista.ajuda()">
+                  <input
+                    appCampo
+                    type="number"
+                    [id]="vista.id"
+                    [mono]="vista.campo.mono"
+                    [estado]="estadoVisual(vista)"
+                    [formControl]="vista.controle"
+                    [placeholder]="vista.placeholder()"
+                    [attr.min]="vista.minimo() ?? null"
+                    [attr.max]="vista.maximo() ?? null"
+                    [step]="vista.campo.passo" />
+                </app-campo-form>
+              }
+
+              @case ('data') {
+                <app-campo-form [rotulo]="vista.rotulo()" [para]="vista.id" [obrigatorio]="vista.obrigatorio()"
+                  [erro]="erro?.texto ?? null" [tomErro]="erro?.tom ?? 'erro'" [ajuda]="vista.ajuda()">
+                  <input
+                    appCampo
+                    [type]="vista.campo.tipoInput"
+                    [id]="vista.id"
+                    [estado]="estadoVisual(vista)"
+                    [formControl]="vista.controle"
+                    [attr.min]="vista.minimo() ?? null"
+                    [attr.max]="vista.maximo() ?? null" />
+                </app-campo-form>
+              }
+
+              @case ('selecao') {
+                @if (vista.campo.apresentacao === 'radio') {
+                  <div role="radiogroup" [attr.aria-labelledby]="vista.id">
+                    <span class="formulario__grupo-rotulo" [id]="vista.id">{{ vista.rotulo() }}</span>
+                    <div class="formulario__radios">
+                      @for (opcao of vista.opcoes(); track $index) {
+                        <label class="formulario__radio">
+                          <input
+                            class="formulario__radio-marca"
+                            type="radio"
+                            [name]="vista.id"
+                            [value]="opcao.valor"
+                            [formControl]="vista.controle"
+                            [attr.disabled]="opcao.desabilitada ? '' : null" />
+                          <span class="formulario__radio-texto">
+                            <span class="formulario__radio-titulo">{{ opcao.rotulo }}</span>
+                            @if (opcao.descricao) {
+                              <span class="formulario__radio-detalhe">{{ opcao.descricao }}</span>
+                            }
+                          </span>
+                        </label>
+                      }
+                    </div>
+                    @if (erro) {
+                      <p class="formulario__erro-solto" [attr.data-tom]="erro.tom">{{ erro.texto }}</p>
+                    }
+                  </div>
+                } @else {
+                  <app-campo-form [rotulo]="vista.rotulo()" [para]="vista.id" [obrigatorio]="vista.obrigatorio()"
+                    [erro]="erro?.texto ?? null" [tomErro]="erro?.tom ?? 'erro'" [ajuda]="vista.ajuda()">
+                    <select
+                      appCampo
+                      [id]="vista.id"
+                      [estado]="estadoVisual(vista)"
+                      [formControl]="vista.controle">
+                      @if (vista.placeholder()) {
+                        <option [ngValue]="null" [disabled]="!vista.campo.placeholderSelecionavel">{{ vista.placeholder() }}</option>
+                      }
+                      @for (opcao of vista.opcoes(); track $index) {
+                        <option [ngValue]="opcao.valor" [disabled]="!!opcao.desabilitada">{{ opcao.rotulo }}</option>
+                      }
+                    </select>
+                  </app-campo-form>
+                }
+              }
+            }
+          }
+        }
+      </div>
+    }
+  }
+</form>
+
+@if (def.posicaoAvisos === 'rodape') {
+  <ng-container [ngTemplateOutlet]="avisos" />
+}
+
+@if (botoes; as b) {
+  <div class="formulario__acoes" [attr.data-disposicao]="b.disposicao ?? 'dividida'">
+    @if (b.cancelar !== null) {
+      <button appBotao variante="contorno" type="button" [tamanho]="b.tamanho ?? 'padrao'"
+        [disabled]="estado.processando()" (click)="cancelado.emit()">
+        {{ b.cancelar ?? 'Cancelar' }}
+      </button>
+    }
+    <button appBotao type="submit" [attr.form]="id" [tamanho]="b.tamanho ?? 'padrao'"
+      [larguraTotal]="b.disposicao === 'largura-total'" [disabled]="bloqueado">
+      {{ estado.processando() ? (b.processando ?? 'Salvando...') : (b.confirmar ?? 'Salvar') }}
+    </button>
+  </div>
+}
