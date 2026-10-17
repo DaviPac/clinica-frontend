@@ -227,6 +227,21 @@ textarea {
 }
 
 /*
+ * Diálogos do DialogoService: o painel e o fundo são criados pelo CDK fora
+ * da árvore dos componentes, então a aparência deles mora aqui. A caixa em
+ * si é desenhada por <app-dialogo> / <app-mensagem>.
+ */
+.dialogo-fundo {
+  background-color: rgb(0 0 0 / 0.4);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+.dialogo-painel .cdk-dialog-container {
+  outline: none;
+}
+
+/*
  * Animações compartilhadas: keyframes só são alcançáveis de dentro de um
  * componente se estiverem no documento, então estas ficam aqui.
  */

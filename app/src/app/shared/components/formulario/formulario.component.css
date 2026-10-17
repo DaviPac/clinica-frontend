@@ -1,0 +1,144 @@
+:host {
+  display: block;
+}
+
+.formulario__descricao,
+.formulario__nota {
+  font-size: 0.75rem;
+  line-height: 1.625;
+  color: var(--cor-texto-suave);
+}
+
+.formulario__descricao,
+.formulario__aviso {
+  display: flex;
+  margin-bottom: 1rem;
+}
+
+.formulario__campos {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem 0.75rem;
+}
+
+.formulario__celula {
+  grid-column: 1 / -1;
+  min-width: 0;
+}
+
+.formulario__secao {
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--cor-divisor);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  color: var(--cor-texto);
+}
+
+.formulario__erro-solto {
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: var(--cor-perigo-solido);
+}
+
+.formulario__erro-solto[data-tom='aviso'] {
+  color: var(--cor-aviso-texto);
+}
+
+/* ── Alternador em cartão: interruptor + explicação ── */
+.formulario__opcao {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border: 1px solid var(--cor-borda);
+  border-radius: 0.5rem;
+  background-color: var(--cor-superficie-suave);
+}
+
+.formulario__opcao--travada {
+  opacity: 0.75;
+}
+
+.formulario__opcao-titulo,
+.formulario__radio-texto {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--cor-texto);
+}
+
+.formulario__opcao-titulo {
+  font-weight: 500;
+}
+
+.formulario__opcao-texto,
+.formulario__grupo-rotulo,
+.formulario__radio-detalhe {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: var(--cor-texto-suave);
+}
+
+/* ── Seleção em cartões de rádio ── */
+.formulario__grupo-rotulo,
+.formulario__radio-titulo,
+.formulario__radio-detalhe {
+  display: block;
+}
+
+.formulario__grupo-rotulo {
+  margin-bottom: 0.5rem;
+}
+
+.formulario__radios {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.formulario__radio {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.625rem 0.75rem;
+  border: 1px solid var(--cor-borda);
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.formulario__radio-marca {
+  margin-top: 0.125rem;
+  accent-color: var(--cor-marca);
+}
+
+/* ── Botões ── */
+.formulario__acoes {
+  display: flex;
+  gap: 0.625rem;
+  margin-top: 1.5rem;
+}
+
+.formulario__acoes[data-disposicao='dividida'] > * {
+  flex: 1;
+}
+
+.formulario__acoes[data-disposicao='direita'] {
+  justify-content: flex-end;
+}
+
+.formulario__acoes[data-disposicao='largura-total'] {
+  flex-direction: column-reverse;
+}
+
+@media (hover: hover) {
+  .formulario__radio:hover {
+    background-color: var(--cor-superficie-suave);
+  }
+}
+
+@media (width >= 40rem) {
+  .formulario__celula[data-largura='metade'] {
+    grid-column: span 1;
+  }
+}

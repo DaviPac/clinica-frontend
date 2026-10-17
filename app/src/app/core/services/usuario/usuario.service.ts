@@ -18,6 +18,7 @@ export interface AtualizarUsuarioDto {
   profissao?: string;
   taxaComissaoPadrao?: number;
   profissionalRecebe?: boolean;
+  alterarProximasComissoes?: boolean;
 }
 
 @Injectable({ providedIn: 'root' })

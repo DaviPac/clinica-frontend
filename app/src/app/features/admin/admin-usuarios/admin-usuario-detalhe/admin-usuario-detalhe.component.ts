@@ -1,11 +1,8 @@
 import { Component, OnInit, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import {
-  UsuarioService,
-  AtualizarUsuarioDto,
-} from '../../../../core/services/usuario/usuario.service';
+import { ReactiveFormsModule } from '@angular/forms';
+import { UsuarioService } from '../../../../core/services/usuario/usuario.service';
 import { Role, Usuario } from '../../../../core/models/usuario.model';
 import { AlertComponent } from '../../../../shared/components/alert/alert.component';
 import { PaginaComponent } from '../../../../shared/ui/pagina/pagina.component';
@@ -14,47 +11,44 @@ import { CarregandoComponent } from '../../../../shared/ui/carregando/carregando
 import { CartaoComponent } from '../../../../shared/ui/cartao/cartao.component';
 import { AvatarComponent } from '../../../../shared/ui/avatar/avatar.component';
 import { ItemDescricaoComponent } from '../../../../shared/ui/item-descricao/item-descricao.component';
-import { ModalComponent } from '../../../../shared/components/modal/modal.component';
-import { CampoFormComponent } from '../../../../shared/ui/campo-form/campo-form.component';
-import { CampoComponent } from '../../../../shared/ui/campo/campo.component';
-import { BotaoComponent } from '../../../../shared/ui/botao/botao.component';
 import { AuthService } from '../../../../core/services/auth/auth.service';
+import { MensagemService } from '../../../../shared/components/mensagem/mensagem.service';
+import { FormularioService } from '../../../../shared/components/formulario/formulario.service';
+import { CampoAlternador, CampoNumero, CampoSelecao, CampoTexto } from '../../../../shared/components/formulario/campos';
 
 @Component({
   selector: 'app-usuario-detalhe',
   standalone: true,
-  imports: [CommonModule, RouterModule, ReactiveFormsModule, AlertComponent, PaginaComponent, LinkVoltarComponent, CarregandoComponent, CartaoComponent, AvatarComponent, ItemDescricaoComponent, ModalComponent, CampoFormComponent, CampoComponent, BotaoComponent],
+  imports: [
+    CommonModule,
+    RouterModule,
+    ReactiveFormsModule,
+    AlertComponent,
+    PaginaComponent,
+    LinkVoltarComponent,
+    CarregandoComponent,
+    CartaoComponent,
+    AvatarComponent,
+    ItemDescricaoComponent,
+  ],
   templateUrl: './admin-usuario-detalhe.component.html',
   styleUrl: './admin-usuario-detalhe.component.css',
 })
 export class AdminUsuarioDetalheComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private service = inject(UsuarioService);
-  private fb = inject(FormBuilder);
   private router = inject(Router);
   private auth = inject(AuthService);
+  private mensagem = inject(MensagemService);
+  private formulario = inject(FormularioService);
 
   usuario = signal<Usuario | null>(null);
   carregando = signal(true);
   erro = signal<string | null>(null);
 
-  modalAberto = signal(false);
-  deletarModalAberto = signal(false);
-  salvando = signal(false);
-  erroSalvar = signal<string | null>(null);
-
   get mesmoUsuario() {
     return this.usuario()?.id === this.auth.usuario()?.id
   }
-
-  form = this.fb.nonNullable.group({
-    nome: ['', [Validators.required, Validators.maxLength(120)]],
-    email: ['', [Validators.required, Validators.email]],
-    role: ['PROFISSIONAL' as Role, [Validators.required]],
-    profissao: [''],
-    taxaComissaoPadrao: [0, [Validators.required, Validators.min(0), Validators.max(100)]],
-    profissionalRecebe: [false],
-  });
 
   ngOnInit() {
     const id = Number(this.route.snapshot.paramMap.get('id'));
@@ -93,76 +87,73 @@ export class AdminUsuarioDetalheComponent implements OnInit {
     return `${valor}%`;
   }
 
-  abrirModal() {
+  abrirFormulario() {
     const u = this.usuario();
     if (!u) return;
 
-    this.erroSalvar.set(null);
-    this.form.reset({
-      nome: u.nome,
-      email: u.email,
-      role: u.role,
-      profissao: u.profissao ?? '',
-      taxaComissaoPadrao: u.taxaComissaoPadrao ?? 0,
-      profissionalRecebe: u.profissionalRecebe,
-    });
-    this.modalAberto.set(true);
-  }
-
-  fecharModal() {
-    if (this.salvando()) return;
-    this.modalAberto.set(false);
-  }
-
-  salvar() {
-    const u = this.usuario();
-    if (!u) return;
-
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
-      return;
-    }
-
-    const v = this.form.getRawValue();
-
-    // Admin tambem atende: dados de atendimento valem para as duas roles
-    const atualizacao = {
-      nome: v.nome.trim(),
-      email: v.email.trim(),
-      role: v.role,
-      profissao: v.profissao.trim() || null,
-      taxaComissaoPadrao: v.taxaComissaoPadrao,
-      profissionalRecebe: v.profissionalRecebe,
-    };
-
-    const dto: AtualizarUsuarioDto = {
-      ...atualizacao,
-      profissao: atualizacao.profissao ?? undefined,
-    };
-
-    this.salvando.set(true);
-    this.erroSalvar.set(null);
-
-    this.service.atualizar(u.id, dto).subscribe({
-      next: atualizado => {
-        // Atualiza localmente sem sair da tela
-        this.usuario.set(atualizado ?? { ...u, ...atualizacao });
-        this.modalAberto.set(false);
-        this.salvando.set(false);
+    this.formulario.abrir({
+      titulo: 'Editar usuário',
+      posicaoAvisos: 'rodape',
+      valores: {
+        nome: u.nome,
+        email: u.email,
+        role: u.role,
+        profissao: u.profissao ?? '',
+        taxaComissaoPadrao: u.taxaComissaoPadrao,
+        profissionalRecebe: u.profissionalRecebe,
+        alterarProximasComissoes: false
       },
-      error: (err: Error) => {
-        this.erroSalvar.set(err.message);
-        this.salvando.set(false);
-      },
-    });
-  }
-
-  abrirDeletarModal() {
-    this.deletarModalAberto.set(true);
-  }
-
-  fecharDeletarModal() {
-    this.deletarModalAberto.set(false);
+      campos: [
+        new CampoTexto({
+          chave: 'nome', rotulo: 'Nome', obrigatorio: true
+        }),
+        new CampoTexto({
+          chave: 'email', rotulo: 'E-mail', formato: 'email', obrigatorio: true
+        }),
+        new CampoSelecao({
+          chave: 'role', rotulo: 'Perfil de acesso', obrigatorio: true,
+          opcoes: [
+            { valor: 'PROFISSIONAL', rotulo: 'Profissional' },
+            { valor: 'ADMIN', rotulo: 'Administrador' }
+          ]
+        }),
+        new CampoTexto({ chave: 'profissao', rotulo: 'Profissão', placeholder: 'Fisioterapeuta, psicólogo...' }),
+        new CampoNumero({
+          chave: 'taxaComissaoPadrao', rotulo: 'Comissão padrão da clínica (%)',
+          obrigatorio: true, minimo:0, maximo: 100, passo: 0.5
+        }),
+        new CampoSelecao({
+          chave: 'profissionalRecebe', rotulo: 'Fluxo de pagamento', apresentacao: 'radio',
+          opcoes: [
+            { valor: true, rotulo: 'Profissional recebe', descricao: 'O paciente paga direto ao profissional, que repassa a comissão à clínica.' },
+            { valor: false, rotulo: 'Clínica recebe', descricao: 'A clínica recebe o pagamento e repassa ao profissional, descontando a comissão.' }
+          ]
+        }),
+        new CampoAlternador({
+          chave: 'alterarProximasComissoes', rotulo: 'Alterar próximas comissões', apresentacao: 'caixa',
+          visivel: ctx => ctx.valores['taxaComissaoPadrao'] !== u.taxaComissaoPadrao
+        })
+      ],
+      aoConfirmar: v => this.service.atualizar(u.id, {
+        nome: v.nome.trim(),
+        email: v.email.trim(),
+        role: v.role,
+        profissao: v.profissao.trim() || undefined,
+        taxaComissaoPadrao: v.taxaComissaoPadrao ?? 0,
+        profissionalRecebe: v.profissionalRecebe,
+        alterarProximasComissoes: v.alterarProximasComissoes
+      })
+    }).subscribe(r => {
+      if (!r) {
+        return;
+      }
+      if (r.resposta) {
+        this.usuario.set(r.resposta)
+      }
+      else {
+        this.service.buscarPorId(u.id).subscribe(atualizado => this.usuario.set(atualizado));
+      }
+    })
   }
 
   deletar() {
@@ -170,8 +161,14 @@ export class AdminUsuarioDetalheComponent implements OnInit {
     if (!id || this.auth.usuario()?.id === id) {
       return;
     }
-    this.service.deletar(id).subscribe({
-      next: _ => {
+
+    this.mensagem.confirmar({
+      titulo: "Deletar usuário",
+      mensagem: "Deseja deletar este usuário?",
+      variante: "perigo",
+      aoConfirmar: () => this.service.deletar(id)
+    }).subscribe((ok) => {
+      if (ok) {
         this.router.navigate(['/admin/usuarios'])
       }
     })
