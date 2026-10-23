@@ -25,9 +25,6 @@ import { formatarHora } from '../../../core/utils/data.utils';
 })
 export class AgendaCardComponent {
   agendamento = input.required<Agendamento>();
-  pacienteNome = input('');
-  profissionalNome = input('');
-  servicoNome = input('');
   isAdmin = input(false);
   /** `true` somente enquanto ESTE agendamento tem pagamento em atualização. */
   atualizandoPagamento = input(false);

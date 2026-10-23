@@ -1,14 +1,10 @@
 import { Component, OnInit, signal, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { forkJoin, of } from 'rxjs';
 
 import { AgendamentoService } from '../../../core/services/agendamento/agendamento.service';
 import { Agendamento, StatusAgendamento } from '../../../core/models/agendamento.model';
 import { AuthService } from '../../../core/services/auth/auth.service';
-import { PacienteService } from '../../../core/services/paciente/paciente.service';
-import { UsuarioService } from '../../../core/services/usuario/usuario.service';
-import { ServicoService } from '../../../core/services/servico/servico.service';
 
 import { AgendamentosModalComponent } from '../agendamentos-modal/agendamentos-modal.component';
 import { AgendamentosStatusModalComponent } from '../agendamentos-status-modal/agendamentos-status-modal.component';
@@ -49,9 +45,6 @@ const MAX_DOTS = 3;
 })
 export class AgendamentosListaComponent implements OnInit {
   private authService = inject(AuthService);
-  private pacienteService = inject(PacienteService);
-  private usuarioService = inject(UsuarioService);
-  private servicoService = inject(ServicoService);
   private service = inject(AgendamentoService);
   private viewport = inject(ViewportService);
 
@@ -68,10 +61,6 @@ export class AgendamentosListaComponent implements OnInit {
   // NOVO: modo de visualização (mês x semana) e data de referência única
   modoView = signal<ModoVisualizacao>('mensal');
   dataReferencia = signal<Date>(new Date());
-
-  pacientesDict = signal<Record<number, string>>({});
-  usuariosDict = signal<Record<number, string>>({});
-  servicosDict = signal<Record<number, string>>({});
 
   /** Mobile: a barra de filtros fica recolhida por padrão. */
   filtrosAbertos = signal(false);
@@ -248,7 +237,7 @@ export class AgendamentosListaComponent implements OnInit {
 
   ngOnInit() {
     this.restaurarFiltrosDoCache();
-    this.carregarDadosBase();
+    this.carregarAgendamentos();
   }
 
   // Restaura mês/semana, data, profissional e "mostrar canceladas" ao voltar para a tela
@@ -291,27 +280,6 @@ export class AgendamentosListaComponent implements OnInit {
     } catch {
       // sessionStorage indisponível (ex.: modo privado) — filtros simplesmente não persistem
     }
-  }
-
-  carregarDadosBase() {
-    this.carregando.set(true);
-    forkJoin({
-      pacientes: this.pacienteService.listar(true),
-      usuarios: this.isAdmin() ? this.usuarioService.listar() : of([this.authService.usuario()]),
-      servicos: this.servicoService.listar({ incluirInativos: true })
-    }).subscribe({
-      next: (res) => {
-        const conv = (arr: any[]) => arr.reduce((acc, curr) => ({ ...acc, [curr.id]: curr.nome }), {});
-        this.pacientesDict.set(conv(res.pacientes));
-        this.usuariosDict.set(conv(res.usuarios));
-        this.servicosDict.set(conv(res.servicos));
-        this.carregarAgendamentos();
-      },
-      error: (err) => {
-        this.erro.set('Erro ao carregar dados auxiliares: ' + err.message);
-        this.carregando.set(false);
-      }
-    });
   }
 
   carregarAgendamentos() {

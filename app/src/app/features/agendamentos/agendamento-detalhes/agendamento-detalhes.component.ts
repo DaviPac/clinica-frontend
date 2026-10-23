@@ -1,14 +1,10 @@
-import { Component, OnInit, signal, computed, inject } from '@angular/core';
+import { Component, OnInit, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { forkJoin, of } from 'rxjs';
 
 import { AgendamentoService } from '../../../core/services/agendamento/agendamento.service';
 import { Agendamento, StatusAgendamento } from '../../../core/models/agendamento.model';
 import { AuthService } from '../../../core/services/auth/auth.service';
-import { PacienteService } from '../../../core/services/paciente/paciente.service';
-import { UsuarioService } from '../../../core/services/usuario/usuario.service';
-import { ServicoService } from '../../../core/services/servico/servico.service';
 
 import { AgendamentosStatusModalComponent } from '../agendamentos-status-modal/agendamentos-status-modal.component';
 import { formatarDataHora, formatarHora, toRFC3339Brasilia } from '../../../core/utils/data.utils';
@@ -41,9 +37,6 @@ export class AgendamentoDetalhesComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private authService = inject(AuthService);
-  private pacienteService = inject(PacienteService);
-  private usuarioService = inject(UsuarioService);
-  private servicoService = inject(ServicoService);
   private service = inject(AgendamentoService);
 
   agendamento = signal<Agendamento | null>(null);
@@ -52,17 +45,13 @@ export class AgendamentoDetalhesComponent implements OnInit {
 
   isAdmin = this.authService.isAdmin;
 
-  pacientesDict = signal<Record<number, string>>({});
-  usuariosDict = signal<Record<number, string>>({});
-  servicosDict = signal<Record<number, string>>({});
-
   // Controles de Modais e Ações
   agendamentoParaStatus = signal<Agendamento | null>(null);
   atualizandoPagamento = signal<boolean>(false);
-  
+
   agendamentoParaConfirmarPagamento = signal<Agendamento | null>(null);
   agendamentoParaCancelarPagamento = signal<Agendamento | null>(null);
-  
+
   agendamentoParaCancelarSerie = signal<Agendamento | null>(null);
   cancelandoSerie = signal(false);
 
@@ -97,26 +86,7 @@ export class AgendamentoDetalhesComponent implements OnInit {
 
   carregarDadosBase(id: number) {
     this.carregando.set(true);
-    
-    // Busca os dicionários primeiro para mapear os IDs para Nomes
-    forkJoin({
-      pacientes: this.pacienteService.listar(true),
-      usuarios: this.isAdmin() ? this.usuarioService.listar() : of([this.authService.usuario()]),
-      servicos: this.servicoService.listar({ incluirInativos: true })
-    }).subscribe({
-      next: (res) => {
-        const conv = (arr: any[]) => arr.reduce((acc, curr) => ({ ...acc, [curr.id]: curr.nome }), {});
-        this.pacientesDict.set(conv(res.pacientes));
-        this.usuariosDict.set(conv(res.usuarios));
-        this.servicosDict.set(conv(res.servicos));
-        
-        this.carregarAgendamento(id);
-      },
-      error: (err) => {
-        this.erro.set('Erro ao carregar dados auxiliares: ' + err.message);
-        this.carregando.set(false);
-      }
-    });
+    this.carregarAgendamento(id)
   }
 
   carregarAgendamento(id: number) {

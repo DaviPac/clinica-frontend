@@ -113,19 +113,96 @@
   line-height: 1.25rem;
 }
 
-/* ── Espaço reservado para os agendamentos do paciente ── */
-.detalhe__futuro {
+/* ── Próximos agendamentos ── */
+.detalhe__agenda {
+  display: block;
   margin-top: 1rem;
-  padding: 2rem 1.5rem;
-  border: 1px dashed var(--cor-borda);
-  border-radius: 0.75rem;
-  text-align: center;
 }
 
-.detalhe__futuro-texto {
+.proximos {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin: 0 -0.75rem;
+  padding: 0;
+  list-style: none;
+}
+
+.proximos__item {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 0.625rem 0.75rem;
+  border-radius: 0.625rem;
+  color: inherit;
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+}
+
+.proximos__item:focus-visible {
+  outline: 2px solid var(--cor-marca);
+  outline-offset: -2px;
+}
+
+.proximos__data {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 3rem;
+  height: 3rem;
+  border: 1px solid var(--cor-marca-borda);
+  border-radius: 0.625rem;
+  background-color: var(--cor-marca-fundo);
+  color: var(--cor-marca-texto);
+}
+
+.proximos__dia {
+  font-size: 1.125rem;
+  line-height: 1.25rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.proximos__mes {
+  font-size: 0.6875rem;
+  line-height: 0.875rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.proximos__info {
+  flex: 1;
+  min-width: 0;
+}
+
+.proximos__servico {
+  overflow: hidden;
   font-size: 0.875rem;
   line-height: 1.25rem;
-  color: var(--cor-texto-apagado);
+  font-weight: 500;
+  color: var(--cor-texto);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.proximos__detalhe {
+  overflow: hidden;
+  font-size: 0.8125rem;
+  line-height: 1.125rem;
+  color: var(--cor-texto-suave);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.proximos__detalhe::first-letter {
+  text-transform: uppercase;
+}
+
+.proximos__status {
+  flex-shrink: 0;
 }
 
 @media (hover: hover) {
@@ -142,6 +219,10 @@
   .detalhe__acao--reativar:hover {
     background-color: var(--cor-sucesso-fundo);
     color: var(--cor-sucesso-texto);
+  }
+
+  .proximos__item:hover {
+    background-color: var(--cor-superficie-realce);
   }
 }
 

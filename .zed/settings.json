@@ -1,0 +1,37 @@
+// Configuração do Zed para o projeto (abrir a pasta clinica-frontend como raiz).
+// Extensões necessárias: "Angular" e "CSS Variables".
+{
+  // app.html não termina em .component.html, então mapeia explicitamente.
+  "file_types": {
+    "Angular": ["**/src/app/**/*.html"]
+  },
+  "languages": {
+    "TypeScript": {
+      "language_servers": ["angular", "..."]
+    },
+    "HTML": {
+      "language_servers": ["angular", "..."]
+    },
+    "Angular": {
+      "language_servers": ["angular", "css-variables", "..."]
+    },
+    "CSS": {
+      "language_servers": ["css-variables", "..."]
+    }
+  },
+  "lsp": {
+    "angular": {
+      "initialization_options": {
+        "angular_language_server_path": "app/node_modules/@angular/language-server"
+      }
+    },
+    "css-variables": {
+      "settings": {
+        "cssVariables": {
+          "lookupFiles": ["app/src/**/*.css"],
+          "blacklistFolders": ["**/node_modules/**", "**/dist/**", "**/.angular/**"]
+        }
+      }
+    }
+  }
+}

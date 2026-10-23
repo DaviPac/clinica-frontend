@@ -4,14 +4,14 @@
     <button
       type="button"
       (click)="acoes.emit()"
-      [attr.aria-label]="'Ações de ' + pacienteNome()"
+      [attr.aria-label]="'Ações de ' + agendamento().paciente"
       class="agenda-card__link agenda-card__link--btn">
       <ng-container *ngTemplateOutlet="infoTpl"></ng-container>
     </button>
   } @else {
     <a
       [routerLink]="['/agendamentos', agendamento().id]"
-      [attr.aria-label]="'Ver detalhes de ' + pacienteNome()"
+      [attr.aria-label]="'Ver detalhes de ' + agendamento().paciente"
       class="agenda-card__link">
       <ng-container *ngTemplateOutlet="infoTpl"></ng-container>
     </a>
@@ -61,26 +61,26 @@
     </div>
   </div>
 
-  <p class="agenda-card__paciente" [title]="'Paciente: ' + pacienteNome()">
-    {{ pacienteNome() }}
+  <p class="agenda-card__paciente" [title]="'Paciente: ' + agendamento().paciente">
+    {{ agendamento().paciente }}
   </p>
 
-  @if (profissionalNome()) {
-    <p class="agenda-card__linha agenda-card__linha--profissional" [title]="profissionalNome()">
+  @if (agendamento().profissional) {
+    <p class="agenda-card__linha agenda-card__linha--profissional" [title]="agendamento().profissional">
       <svg viewBox="0 0 9 9" fill="none" class="agenda-card__icone" aria-hidden="true">
         <circle cx="4.5" cy="3" r="1.8" stroke="currentColor" stroke-width="1.1"/>
         <path d="M1 8.5c0-1.933 1.567-3.5 3.5-3.5s3.5 1.567 3.5 3.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
       </svg>
-      {{ profissionalNome() }}
+      {{ agendamento().profissional }}
     </p>
   }
 
-  <p class="agenda-card__linha agenda-card__linha--servico" [title]="servicoNome()">
+  <p class="agenda-card__linha agenda-card__linha--servico" [title]="agendamento().servico">
     <svg viewBox="0 0 9 9" fill="none" class="agenda-card__icone" aria-hidden="true">
       <rect x="0.8" y="1.5" width="7.4" height="6" rx="1" stroke="currentColor" stroke-width="1.1"/>
       <path d="M3 1.5V1M6 1.5V1M0.8 4h7.4" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
     </svg>
-    {{ servicoNome() }}
+    {{ agendamento().servico }}
   </p>
 
 </ng-template>
