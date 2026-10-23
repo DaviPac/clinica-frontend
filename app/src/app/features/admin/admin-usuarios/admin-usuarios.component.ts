@@ -15,6 +15,9 @@ import { VazioComponent } from '../../../shared/ui/vazio/vazio.component';
 import { SeloComponent } from '../../../shared/ui/selo/selo.component';
 import { CampoFormComponent } from '../../../shared/ui/campo-form/campo-form.component';
 import { CampoComponent } from '../../../shared/ui/campo/campo.component';
+import { inject } from '@angular/core/primitives/di';
+import { FormularioService } from '../../../shared/components/formulario/formulario.service';
+import { criarUsuarioForm } from './criar-usuario.form';
 
 @Component({
   selector: 'app-admin-usuarios',
@@ -23,35 +26,25 @@ import { CampoComponent } from '../../../shared/ui/campo/campo.component';
     ReactiveFormsModule,
     RouterLink,
     AlertComponent,
-    ModalComponent, PaginaComponent, CabecalhoPaginaComponent, BotaoComponent, CarregandoComponent, TabelaComponent, VazioComponent, SeloComponent, CampoFormComponent, CampoComponent],
+    PaginaComponent,
+    CabecalhoPaginaComponent,
+    BotaoComponent,
+    CarregandoComponent,
+    TabelaComponent,
+    VazioComponent,
+    SeloComponent
+  ],
   templateUrl: './admin-usuarios.component.html',
   styleUrl: './admin-usuarios.component.css',
 })
 export class AdminUsuariosComponent implements OnInit {
+  private formulario = inject(FormularioService);
+  private service = inject(UsuarioService);
+
   usuarios = signal<Usuario[]>([]);
-  modalAberto = signal(false);
   carregando = signal(true);
   salvando = signal(false);
   erro = signal<string | null>(null);
-  erroModal = signal<string | null>(null);
-
-  form: FormGroup;
-
-  constructor(
-    private fb: FormBuilder,
-    private service: UsuarioService,
-  ) {
-    this.form = this.fb.nonNullable.group({
-      nome:                 ['', Validators.required],
-      email:                ['', [Validators.required, Validators.email]],
-      senha:                ['', [Validators.required, Validators.minLength(6)]],
-      role:                 ['PROFISSIONAL' as 'ADMIN' | 'PROFISSIONAL', Validators.required],
-      profissao:            [''],
-      // O HTML já declarava min=0 max=100, mas atributo não bloqueia submit:
-      // sem estes validadores passava 250% ou valor negativo.
-      taxaComissaoPadrao: [40, [Validators.required, Validators.min(0), Validators.max(100)]],
-    });
-  }
 
   ngOnInit() { this.carregar(); }
 
@@ -69,37 +62,20 @@ export class AdminUsuariosComponent implements OnInit {
     });
   }
 
-  submit() {
-    if (this.form.invalid) return;
-    this.salvando.set(true);
-    this.erroModal.set(null);
-
-    const raw = this.form.getRawValue();
-    const dto = {
-      nome: raw.nome,
-      email: raw.email,
-      senha: raw.senha,
-      role: raw.role,
-      ...(raw.profissao.trim() ? { profissao: raw.profissao.trim() } : {}),
-      taxaComissaoPadrao: raw.taxaComissaoPadrao,
-    };
-
-    this.service.registrar(dto).subscribe({
-      next: novo => {
-        this.usuarios.update(lista => [...lista, novo]);
-        this.form.reset({
-          nome: '', email: '', senha: '',
-          role: 'PROFISSIONAL', profissao: '',
-          taxaComissaoPadrao: 40,
-        });
-        this.modalAberto.set(false);
-        this.salvando.set(false);
-      },
-      error: (err: Error) => {
-        this.erroModal.set(err.message);
-        this.salvando.set(false);
-      },
-    });
+  abrirFormulario() {
+    this.formulario.abrir({
+      ...criarUsuarioForm(),
+      aoConfirmar: v => this.service.registrar({
+        nome: v.nome,
+        email: v.email,
+        senha: v.senha,
+        role: v.role,
+        profissao: v.profissao.trim() || undefined,
+        taxaComissaoPadrao: v.taxaComissaoPadrao ?? undefined
+      })
+    }).subscribe(r => {
+        if (r?.resposta) this.usuarios.update(lista => [...lista, r.resposta!]);
+      });
   }
 
   formatarData(iso: string) {

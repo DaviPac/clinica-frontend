@@ -4,7 +4,7 @@
     titulo="Usuários"
     [subtitulo]="usuarios().length + ' usuário' + (usuarios().length !== 1 ? 's' : '') +
                  ' cadastrado' + (usuarios().length !== 1 ? 's' : '')">
-    <button appBotao class="usuarios__novo" (click)="modalAberto.set(true)">
+    <button appBotao class="usuarios__novo" (click)="abrirFormulario()">
       + Novo usuário
     </button>
   </app-cabecalho-pagina>
@@ -69,78 +69,3 @@
   }
 
 </div>
-
-<!-- Modal novo usuário -->
-@if (modalAberto()) {
-  <app-modal titulo="Novo usuário" (fechar)="modalAberto.set(false)">
-
-    @if (erroModal()) {
-      <app-alert class="usuarios__alerta">{{ erroModal() }}</app-alert>
-    }
-
-    <form class="usuarios__form" [formGroup]="form" (ngSubmit)="submit()">
-
-      <div class="usuarios__grade">
-        <app-campo-form
-          class="usuarios__grade--largo"
-          rotulo="Nome completo"
-          para="usuario-nome"
-          [obrigatorio]="true">
-          <input appCampo id="usuario-nome" type="text" formControlName="nome" placeholder="Ana Costa" />
-        </app-campo-form>
-
-        <app-campo-form
-          class="usuarios__grade--largo"
-          rotulo="E-mail"
-          para="usuario-email"
-          [obrigatorio]="true">
-          <input appCampo id="usuario-email" type="email" formControlName="email" placeholder="ana@clinica.com" />
-        </app-campo-form>
-
-        <app-campo-form
-          class="usuarios__grade--largo"
-          rotulo="Senha"
-          para="usuario-senha"
-          [obrigatorio]="true">
-          <input appCampo id="usuario-senha" type="password" formControlName="senha" placeholder="Mínimo 6 caracteres" />
-        </app-campo-form>
-
-        <app-campo-form rotulo="Papel" para="usuario-role" [obrigatorio]="true">
-          <select appCampo id="usuario-role" formControlName="role">
-            <option value="PROFISSIONAL">Profissional</option>
-            <option value="ADMIN">Admin</option>
-          </select>
-        </app-campo-form>
-
-        <app-campo-form rotulo="Comissão da clínica (%)" para="usuario-comissao">
-          <input
-            appCampo
-            [mono]="true"
-            id="usuario-comissao"
-            type="number"
-            formControlName="taxaComissaoPadrao"
-            min="0"
-            max="100"
-          />
-        </app-campo-form>
-
-        <app-campo-form
-          class="usuarios__grade--largo"
-          rotulo="Profissão"
-          para="usuario-profissao">
-          <input appCampo id="usuario-profissao" type="text" formControlName="profissao" placeholder="Ex: Psicóloga" />
-        </app-campo-form>
-      </div>
-
-      <div class="usuarios__acoes-modal">
-        <button appBotao variante="contorno" type="button" (click)="modalAberto.set(false)">
-          Cancelar
-        </button>
-        <button appBotao type="submit" [disabled]="form.invalid || salvando()">
-          {{ salvando() ? 'Cadastrando...' : 'Cadastrar' }}
-        </button>
-      </div>
-
-    </form>
-  </app-modal>
-}

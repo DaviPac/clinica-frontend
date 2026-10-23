@@ -85,9 +85,6 @@
 <ng-template #cardTpl let-ag="ag">
   <app-agenda-card
     [agendamento]="ag"
-    [pacienteNome]="pacientesDict()[ag.pacienteId] || 'Paciente ' + ag.pacienteId"
-    [profissionalNome]="usuariosDict()[ag.profissionalId] || ''"
-    [servicoNome]="servicosDict()[ag.servicoId] || 'Serviço ' + ag.servicoId"
     [isAdmin]="isAdmin()"
     [atualizandoPagamento]="atualizandoPagamento() === ag.id"
     [modoToque]="isMobile()"
@@ -116,9 +113,6 @@
 @if (agendamentoParaAcoes(); as ag) {
   <app-agenda-acoes-sheet
     [agendamento]="ag"
-    [pacienteNome]="pacientesDict()[ag.pacienteId] || 'Paciente ' + ag.pacienteId"
-    [profissionalNome]="usuariosDict()[ag.profissionalId] || ''"
-    [servicoNome]="servicosDict()[ag.servicoId] || 'Serviço ' + ag.servicoId"
     [isAdmin]="isAdmin()"
     [atualizandoPagamento]="atualizandoPagamento() === ag.id"
     (fechar)="fecharAcoes()"

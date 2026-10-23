@@ -3,8 +3,11 @@ export type StatusAgendamento = 'AGENDADO' | 'REALIZADO' | 'FALTA' | 'CANCELADO'
 export interface Agendamento {
   id: number;
   pacienteId: number;
+  paciente: string;
   profissionalId: number;
+  profissional: string;
   servicoId: number;
+  servico: string;
   dataHoraInicio: string;
   dataHoraFim: string;
   valorCombinado: number;

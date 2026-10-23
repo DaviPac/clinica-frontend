@@ -69,12 +69,36 @@
       </dl>
     </app-cartao>
 
-    <!-- Placeholder para agendamentos do paciente (Fase 2c) -->
-    <div class="detalhe__futuro">
-      <p class="detalhe__futuro-texto">
-        Agendamentos deste paciente aparecerão aqui.
-      </p>
-    </div>
+    <app-cartao class="detalhe__agenda" titulo="Próximos agendamentos" espacoTitulo="compacto">
+      @if (proximosAgendamentos().length) {
+        <ul class="proximos">
+          @for (ag of proximosAgendamentos(); track ag.id) {
+            <li>
+              <a class="proximos__item" [routerLink]="['/agendamentos', ag.id]">
+                <div class="proximos__data">
+                  <span class="proximos__dia">{{ dia(ag.dataHoraInicio) }}</span>
+                  <span class="proximos__mes">{{ mes(ag.dataHoraInicio) }}</span>
+                </div>
+
+                <div class="proximos__info">
+                  <p class="proximos__servico">{{ ag.servico }}</p>
+                  <p class="proximos__detalhe">
+                    {{ diaSemana(ag.dataHoraInicio) }} · {{ formatarHora(ag.dataHoraInicio) }}–{{ formatarHora(ag.dataHoraFim) }}
+                    @if (ag.profissional) {
+                      · {{ ag.profissional }}
+                    }
+                  </p>
+                </div>
+
+                <app-status-badge class="proximos__status" [status]="ag.status" />
+              </a>
+            </li>
+          }
+        </ul>
+      } @else {
+        <app-vazio espaco="apertado" mensagem="Nenhum agendamento futuro para este paciente." />
+      }
+    </app-cartao>
 
     @if (modalAberto()) {
       <app-confirm-dialog

@@ -53,7 +53,7 @@
           </tr>
         </thead>
         <tbody>
-          @for (p of pacientes(); track p.id) {
+          @for (p of pacientes().filter(p => p.nome.toLowerCase().includes(busca.toLowerCase())); track p.id) {
             <tr class="pacientes__linha">
               <td class="pacientes__nome">{{ p.nome }}</td>
               <td class="pacientes__cpf">{{ p.cpf }}</td>
@@ -73,13 +73,6 @@
         </tbody>
       </table>
     </app-tabela>
-
-    <div class="pacientes__nota">
-      <span class="pacientes__ponto"></span>
-      <p class="pacientes__nota-texto">
-        Se o CPF já existir no sistema, o paciente será vinculado ao seu perfil automaticamente.
-      </p>
-    </div>
   }
 
 </div>

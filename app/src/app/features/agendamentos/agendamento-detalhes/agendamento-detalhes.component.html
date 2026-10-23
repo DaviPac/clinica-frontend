@@ -36,15 +36,15 @@
 
             <div class="detalhes__campos">
               <app-item-descricao rotulo="Paciente" [forte]="true">
-                {{ pacientesDict()[ag.pacienteId] || 'N/A' }}
+                {{ agendamento()?.paciente || 'N/A' }}
               </app-item-descricao>
 
               <app-item-descricao rotulo="Profissional" [forte]="true">
-                {{ usuariosDict()[ag.profissionalId!] || 'N/A' }}
+                {{ agendamento()?.profissional || 'N/A' }}
               </app-item-descricao>
 
               <app-item-descricao class="detalhes__campo--largo" rotulo="Serviço" [forte]="true">
-                {{ servicosDict()[ag.servicoId] || 'N/A' }}
+                {{ agendamento()?.servico || 'N/A' }}
               </app-item-descricao>
             </div>
           </app-cartao>

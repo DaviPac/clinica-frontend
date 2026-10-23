@@ -12,11 +12,17 @@ import { CarregandoComponent } from '../../../shared/ui/carregando/carregando.co
 import { CartaoComponent } from '../../../shared/ui/cartao/cartao.component';
 import { AvatarComponent } from '../../../shared/ui/avatar/avatar.component';
 import { ItemDescricaoComponent } from '../../../shared/ui/item-descricao/item-descricao.component';
+import { AgendamentoService } from '../../../core/services/agendamento/agendamento.service';
+import { Agendamento } from '../../../core/models/agendamento.model';
+import { MensagemService } from '../../../shared/components/mensagem/mensagem.service';
+import { StatusBadgeComponent } from '../../../shared/components/status-badge/status-badge.component';
+import { VazioComponent } from '../../../shared/ui/vazio/vazio.component';
+import { formatarHora } from '../../../core/utils/data.utils';
 
 @Component({
   selector: 'app-paciente-detalhe',
   standalone: true,
-  imports: [CommonModule, RouterModule, AlertComponent, ConfirmDialogComponent, PaginaComponent, LinkVoltarComponent, CarregandoComponent, CartaoComponent, AvatarComponent, ItemDescricaoComponent],
+  imports: [CommonModule, RouterModule, AlertComponent, ConfirmDialogComponent, PaginaComponent, LinkVoltarComponent, CarregandoComponent, CartaoComponent, AvatarComponent, ItemDescricaoComponent, StatusBadgeComponent, VazioComponent],
   templateUrl: './paciente-detalhe.component.html',
   styleUrl: './paciente-detalhe.component.css',
 })
@@ -24,9 +30,12 @@ export class PacienteDetalheComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private service = inject(PacienteService);
+  private agendamentoService = inject(AgendamentoService);
+  private mensagem = inject(MensagemService);
   protected auth = inject(AuthService);
 
   paciente = signal<Paciente | null>(null);
+  proximosAgendamentos = signal<Agendamento[]>([]);
   carregando = signal(true);
   erro = signal<string | null>(null);
 
@@ -40,6 +49,7 @@ export class PacienteDetalheComponent implements OnInit {
     this.service.buscarPorId(id).subscribe({
       next: p => {
         this.paciente.set(p);
+        this.buscarAgendamentos();
         this.carregando.set(false);
       },
       error: (err: Error) => {
@@ -47,6 +57,39 @@ export class PacienteDetalheComponent implements OnInit {
         this.carregando.set(false);
       },
     });
+  }
+
+  buscarAgendamentos() {
+    const agora = new Date();
+    const ate = new Date();
+    ate.setFullYear(9999);
+    this.agendamentoService.listar({
+      periodo: { de: agora.toDateString(), ate: ate.toDateString() },
+      pacienteId: this.paciente()?.id
+    }).subscribe({
+      next: agendamentos => {
+        this.proximosAgendamentos.set(
+          [...agendamentos].sort((a, b) => a.dataHoraInicio.localeCompare(b.dataHoraInicio))
+        );
+      },
+      error: (err: Error) => {
+        this.mensagem.erro(err.message, "Erro ao buscar agendamentos");
+      }
+    })
+  }
+
+  formatarHora = formatarHora;
+
+  dia(iso: string): string {
+    return new Date(iso).toLocaleDateString('pt-BR', { day: '2-digit' });
+  }
+
+  mes(iso: string): string {
+    return new Date(iso).toLocaleDateString('pt-BR', { month: 'short' }).replace('.', '');
+  }
+
+  diaSemana(iso: string): string {
+    return new Date(iso).toLocaleDateString('pt-BR', { weekday: 'long' });
   }
 
   formatarData(iso: string | null): string {
