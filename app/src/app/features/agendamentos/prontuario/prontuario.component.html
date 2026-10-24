@@ -1,0 +1,200 @@
+<div appPagina class="prontuario">
+  <div class="prontuario__coluna">
+    <div class="prontuario__topo">
+      <button type="button" class="prontuario__voltar" title="Voltar" (click)="voltar()">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M10 12L6 8l4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <div class="prontuario__cabecalho">
+        <h1 class="prontuario__titulo">{{ config.titulo }}</h1>
+        @if (agendamento(); as ag) {
+          <p class="prontuario__subtitulo">
+            {{ ag.paciente }} · {{ formatarDataHora(ag.dataHoraInicio) }}
+          </p>
+        }
+      </div>
+
+      @if (!carregando() && !semPermissao() && agendamento()) {
+        <div class="prontuario__acoes">
+          @if (editando()) {
+            <span class="prontuario__estado">
+              @if (salvando()) {
+                Salvando...
+              } @else if (alterado()) {
+                Alterações não salvas
+              } @else if (salvoEm()) {
+                Salvo às {{ salvoEm() }}
+              }
+            </span>
+            <ng-container *ngTemplateOutlet="botaoCompleto" />
+            <button appBotao variante="contorno" tamanho="pequeno" type="button" (click)="concluirEdicao()">
+              {{ existe() ? 'Concluir' : 'Cancelar' }}
+            </button>
+            <button appBotao tamanho="pequeno" type="button"
+              [disabled]="salvando() || vazio() || (!alterado() && existe())"
+              title="Salvar (Ctrl+S)"
+              (click)="salvar()">
+              {{ existe() ? 'Salvar' : config.criar }}
+            </button>
+          } @else {
+            @if (config.historico) {
+              <button appBotao variante="contorno" tamanho="pequeno" type="button"
+                [attr.aria-pressed]="historicoAberto()"
+                (click)="alternarHistorico()">
+                {{ historicoAberto() ? 'Fechar histórico' : 'Ver histórico' }}
+              </button>
+            }
+            <ng-container *ngTemplateOutlet="botaoCompleto" />
+            <button appBotao tamanho="pequeno" type="button" (click)="iniciarEdicao()">
+              Editar
+            </button>
+          }
+        </div>
+      }
+    </div>
+
+    @if (erro()) {
+      <app-alert class="prontuario__erro">{{ erro() }}</app-alert>
+    }
+
+    @if (salvoEmOutraGuia()) {
+      <app-alert class="prontuario__erro">
+        {{ config.salvoEmOutraGuia }} Se você salvar aqui, o seu texto vira a versão atual.
+      </app-alert>
+    }
+
+    @if (carregando()) {
+      <app-carregando [texto]="config.carregando" [roda]="true" />
+    }
+
+    @if (semPermissao()) {
+      <app-alert class="prontuario__erro">
+        Apenas o profissional responsável pela sessão pode acessar {{ config.oNome }}.
+      </app-alert>
+    }
+
+    @if (avisosImportacao().length) {
+      <app-alert class="prontuario__erro">
+        Importado com ressalvas — parte da formatação do Word não foi convertida
+        ({{ avisosImportacao().length }} {{ avisosImportacao().length === 1 ? 'aviso' : 'avisos' }}).
+        Confira o texto antes de salvar.
+      </app-alert>
+    }
+
+    <div
+      class="prontuario__grade"
+      [class.prontuario__grade--historico]="historicoAberto() && !editando()"
+      [hidden]="carregando() || semPermissao() || !agendamento()">
+      <div class="prontuario__documento">
+        <div class="prontuario__arquivo">
+          @if (editando()) {
+            <input
+              #seletorArquivo
+              type="file"
+              accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+              hidden
+              (change)="aoEscolherArquivo($event)" />
+            <button appBotao variante="contorno" tamanho="pequeno" type="button"
+              [disabled]="importando() || salvando()"
+              (click)="escolherArquivo()">
+              {{ importando() ? 'Importando...' : 'Importar .docx' }}
+            </button>
+          }
+          <button appBotao variante="contorno" tamanho="pequeno" type="button"
+            [disabled]="vazio() || !!exportando()"
+            (click)="exportar('docx')">
+            {{ exportando() === 'docx' ? 'Gerando...' : 'Exportar .docx' }}
+          </button>
+          <button appBotao variante="contorno" tamanho="pequeno" type="button"
+            [disabled]="vazio() || !!exportando()"
+            (click)="exportar('pdf')">
+            {{ exportando() === 'pdf' ? 'Gerando...' : 'Exportar PDF' }}
+          </button>
+        </div>
+
+        @if (editando()) {
+          <div class="prontuario__barra" role="toolbar" aria-label="Formatação">
+            @for (grupo of grupos; track $index) {
+              <div class="prontuario__grupo">
+                @for (f of grupo; track f.rotulo) {
+                  <button
+                    type="button"
+                    class="prontuario__ferramenta"
+                    [class.prontuario__ferramenta--ativa]="ativa(f)"
+                    [attr.aria-pressed]="f.ativa ? ativa(f) : null"
+                    [title]="f.rotulo"
+                    [attr.aria-label]="f.rotulo"
+                    (mousedown)="$event.preventDefault()"
+                    (click)="executar(f)">
+                    {{ f.icone }}
+                  </button>
+                }
+              </div>
+            }
+          </div>
+        }
+
+        @if (versaoAntiga(); as antiga) {
+          <div class="prontuario__aviso">
+            <span>
+              Versão de {{ formatarDataHora(antiga.criadoEm) }}
+              @if (antiga.autor) { por {{ antiga.autor }} }
+            </span>
+            <button type="button" class="prontuario__link" (click)="voltarParaAtual()">
+              Ver versão atual
+            </button>
+          </div>
+        }
+
+        <div
+          #editorHost
+          class="prontuario__folha documento"
+          [class.prontuario__folha--editando]="editando()"></div>
+      </div>
+
+      @if (historicoAberto() && !editando()) {
+        <app-prontuario-historico
+          [versoes]="versoes() ?? []"
+          [carregando]="carregandoHistorico()"
+          [exibidaId]="versaoExibidaId()"
+          [desabilitado]="carregandoVersao()"
+          (abrir)="abrirVersao($event)" />
+      }
+    </div>
+  </div>
+</div>
+
+<ng-template #botaoCompleto>
+  <button appBotao variante="contorno" tamanho="pequeno" type="button"
+    title="Abre em uma nova guia, com fontes, cores, tabelas e layout de página"
+    aria-label="Editor completo (abre em nova guia)"
+    (click)="abrirCompleto()">
+    Editor completo
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+      <path d="M4.5 2.5h-2v7h7v-2M7 2.5h2.5V5M9.5 2.5 5.5 6.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+</ng-template>
+
+@if (importacaoPendente() !== null) {
+  <app-confirm-dialog
+    titulo="Substituir o conteúdo?"
+    mensagem="O texto do .docx vai substituir o que está no editor. A versão salva só muda quando você salvar."
+    variant="danger"
+    cancelLabel="Manter o atual"
+    confirmLabel="Substituir"
+    (confirmar)="aplicarImportacao()"
+    (cancelar)="importacaoPendente.set(null); avisosImportacao.set([])" />
+}
+
+@if (confirmandoDescarte()) {
+  <app-confirm-dialog
+    titulo="Descartar alterações?"
+    mensagem="As alterações feitas desde o último salvamento serão perdidas."
+    variant="danger"
+    cancelLabel="Continuar editando"
+    confirmLabel="Descartar"
+    (confirmar)="descartarAlteracoes()"
+    (cancelar)="confirmandoDescarte.set(false)" />
+}

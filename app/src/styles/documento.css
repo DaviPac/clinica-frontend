@@ -1,0 +1,168 @@
+/* ════════════════════════════════════════════════════════════════════
+   DOCUMENTO RICO (TipTap)
+   ────────────────────────────────────────────────────────────────────
+   O conteúdo do editor é gerado pelo TipTap fora de qualquer template,
+   então o encapsulamento de componente não o alcança. Vale para todo
+   elemento com a classe `documento` — a folha do prontuário e a do
+   editor completo.
+
+   Quem usa pode ajustar pelas variáveis:
+     --documento-altura-minima, --documento-tamanho, --documento-entrelinha
+   ══════════════════════════════════════════════════════════════════ */
+
+.documento .ProseMirror {
+  min-height: var(--documento-altura-minima, 0);
+  outline: none;
+  font-size: var(--documento-tamanho, 0.9375rem);
+  line-height: var(--documento-entrelinha, 1.65);
+  overflow-wrap: anywhere;
+}
+
+.documento .ProseMirror > * + * {
+  margin-top: 0.75em;
+}
+
+.documento .ProseMirror h1 {
+  font-size: 1.6em;
+  line-height: 1.3;
+  font-weight: 700;
+}
+
+.documento .ProseMirror h2 {
+  font-size: 1.33em;
+  line-height: 1.35;
+  font-weight: 650;
+}
+
+.documento .ProseMirror h3 {
+  font-size: 1.13em;
+  line-height: 1.4;
+  font-weight: 600;
+}
+
+.documento .ProseMirror ul,
+.documento .ProseMirror ol {
+  padding-left: 1.5rem;
+}
+
+.documento .ProseMirror ul {
+  list-style: disc;
+}
+
+.documento .ProseMirror ol {
+  list-style: decimal;
+}
+
+.documento .ProseMirror blockquote {
+  padding-left: 0.875rem;
+  border-left: 3px solid var(--cor-marca-borda);
+  color: var(--cor-texto-secundario);
+}
+
+.documento .ProseMirror hr {
+  margin-block: 1.25rem;
+  border: none;
+  border-top: 1px solid var(--cor-borda);
+}
+
+.documento .ProseMirror a {
+  color: var(--cor-info-texto);
+  text-decoration: underline;
+}
+
+.documento .ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  color: var(--cor-texto-apagado);
+  pointer-events: none;
+}
+
+.documento .ProseMirror mark {
+  padding: 0.05em 0.1em;
+  border-radius: 0.15em;
+  background-color: #fef08a;
+  color: inherit;
+}
+
+.documento .ProseMirror code {
+  padding: 0.1em 0.3em;
+  border-radius: 0.25em;
+  background-color: var(--cor-superficie-realce);
+  font-family: var(--fonte-mono);
+  font-size: 0.9em;
+}
+
+/* ── Lista de tarefas ── */
+.documento .ProseMirror ul[data-type='taskList'] {
+  padding-left: 0.25rem;
+  list-style: none;
+}
+
+.documento .ProseMirror ul[data-type='taskList'] li {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+
+.documento .ProseMirror ul[data-type='taskList'] li > label {
+  flex-shrink: 0;
+  margin-top: 0.3em;
+  user-select: none;
+}
+
+.documento .ProseMirror ul[data-type='taskList'] li > div {
+  flex: 1;
+  min-width: 0;
+}
+
+.documento .ProseMirror ul[data-type='taskList'] input[type='checkbox'] {
+  accent-color: var(--cor-marca-forte);
+  cursor: pointer;
+}
+
+.documento .ProseMirror li[data-checked='true'] > div {
+  color: var(--cor-texto-suave);
+  text-decoration: line-through;
+}
+
+/* ── Tabelas ── */
+.documento .tableWrapper {
+  overflow-x: auto;
+}
+
+.documento .ProseMirror table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.documento .ProseMirror td,
+.documento .ProseMirror th {
+  position: relative;
+  min-width: 3rem;
+  padding: 0.375rem 0.5rem;
+  border: 1px solid var(--cor-borda-forte);
+  vertical-align: top;
+  text-align: left;
+}
+
+.documento .ProseMirror th {
+  background-color: var(--cor-superficie-realce);
+  font-weight: 600;
+}
+
+.documento .ProseMirror td > * + *,
+.documento .ProseMirror th > * + * {
+  margin-top: 0.5em;
+}
+
+/* Células selecionadas (arrastando ou com Shift) */
+.documento .ProseMirror .selectedCell::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: var(--cor-info-fundo);
+  opacity: 0.6;
+  pointer-events: none;
+}

@@ -104,6 +104,58 @@
               (alternarPagamento)="iniciarTogglePagamento()"
               (cancelarSerie)="confirmarCancelamentoSerie()" />
           </app-cartao>
+
+          @if (ehDoUsuario()) {
+            <app-cartao espaco="solto">
+              <h2 class="detalhes__secao">Prontuário</h2>
+
+              @if (carregandoProntuario()) {
+                <app-carregando texto="Carregando prontuário..." espaco="apertado" />
+              } @else if (erroProntuario()) {
+                <p class="detalhes__prontuario-nota">{{ erroProntuario() }}</p>
+                <button appBotao variante="contorno" type="button" [larguraTotal]="true"
+                  (click)="carregarProntuario(ag.id)">
+                  Tentar novamente
+                </button>
+              } @else {
+                <p class="detalhes__prontuario-nota">
+                  @if (prontuario(); as p) {
+                    Atualizado em {{ formatarDataHora(p.criadoEm) }}
+                  } @else {
+                    Nenhum prontuário registrado para esta sessão.
+                  }
+                </p>
+                <button appBotao type="button" [larguraTotal]="true" (click)="abrirProntuario()">
+                  {{ prontuario() ? 'Abrir prontuário' : 'Criar prontuário' }}
+                </button>
+              }
+            </app-cartao>
+
+            <app-cartao espaco="solto">
+              <h2 class="detalhes__secao">Anotações</h2>
+
+              @if (carregandoAnotacoes()) {
+                <app-carregando texto="Carregando anotações..." espaco="apertado" />
+              } @else if (erroAnotacoes()) {
+                <p class="detalhes__prontuario-nota">{{ erroAnotacoes() }}</p>
+                <button appBotao variante="contorno" type="button" [larguraTotal]="true"
+                  (click)="carregarAnotacoes(ag.id)">
+                  Tentar novamente
+                </button>
+              } @else {
+                <p class="detalhes__prontuario-nota">
+                  @if (anotacoes()) {
+                    Esta sessão tem anotações.
+                  } @else {
+                    Nenhuma anotação registrada para esta sessão.
+                  }
+                </p>
+                <button appBotao variante="contorno" type="button" [larguraTotal]="true" (click)="abrirAnotacoes()">
+                  {{ anotacoes() ? 'Abrir anotações' : 'Criar anotações' }}
+                </button>
+              }
+            </app-cartao>
+          }
         </div>
 
       </div>

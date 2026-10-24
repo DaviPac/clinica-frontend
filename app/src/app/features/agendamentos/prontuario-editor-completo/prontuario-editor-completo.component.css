@@ -1,0 +1,442 @@
+/*
+ * Editor completo: cabeçalho e faixa de ferramentas fixos no alto, a
+ * "mesa" cinza rolando embaixo com a folha A4 no centro, e a barra de
+ * status no pé — o arranjo dos editores de texto de mesa.
+ */
+.completo {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100dvh;
+  background-color: var(--cor-superficie-forte);
+  color: var(--cor-texto);
+}
+
+/* ──────────────────────────────────────────────
+   Cabeçalho
+─────────────────────────────────────────────── */
+.completo__cabecalho {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.625rem 1rem;
+  background-color: var(--cor-superficie);
+}
+
+.completo__marca {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 0.5rem;
+  background-color: var(--cor-marca-fundo);
+  color: var(--cor-marca-texto);
+}
+
+.completo__titulos {
+  flex: 1;
+  min-width: 0;
+}
+
+.completo__titulo {
+  overflow: hidden;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: 600;
+  color: var(--cor-texto);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.completo__subtitulo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 0.75rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: var(--cor-texto-suave);
+}
+
+.completo__estado {
+  color: var(--cor-texto-apagado);
+}
+
+.completo__acoes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* ──────────────────────────────────────────────
+   Faixa de ferramentas
+─────────────────────────────────────────────── */
+.completo__faixa {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0.5rem;
+  padding: 0.375rem 0.75rem;
+  border-top: 1px solid var(--cor-divisor);
+  border-bottom: 1px solid var(--cor-borda);
+  background-color: var(--cor-superficie);
+  box-shadow: var(--sombra-elemento);
+}
+
+.completo__grupo {
+  display: flex;
+  align-items: center;
+  gap: 0.125rem;
+}
+
+.completo__grupo + .completo__grupo {
+  padding-left: 0.5rem;
+  border-left: 1px solid var(--cor-borda);
+}
+
+.completo__grupo--tabela {
+  padding-right: 0.25rem;
+  border-radius: 0.5rem;
+  background-color: var(--cor-info-fundo);
+}
+
+.completo__rotulo-grupo {
+  padding-inline: 0.375rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--cor-info-texto);
+}
+
+.completo__ferramenta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2rem;
+  height: 2rem;
+  padding-inline: 0.375rem;
+  border: none;
+  border-radius: 0.375rem;
+  background-color: transparent;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--cor-texto-secundario);
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.completo__ferramenta:disabled {
+  color: var(--cor-texto-desabilitado);
+  cursor: default;
+}
+
+.completo__ferramenta--ativa {
+  background-color: var(--cor-marca-fundo);
+  color: var(--cor-marca-texto);
+}
+
+.completo__ferramenta--negrito { font-weight: 800; }
+.completo__ferramenta--italico { font-style: italic; font-family: Georgia, serif; }
+.completo__ferramenta--sublinhado { text-decoration: underline; }
+.completo__ferramenta--tachado { text-decoration: line-through; }
+
+/* Botões de cor: a letra/ícone com a faixa da cor atual embaixo */
+.completo__ferramenta--cor {
+  flex-direction: column;
+  gap: 0.0625rem;
+}
+
+.completo__letra-cor {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.completo__ferramenta--cor svg {
+  width: 15px;
+  height: 15px;
+}
+
+.completo__amostra {
+  width: 1rem;
+  height: 0.25rem;
+  border: 1px solid var(--cor-filete);
+  border-radius: 1px;
+}
+
+.completo__selecao {
+  height: 2rem;
+  padding: 0 0.375rem;
+  border: 1px solid transparent;
+  border-radius: 0.375rem;
+  background-color: transparent;
+  font-size: 0.8125rem;
+  color: var(--cor-texto);
+  cursor: pointer;
+}
+
+.completo__selecao--estilo { width: 7.5rem; }
+.completo__selecao--fonte { width: 9.5rem; }
+.completo__selecao--tamanho { width: 3.75rem; text-align: center; }
+
+.completo__selecao:focus-visible {
+  border-color: var(--cor-marca-borda);
+  outline: none;
+}
+
+/* ── Menus suspensos ── */
+.completo__menu-ancora {
+  position: relative;
+}
+
+.completo__menu {
+  position: absolute;
+  top: calc(100% + 0.25rem);
+  left: 0;
+  z-index: 10;
+  min-width: 12rem;
+  padding: 0.375rem;
+  border: 1px solid var(--cor-borda);
+  border-radius: 0.625rem;
+  background-color: var(--cor-superficie);
+  box-shadow: var(--sombra-flutuante);
+}
+
+.completo__menu--direita {
+  right: 0;
+  left: auto;
+}
+
+.completo__menu--paleta {
+  min-width: 0;
+}
+
+.completo__item {
+  display: block;
+  width: 100%;
+  padding: 0.4375rem 0.625rem;
+  border: none;
+  border-radius: 0.375rem;
+  background-color: transparent;
+  font-size: 0.8125rem;
+  color: var(--cor-texto);
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.completo__paleta {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.375rem 0.25rem 0.125rem;
+}
+
+.completo__paleta--10 { grid-template-columns: repeat(10, 1.25rem); }
+.completo__paleta--5 { grid-template-columns: repeat(5, 1.75rem); }
+
+.completo__cor {
+  aspect-ratio: 1;
+  border: 1px solid var(--cor-filete);
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+.completo__cor--atual {
+  outline: 2px solid var(--cor-marca-forte);
+  outline-offset: 1px;
+}
+
+/* ── Grade do "Inserir tabela" ── */
+.completo__grade-tabela {
+  display: grid;
+  grid-template-columns: repeat(8, 1.125rem);
+  gap: 0.1875rem;
+  padding: 0.25rem;
+}
+
+.completo__celula {
+  aspect-ratio: 1;
+  border: 1px solid var(--cor-borda-forte);
+  border-radius: 0.1875rem;
+  background-color: var(--cor-superficie);
+  cursor: pointer;
+}
+
+.completo__celula--marcada {
+  border-color: var(--cor-marca-forte);
+  background-color: var(--cor-marca-fundo);
+}
+
+.completo__grade-rotulo {
+  padding: 0.25rem 0.25rem 0;
+  font-size: 0.75rem;
+  color: var(--cor-texto-suave);
+  text-align: center;
+}
+
+/* ──────────────────────────────────────────────
+   Mesa e folha
+─────────────────────────────────────────────── */
+.completo__mesa {
+  flex: 1;
+  overflow: auto;
+  padding: 1rem 0.75rem 3rem;
+}
+
+.completo__avisos {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-width: 21cm;
+  margin: 0 auto;
+}
+
+.completo__avisos:not(:empty) {
+  margin-bottom: 1rem;
+}
+
+/*
+ * A folha é sempre papel claro, mesmo no tema escuro: as cores que a
+ * pessoa escolhe para o texto são as do documento impresso/exportado.
+ * Por isso os tokens que o `documento.css` usa são redefinidos aqui.
+ */
+.completo__pagina {
+  --cor-texto: #1c1917;
+  --cor-texto-secundario: #57534d;
+  --cor-texto-suave: #79716b;
+  --cor-texto-apagado: #a6a09b;
+  --cor-borda: #e7e5e4;
+  --cor-borda-forte: #d6d3d1;
+  --cor-superficie-realce: #f5f5f4;
+  --cor-marca-borda: #e4d6d4;
+  --cor-marca-forte: #a99390;
+  --cor-info-texto: #1447e6;
+  --cor-info-fundo: #eff6ff;
+  --documento-tamanho: 11pt;
+  --documento-entrelinha: 1.5;
+  --documento-altura-minima: calc(29.7cm - 5cm);
+
+  color-scheme: light;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 21cm;
+  min-height: 29.7cm;
+  margin-inline: auto;
+  padding: 1.5rem 1.25rem;
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.12), 0 4px 16px rgb(0 0 0 / 0.08);
+  font-family: Calibri, Carlito, var(--fonte-texto);
+  color: var(--cor-texto);
+}
+
+.completo__pagina[hidden] {
+  display: none;
+}
+
+/* ──────────────────────────────────────────────
+   Barra de status
+─────────────────────────────────────────────── */
+.completo__status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.125rem 0.75rem;
+  border-top: 1px solid var(--cor-borda);
+  background-color: var(--cor-superficie);
+  font-size: 0.75rem;
+  color: var(--cor-texto-suave);
+}
+
+.completo__zoom {
+  display: flex;
+  align-items: center;
+}
+
+.completo__zoom .completo__ferramenta {
+  min-width: 1.75rem;
+  height: 1.75rem;
+}
+
+.completo__zoom-valor {
+  min-width: 3rem;
+  border: none;
+  background-color: transparent;
+  font-size: 0.75rem;
+  color: var(--cor-texto-secundario);
+  cursor: pointer;
+}
+
+@media (hover: hover) {
+  .completo__ferramenta:not(:disabled):hover,
+  .completo__selecao:hover,
+  .completo__item:hover {
+    background-color: var(--cor-superficie-realce);
+  }
+
+  .completo__ferramenta--ativa:not(:disabled):hover {
+    background-color: var(--cor-marca-fundo);
+  }
+
+  .completo__cor:hover {
+    transform: scale(1.15);
+  }
+}
+
+@media (width >= 48rem) {
+  .completo__cabecalho {
+    padding-inline: 1.25rem;
+  }
+
+  .completo__mesa {
+    padding: 1.5rem 1.5rem 4rem;
+  }
+
+  /* Margens de 2,5 cm, como a página padrão dos editores */
+  .completo__pagina {
+    padding: 2.5cm;
+  }
+}
+
+/* ──────────────────────────────────────────────
+   Impressão: só a folha
+─────────────────────────────────────────────── */
+@media print {
+  @page {
+    size: A4;
+    margin: 2cm;
+  }
+
+  .completo {
+    display: block;
+    height: auto;
+    background: none;
+  }
+
+  .completo__cabecalho,
+  .completo__faixa,
+  .completo__avisos,
+  .completo__status {
+    display: none;
+  }
+
+  .completo__mesa {
+    overflow: visible;
+    padding: 0;
+  }
+
+  .completo__pagina {
+    zoom: 1 !important;
+    max-width: none;
+    min-height: 0;
+    padding: 0;
+    box-shadow: none;
+  }
+}

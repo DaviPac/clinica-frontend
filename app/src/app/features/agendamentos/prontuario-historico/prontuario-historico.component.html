@@ -1,0 +1,23 @@
+<h2 class="historico__secao">Histórico</h2>
+@if (carregando()) {
+  <app-carregando texto="Carregando versões..." espaco="apertado" />
+} @else {
+  <ol class="historico__versoes">
+    @for (v of versoes(); track v.versaoId; let primeira = $first) {
+      <li>
+        <button
+          type="button"
+          class="historico__versao"
+          [class.historico__versao--ativa]="v.versaoId === exibidaId()"
+          [disabled]="desabilitado()"
+          (click)="abrir.emit(v)">
+          <span class="historico__versao-data">{{ formatarDataHora(v.criadoEm) }}</span>
+          <span class="historico__versao-autor">
+            {{ v.autor }}
+            @if (primeira) { · atual }
+          </span>
+        </button>
+      </li>
+    }
+  </ol>
+}
