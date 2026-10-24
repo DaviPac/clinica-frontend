@@ -1,0 +1,224 @@
+/*
+ * Como a ficha do agendamento, a página pinta o próprio fundo — aqui ele
+ * faz o papel da "mesa" sobre a qual a folha do documento assenta.
+ */
+.prontuario {
+  min-height: 100vh;
+  background-color: var(--cor-superficie-suave);
+}
+
+.prontuario__coluna {
+  max-width: 72rem;
+  margin-inline: auto;
+}
+
+/* ──────────────────────────────────────────────
+   Topo: voltar + título + ações
+─────────────────────────────────────────────── */
+.prontuario__topo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.prontuario__voltar {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid var(--cor-borda);
+  border-radius: 9999px;
+  background-color: var(--cor-superficie);
+  color: var(--cor-texto-suave);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.prontuario__cabecalho {
+  flex: 1;
+  min-width: 0;
+}
+
+.prontuario__titulo {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  color: var(--cor-texto);
+}
+
+.prontuario__subtitulo {
+  margin-top: 0.125rem;
+  overflow: hidden;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: var(--cor-texto-suave);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.prontuario__acoes {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.prontuario__estado {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: var(--cor-texto-suave);
+}
+
+.prontuario__erro {
+  display: block;
+  margin-bottom: 1rem;
+}
+
+/* ──────────────────────────────────────────────
+   Grade: documento + histórico
+─────────────────────────────────────────────── */
+.prontuario__grade {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.prontuario__grade[hidden] {
+  display: none;
+}
+
+.prontuario__documento {
+  min-width: 0;
+}
+
+/* ── Arquivo: importar e exportar ── */
+.prontuario__arquivo {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+/* ── Barra de formatação: gruda no topo ao rolar a folha ── */
+.prontuario__barra {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.75rem;
+  margin-bottom: 0.75rem;
+  padding: 0.375rem;
+  border: 1px solid var(--cor-borda);
+  border-radius: 0.75rem;
+  background-color: var(--cor-superficie);
+  box-shadow: var(--sombra-elemento);
+}
+
+.prontuario__grupo {
+  display: flex;
+  gap: 0.125rem;
+}
+
+.prontuario__grupo + .prontuario__grupo {
+  padding-left: 0.75rem;
+  border-left: 1px solid var(--cor-divisor);
+}
+
+.prontuario__ferramenta {
+  min-width: 2rem;
+  height: 2rem;
+  padding-inline: 0.375rem;
+  border: none;
+  border-radius: 0.375rem;
+  background-color: transparent;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--cor-texto-secundario);
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.prontuario__ferramenta--ativa {
+  background-color: var(--cor-marca-fundo);
+  color: var(--cor-marca-texto);
+}
+
+/* ── Aviso de versão antiga ── */
+.prontuario__aviso {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  padding: 0.625rem 0.875rem;
+  border: 1px solid var(--cor-aviso-borda);
+  border-radius: 0.75rem;
+  background-color: var(--cor-aviso-fundo);
+  font-size: 0.8125rem;
+  color: var(--cor-aviso-texto);
+}
+
+.prontuario__link {
+  border: none;
+  background-color: transparent;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* ──────────────────────────────────────────────
+   Folha do documento
+─────────────────────────────────────────────── */
+.prontuario__folha {
+  --documento-altura-minima: calc(60vh - 3rem);
+  min-height: 60vh;
+  padding: 1.5rem 1.25rem;
+  border: 1px solid var(--cor-borda);
+  border-radius: 0.75rem;
+  background-color: var(--cor-superficie);
+  box-shadow: var(--sombra-elemento);
+  color: var(--cor-texto);
+}
+
+.prontuario__folha--editando {
+  border-color: var(--cor-marca-borda);
+}
+
+@media (hover: hover) {
+  .prontuario__voltar:hover,
+  .prontuario__ferramenta:hover {
+    background-color: var(--cor-superficie-realce);
+  }
+
+  .prontuario__ferramenta--ativa:hover {
+    background-color: var(--cor-marca-fundo);
+  }
+}
+
+@media (width >= 40rem) {
+  .prontuario__folha {
+    --documento-altura-minima: calc(60vh - 5rem);
+    padding: 2.5rem 3rem;
+  }
+}
+
+@media (width >= 64rem) {
+  .prontuario__grade--historico {
+    grid-template-columns: minmax(0, 1fr) 16rem;
+  }
+
+  .prontuario__grade > app-prontuario-historico {
+    position: sticky;
+    top: 1rem;
+  }
+}

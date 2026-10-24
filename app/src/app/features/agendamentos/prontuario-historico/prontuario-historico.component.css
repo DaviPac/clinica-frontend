@@ -1,0 +1,64 @@
+/* ──────────────────────────────────────────────
+   Histórico de versões
+─────────────────────────────────────────────── */
+:host {
+  display: block;
+  padding: 1rem;
+  border: 1px solid var(--cor-borda);
+  border-radius: 0.75rem;
+  background-color: var(--cor-superficie);
+  box-shadow: var(--sombra-elemento);
+}
+
+.historico__secao {
+  margin-bottom: 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--cor-texto);
+}
+
+.historico__versoes {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  max-height: 24rem;
+  overflow-y: auto;
+}
+
+.historico__versao {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0.5rem 0.625rem;
+  border: 1px solid transparent;
+  border-radius: 0.5rem;
+  background-color: transparent;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.historico__versao--ativa {
+  border-color: var(--cor-marca-borda);
+  background-color: var(--cor-marca-fundo);
+}
+
+.historico__versao-data {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--cor-texto);
+}
+
+.historico__versao-autor {
+  font-size: 0.75rem;
+  color: var(--cor-texto-suave);
+}
+
+@media (hover: hover) {
+  .historico__versao:hover:not(:disabled):not(.historico__versao--ativa) {
+    background-color: var(--cor-superficie-realce);
+  }
+}

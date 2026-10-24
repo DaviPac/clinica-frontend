@@ -1,10 +1,14 @@
-import { Component, OnInit, signal, inject } from '@angular/core';
+import { Component, OnInit, computed, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { AgendamentoService } from '../../../core/services/agendamento/agendamento.service';
 import { Agendamento, StatusAgendamento } from '../../../core/models/agendamento.model';
 import { AuthService } from '../../../core/services/auth/auth.service';
+import { ProntuarioService } from '../../../core/services/prontuario/prontuario.service';
+import { AnotacoesService } from '../../../core/services/anotacoes/anotacoes.service';
+import { DocumentoSalvo, ProntuarioVersao } from '../../../core/models/prontuario.model';
+import { CarregandoComponent } from '../../../shared/ui/carregando/carregando.component';
 
 import { AgendamentosStatusModalComponent } from '../agendamentos-status-modal/agendamentos-status-modal.component';
 import { formatarDataHora, formatarHora, toRFC3339Brasilia } from '../../../core/utils/data.utils';
@@ -29,7 +33,7 @@ import { CaixaMarcacaoComponent } from '../../../shared/ui/caixa-marcacao/caixa-
     AgendamentosStatusModalComponent,
     AlertComponent,
     ConfirmDialogComponent,
-    ModalComponent, DetalheAcoesComponent, DetalheEstadoComponent, PaginaComponent, CartaoComponent, ItemDescricaoComponent, BotaoComponent, CampoComponent, CampoFormComponent, DestaqueValorComponent, CaixaMarcacaoComponent],
+    ModalComponent, DetalheAcoesComponent, DetalheEstadoComponent, PaginaComponent, CartaoComponent, ItemDescricaoComponent, BotaoComponent, CampoComponent, CampoFormComponent, DestaqueValorComponent, CaixaMarcacaoComponent, CarregandoComponent],
   templateUrl: './agendamento-detalhes.component.html',
   styleUrl: './agendamento-detalhes.component.css' // Opcional, pode usar o mesmo CSS da lista se desejar global
 })
@@ -38,12 +42,30 @@ export class AgendamentoDetalhesComponent implements OnInit {
   private router = inject(Router);
   private authService = inject(AuthService);
   private service = inject(AgendamentoService);
+  private prontuarioService = inject(ProntuarioService);
+  private anotacoesService = inject(AnotacoesService);
 
   agendamento = signal<Agendamento | null>(null);
   carregando = signal(true);
   erro = signal<string | null>(null);
 
   isAdmin = this.authService.isAdmin;
+
+  // Prontuário: só o profissional da sessão vê e edita — nem o admin.
+  ehDoUsuario = computed(() => {
+    const ag = this.agendamento();
+    const usuario = this.authService.usuario();
+    return !!ag && !!usuario && ag.profissionalId === usuario.id;
+  });
+  /** Versão atual; null = sem prontuário; undefined = ainda não buscado. */
+  prontuario = signal<ProntuarioVersao | null | undefined>(undefined);
+  carregandoProntuario = signal(false);
+  erroProntuario = signal<string | null>(null);
+
+  /** undefined = ainda não buscadas; null = a sessão não tem anotações. */
+  anotacoes = signal<DocumentoSalvo | null | undefined>(undefined);
+  carregandoAnotacoes = signal(false);
+  erroAnotacoes = signal<string | null>(null);
 
   // Controles de Modais e Ações
   agendamentoParaStatus = signal<Agendamento | null>(null);
@@ -95,12 +117,65 @@ export class AgendamentoDetalhesComponent implements OnInit {
       next: (ag) => {
         this.agendamento.set(ag);
         this.carregando.set(false);
+        // Recarregar o agendamento (pagamento, status…) não mexe no prontuário
+        if (this.ehDoUsuario() && this.prontuario() === undefined) {
+          this.carregarProntuario(id);
+        }
+        if (this.ehDoUsuario() && this.anotacoes() === undefined) {
+          this.carregarAnotacoes(id);
+        }
       },
       error: (err: Error) => {
         this.erro.set('Erro ao carregar agendamento: ' + err.message);
         this.carregando.set(false);
       }
     });
+  }
+
+  // --- Prontuário ---
+
+  carregarProntuario(id: number) {
+    this.carregandoProntuario.set(true);
+    this.erroProntuario.set(null);
+    this.prontuarioService.obter(id).subscribe({
+      next: (versao) => {
+        this.prontuario.set(versao);
+        this.carregandoProntuario.set(false);
+      },
+      error: (err: Error) => {
+        if (this.prontuarioService.naoExiste(err)) this.prontuario.set(null);
+        else this.erroProntuario.set('Erro ao carregar prontuário: ' + err.message);
+        this.carregandoProntuario.set(false);
+      },
+    });
+  }
+
+  abrirProntuario() {
+    const ag = this.agendamento();
+    if (ag) this.router.navigate(['/agendamentos', ag.id, 'prontuario']);
+  }
+
+  // --- Anotações ---
+
+  carregarAnotacoes(id: number) {
+    this.carregandoAnotacoes.set(true);
+    this.erroAnotacoes.set(null);
+    this.anotacoesService.obter(id).subscribe({
+      next: (anotacoes) => {
+        this.anotacoes.set(anotacoes);
+        this.carregandoAnotacoes.set(false);
+      },
+      error: (err: Error) => {
+        if (this.anotacoesService.naoExiste(err)) this.anotacoes.set(null);
+        else this.erroAnotacoes.set('Erro ao carregar anotações: ' + err.message);
+        this.carregandoAnotacoes.set(false);
+      },
+    });
+  }
+
+  abrirAnotacoes() {
+    const ag = this.agendamento();
+    if (ag) this.router.navigate(['/agendamentos', ag.id, 'anotacoes']);
   }
 
   // --- Ações de Pagamento ---

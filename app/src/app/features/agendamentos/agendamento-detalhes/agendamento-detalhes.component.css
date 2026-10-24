@@ -166,6 +166,16 @@
 }
 
 /* ──────────────────────────────────────────────
+   Prontuário e anotações
+─────────────────────────────────────────────── */
+.detalhes__prontuario-nota {
+  margin-bottom: 0.75rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: var(--cor-texto-suave);
+}
+
+/* ──────────────────────────────────────────────
    Formulários dos modais (reagendar e valor)
 ─────────────────────────────────────────────── */
 .detalhes__form {

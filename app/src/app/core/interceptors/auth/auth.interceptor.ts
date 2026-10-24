@@ -3,6 +3,7 @@ import { inject } from '@angular/core';
 import { catchError, throwError } from 'rxjs';
 import { AuthService } from '../../services/auth/auth.service';
 import { environment } from '../../../../environments/environment';
+import { ApiError } from '../../models/api-error.model';
 
 const BASE_URL = environment.apiUrl;
 
@@ -24,9 +25,9 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       if (err.status === 401) {
         auth.logout(); // limpa tudo e redireciona para /login
       }
-      // Extrai a mensagem de erro da API no formato { error: "..." }
+      // Extrai a mensagem de erro da API no formato { error: "...", code: "..." }
       const message = err.error?.error ?? 'Erro inesperado. Tente novamente.';
-      return throwError(() => new Error(message));
+      return throwError(() => new ApiError(message, err.status, err.error?.code ?? null));
     })
   );
 };

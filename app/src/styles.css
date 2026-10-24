@@ -7,6 +7,7 @@
  *   overlay → estrutura do CDK (posicionamento e fundo dos diálogos)
  *   tokens  → as variáveis dos temas claro e escuro
  *   base    → reset de elemento, foco, seleção, barras de rolagem e keyframes
+ *   documento → conteúdo do editor rico (TipTap), gerado fora dos templates
  *
  * A troca de tema acontece pelo atributo data-theme no <html>; veja
  * `core/services/tema/tema.service.ts`.
@@ -15,3 +16,4 @@
 @import '@angular/cdk/overlay-prebuilt.css';
 @import './styles/tokens.css';
 @import './styles/base.css';
+@import './styles/documento.css';

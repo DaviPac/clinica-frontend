@@ -9,6 +9,24 @@ export const routes: Routes = [
       import('./features/auth/login/login.component')
         .then(m => m.LoginComponent),
   },
+  // Editor completo do prontuário e das anotações: abre em uma guia
+  // própria, sem o shell. `data.documento` diz qual dos dois.
+  {
+    path: 'agendamentos/:id/prontuario/completo',
+    canActivate: [authGuard],
+    data: { documento: 'prontuario' },
+    loadComponent: () =>
+      import('./features/agendamentos/prontuario-editor-completo/prontuario-editor-completo.component')
+        .then(m => m.ProntuarioEditorCompletoComponent),
+  },
+  {
+    path: 'agendamentos/:id/anotacoes/completo',
+    canActivate: [authGuard],
+    data: { documento: 'anotacoes' },
+    loadComponent: () =>
+      import('./features/agendamentos/prontuario-editor-completo/prontuario-editor-completo.component')
+        .then(m => m.ProntuarioEditorCompletoComponent),
+  },
   {
     // Shell principal — qualquer usuário autenticado
     path: '',
@@ -58,6 +76,21 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/agendamentos/agendamento-detalhes/agendamento-detalhes.component')
             .then(m => m.AgendamentoDetalhesComponent),
+      },
+      {
+        // Prontuário e anotações são a mesma tela; `data.documento` diz qual
+        path: 'agendamentos/:id/prontuario',
+        data: { documento: 'prontuario' },
+        loadComponent: () =>
+          import('./features/agendamentos/prontuario/prontuario.component')
+            .then(m => m.ProntuarioComponent),
+      },
+      {
+        path: 'agendamentos/:id/anotacoes',
+        data: { documento: 'anotacoes' },
+        loadComponent: () =>
+          import('./features/agendamentos/prontuario/prontuario.component')
+            .then(m => m.ProntuarioComponent),
       },
       {
         path: 'dashboard',
