@@ -50,8 +50,16 @@ export class AgendamentoService {
   listarPendentes(todos: boolean = false) {
     const params = new URLSearchParams();
     params.set('filtro', 'pendente');
-    if (todos) params.set('todos', 'true'); 
-    
+    if (todos) params.set('todos', 'true');
+
+    const qs = params.toString();
+    return this.http.get<Agendamento[]>(`/agendamentos?${qs}`);
+  }
+
+  listarProntuarioPendente() {
+    const params = new URLSearchParams();
+    params.set('filtro', 'prontuario_pendente');
+
     const qs = params.toString();
     return this.http.get<Agendamento[]>(`/agendamentos?${qs}`);
   }
@@ -59,8 +67,8 @@ export class AgendamentoService {
   listarPagamentoPendente(todos: boolean = false) {
     const params = new URLSearchParams();
     params.set('filtro', 'pagamento_pendente');
-    if (todos) params.set('todos', 'true'); 
-    
+    if (todos) params.set('todos', 'true');
+
     const qs = params.toString();
     return this.http.get<Agendamento[]>(`/agendamentos?${qs}`);
   }

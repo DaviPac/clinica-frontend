@@ -18,4 +18,5 @@ export interface Agendamento {
   recorrenciaGroupId: string | null;
   criadoEm: string;
   profissionalRecebe: boolean;
+  possuiProntuario: boolean;
 }
