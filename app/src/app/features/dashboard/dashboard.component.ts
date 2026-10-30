@@ -1,6 +1,6 @@
 import { Component, OnInit, signal, inject, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { forkJoin, of } from 'rxjs';
 
 import { AgendamentoService } from '../../core/services/agendamento/agendamento.service';
@@ -43,6 +43,8 @@ export class DashboardComponent implements OnInit {
   private authService = inject(AuthService);
   private usuarioService = inject(UsuarioService)
 
+  router = inject(Router);
+
   isAdmin = this.authService.isAdmin;
 
   carregando = signal(true);
@@ -52,6 +54,7 @@ export class DashboardComponent implements OnInit {
   proximosAgendamentos = signal<Agendamento[]>([]);
   agendamentosPendentes = signal<Agendamento[]>([]);
   pagamentosPendentes = signal<Agendamento[]>([]);
+  prontuariosPendentes = signal<Agendamento[]>([]);
   saldoAReceber = signal<SaldoAReceber | null>(null); // Atualizado para a nova interface
 
   pacientesDict = signal<Record<number, string>>({});
@@ -69,6 +72,7 @@ export class DashboardComponent implements OnInit {
   totalProximos = computed(() => this.proximosAgendamentos().length);
   totalPendentes = computed(() => this.agendamentosPendentes().length);
   totalPagamentos = computed(() => this.pagamentosPendentes().length);
+  totalProntuarioPendente = computed(() => this.prontuariosPendentes().length);
   totalSaldo = computed(() => this.saldoAReceber()?.saldo_a_receber ?? 0); // Atualizado
 
   periodoAtual = computed(() => {
@@ -109,6 +113,7 @@ export class DashboardComponent implements OnInit {
       proximos: this.agendamentoService.listar({ periodo: { de: dataHoje, ate: dataFimBusca }}),
       pendentes: this.agendamentoService.listarPendentes(true),
       pagamentos: this.agendamentoService.listarPagamentoPendente(true),
+      prontuariosPendentes: this.agendamentoService.listarProntuarioPendente(),
       saldo: this.financeiroService.getSaldoAReceber(this.mesAtual()),
       pacientes: this.pacienteService.listar(true),
       servicos: this.servicoService.listar({ incluirInativos: true }),
@@ -129,8 +134,9 @@ export class DashboardComponent implements OnInit {
         this.proximosAgendamentos.set(proximos);
         this.agendamentosPendentes.set(res.pendentes);
         this.pagamentosPendentes.set(res.pagamentos);
+        this.prontuariosPendentes.set(res.prontuariosPendentes);
         this.saldoAReceber.set(res.saldo);
-        
+
         this.carregando.set(false);
       },
       error: (err: Error) => {
@@ -155,7 +161,7 @@ export class DashboardComponent implements OnInit {
 
   iniciarTogglePagamento(ag: Agendamento) {
     // Proteção extra caso o HTML seja burlado
-    if (!this.isAdmin()) return; 
+    if (!this.isAdmin()) return;
 
     if (!ag.pagoPeloPaciente && ag.valorPacote != null) {
       this.agendamentoParaConfirmarPagamento.set(ag);
