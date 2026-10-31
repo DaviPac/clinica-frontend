@@ -131,7 +131,7 @@ export class AdminUsuarioDetalheComponent implements OnInit {
         }),
         new CampoAlternador({
           chave: 'alterarProximasComissoes', rotulo: 'Alterar próximas comissões', apresentacao: 'caixa',
-          visivel: ctx => ctx.valores['taxaComissaoPadrao'] !== u.taxaComissaoPadrao
+          visivel: ctx => ctx.valores['taxaComissaoPadrao'] !== u.taxaComissaoPadrao || ctx.valores['profissionalRecebe'] !== u.profissionalRecebe
         })
       ],
       aoConfirmar: v => this.service.atualizar(u.id, {
