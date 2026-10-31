@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { UsuarioService } from '../../../core/services/usuario/usuario.service';
@@ -15,7 +15,6 @@ import { VazioComponent } from '../../../shared/ui/vazio/vazio.component';
 import { SeloComponent } from '../../../shared/ui/selo/selo.component';
 import { CampoFormComponent } from '../../../shared/ui/campo-form/campo-form.component';
 import { CampoComponent } from '../../../shared/ui/campo/campo.component';
-import { inject } from '@angular/core/primitives/di';
 import { FormularioService } from '../../../shared/components/formulario/formulario.service';
 import { criarUsuarioForm } from './criar-usuario.form';
 
