@@ -9,6 +9,7 @@ export interface RegistrarUsuarioDto {
   role: 'ADMIN' | 'PROFISSIONAL';
   profissao?: string;
   taxaComissaoPadrao?: number;
+  profissionalRecebe: boolean;
 }
 
 export interface AtualizarUsuarioDto {

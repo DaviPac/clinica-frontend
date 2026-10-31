@@ -28,7 +28,14 @@ const camposFormulario = () => [
   }),
   new CampoNumero({
     chave: 'taxaComissaoPadrao', rotulo: 'Comissão da clínica (%)', minimo: 0, maximo: 100, obrigatorio: true
-  })
+  }),
+  new CampoSelecao({
+    chave: 'profissionalRecebe', rotulo: 'Fluxo de pagamento', apresentacao: 'radio', obrigatorio: true,
+    opcoes: [
+      { valor: true, rotulo: 'Profissional recebe', descricao: 'O paciente paga direto ao profissional, que repassa a comissão à clínica.' },
+      { valor: false, rotulo: 'Clínica recebe', descricao: 'A clínica recebe o pagamento e repassa ao profissional, descontando a comissão.' }
+    ]
+  }),
 ]
 
 type CamposFormulario = ReturnType<typeof camposFormulario>;

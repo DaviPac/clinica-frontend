@@ -12,6 +12,10 @@ import { S, SEM_PARAMETROS, resumirParaModelo, resumirQuantidade } from './schem
 
 const PAPEIS: readonly Role[] = ['ADMIN', 'PROFISSIONAL'];
 
+const DESCRICAO_FLUXO =
+  'Modelo de recebimento. true = o profissional recebe do paciente e repassa a comissão à clínica; ' +
+  'false = a clínica recebe, desconta a comissão e repassa ao profissional.';
+
 @Injectable({ providedIn: 'root' })
 export class FerramentasUsuario {
   private readonly usuarios = inject(UsuarioService);
@@ -72,6 +76,9 @@ export class FerramentasUsuario {
             taxaComissaoPadrao: S.numero(
               'Percentual de comissão da clínica, entre 0 e 100. Ex.: 40 para 40%. Padrão 40.',
             ),
+            profissionalRecebe: S.booleano(
+              `${DESCRICAO_FLUXO} Omita se o usuário não informou: o administrador escolhe no formulário.`,
+            ),
           },
           ['nome', 'email', 'role'],
         ),
@@ -82,6 +89,9 @@ export class FerramentasUsuario {
         if (!senha) {
           throw new Error('Defina uma senha inicial no formulário antes de confirmar.');
         }
+        if (args['profissionalRecebe'] === undefined) {
+          throw new Error('Selecione o fluxo de pagamento no formulário antes de confirmar.');
+        }
         const dto: RegistrarUsuarioDto = {
           nome: strObrig(args, 'nome'),
           email: strObrig(args, 'email'),
@@ -91,6 +101,7 @@ export class FerramentasUsuario {
           ...(num(args, 'taxaComissaoPadrao') !== undefined
             ? { taxaComissaoPadrao: numObrig(args, 'taxaComissaoPadrao') }
             : {}),
+          profissionalRecebe: bool(args, 'profissionalRecebe'),
         };
         return this.usuarios.registrar(dto).pipe(map((u) => escrita(u, 'usuário criado')));
       },
@@ -114,8 +125,10 @@ export class FerramentasUsuario {
             role: S.opcoes('Papel do usuário.', PAPEIS),
             profissao: S.txt('Profissão.'),
             taxaComissaoPadrao: S.numero('Percentual de comissão da clínica, entre 0 e 100.'),
-            profissionalRecebe: S.booleano(
-              'true quando a clínica repassa ao profissional; false quando é o contrário.',
+            profissionalRecebe: S.booleano(DESCRICAO_FLUXO),
+            alterarProximasComissoes: S.booleano(
+              'Se a nova comissão e o novo modelo de recebimento também valem para as próximas ' +
+                'sessões já agendadas. Só tem efeito quando um dos dois muda. Padrão false.',
             ),
           },
           ['usuario_id'],
@@ -134,16 +147,21 @@ export class FerramentasUsuario {
     const id = numObrig(args, 'usuario_id');
     return this.usuarios.buscarPorId(id).pipe(
       switchMap((atual) => {
+        const taxaComissaoPadrao = num(args, 'taxaComissaoPadrao') ?? atual.taxaComissaoPadrao;
+        const profissionalRecebe = bool(args, 'profissionalRecebe', atual.profissionalRecebe);
+        const comissaoMudou =
+          taxaComissaoPadrao !== atual.taxaComissaoPadrao ||
+          profissionalRecebe !== atual.profissionalRecebe;
+
         const dto: AtualizarUsuarioDto = {
           nome: str(args, 'nome') ?? atual.nome,
           email: str(args, 'email') ?? atual.email,
           role: args['role'] === undefined ? atual.role : enumObrig(args, 'role', PAPEIS),
           profissao: str(args, 'profissao') ?? atual.profissao ?? undefined,
-          taxaComissaoPadrao: num(args, 'taxaComissaoPadrao') ?? atual.taxaComissaoPadrao,
-          profissionalRecebe:
-            args['profissionalRecebe'] === undefined
-              ? atual.profissionalRecebe
-              : bool(args, 'profissionalRecebe'),
+          taxaComissaoPadrao,
+          profissionalRecebe,
+          // Mesma regra da tela: a opção só existe quando comissão ou fluxo mudam.
+          alterarProximasComissoes: comissaoMudou && bool(args, 'alterarProximasComissoes'),
         };
         return this.usuarios.atualizar(id, dto);
       }),
