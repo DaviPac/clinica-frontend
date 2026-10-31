@@ -64,7 +64,7 @@
               <div class="detalhes__valor">
                 <div class="detalhes__valor-topo">
                   <p class="detalhes__valor-rotulo">Valor Combinado</p>
-                  @if (isAdmin() && ag.status !== 'CANCELADO') {
+                  @if ((isAdmin() || ehDoUsuario()) && ag.status !== 'CANCELADO') {
                     <button type="button" class="detalhes__editar" (click)="iniciarEdicaoValor()">Editar</button>
                   }
                 </div>
