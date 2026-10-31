@@ -70,7 +70,8 @@ export class AdminUsuariosComponent implements OnInit {
         senha: v.senha,
         role: v.role,
         profissao: v.profissao.trim() || undefined,
-        taxaComissaoPadrao: v.taxaComissaoPadrao ?? undefined
+        taxaComissaoPadrao: v.taxaComissaoPadrao ?? undefined,
+        profissionalRecebe: v.profissionalRecebe
       })
     }).subscribe(r => {
         if (r?.resposta) this.usuarios.update(lista => [...lista, r.resposta!]);

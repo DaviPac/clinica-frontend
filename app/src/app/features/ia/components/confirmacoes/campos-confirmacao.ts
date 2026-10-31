@@ -76,6 +76,15 @@ const PAPEIS = [
   { valor: 'ADMIN', rotulo: 'Administrador' },
 ];
 
+/**
+ * Select em vez de checkbox: como nas telas, obriga uma escolha explícita na
+ * criação e, na edição, não vira `false` se o usuário estiver fora do catálogo.
+ */
+const FLUXOS_PAGAMENTO = [
+  { valor: 'true', rotulo: 'Profissional recebe e repassa a comissão à clínica' },
+  { valor: 'false', rotulo: 'Clínica recebe, desconta a comissão e repassa ao profissional' },
+];
+
 const CATEGORIAS_DESPESA = [
   { valor: 'FIXA', rotulo: 'Fixa' },
   { valor: 'VARIAVEL', rotulo: 'Variável' },
@@ -267,6 +276,13 @@ export const CAMPOS_POR_FERRAMENTA: Record<string, CampoConfirmacao[]> = {
       max: 100,
       padrao: 40,
     },
+    {
+      nome: 'profissionalRecebe',
+      rotulo: 'Fluxo de pagamento',
+      tipo: 'enum',
+      opcoes: FLUXOS_PAGAMENTO,
+      obrigatorio: true,
+    },
   ],
 
   atualizar_usuario: [
@@ -290,7 +306,13 @@ export const CAMPOS_POR_FERRAMENTA: Record<string, CampoConfirmacao[]> = {
       min: 0,
       max: 100,
     },
-    { nome: 'profissionalRecebe', rotulo: 'A clínica repassa ao profissional', tipo: 'booleano' },
+    { nome: 'profissionalRecebe', rotulo: 'Fluxo de pagamento', tipo: 'enum', opcoes: FLUXOS_PAGAMENTO },
+    {
+      nome: 'alterarProximasComissoes',
+      rotulo: 'Alterar próximas comissões',
+      tipo: 'booleano',
+      ajuda: 'Só tem efeito se a comissão ou o fluxo de pagamento mudarem.',
+    },
   ],
 };
 
